@@ -40,7 +40,7 @@
 							</v-list-item-content>
 							<v-tooltip left>
 								<template v-slot:activator="{ on }">
-									<v-btn icon x-large color="green" :href="`/static/files/Plantilla_cargué_masivo_pruebas.xlsx`" v-on="on">
+									<v-btn icon x-large color="green" :href="`/static/files/Plantilla_cargue_masivo_pruebas.xlsx`" v-on="on">
 										<v-icon>mdi-file-table</v-icon>
 									</v-btn>
 								</template>
