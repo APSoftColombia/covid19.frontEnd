@@ -300,7 +300,7 @@
                 this.loading = true
                 this.actualizado = true
                 this.axios.post(`nucleos-familiares`, nucleo)
-                    .then(response => {
+                    .then(() => {
                         this.$store.commit('reloadTable', 'tablaPersonasSinHogar')
                         this.$store.commit('snackbar', {color: 'success', message: `El procesamiento de integrantes se realizó correctamente.`})
                         this.loading = false
