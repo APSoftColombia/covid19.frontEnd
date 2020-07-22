@@ -9,7 +9,7 @@
         <v-card>
             <v-toolbar dark color="primary">
                 <v-icon left >mdi-home-assistant</v-icon>
-                <v-toolbar-title>{{hogar && hogar.id ? `Hogar No. ${hogar.id}` : `Nuevo Hogar`}}</v-toolbar-title>
+                <v-toolbar-title >{{hogarDe ? 'Actualización de' : 'Nuevo'}} Hogar</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon dark @click="close">
                     <v-icon>mdi-close</v-icon>
@@ -26,9 +26,68 @@
                                 Integrantes del hogar
                             </v-card-title>
                             <v-card-text v-if="hogar.integrantes">
-                                <v-list v-if="hogar.integrantes.length">
-
-                                </v-list>
+                                <v-simple-table v-if="hogar.integrantes.length">
+                                    <template v-slot:default>
+                                        <thead>
+                                        <tr>
+                                            <th>Lider</th>
+                                            <th>Integrante</th>
+                                            <th>Email/Dirección</th>
+                                            <th>Afiliación</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(integrante, indexIntegrante) in hogar.integrantes" :key="`integrante${indexIntegrante}`">
+                                            <td>
+                                                <v-checkbox
+                                                        v-model="integrante.esCabeza"
+                                                        @click="integrante.esCabeza ? '' : reloadCabeza(indexIntegrante)"
+                                                        readonly
+                                                        :color="integrante.esCabeza ? 'success' : 'blue-grey'"
+                                                ></v-checkbox>
+                                            </td>
+                                            <td>
+                                                <persona-item-tabla
+                                                        :value="{
+                                                                    identificacion: integrante.integrante.identificacion,
+                                                                    tipoIdentificacion: getTipoIdentificacion(integrante.integrante),
+                                                                    celular: integrante.integrante.celular,
+                                                                    sexo: integrante.integrante.sexo,
+                                                                    nombre: [integrante.integrante.nombre1, integrante.integrante.nombre2, integrante.integrante.apellido1, integrante.integrante.apellido2].filter(x => x).join(' ')
+                                                }"
+                                                    ></persona-item-tabla>
+                                            </td>
+                                            <td>
+                                                <v-list-item>
+                                                    <v-list-item-content style="display: grid !important;">
+                                                        <v-list-item-title class="body-2">{{integrante.integrante.email}}</v-list-item-title>
+                                                        <v-list-item-subtitle class="body-2 text-truncate">{{integrante.integrante.direccion}}</v-list-item-subtitle>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </td>
+                                            <td>
+                                                <v-list-item>
+                                                    <v-list-item-content style="display: grid !important;">
+                                                        <v-list-item-title class="body-2">{{integrante.integrante.tipo_afiliacion}}</v-list-item-title>
+                                                        <v-list-item-subtitle class="body-2 text-truncate">{{getEpstext(integrante.integrante)}}</v-list-item-subtitle>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </td>
+                                            <td>
+                                                <v-tooltip left v-if="!integrante.esCabeza">
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn icon color="error" @click.stop="quitarIntegrante(indexIntegrante)" v-on="on">
+                                                            <v-icon>mdi-close</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>Quitar integrante</span>
+                                                </v-tooltip>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </template>
+                                </v-simple-table>
                                 <v-row v-else justify="center" class="grey-text text--lighten-2">No hay integrantes seleccionados</v-row>
                             </v-card-text>
                             <v-divider></v-divider>
@@ -58,8 +117,10 @@
     import PersonaItemTabla from '../../../components/Tamizaje/PersonaItemTabla'
     export default {
         name: 'RegistroHogar',
+        components: {PersonaItemTabla},
         data: () => ({
             click: false,
+            actualizado: false,
             loading: false,
             dialog: false,
             dataTable: {
@@ -152,17 +213,17 @@
             },
             hogar: null,
             makeHogar: {
-                id: null,
                 integrantes: []
             }
         }),
         computed: {
+            hogarDe () {
+              return this && this.hogar && this.hogar.integrantes && this.hogar.integrantes.length && this.hogar.integrantes.find(x => x.esCabeza) && this.hogar.integrantes.find(x => x.esCabeza).integrante
+            },
             ...mapGetters([
                 'tiposDocumentoIdentidad',
                 'epss'
             ])
-        },
-        watch: {
         },
         created() {
             this.hogar = this.clone(this.makeHogar)
@@ -202,52 +263,85 @@
                 this.dialog = true
             },
             close () {
+                if (this.actualizado) this.$store.commit('reloadTable', 'tablaHogares')
                 this.dialog = false
                 this.loading = false
                 this.hogar = this.clone(this.makeHogar)
             },
             agregarIntegrante (integrante) {
-                console.log('this.hogar.integrantes', this.hogar.integrantes.length)
+                let hogarOriginal = this.clone(this.hogar)
                 this.hogar.integrantes.push({esCabeza: this.hogar.integrantes.length ? false : true, integrante: integrante})
-                console.log('this.hogar.integrantes 2', this.hogar.integrantes)
                 let nucleo = {
                     cabeza: this.hogar.integrantes.find(x => x.esCabeza) ? this.hogar.integrantes.find(x => x.esCabeza).integrante.id : null,
                     beneficiarios: this.hogar.integrantes.find(x => !x.esCabeza) ? this.hogar.integrantes.filter(x => !x.esCabeza).map(z => z.integrante.id) : []
                 }
-                this.enviarNucleo(nucleo)
+                this.enviarNucleo(hogarOriginal, nucleo)
             },
-            enviarNucleo (nucleo) {
-                console.log('this.nucleo', nucleo)
+            reloadCabeza (indexIntegrante) {
+                let hogarOriginal = this.clone(this.hogar)
+                this.hogar.integrantes.forEach(x => x.esCabeza = false)
+                this.hogar.integrantes[indexIntegrante].esCabeza = true
+                let nucleo = {
+                    cabeza: this.hogar.integrantes.find(x => x.esCabeza) ? this.hogar.integrantes.find(x => x.esCabeza).integrante.id : null,
+                    beneficiarios: this.hogar.integrantes.find(x => !x.esCabeza) ? this.hogar.integrantes.filter(x => !x.esCabeza).map(z => z.integrante.id) : []
+                }
+                this.enviarNucleo(hogarOriginal, nucleo)
+            },
+            quitarIntegrante (indexIntegrante) {
+                let hogarOriginal = this.clone(this.hogar)
+                this.hogar.integrantes = this.hogar.integrantes.filter((x, i) => i !== indexIntegrante)
+                let nucleo = {
+                    cabeza: this.hogar.integrantes.find(x => x.esCabeza) ? this.hogar.integrantes.find(x => x.esCabeza).integrante.id : null,
+                    beneficiarios: this.hogar.integrantes.find(x => !x.esCabeza) ? this.hogar.integrantes.filter(x => !x.esCabeza).map(z => z.integrante.id) : []
+                }
+                this.enviarNucleo(hogarOriginal, nucleo)
+            },
+            enviarNucleo (hogarOriginal, nucleo) {
                 this.loading = true
+                this.actualizado = true
                 this.axios.post(`nucleos-familiares`, nucleo)
                     .then(response => {
-                        console.log('response get Autopsia', response)
+                        this.$store.commit('reloadTable', 'tablaPersonasSinHogar')
+                        this.$store.commit('snackbar', {color: 'success', message: `El procesamiento de integrantes se realizó correctamente.`})
                         this.loading = false
                     })
                     .catch(error => {
+                        this.hogar = hogarOriginal
                         this.loading = false
                         this.$store.commit('snackbar', {color: 'error', message: `al guardar el registro de integrantes.`, error: error})
                     })
             },
             getHogar (idHogar) {
                 this.loading = true
-                this.axios.get(`autopsias/${idHogar}`)
+                this.axios.get(`nucleos-familiares/${idHogar}`)
                     .then(response => {
-                        console.log('response get Autopsia', response)
-                        this.autopsia = response.data
+                        let cabeza = this.clone(response.data)
+                        delete cabeza.beneficiarios
+                        let integrantes = []
+                        integrantes.push({esCabeza: true, integrante: cabeza})
+                        response.data.beneficiarios.filter(x => x.id !== cabeza.id).forEach(x => {
+                            integrantes.push({esCabeza: false, integrante: x})
+                        })
+                        this.hogar.integrantes = integrantes
                         this.loading = false
                     })
                     .catch(error => {
                         this.loading = false
-                        this.$store.commit('snackbar', {color: 'error', message: `al recuperar la autopsia.`, error: error})
+                        this.$store.commit('snackbar', {color: 'error', message: `al recuperar los integrantes del hogar.`, error: error})
                     })
             },
             resetOptions(item) {
-                item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_identificacion && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : ''
-                item.epstext = this.epss && item.eps_id && this.epss.find(x => x.id === item.eps_id) ? this.epss.find(x => x.id === item.eps_id).nombre : ''
+                item.tipoIdentificacion = this.getTipoIdentificacion(item)
+                item.epstext = this.getEpstext(item)
                 item.options = []
                 item.options.push({event: 'agregarintegrante', icon: 'mdi-plus', tooltip: 'Agregar como integrante', color: 'blue'})
                 return item
+            },
+            getTipoIdentificacion (item) {
+                return this.tiposDocumentoIdentidad && item.tipo_identificacion && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : ''
+            },
+            getEpstext (item) {
+                return this.epss && item.eps_id && this.epss.find(x => x.id === item.eps_id) ? this.epss.find(x => x.id === item.eps_id).nombre : ''
             }
         }
     }

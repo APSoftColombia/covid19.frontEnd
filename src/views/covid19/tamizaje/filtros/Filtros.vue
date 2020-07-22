@@ -78,6 +78,22 @@
         </v-col>
         <v-col class="pb-0" cols="12" sm="6" md="4">
             <c-select-complete
+                    v-model="filters.models.estado_afectacion"
+                    label="Estado de Afectación"
+                    :items="estadosAfectacion"
+            >
+            </c-select-complete>
+        </v-col>
+        <v-col class="pb-0" cols="12" sm="6" md="4">
+            <c-select-complete
+                    v-model="filters.models.estado_prueba"
+                    label="Estado de la Prueba"
+                    :items="filters.data.estadoPrueba"
+            >
+            </c-select-complete>
+        </v-col>
+        <v-col class="pb-0" cols="12" sm="6" md="4">
+            <c-select-complete
                     v-model="filters.models.orden_medica_id"
                     label="Orden Médica"
                     :items="ordenesMedicas"
@@ -198,7 +214,9 @@
                     clasificacion: [],
                     orden_medica_id: null,
                     tamizador_id: null,
-                    eps_id: null
+                    eps_id: null,
+                    estado_afectacion: null,
+                    estado_prueba: null
                 },
                 data: {
                     opcionesCaso: [
@@ -213,6 +231,11 @@
                         {value: 1, text: 'Riesgo de Procedencia'},
                         {value: 2, text: 'Riesgo de Ocupación'},
                         {value: 3, text: 'Riesgo de Contacto'}
+                    ],
+                    estadoPrueba: [
+                        'Requiere Muestra',
+                        'Con Resultado',
+                        'Sin Resultado'
                     ]
                 }
             }
@@ -223,7 +246,8 @@
                 'clasificacionesCovid',
                 'tiposEvolucion',
                 'ordenesMedicas',
-                'tamizadores'
+                'tamizadores',
+                'estadosAfectacion'
             ]),
             tiposEvolucionFiltro () {
                 return this && this.tiposEvolucion ? this.clone(this.tiposEvolucion).concat(['Sin seguimiento']) : []
@@ -265,6 +289,12 @@
                 }
                 if (this.filters.models.clasificacion.length) {
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[clasificacion]=' + this.filters.models.clasificacion.join(',')
+                }
+                if (this.filters.models.estado_afectacion !== null) {
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado_afectacion]=' + this.filters.models.estado_afectacion
+                }
+                if (this.filters.models.estado_prueba !== null) {
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado_prueba]=' + this.filters.models.estado_prueba
                 }
                 if (this.filters.models.orden_medica_id !== null) {
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[orden_medica_id]=' + this.filters.models.orden_medica_id

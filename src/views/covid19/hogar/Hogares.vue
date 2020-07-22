@@ -3,7 +3,8 @@
         <data-table
                 ref="tablaHogares"
                 v-model="dataTable"
-                @autopsia="item => verHogar(item)"
+                @verhogar="item => verHogar(item)"
+                @editarhogar="item => editarHogar(item)"
                 @resetOption="item => resetOptions(item)"
         >
             <template slot="top-actions-right" v-if="permisos.crear">
@@ -57,7 +58,7 @@
             dataTable: {
                 buttonZone: false,
                 nameItemState: 'tablaHogares',
-                route: 'personas?filter[cabeza]=1',
+                route: 'nucleos-familiares',
                 makeHeaders: [
                     {
                         text: 'Hogar',
@@ -123,8 +124,8 @@
                                             innerHTML: `
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.email}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">${this.value.direccion}</v-list-item-subtitle>
+														<v-list-item-title class="body-2">${this.value.email || ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate">${this.value.direccion || ''}</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -148,7 +149,7 @@
                                             innerHTML: `
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.tipo_afiliacion}</v-list-item-title>
+														<v-list-item-title class="body-2">${this.value.tipo_afiliacion || ''}</v-list-item-title>
 														<v-list-item-subtitle class="body-2 text-truncate">${this.value.epstext}</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
@@ -181,11 +182,15 @@
             crearHogar () {
               this.$refs.registroHogar.open()
             },
+            editarHogar (item) {
+              this.$refs.registroHogar.open(item.id)
+            },
             resetOptions(item) {
                 item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_identificacion && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : ''
                 item.epstext = this.epss && item.eps_id && this.epss.find(x => x.id === item.eps_id) ? this.epss.find(x => x.id === item.eps_id).nombre : ''
                 item.options = []
-                item.options.push({event: 'autopsia', icon: 'mdi-home-search', tooltip: 'Detalle del Hogar', color: 'success'})
+                // item.options.push({event: 'verhogar', icon: 'mdi-home-search', tooltip: 'Detalle del Hogar', color: 'success'})
+                if (this.permisos.crear) item.options.push({event: 'editarhogar', icon: 'mdi-home-edit', tooltip: 'Edición del Hogar', color: 'orange'})
                 return item
             }
         }
