@@ -153,6 +153,9 @@ Vue.mixin({
 		verDiagnosticados () {
 			return this && this.roles && this.roles.length && [1, 3, 4].find(x => this.roles.find(z => z.id === x))
 		},
+		verAltoCosto () {
+			return this && this.roles && this.roles.length && [1, 3, 4].find(x => this.roles.find(z => z.id === x))
+		},
 		esSuperAdmin () {
 			return this && this.roles && this.roles.length && this.roles.find(z => z.id === 1)
 		},

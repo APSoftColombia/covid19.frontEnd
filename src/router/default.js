@@ -25,6 +25,8 @@ const ReporteComunitarioView = () => import('Views/covid19/reporteComunitario/Re
 const LlamadaView = () => import('Views/covid19/llamada/LlamadaView')
 const AutopsiaView = () => import('Views/covid19/autopsia/AutopsiaView')
 const VehiculoView = () => import('Views/covid19/vehiculo/VehiculoView')
+
+const HogarView = () => import('Views/covid19/hogar/HogarView')
 export default {
    path: '/',
    component: Full,
@@ -269,6 +271,20 @@ export default {
             avatar: {
                icon: 'fas fa-file-medical',
                color: 'error',
+            }
+         }
+      },
+      {
+         path: 'hogares',
+         name: 'Hogares',
+         component: HogarView,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'hogaresCovid-index',
+            avatar: {
+               icon: 'mdi-home-group',
+               color: 'cyan darken-1',
             }
          }
       },

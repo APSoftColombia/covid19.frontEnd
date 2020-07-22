@@ -155,5 +155,12 @@ export const itemsMenu = [
         icon: 'mdi-car-multiple',
         color: 'orange',
         routeName: 'Vehiculos'
+    },
+    {
+        id: 23,
+        title: 'Hogares',
+        icon: 'mdi-home-group',
+        color: 'cyan darken-1',
+        routeName: 'Hogares'
     }
 ]

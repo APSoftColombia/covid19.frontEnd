@@ -1,6 +1,6 @@
 {
   "name": "APSOFT",
-  "version": "4.2.3",
+  "version": "4.3.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -22,7 +22,7 @@
     "instantsearch.css": "^7.3.1",
     "jquery": "^3.5.0",
     "leaflet": "^1.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.22.2",
     "nprogress": "^0.2.0",
     "register-service-worker": "^1.7.1",

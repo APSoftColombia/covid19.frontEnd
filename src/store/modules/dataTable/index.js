@@ -10,7 +10,11 @@ const state = {
         tablaLlamadas: 0,
         tablaLlamadasVersion: 2,
         tablaAutopsias: 0,
-        tablaAutopsiasVersion: 2
+        tablaAutopsiasVersion: 2,
+        tablaHogares: 0,
+        tablaHogaresVersion: 1,
+        tablaPersonasSinHogar: 0,
+        tablaPersonasSinHogarVersion: 1
     }
 }
 

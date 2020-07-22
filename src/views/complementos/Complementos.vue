@@ -38,9 +38,15 @@
 								<v-list-item-title class="font-weight-bold">Carga Masiva de Registros</v-list-item-title>
 								<v-list-item-subtitle>Carga masiva de registros para la generación de estadísticas mediante archivo plano.</v-list-item-subtitle>
 							</v-list-item-content>
-							<v-list-item-action>
-								<cargador-seguimientos></cargador-seguimientos>
-							</v-list-item-action>
+							<v-tooltip left>
+								<template v-slot:activator="{ on }">
+									<v-btn icon x-large color="green" :href="`/static/files/Plantilla_cargué_masivo_pruebas.xlsx`" v-on="on">
+										<v-icon>mdi-file-table</v-icon>
+									</v-btn>
+								</template>
+								<span>Descargar plantilla</span>
+							</v-tooltip>
+							<cargador-seguimientos></cargador-seguimientos>
 						</v-list-item>
 					</v-list>
 				</v-card>

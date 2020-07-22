@@ -21,6 +21,7 @@ const getters = {
         if (getters.getPermission('poblacion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 9))
         // if (getters.getPermission('covid-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 14))
         if (getters.getPermission('covid-tamizajeVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 18))
+        if (getters.getPermission('hogaresCovid-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 23))
         if (getters.getPermission('covid-reporteComunitarioVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 19))
         if (getters.getPermission('covid-autopsiaVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 20))
         if (getters.getPermission('covid-llamadaVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 21))

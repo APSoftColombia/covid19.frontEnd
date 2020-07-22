@@ -712,6 +712,7 @@
                         this.evolucion.orden_medica_id = copia.orden_medica_id
                         this.evolucion.fallida = copia.fallida
                         this.evolucion.observaciones = copia.observaciones
+                        this.evolucion.tipo = copia.tipo
                     }
 
                     let sintomasx = this.evolucion.sintomas && this.evolucion.sintomas.length ? this.evolucion.sintomas.filter(x => x.id).map(x => { return {id: x.id, fecha_inicio: x.fecha_inicio} }) : []
