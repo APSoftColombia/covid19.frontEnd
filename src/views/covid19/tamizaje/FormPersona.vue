@@ -168,6 +168,20 @@
             >
             </c-select-complete>
         </v-col>
+        <v-col class="pb-0" cols="12" sm="12" md="6" v-if="value.tamizador_id === 892">
+            <c-select-complete
+                    :disabled="!persona.municipio_id || identificacionVerificada < 1"
+                    v-model="persona.barrio_id"
+                    :loading="loadingBarrios"
+                    label="Barrio"
+                    name="barrio"
+                    rules="required"
+                    :items="barrios"
+                    item-text="nombre"
+                    item-value="id"
+            >
+            </c-select-complete>
+        </v-col>
         <v-col class="pb-0" cols="12">
             <v-checkbox
                     v-model="persona.si_eps"
@@ -238,7 +252,9 @@
             identificacionVerificada: 0,
             loadingidentidad: false,
             edad: null,
-            persona: null
+            persona: null,
+            barrios: [],
+            loadingBarrios: false
         }),
         computed: {
             esTamizaje() {
@@ -265,9 +281,17 @@
                 immediate: false
             },
             'persona.departamento_id': {
+                handler () {
+                    this.persona.municipio_id = null
+                },
+                immediate: false
+            },
+            'persona.municipio_id': {
                 handler (val) {
-                    if (!val) {
-                        this.persona.municipio_id = null
+                    this.persona.barrio_id = null
+                    this.barrios = []
+                    if (val) {
+                        this.getBarrios(val)
                     }
                 },
                 immediate: false
@@ -314,6 +338,14 @@
                     }
                 },
                 immediate: false
+            },
+            'value.tamizador_id': {
+                handler(val) {
+                    if (val) {
+                        this.persona.barrio_id = null
+                    }
+                },
+                immediate: false
             }
         },
         created () {
@@ -323,6 +355,19 @@
         methods: {
             assignPerson () {
                 this.persona = this.value ? this.value : this.clone(this.modelPersona)
+            },
+            getBarrios (municipio_id) {
+                this.loadingBarrios = true
+                this.axios.get(`barrios??municipio_id=${municipio_id}`)
+                    .then(response => {
+                        console.log('response get evolucion', response)
+                        this.barrios = response.data
+                        this.loadingBarrios = false
+                    })
+                    .catch(error => {
+                        this.loadingBarrios = false
+                        this.$store.commit('snackbar', {color: 'error', message: `al recuperar los barrios.`, error: error})
+                    })
             },
             calculaEdad() {
                 if (this.persona.fecha_nacimiento) {
@@ -363,6 +408,7 @@
                 this.persona.direccion = null
                 this.persona.departamento_id = null
                 this.persona.municipio_id = null
+                this.persona.barrio_id = null
                 this.persona.si_eps = 1
                 this.persona.eps_id = null
                 this.persona.tipo_afiliacion = null
@@ -402,6 +448,7 @@
                     this.persona.direccion = response.afiliado.direccion
                     this.persona.departamento_id = response.afiliado.departamento_id
                     this.persona.municipio_id = response.afiliado.centro_poblado_id
+                    this.persona.barrio_id = response.afiliado.barrio_id || null
                     this.persona.eps_id = response.afiliado.eps_id
                     this.persona.tipo_afiliacion = response.afiliado.regimen
                 }

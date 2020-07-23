@@ -70,26 +70,29 @@
                             </template>
                         </v-card-text>
                         <v-card-text v-else>
-                            <v-card
-                                    class="d-flex justify-start"
-                                    flat
-                                    tile
-                            >
-                                <v-card
+                            <v-row no-gutters>
+                                <v-col
+                                        cols="12"
+                                        sm="6"
+                                        md="3"
+                                        lg="2"
                                         v-for="(sin, indexSin) in evolucion.sintomas.filter(x => x.solicita_fecha)"
-                                        :key="`sinto${indexSin}`"
-                                        class="px-2 mr-1"
-                                        outlined
-                                        tile
+                                       :key="`sinto${indexSin}`"
                                 >
-                                    <v-list-item class="pa-0">
-                                        <v-list-item-content class="pa-0">
-                                            <v-list-item-title>{{sin.descripcion}}</v-list-item-title>
-                                            <v-list-item-subtitle>{{sin.pivot && sin.pivot.fecha_inicio ? moment(sin.pivot.fecha_inicio).format('DD/MM/YYYY') : ''}}</v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-card>
-                            </v-card>
+                                    <v-card
+                                            class="px-2 ma-1"
+                                            outlined
+                                            tile
+                                    >
+                                        <v-list-item class="pa-0">
+                                            <v-list-item-content class="pa-0">
+                                                <v-list-item-title>{{sin.descripcion}}</v-list-item-title>
+                                                <v-list-item-subtitle>{{sin.pivot && sin.pivot.fecha_inicio ? moment(sin.pivot.fecha_inicio).format('DD/MM/YYYY') : ''}}</v-list-item-subtitle>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
                         </v-card-text>
                     </v-card>
                 </v-col>

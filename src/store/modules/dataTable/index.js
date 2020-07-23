@@ -12,9 +12,9 @@ const state = {
         tablaAutopsias: 0,
         tablaAutopsiasVersion: 2,
         tablaHogares: 0,
-        tablaHogaresVersion: 1,
+        tablaHogaresVersion: 2,
         tablaPersonasSinHogar: 0,
-        tablaPersonasSinHogarVersion: 1
+        tablaPersonasSinHogarVersion: 2
     }
 }
 

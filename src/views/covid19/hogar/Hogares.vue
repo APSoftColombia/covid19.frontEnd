@@ -112,6 +112,20 @@
                         }
                     },
                     {
+                        text: 'Integrantes',
+                        align: 'left',
+                        sortable: false,
+                        value: 'beneficiarios_count',
+                        component: {
+                            functional: true,
+                            render: function (createElement, context) {
+                                let texts = []
+                                texts.push(createElement('c-chip', {props: {text: context.props.value.beneficiarios_count || 0, color: 'deep-purple', textColor: 'white', label: true}}))
+                                return texts.length ? texts : createElement('div', '')
+                            }
+                        }
+                    },
+                    {
                         text: 'Email / Dirección',
                         align: 'left',
                         sortable: false,

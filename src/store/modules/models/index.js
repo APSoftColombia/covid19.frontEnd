@@ -57,7 +57,8 @@ const state = {
         grupo_atencion_especial_id: null,
         grupo_atencion_especial: null,
         solicitud_prueba: 0,
-        clasificacion: null
+        clasificacion: null,
+        barrio_id: null
     },
     modelPersona: {
         afiliado_id: null,
@@ -79,7 +80,8 @@ const state = {
         departamento_id: null,
         municipio_id: null,
         regimen_especial: null,
-        si_eps: 1
+        si_eps: 1,
+        barrio_id: null
     },
     modelAislamiento: {
         id: null,

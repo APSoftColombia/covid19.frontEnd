@@ -696,7 +696,6 @@
         },
         methods: {
             async guardarSeguimiento () {
-
                 let validateSintomas = null
                 if (this.$refs && this.$refs.sintomasFecha) {
                     validateSintomas = await this.$refs.sintomasFecha.validate()
@@ -714,7 +713,6 @@
                         this.evolucion.observaciones = copia.observaciones
                         this.evolucion.tipo = copia.tipo
                     }
-
                     let sintomasx = this.evolucion.sintomas && this.evolucion.sintomas.length ? this.evolucion.sintomas.filter(x => x.id).map(x => { return {id: x.id, fecha_inicio: x.fecha_inicio} }) : []
                     let signos = this.evolucion.signos_alarma && this.evolucion.signos_alarma.length ? this.evolucion.signos_alarma.map(x => { return {id: x, fecha_inicio: null} }) : []
 

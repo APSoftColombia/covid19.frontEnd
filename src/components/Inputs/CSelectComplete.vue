@@ -17,6 +17,7 @@
                 :clearable="clearable"
                 :hide-details="hideDetails"
                 :multiple="multiple"
+                :loading="loading"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
@@ -38,6 +39,7 @@
                 :clearable="clearable"
                 :hide-details="hideDetails"
                 :multiple="multiple"
+                :loading="loading"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
@@ -91,6 +93,10 @@
                 default: null
             },
             readonly: {
+                type: Boolean,
+                default: false
+            },
+            loading: {
                 type: Boolean,
                 default: false
             },

@@ -129,6 +129,13 @@
                 route: 'personas?filter[sin_nucleo]=1',
                 makeHeaders: [
                     {
+                        text: '',
+                        align: 'center',
+                        sortable: false,
+                        actions: true,
+                        singlesActions: true
+                    },
+                    {
                         text: 'Persona',
                         align: 'left',
                         sortable: false,
@@ -201,13 +208,6 @@
                             },
                             props: ['value']
                         }
-                    },
-                    {
-                        text: 'Opciones',
-                        align: 'center',
-                        sortable: false,
-                        actions: true,
-                        singlesActions: true
                     }
                 ]
             },
