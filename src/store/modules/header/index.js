@@ -32,6 +32,7 @@ const getters = {
         // if (getters.getPermission('complementos-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
         if (getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
+        if (getters.getPermission('covid-nexosVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 24))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 11))

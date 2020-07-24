@@ -107,7 +107,7 @@
 				this.dialogMenu = false
 				this.$refs.confirmation.close()
 				this.$store.commit('assignEncuestaEnCurso', false)
-			}
+			},
 		}
 	}
 </script>

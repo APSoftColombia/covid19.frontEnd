@@ -14,7 +14,9 @@ const state = {
         tablaHogares: 0,
         tablaHogaresVersion: 2,
         tablaPersonasSinHogar: 0,
-        tablaPersonasSinHogarVersion: 2
+        tablaPersonasSinHogarVersion: 2,
+        tablaNexos: 0,
+        tablaNexosVersion: 1
     }
 }
 

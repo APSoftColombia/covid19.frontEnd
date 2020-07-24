@@ -162,5 +162,12 @@ export const itemsMenu = [
         icon: 'mdi-home-group',
         color: 'cyan darken-1',
         routeName: 'Hogares'
-    }
+    },
+    {
+        id: 24,
+        title: 'Nexos',
+        icon: 'fas fa-people-arrows',
+        color: 'deep-purple darken-4',
+        routeName: 'Nexos'
+    },
 ]

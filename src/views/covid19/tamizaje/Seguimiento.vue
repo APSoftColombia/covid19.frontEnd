@@ -24,6 +24,12 @@
                 </v-btn>
             </v-toolbar>
             <v-container fluid v-if="tamizaje">
+                <div style="padding-bottom: 15px; text-align: right">
+                    <v-btn class="red darken-4" @click.stop="descargarPDF">
+                        <v-icon color="white" left>fas fa-file-pdf</v-icon>
+                        <span class="font-weight-bold white--text">Descargar PDF</span>
+                    </v-btn>
+                </div>
                 <datos-personales :tamizaje="tamizaje"></datos-personales>
                 <datos-tamizaje class="mt-2" :tamizaje="tamizaje"></datos-tamizaje>
                 <v-tabs
@@ -132,6 +138,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    //import {store} from "../../../store/store";
     const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
     const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
     const Evoluciones = () => import('Views/covid19/tamizaje/evolucion/Evoluciones')
@@ -172,6 +179,22 @@
             this.tamizaje = this.clone(this.modelTamizaje)
         },
         methods: {
+            descargarPDF(){
+                this.axios( {
+                    url: `/pdf-tamizaje/${this.tamizaje.id}`, //your url
+                    method: 'GET',
+                    responseType: 'blob', // important
+                }).then(response => {
+                    this.loading = false
+                    const fileURL = URL.createObjectURL(new Blob(
+                        [response.data],
+                        {type: 'application/pdf'}));
+                    window.open(fileURL,'_blank')
+                }).catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: 'al cargar el pdf', error: error})
+                })
+            },
             open (idTamizaje = null) {
                 if (idTamizaje) this.getTamizaje(idTamizaje)
                 this.dialog = true

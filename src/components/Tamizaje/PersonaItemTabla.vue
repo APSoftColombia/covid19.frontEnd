@@ -3,9 +3,13 @@
         <v-list-item class="pa-0">
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
             <v-icon :color="colorText" large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
-            <v-list-item-content class="pa-0">
+            <v-list-item-content class="pa-0" v-if="isNotFromNexos">
                 <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">{{this.value.nombre}}</v-list-item-title>
                 <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.tipoIdentificacion}} {{this.value.identificacion}}{{this.value.celular ? ', Cel. ' + this.value.celular : ''}}</v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-content class="pa-0" v-if="!isNotFromNexos">
+                <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">{{this.value.nombres}}</v-list-item-title>
+                <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.celular ? 'Cel: ' + this.value.celular : ''}} {{ this.value.edad ? "Edad: " + this.value.edad : '' }}</v-list-item-subtitle>
             </v-list-item-content>
 <!--            <template v-if="verAltoCosto">-->
 <!--                <v-tooltip top>-->
@@ -69,6 +73,10 @@
             value: {
                 type: Object,
                 Default: null
+            },
+            isNotFromNexos: {
+                type: Boolean,
+                default: true
             }
         },
         computed: {

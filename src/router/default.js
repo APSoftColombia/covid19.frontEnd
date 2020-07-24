@@ -25,6 +25,7 @@ const ReporteComunitarioView = () => import('Views/covid19/reporteComunitario/Re
 const LlamadaView = () => import('Views/covid19/llamada/LlamadaView')
 const AutopsiaView = () => import('Views/covid19/autopsia/AutopsiaView')
 const VehiculoView = () => import('Views/covid19/vehiculo/VehiculoView')
+const Nexos = () => import('Views/covid19/Nexos/NexosView')
 
 const HogarView = () => import('Views/covid19/hogar/HogarView')
 export default {
@@ -384,6 +385,20 @@ export default {
             avatar: {
                icon: 'fas fa-map-marked-alt',
                color: 'deep-orange',
+            }
+         }
+      },
+      {
+         path: 'nexos',
+         name: 'Nexos',
+         component: Nexos,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-nexosVer',
+            avatar: {
+               icon: 'fas fa-people-arrows',
+               color: 'deep-purple darken-4',
             }
          }
       },

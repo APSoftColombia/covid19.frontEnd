@@ -8,6 +8,7 @@
                 @seguimiento="item => verSeguimiento(item)"
                 @asignarmedico="item => asignarMedico(item)"
                 @georeferenciar="item => asignarGeorreferenciacion(item)"
+                @verpdf="item => descargarPDF(item.id)"
                 @apply-filters="$refs && $refs.filtrosTamizaje && $refs.filtrosTamizaje.aplicaFiltros()"
         >
             <template slot="top-actions-right" v-if="permisos.tamizajeCrear || permisos.tamizajeViajeroCrear">
@@ -105,7 +106,7 @@
             },
             ...mapGetters([
                 'tiposDocumentoIdentidad'
-            ])
+            ]),
         },
         watch: {
             permisos: {
@@ -515,8 +516,25 @@
                 if (this.permisos.tamizajeGeorreferenciar) item.options.push({event: 'georeferenciar', icon: 'fas fa-map-marker-alt', tooltip: item.coordenadas ? 'Actualizar Coordenadas' : 'Asignar Coordenadas', color: item.coordenadas ? 'info' : 'grey'})
                 if (item.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
                 if (!item.medico_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color: 'success'})
+                item.options.push({event: 'verpdf', icon: 'fas fa-file-pdf', tooltip: `Descargar PDF ${item.medico_id ? 'Caso de Estudio' : 'Detalle ERP'}`, color: 'blue-grey darken-4'})
                 if (this.permisos.tamizajeAsignarMedico && item.total_riesgo && !item.medico_id) item.options.push({event: 'asignarmedico', icon: 'fas fa-hand-holding-medical', tooltip: `${item.orden_medica_id ? 'Reasignar Médico' : 'Asignar como Caso de Estudio'}`, color: 'deep-purple'})
                 return item
+            },
+            descargarPDF(tamizaje_id){
+                this.axios( {
+                    url: `/pdf-tamizaje/${tamizaje_id}`, //your url
+                    method: 'GET',
+                    responseType: 'blob', // important
+                }).then(response => {
+                    this.loading = false
+                    const fileURL = URL.createObjectURL(new Blob(
+                        [response.data],
+                        {type: 'application/pdf'}));
+                    window.open(fileURL,'_blank')
+                }).catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: 'al cargar el comprobante', error: error})
+                })
             },
             getMedicos () {
                 this.axios.get(`users-role?role=Médico`)
