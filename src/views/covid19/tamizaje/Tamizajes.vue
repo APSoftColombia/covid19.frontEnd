@@ -83,7 +83,7 @@
     import SemaforoAvatar from "../../../components/Tamizaje/SemaforoAvatar";
     import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla";
     const RegistroViajero = () => import('Views/covid19/viajero/RegistroViajero')
-    const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
+    import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
     const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
     const AsignarGeorreferenciacion = () => import('Views/covid19/tamizaje/georreferenciacion/AsignarGeorreferenciacion')
@@ -485,7 +485,7 @@
                 this.$refs.helpModal.open(modal)
             },
             crearTamizaje () {
-              this.$refs.registroTamizaje.open()
+                this.$refs.registroTamizaje.open()
             },
             crearViajero () {
                 this.$refs.registroViajero.open()
@@ -497,10 +497,14 @@
                 this.$refs.asignaGeorreferenciacion.open(item)
             },
             actualizarTamizaje (item) {
-              this.$refs.registroTamizaje.open(item.id)
+                if (!item.infoviajero) {
+                    this.$refs.registroTamizaje.open(item.id)
+                } else {
+                    this.$refs.registroViajero.open(item.id)
+                }
             },
             verSeguimiento (item) {
-              this.$refs.seguimiento.open(item.id)
+                this.$refs.seguimiento.open(item.id)
             },
             tamizajeGuardado (tamizaje) {
                 console.log('tamizaje', tamizaje)
@@ -512,7 +516,7 @@
                 item.colortrrgba = item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo/100}`  : ''
                 item.colortext = item.total_riesgo > 50 ? 'white' : ''
                 item.options = []
-                // item.options.push({event: 'actualizar', icon: 'mdi-file-document-edit', tooltip: 'Actualizar tamizaje', color: 'warning'})
+                item.options.push({event: 'actualizar', icon: 'mdi-file-document-edit', tooltip: 'Actualizar tamizaje', color: 'warning'})
                 if (this.permisos.tamizajeGeorreferenciar) item.options.push({event: 'georeferenciar', icon: 'fas fa-map-marker-alt', tooltip: item.coordenadas ? 'Actualizar Coordenadas' : 'Asignar Coordenadas', color: item.coordenadas ? 'info' : 'grey'})
                 if (item.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
                 if (!item.medico_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color: 'success'})

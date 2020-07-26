@@ -1,89 +1,91 @@
 <template>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" persistent>
         <v-card>
-            <v-chip
-                    v-if="tamizaje.tipo_tamizaje === 'telefónico'"
-                    :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"
-                    color="primary darken-3"
-                    label
-            >
-                <v-icon left>mdi-timer</v-icon>
-                {{time}}
-            </v-chip>
-            <v-toolbar dark color="primary">
-                <v-icon left>fas fa-file-medical</v-icon>
-                <v-toolbar-title>{{tamizaje && tamizaje.id ? `ERP (Encuesta de Riesgo Poblacional) No. ${tamizaje.id}` : 'Nueva ERP (Encuesta de Riesgo Poblacional)'}}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn icon dark @click="close">
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-            </v-toolbar>
-            <v-container fluid>
-                <v-row no-gutters>
-                    <v-col md="6" offset-md="3">
-                        <ValidationObserver ref="formTamizaje" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-                            <form-tamizaje :tamizaje="tamizaje" :llamada="llamada" @verificado="val => verificado = val"></form-tamizaje>
-                            <template v-if="verificado === 1">
-                                <form-sintomas
-                                        :array-sintomas="tamizaje.sintomas"
-                                        :fecha-sintomas="tamizaje.fecha_sintomas"
-                                        @changeSintomas="val => tamizaje.sintomas = val"
-                                        @changeFecha="val => tamizaje.fecha_sintomas = val"
-                                ></form-sintomas>
-                                <v-divider v-if="tamizaje.sintomas && tamizaje.sintomas.length"></v-divider>
-                                <v-row class="mt-4">
-                                    <v-col class="pb-0" cols="12" v-if="esMovil">
-                                        <c-location
-                                                v-model="tamizaje.coordenadas"
-                                                label="Coordenadas"
-                                                :readonly="true"
-                                        >
-                                        </c-location>
-                                    </v-col>
-                                    <v-col class="pb-0" cols="12" v-if="esMovil && tamizaje.tamizador_id === 892">
-                                        <v-switch
-                                                class="mt-0"
-                                                label="Solicitar Toma de Muestra"
-                                                v-model="tamizaje.estado_prueba"
-                                                :false-value="null"
-                                                true-value="Requiere Muestra"
-                                                color="primary"
-                                        ></v-switch>
-                                    </v-col>
-                                    <v-col cols="12" class="pb-0">
-                                        <c-text-area
-                                                v-model="tamizaje.observaciones"
-                                                placeholder="Observaciones"
-                                        >
-                                        </c-text-area>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <v-card-actions>
-                                <v-btn
-                                        large
-                                        @click.stop="close"
-                                >
-                                    <v-icon>mdi-close</v-icon>
-                                    Cerrar
-                                </v-btn>
-                                <v-spacer></v-spacer>
-                                <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
-                                <p class="caption error--text mb-0 mx-2" v-if="verificado < 1">{{verificado === 0 ? 'No se ha verificado la identificación de la persona' : 'No aplica para ERP' }}</p>
-                                <v-btn
-                                        v-if="verificado === 1"
-                                        large
-                                        color="primary"
-                                        @click.stop="guardarTamizaje"
-                                >
-                                    <v-icon left>fas fa-save</v-icon>
-                                    Guardar ERP
-                                </v-btn>
-                            </v-card-actions>
-                        </ValidationObserver>
-                    </v-col>
-                </v-row>
-            </v-container>
+            <template>
+                <v-chip
+                        v-if="tamizaje && tamizaje.tipo_tamizaje === 'telefónico'"
+                        :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"
+                        color="primary darken-3"
+                        label
+                >
+                    <v-icon left>mdi-timer</v-icon>
+                    {{time}}
+                </v-chip>
+                <v-toolbar dark color="primary">
+                    <v-icon left>fas fa-file-medical</v-icon>
+                    <v-toolbar-title>{{tamizaje && tamizaje.id ? `ERP (Encuesta de Riesgo Poblacional) No. ${tamizaje.id}` : 'Nueva ERP (Encuesta de Riesgo Poblacional)'}}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon dark @click="close">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <v-container fluid>
+                    <v-row no-gutters>
+                        <v-col md="6" offset-md="3">
+                            <ValidationObserver ref="formTamizaje" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+                                <form-tamizaje v-if="tamizaje" :tamizaje="tamizaje" :llamada="llamada" @verificado="val => verificado = val"></form-tamizaje>
+                                <template v-if="tamizaje && verificado === 1">
+                                    <form-sintomas
+                                            :array-sintomas="tamizaje.sintomas"
+                                            :fecha-sintomas="tamizaje.fecha_sintomas"
+                                            @changeSintomas="val => tamizaje.sintomas = val"
+                                            @changeFecha="val => tamizaje.fecha_sintomas = val"
+                                    ></form-sintomas>
+                                    <v-divider v-if="tamizaje.sintomas && tamizaje.sintomas.length"></v-divider>
+                                    <v-row class="mt-4">
+                                        <v-col class="pb-0" cols="12" v-if="esMovil">
+                                            <c-location
+                                                    v-model="tamizaje.coordenadas"
+                                                    label="Coordenadas"
+                                                    :readonly="true"
+                                            >
+                                            </c-location>
+                                        </v-col>
+                                        <v-col class="pb-0" cols="12" v-if="esMovil && tamizaje.tamizador_id === 892">
+                                            <v-switch
+                                                    class="mt-0"
+                                                    label="Solicitar Toma de Muestra"
+                                                    v-model="tamizaje.estado_prueba"
+                                                    :false-value="null"
+                                                    true-value="Requiere Muestra"
+                                                    color="primary"
+                                            ></v-switch>
+                                        </v-col>
+                                        <v-col cols="12" class="pb-0">
+                                            <c-text-area
+                                                    v-model="tamizaje.observaciones"
+                                                    placeholder="Observaciones"
+                                            >
+                                            </c-text-area>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+                                <v-card-actions>
+                                    <v-btn
+                                            large
+                                            @click.stop="close"
+                                    >
+                                        <v-icon>mdi-close</v-icon>
+                                        Cerrar
+                                    </v-btn>
+                                    <v-spacer></v-spacer>
+                                    <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
+                                    <p class="caption error--text mb-0 mx-2" v-if="verificado < 1">{{verificado === 0 ? 'No se ha verificado la identificación de la persona' : 'No aplica para ERP' }}</p>
+                                    <v-btn
+                                            v-if="verificado === 1"
+                                            large
+                                            color="primary"
+                                            @click.stop="guardarTamizaje"
+                                    >
+                                        <v-icon left>fas fa-save</v-icon>
+                                        Guardar ERP
+                                    </v-btn>
+                                </v-card-actions>
+                            </ValidationObserver>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </template>
             <app-section-loader :status="loading"></app-section-loader>
         </v-card>
     </v-dialog>
@@ -91,7 +93,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    const FormTamizaje = () => import('Views/covid19/tamizaje/FormTamizaje')
+    import FormTamizaje from 'Views/covid19/tamizaje/FormTamizaje'
     const FormSintomas = () => import('Views/covid19/tamizaje/FormSIntomas')
     export default {
         name: 'RegistroTamizaje',
@@ -137,24 +139,26 @@
             },
             'tamizaje.tipo_tamizaje': {
                 handler (val) {
-                    if (val && val === 'telefónico') {
-                        this.$nextTick(() => {
+                    if (this && this.tamizaje) {
+                        if (val && val === 'telefónico') {
+                            this.$nextTick(() => {
+                                this.tamizaje.duracion = 0
+                                if (this.llamada) {
+                                    this.tamizaje.duracion = this.clone(this.llamada.duracion)
+                                }
+                                this.goDuracion()
+                            })
+                        } else {
+                            clearInterval(this.interval)
                             this.tamizaje.duracion = 0
-                            if (this.llamada) {
-                                this.tamizaje.duracion = this.clone(this.llamada.duracion)
-                            }
-                            this.goDuracion()
-                        })
-                    } else {
-                        clearInterval(this.interval)
-                        this.tamizaje.duracion = 0
+                        }
                     }
                 },
                 immediate: false
             }
         },
         created() {
-            this.tamizaje = this.clone(this.modelTamizaje)
+            // this.tamizaje = this.clone(this.modelTamizaje)
         },
         methods: {
             guardarTamizaje () {
@@ -178,24 +182,31 @@
                 })
             },
             open (idTamizaje = null, idReporte = null, llamada = null) {
-                if (idTamizaje) this.getTamizaje(idTamizaje)
-                else if (idReporte) this.tamizaje.reporte_id = idReporte
-                else if (llamada) {
-                    this.llamada = this.clone(llamada)
-                    this.tamizaje.tipo_tamizaje = 'telefónico'
-                    this.tamizaje.llamada_entrante = this.llamada.tipo === 'entrante' ? 1 : 0
-                    this.tamizaje.duracion = this.llamada.duracion
-                }
                 this.dialog = true
+                if (idTamizaje) {
+                    this.getTamizaje(idTamizaje)
+                } else {
+                    this.tamizaje = this.clone(this.modelTamizaje)
+                    if (idReporte) this.tamizaje.reporte_id = idReporte
+                    else if (llamada) {
+                        this.llamada = this.clone(llamada)
+                        this.tamizaje.tipo_tamizaje = 'telefónico'
+                        this.tamizaje.llamada_entrante = this.llamada.tipo === 'entrante' ? 1 : 0
+                        this.tamizaje.duracion = this.llamada.duracion
+                    }
+                }
             },
             close () {
                 this.$refs.formTamizaje.reset()
                 this.dialog = false
                 this.loading = false
-                this.tamizaje = this.clone(this.modelTamizaje)
                 this.llamada = null
                 this.verificado = 0
                 clearInterval(this.interval)
+                this.tamizaje = null
+                // setTimeout(() => {
+                //     // this.tamizaje = this.clone(this.modelTamizaje)
+                // }, 400)
             },
             goDuracion () {
                 this.interval = setInterval(() => {
@@ -210,6 +221,7 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
+                        response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false
                     })

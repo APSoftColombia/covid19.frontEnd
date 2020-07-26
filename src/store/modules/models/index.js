@@ -58,9 +58,11 @@ const state = {
         grupo_atencion_especial: null,
         solicitud_prueba: 0,
         clasificacion: null,
-        barrio_id: null
+        barrio_id: null,
+        persona_id: null
     },
     modelPersona: {
+        id: null,
         afiliado_id: null,
         tipo_identificacion: null,
         identificacion: null,

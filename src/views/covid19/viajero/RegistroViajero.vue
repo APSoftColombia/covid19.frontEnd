@@ -13,7 +13,7 @@
                 <v-row no-gutters>
                     <v-col md="6" offset-md="3">
                         <ValidationObserver ref="formTamizajeViajero" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-                            <v-row>
+                            <v-row v-if="tamizaje">
                                 <v-col class="pb-0" cols="12">
                                     <c-select-complete
                                             v-model="tamizaje.infoviajero.lugar"
@@ -68,8 +68,8 @@
                                     </c-select-complete>
                                 </v-col>
                             </v-row>
-                            <form-tamizaje tipo="viajero" :tamizaje="tamizaje" @verificado="val => verificado = val"></form-tamizaje>
-                            <template v-if="verificado === 1">
+                            <form-tamizaje v-if="tamizaje" tipo="viajero" :tamizaje="tamizaje" @verificado="val => verificado = val"></form-tamizaje>
+                            <template v-if="tamizaje && verificado === 1">
                                 <v-row>
                                     <v-col class="pb-0" cols="12">
                                         <c-select-complete
@@ -225,38 +225,6 @@
                                         :class="tamizaje.sintomas.length ? '' : 'pb-3'"
                                 ></form-sintomas>
                                 <v-row>
-                                    <!--                                <v-col cols="12">-->
-                                    <!--                                    <v-card outlined tile>-->
-                                    <!--                                        <v-card-text>-->
-                                    <!--                                            <c-radio-->
-                                    <!--                                                    v-model="tamizaje.infoviajero.contacto_metros"-->
-                                    <!--                                                    label="¿Ha tenido contacto (a menos de 2 metros) con personas con gripa?"-->
-                                    <!--                                                    rules="required"-->
-                                    <!--                                                    name="contacto personas con gripa"-->
-                                    <!--                                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"-->
-                                    <!--                                                    item-text="text"-->
-                                    <!--                                                    item-value="value"-->
-                                    <!--                                            >-->
-                                    <!--                                            </c-radio>-->
-                                    <!--                                        </v-card-text>-->
-                                    <!--                                    </v-card>-->
-                                    <!--                                </v-col>-->
-                                    <!--                                <v-col cols="12">-->
-                                    <!--                                    <v-card outlined tile>-->
-                                    <!--                                        <v-card-text>-->
-                                    <!--                                            <c-radio-->
-                                    <!--                                                    v-model="tamizaje.infoviajero.contacto_exterior"-->
-                                    <!--                                                    label="¿Ha tenido contacto con viajeros del exterior?"-->
-                                    <!--                                                    rules="required"-->
-                                    <!--                                                    name="contacto viajeros del exterior"-->
-                                    <!--                                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"-->
-                                    <!--                                                    item-text="text"-->
-                                    <!--                                                    item-value="value"-->
-                                    <!--                                            >-->
-                                    <!--                                            </c-radio>-->
-                                    <!--                                        </v-card-text>-->
-                                    <!--                                    </v-card>-->
-                                    <!--                                </v-col>-->
                                     <v-col cols="12" v-if="vieneExterior">
                                         <v-card outlined tile>
                                             <v-card-text>
@@ -355,99 +323,119 @@
         watch: {
             'vieneExterior': {
                 handler (val) {
-                    if (val) {
-                        this.tamizaje.infoviajero.departamento_procedencia = null
-                    } else {
-                        this.tamizaje.infoviajero.aislamiento = null
+                    if (this && this.tamizaje) {
+                        if (val) {
+                            this.tamizaje.infoviajero.departamento_procedencia = null
+                        } else {
+                            this.tamizaje.infoviajero.aislamiento = null
+                        }
                     }
                 },
                 immediate: false
             },
             puntoAereo: {
                 handler (val) {
-                    if (val) {
-                        this.$nextTick(() => {
-                            this.tamizaje.infoviajero.municipio_control = this.casanare ? 400 : null
-                            this.tamizaje.infoviajero.transporte_llegada = 'Aereo'
-                            this.tamizaje.infoviajero.placa = null
-                        })
+                    if (this && this.tamizaje) {
+                        if (val) {
+                            this.$nextTick(() => {
+                                this.tamizaje.infoviajero.municipio_control = this.casanare ? 400 : null
+                                this.tamizaje.infoviajero.transporte_llegada = 'Aereo'
+                                this.tamizaje.infoviajero.placa = null
+                            })
+                        }
                     }
                 },
                 immediate: false
             },
             puntoFluvial: {
                 handler (val) {
-                    if (val) {
-                        this.$nextTick(() => {
-                            this.tamizaje.infoviajero.municipio_control = this.casanare ? 389 : null
-                            this.tamizaje.infoviajero.transporte_llegada = 'Fluvial'
-                            this.tamizaje.infoviajero.placa = null
-                        })
+                    if (this && this.tamizaje) {
+                        if (val) {
+                            this.$nextTick(() => {
+                                this.tamizaje.infoviajero.municipio_control = this.casanare ? 389 : null
+                                this.tamizaje.infoviajero.transporte_llegada = 'Fluvial'
+                                this.tamizaje.infoviajero.placa = null
+                            })
+                        }
                     }
                 },
                 immediate: false
             },
             puntoTerminal: {
                 handler (val) {
-                    if (val) {
-                        this.$nextTick(() => {
-                            this.tamizaje.infoviajero.transporte_llegada = 'Terrestre Público'
-                        })
+                    if (this && this.tamizaje) {
+                        if (val) {
+                            this.$nextTick(() => {
+                                this.tamizaje.infoviajero.transporte_llegada = 'Terrestre Público'
+                            })
+                        }
                     }
                 },
                 immediate: false
             },
             puntoControl: {
                 handler (val) {
-                    if (val) {
-                        this.$nextTick(() => {
-                            this.tamizaje.infoviajero.transporte_llegada = null
-                        })
-                    } else {
-                        this.$nextTick(() => {
-                            this.tamizaje.infoviajero.punto_conteo_id = null
-                        })
+                    if (this && this.tamizaje) {
+                        if (val) {
+                            this.$nextTick(() => {
+                                this.tamizaje.infoviajero.transporte_llegada = null
+                            })
+                        } else {
+                            this.$nextTick(() => {
+                                this.tamizaje.infoviajero.punto_conteo_id = null
+                            })
+                        }
                     }
                 },
                 immediate: false
             },
             'tamizaje.infoviajero.lugar': {
                 handler () {
-                    this.$nextTick(() => {
-                        this.tamizaje.infoviajero.municipio_destino = null
-                        this.tamizaje.infoviajero.transporte_destino = null
-                    })
+                    if (this && this.tamizaje) {
+                        this.$nextTick(() => {
+                            this.tamizaje.infoviajero.municipio_destino = null
+                            this.tamizaje.infoviajero.transporte_destino = null
+                        })
+                    }
                 },
                 immediate: false
             },
             'tamizaje.infoviajero.municipio_destino': {
                 handler (val) {
-                    if (val && val === this.tamizaje.infoviajero.municipio_control) {
-                        this.tamizaje.infoviajero.transporte_destino = this.tamizaje.infoviajero.transporte_llegada
+                    if (this && this.tamizaje) {
+                        if (val && val === this.tamizaje.infoviajero.municipio_control) {
+                            this.tamizaje.infoviajero.transporte_destino = this.tamizaje.infoviajero.transporte_llegada
+                        }
                     }
                 },
                 immediate: false
             },
             'tamizaje.infoviajero.departamento_procedencia': {
                 handler (val) {
-                    if (!val) {
-                        this.tamizaje.infoviajero.municipio_procedencia = null
+                    if (this && this.tamizaje) {
+                        if (!val) {
+                            this.tamizaje.infoviajero.municipio_procedencia = null
+                        }
                     }
                 },
                 immediate: false
             },
             'tamizaje.infoviajero.transporte_llegada': {
                 handler (val) {
-                    if (val !== 'Aereo') {
-                        this.tamizaje.infoviajero.numero_vuelo = null
+                    if (this && this.tamizaje) {
+                        if (val !== 'Aereo') {
+                            this.tamizaje.infoviajero.numero_vuelo = null
+                        }
                     }
                 },
                 immediate: false
             },
             'tamizaje.infoviajero.departamento_destino': {
                 handler (val) {
-                    if (!val) {
-                        this.tamizaje.infoviajero.municipio_destino = null
+                    if (this && this.tamizaje) {
+                        if (!val) {
+                            this.tamizaje.infoviajero.municipio_destino = null
+                        }
                     }
                 },
                 immediate: false
@@ -455,14 +443,14 @@
 
         },
         created() {
-            this.assign()
+            // this.assign()
             this.getPuntosCotrol()
         },
         methods: {
             assign () {
-                this.tamizaje = this.clone(this.modelTamizaje)
-                this.tamizaje.infoviajero = this.clone(this.modelViajero)
-                if (this.datosEmpresa) this.tamizaje.infoviajero.departamento_destino = parseInt(this.datosEmpresa.departamento_id)
+                // this.tamizaje = this.clone(this.modelTamizaje)
+                // this.tamizaje.infoviajero = this.clone(this.modelViajero)
+                // if (this.datosEmpresa) this.tamizaje.infoviajero.departamento_destino = parseInt(this.datosEmpresa.departamento_id)
             },
             guardarTamizaje () {
                 this.$refs.formTamizajeViajero.validate().then(result => {
@@ -487,23 +475,31 @@
                 })
             },
             open (idViajero = null) {
-                if (idViajero) this.getViajero(idViajero)
                 this.dialog = true
+                if (idViajero) {
+                    this.getViajero(idViajero)
+                } else {
+                    this.tamizaje = this.clone(this.modelTamizaje)
+                    this.tamizaje.infoviajero = this.clone(this.modelViajero)
+                    if (this.datosEmpresa) this.tamizaje.infoviajero.departamento_destino = parseInt(this.datosEmpresa.departamento_id)
+                }
             },
             close () {
                 this.$refs.formTamizajeViajero.reset()
                 this.dialog = false
                 this.loading = false
-                this.assign()
+                // this.assign()
+                this.tamizaje = null
                 this.verificado = 0
             },
             getViajero (idViajero) {
                 this.loading = true
-                this.axios.get(`tamizaje-viajeros/${idViajero}`)
+                this.axios.get(`tamizajes/${idViajero}`)
                     .then(response => {
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
+                        response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false
                     })

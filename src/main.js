@@ -132,7 +132,7 @@ const i18n = new VueI18n({
 	messages, // set locale messages
 })
 
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 Vue.mixin({
 	data: () => ({
 		esMovil: false
@@ -164,7 +164,11 @@ Vue.mixin({
 		},
 		...mapGetters([
 			'roles'
-		])
+		]),
+		...mapState({
+			token_type: state => state.auth.token_type,
+			access_token: state => state.auth.access_token
+		})
 	},
 	watch: {
 		'$vuetify.breakpoint.name': {

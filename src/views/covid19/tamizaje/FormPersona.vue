@@ -275,10 +275,15 @@
         },
         watch: {
             'value': {
-                handler () {
+                handler (val) {
+                    console.log('val', val)
+                    if (val && val.id) {
+                        this.identificacionVerificada = 1
+                        this.$emit('verificado', 1)
+                    }
                     this.assignPerson()
                 },
-                immediate: false
+                immediate: true
             },
             'persona.departamento_id': {
                 handler () {
@@ -349,16 +354,20 @@
             }
         },
         created () {
-            this.persona = this.clone(this.modelPersona)
             this.assignPerson()
         },
         methods: {
             assignPerson () {
-                this.persona = this.value ? this.value : this.clone(this.modelPersona)
+                if (this.value) {
+                    this.persona = this.value
+                } else {
+                    this.persona = this.clone(this.modelPersona)
+                }
+                if (this.persona && this.persona.municipio_id) this.getBarrios(this.persona.municipio_id)
             },
             getBarrios (municipio_id) {
                 this.loadingBarrios = true
-                this.axios.get(`barrios??municipio_id=${municipio_id}`)
+                this.axios.get(`barrios?municipio_id=${municipio_id}`)
                     .then(response => {
                         console.log('response get evolucion', response)
                         this.barrios = response.data
