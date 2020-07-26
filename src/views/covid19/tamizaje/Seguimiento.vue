@@ -24,7 +24,7 @@
                 </v-btn>
             </v-toolbar>
             <v-container fluid v-if="tamizaje">
-                <div style="padding-bottom: 15px; text-align: right">
+                <div style="padding-bottom: 15px; text-align: right" v-if="permisos.descargarERPPDF">
                     <v-btn class="red darken-4" @click.stop="descargarPDF">
                         <v-icon color="white" left>fas fa-file-pdf</v-icon>
                         <span class="font-weight-bold white--text">Descargar PDF</span>
