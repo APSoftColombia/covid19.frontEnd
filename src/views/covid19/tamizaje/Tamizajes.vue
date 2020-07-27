@@ -527,7 +527,8 @@
             },
             descargarPDF(tamizaje_id){
                 const apiAxios = axios.create()
-                apiAxios.defaults.baseURL = `http://aps.backend.test/api`;
+                apiAxios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}/api`
+                // apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
                 apiAxios( {
                     url: `/pdf-tamizaje/${tamizaje_id}`, //your url
