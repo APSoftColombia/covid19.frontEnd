@@ -531,7 +531,7 @@
                 // apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
                 apiAxios( {
-                    url: `/pdf-tamizaje/${tamizaje_id}`, //your url
+                    url: `pdf-tamizaje/${tamizaje_id}`, //your url
                     method: 'GET',
                     responseType: 'blob', // important
                 }).then(response => {
