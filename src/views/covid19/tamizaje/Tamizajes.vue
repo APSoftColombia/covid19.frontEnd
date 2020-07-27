@@ -540,7 +540,7 @@
                     const fileURL = window.URL.createObjectURL(new Blob(
                         [response.data],
                         {type: 'application/pdf'}));
-                    window.open(fileURL)
+                    window.open(fileURL, '_blank')
                 }).catch(error => {
                     this.loading = false
                     this.$store.commit('snackbar', {color: 'error', message: 'al cargar el comprobante', error: error})
