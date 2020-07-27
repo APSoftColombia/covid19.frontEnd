@@ -527,20 +527,17 @@
             },
             descargarPDF(tamizaje_id){
                 const apiAxios = axios.create()
-                apiAxios.defaults.baseURL = `api`
-                // apiAxios.defaults.baseURL = `http://aps.backend.test/api`
+                apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
                 this.axios( {
                     url: `pdf-tamizaje/${tamizaje_id}`, //your url
                     method: 'GET',
-                    responseType: 'arraybuffer', // important
-                }).then(response => {
-                    console.log('response xxx', response)
+                    responseType: 'blob', // important
+                }).then(async response => {
+                    const fileURL = window.URL.createObjectURL(
+                        new Blob([response.data], {type: 'application/pdf'}))
+                    await window.open(fileURL, '_blank')
                     this.loading = false
-                    const fileURL = window.URL.createObjectURL(new Blob(
-                        [response.data],
-                        {type: 'application/pdf'}));
-                    window.open(fileURL, '_blank')
                 }).catch(error => {
                     this.loading = false
                     this.$store.commit('snackbar', {color: 'error', message: 'al cargar el comprobante', error: error})
