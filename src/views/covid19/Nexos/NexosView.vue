@@ -111,8 +111,8 @@
             verSeguimiento (item) {
                 this.$refs.seguimiento.open(item.erp_generado_id)
             },
-            crearTamizaje () {
-                this.$refs.registroTamizaje.open()
+            crearTamizaje (item) {
+                this.$refs.registroTamizaje.open(null, item.id, null)
             },
             tamizajeGuardado () {
                 this.$store.commit('reloadTable', 'tablaNexos')
