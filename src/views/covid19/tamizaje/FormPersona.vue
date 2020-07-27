@@ -174,8 +174,6 @@
                     v-model="persona.barrio_id"
                     :loading="loadingBarrios"
                     label="Barrio"
-                    name="barrio"
-                    rules="required"
                     :items="barrios"
                     item-text="nombre"
                     item-value="id"
