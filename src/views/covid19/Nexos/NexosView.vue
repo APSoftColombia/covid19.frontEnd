@@ -12,6 +12,12 @@
                             @crearERP="item => crearTamizaje(item)"
                             @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
                     >
+                        <filtros
+                            slot="filters"
+                            ref="filtrosNexos"
+                            :ruta-base="rutaBase"
+                            @filtrar="val => goDatos(val)"
+                        ></filtros>
                     </data-table>
                 </v-card>
             </v-col>
@@ -29,19 +35,20 @@
 </template>
 
 <script>
-    import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla";
-
+    import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla"
+    import Filtros from './Filtros/Filtros'
     const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
     export default {
         name: "NexosView",
         data: () => ({
             loading: false,
+            rutaBase:"nexos",
             dataTable: {
-                advanceFilters: false,
-                buttonZone: false,
+                advanceFilters: true,
+                buttonZone: true,
                 nameItemState: 'tablaNexos',
-                route: 'nexos',
+                route: "nexos",
                 makeHeaders: [
                     {
                         text: 'Nombre',
@@ -93,9 +100,12 @@
             }
         }),
         methods: {
+            goDatos(ruta) {
+                this.dataTable.route = ruta
+            },
             resetOptions(item) {
                 item.options = []
-                if (item.erp_generado_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP'})
+                if (item.erp_generado_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color:'success'})
                 if (!item.erp_generado_id) item.options.push({event: 'crearERP', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
             },
             verSeguimiento (item) {
@@ -111,6 +121,7 @@
         components : {
             Seguimiento,
             RegistroTamizaje,
+            Filtros
         },
         computed: {
             permisos () {

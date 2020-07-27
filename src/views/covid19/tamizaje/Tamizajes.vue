@@ -82,6 +82,7 @@
     import BotonClasificacion from "../../../components/Tamizaje/BotonClasificacion";
     import SemaforoAvatar from "../../../components/Tamizaje/SemaforoAvatar";
     import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla";
+    import axios from 'axios'
     const RegistroViajero = () => import('Views/covid19/viajero/RegistroViajero')
     import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
@@ -525,7 +526,10 @@
                 return item
             },
             descargarPDF(tamizaje_id){
-                this.axios( {
+                const apiAxios = axios.create()
+                apiAxios.defaults.baseURL = `http://aps.backend.test/api`;
+                apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+                apiAxios( {
                     url: `/pdf-tamizaje/${tamizaje_id}`, //your url
                     method: 'GET',
                     responseType: 'blob', // important

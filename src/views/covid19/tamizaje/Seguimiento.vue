@@ -138,6 +138,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import axios from "axios"
     //import {store} from "../../../store/store";
     const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
     const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
@@ -180,7 +181,10 @@
         },
         methods: {
             descargarPDF(){
-                this.axios( {
+                const apiAxios = axios.create()
+                apiAxios.defaults.baseURL = `http://aps.backend.test/api`;
+                apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+                apiAxios( {
                     url: `/pdf-tamizaje/${this.tamizaje.id}`, //your url
                     method: 'GET',
                     responseType: 'blob', // important
