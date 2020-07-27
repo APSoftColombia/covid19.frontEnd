@@ -533,7 +533,7 @@
                 this.axios( {
                     url: `pdf-tamizaje/${tamizaje_id}`, //your url
                     method: 'GET',
-                    responseType: 'blob', // important
+                    responseType: 'arraybuffer', // important
                 }).then(response => {
                     console.log('response xxx', response)
                     this.loading = false
