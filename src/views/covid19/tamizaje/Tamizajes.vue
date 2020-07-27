@@ -536,7 +536,7 @@
                     responseType: 'blob', // important
                 }).then(response => {
                     this.loading = false
-                    const fileURL = URL.createObjectURL(new Blob(
+                    const fileURL = window.URL.createObjectURL(new Blob(
                         [response.data],
                         {type: 'application/pdf'}));
                     window.open(fileURL,'_blank')
