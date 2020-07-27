@@ -5,18 +5,18 @@
             <v-col cols="12">
                 <v-card>
                     <data-table
-                            ref="tablaNexos"
-                            v-model="dataTable"
-                            @resetOption="item => resetOptions(item)"
-                            @seguimiento="item => verSeguimiento(item)"
-                            @crearERP="item => crearTamizaje(item)"
-                            @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
+                        ref="tablaNexos"
+                        v-model="dataTable"
+                        @resetOption="item => resetOptions(item)"
+                        @seguimiento="item => verSeguimiento(item)"
+                        @crearERP="item => crearTamizaje(item)"
+                        @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
                     >
                         <filtros
                             slot="filters"
                             ref="filtrosNexos"
                             :ruta-base="rutaBase"
-                            @filtrar="val => goDatos(val)"
+                            @filtra="val => goDatos(val)"
                         ></filtros>
                     </data-table>
                 </v-card>
@@ -48,7 +48,7 @@
                 advanceFilters: true,
                 buttonZone: true,
                 nameItemState: 'tablaNexos',
-                route: "nexos",
+                route: null,
                 makeHeaders: [
                     {
                         text: 'Nombre',
@@ -127,6 +127,9 @@
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')
             },
+        },
+        created() {
+            this.dataTable.route = this.rutaBase
         }
     }
 </script>

@@ -6,7 +6,7 @@
                     label="Estado de la Prueba"
                     :items="filtros.data.estadoPrueba"
                     item-text="name"
-                    value="value"
+                    item-value="value"
             >
             </c-select-complete>
         </v-col>
@@ -16,7 +16,7 @@
                     label="ERP"
                     :items="filtros.data.erp"
                     item-text="name"
-                    value="value"
+                    item-value="value"
             >
             </c-select-complete>
         </v-col>
@@ -40,8 +40,9 @@
                 },
                 data: {
                     estadoPrueba: [
-                        'Con Resultado',
-                        'Requiere Muestra'
+                        {name: 'Con Resultado', value: 1},
+                        {name: 'Requiere Muestra', value: 2},
+                        {name: 'Sin Determinar', value: 3}
                     ],
                     erp: [
                         {name: 'Con ERP', value: 1},
@@ -55,12 +56,12 @@
                 let rutaTemp = this.rutaBase
 
                 if(this.filtros.models.estadoPruebaD !== null) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado_prueba]=' + this.filters.models.caso_estudio
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filtros.models.estadoPruebaD
                 }
                 if(this.filtros.models.erpD !== null) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado_prueba]=' + this.filters.models.caso_estudio
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp]=' + this.filtros.models.erpD
                 }
-                this.$emit('filtrar', rutaTemp)
+                this.$emit('filtra', rutaTemp)
             }
         }
     }
