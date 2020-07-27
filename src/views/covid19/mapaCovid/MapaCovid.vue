@@ -74,7 +74,7 @@
 			}
 		},
 		created () {
-			this.goDatos(this.rutaBase)
+			this.filtrar()
 			this.getMedicos()
 		},
 		mounted () {
