@@ -8,7 +8,7 @@
                 @seguimiento="item => verSeguimiento(item)"
                 @asignarmedico="item => asignarMedico(item)"
                 @georeferenciar="item => asignarGeorreferenciacion(item)"
-                @verpdf="item => descargarPDF(item.id)"
+                @verpdf="item => descargarPDF(item)"
                 @apply-filters="$refs && $refs.filtrosTamizaje && $refs.filtrosTamizaje.aplicaFiltros()"
         >
             <template slot="top-actions-right" v-if="permisos.tamizajeCrear || permisos.tamizajeViajeroCrear">
@@ -525,22 +525,23 @@
                 if (this.permisos.tamizajeAsignarMedico && item.total_riesgo && !item.medico_id) item.options.push({event: 'asignarmedico', icon: 'fas fa-hand-holding-medical', tooltip: `${item.orden_medica_id ? 'Reasignar Médico' : 'Asignar como Caso de Estudio'}`, color: 'deep-purple'})
                 return item
             },
-            descargarPDF(tamizaje_id){
+            descargarPDF(tamizaje){
                 const apiAxios = axios.create()
                 apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+                tamizaje.loading = true
                 this.axios( {
-                    url: `pdf-tamizaje/${tamizaje_id}`, //your url
+                    url: `pdf-tamizaje/${tamizaje.id}`, //your url
                     method: 'GET',
                     responseType: 'blob', // important
                 }).then(async response => {
                     const fileURL = window.URL.createObjectURL(
                         new Blob([response.data], {type: 'application/pdf'}))
                     await window.open(fileURL, '_blank')
-                    this.loading = false
+                    tamizaje.loading = false
                 }).catch(error => {
-                    this.loading = false
-                    this.$store.commit('snackbar', {color: 'error', message: 'al cargar el comprobante', error: error})
+                    tamizaje.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: 'al descargar el PDF', error: error})
                 })
             },
             getMedicos () {
