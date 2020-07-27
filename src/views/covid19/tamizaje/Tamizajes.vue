@@ -535,6 +535,7 @@
                     method: 'GET',
                     responseType: 'blob', // important
                 }).then(response => {
+                    console.log('response xxx', response)
                     this.loading = false
                     const fileURL = window.URL.createObjectURL(new Blob(
                         [response.data],
