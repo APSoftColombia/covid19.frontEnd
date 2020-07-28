@@ -25,7 +25,7 @@
             </v-toolbar>
             <v-container fluid v-if="tamizaje">
                 <div style="padding-bottom: 15px; text-align: right" v-if="permisos.descargarERPPDF">
-                    <v-btn class="red darken-4" @click.stop="descargarPDF">
+                    <v-btn :loading="loadingPDF" class="red darken-4" @click.stop="descargarPDF">
                         <v-icon color="white" left>fas fa-file-pdf</v-icon>
                         <span class="font-weight-bold white--text">Descargar PDF</span>
                     </v-btn>
@@ -138,7 +138,6 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import axios from "axios"
     //import {store} from "../../../store/store";
     const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
     const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
@@ -159,6 +158,7 @@
         data: () => ({
             dialog: false,
             loading: false,
+            loadingPDF: false,
             tamizaje: null,
             tab: null
         }),
@@ -181,21 +181,19 @@
         },
         methods: {
             descargarPDF(){
-                const apiAxios = axios.create()
-                apiAxios.defaults.baseURL = `http://aps.backend.test/api`;
-                apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
-                apiAxios( {
+                this.loadingPDF = true
+                this.axios( {
                     url: `/pdf-tamizaje/${this.tamizaje.id}`, //your url
                     method: 'GET',
                     responseType: 'blob', // important
-                }).then(response => {
-                    this.loading = false
-                    const fileURL = URL.createObjectURL(new Blob(
+                }).then( async response => {
+                    const fileURL = window.URL.createObjectURL(new Blob(
                         [response.data],
                         {type: 'application/pdf'}));
-                    window.open(fileURL,'_blank')
+                    await window.open(fileURL,'_blank')
+                    this.loadingPDF = false
                 }).catch(error => {
-                    this.loading = false
+                    this.loadingPDF = false
                     this.$store.commit('snackbar', {color: 'error', message: 'al cargar el pdf', error: error})
                 })
             },
