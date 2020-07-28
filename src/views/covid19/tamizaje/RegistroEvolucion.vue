@@ -595,9 +595,9 @@
                         listado = this.estadosAfectacion
                         if (this.evolucion) {
                             if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
-                            else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Recuperado')
+                            else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido')
                             else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
-                            else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Recuperado' && x !== 'Ninguno')
+                            else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
                         }
                     }
                 }
