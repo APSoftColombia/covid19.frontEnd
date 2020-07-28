@@ -18,6 +18,7 @@
                 :hide-details="hideDetails"
                 :multiple="multiple"
                 :loading="loading"
+                @change="$emit('change')"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
@@ -40,6 +41,7 @@
                 :hide-details="hideDetails"
                 :multiple="multiple"
                 :loading="loading"
+                @change="$emit('change')"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
