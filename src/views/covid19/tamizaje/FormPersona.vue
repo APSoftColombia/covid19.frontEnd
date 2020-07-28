@@ -427,26 +427,23 @@
                 }
                 this.$emit('verificado', this.identificacionVerificada)
                 if (this.identificacionVerificada === 1 && response.afiliado) {
-                    let personaTemp = {
-                        afiliado_id: response.afiliado.id,
-                        tipo_identificacion: response.afiliado.tipo_documento_identidad_id,
-                        identificacion: response.afiliado.numero_documento_identidad,
-                        nombre1: response.afiliado.nombre1,
-                        nombre2: response.afiliado.nombre2,
-                        apellido1: response.afiliado.apellido1,
-                        apellido2: response.afiliado.apellido2,
-                        fecha_nacimiento: response.afiliado.fecha_nacimiento,
-                        sexo: response.afiliado.sexo,
-                        celular: response.afiliado.numero_celular,
-                        email: response.afiliado.email,
-                        direccion: response.afiliado.direccion,
-                        departamento_id: response.afiliado.departamento_id,
-                        municipio_id: response.afiliado.centro_poblado_id,
-                        barrio_id: response.afiliado.barrio_id || null,
-                        eps_id: response.afiliado.eps_id,
-                        tipo_afiliacion: response.afiliado.regimen
-                    }
-                    this.persona = personaTemp
+                    this.persona.afiliado_id = response.afiliado.id
+                    this.persona.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
+                    this.persona.identificacion = response.afiliado.numero_documento_identidad
+                    this.persona.nombre1 = response.afiliado.nombre1
+                    this.persona.nombre2 = response.afiliado.nombre2
+                    this.persona.apellido1 = response.afiliado.apellido1
+                    this.persona.apellido2 = response.afiliado.apellido2
+                    this.persona.fecha_nacimiento = response.afiliado.fecha_nacimiento
+                    this.persona.sexo = response.afiliado.sexo
+                    this.persona.celular = response.afiliado.numero_celular
+                    this.persona.email = response.afiliado.email
+                    this.persona.direccion = response.afiliado.direccion
+                    this.persona.departamento_id = response.afiliado.departamento_id
+                    this.persona.municipio_id = response.afiliado.centro_poblado_id
+                    this.persona.barrio_id = response.afiliado.barrio_id || null
+                    this.persona.eps_id = response.afiliado.eps_id
+                    this.persona.tipo_afiliacion = response.afiliado.regimen
                 }
             }
         }
