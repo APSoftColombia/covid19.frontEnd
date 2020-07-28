@@ -175,13 +175,7 @@
             agregarEvolucion () {
                 this.$refs.registroEvolucion.open(
                     null,
-                    {
-                        id: this.tamizaje.id,
-                        orden_medica_id: this.tamizaje.orden_medica_id,
-                        evoluciones: this.tamizaje.evoluciones,
-                        aislamientos: this.tamizaje.aislamientos,
-                        diagnosticado_covid: this.tamizaje.diagnosticado_covid
-                    }
+                    this.tamizaje
                 )
             },
             evolucionGuardada (item) {

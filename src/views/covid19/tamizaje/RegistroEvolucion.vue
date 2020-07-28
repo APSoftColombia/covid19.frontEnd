@@ -21,6 +21,7 @@
             <v-container fluid>
                 <v-row no-gutters>
                     <v-col md="6" offset-md="3">
+                        <datos-personales :abierto="false" :tamizaje="tamizaje"></datos-personales>
                         <ValidationObserver ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                             <v-row>
                                 <v-col cols="12" class="pb-0" v-if="[2, 3].find(x => x === tamizaje.orden_medica_id)">
@@ -553,12 +554,14 @@
     const SintomasFecha = () => import('Views/covid19/tamizaje/evolucion/components/SintomasFecha')
     const FormComorbilidades = () => import('Views/covid19/tamizaje/FormComorbilidades')
     const HelpModal = () => import('../../../components/HelpModal/HelpModal')
+    const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
     import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
     import FormSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/FormSeguimientoAislamiento'
     export default {
         name: 'RegistroEvolucion',
         components: {
             // FormSintomas,
+            DatosPersonales,
             FormComorbilidades,
             HelpModal,
             FormAislamiento,
