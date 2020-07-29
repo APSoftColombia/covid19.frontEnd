@@ -35,13 +35,14 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
     import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla"
     import Filtros from './Filtros/Filtros'
     const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
     export default {
         name: "NexosView",
-        data: () => ({
+        data: (vm) => ({
             loading: false,
             rutaBase:"nexos",
             dataTable: {
@@ -72,22 +73,82 @@
                         }
                     },
                     {
-                        text: 'Nexo',
+                        text: 'Origen',
                         align: 'left',
                         sortable: false,
-                        value: 'nombre_origen'
+                        component: {
+                            functional: true,
+                            render: function (createElement, context) {
+                                return context.props.value
+                                    ? createElement(
+                                        PersonaItemTabla,
+                                        {
+                                            props: {
+                                                value: {
+                                                    sexo: context.props.value.sexo_origen,
+                                                    nombre: context.props.value.nombre_origen,
+                                                    identificacion: context.props.value.identificacion_origen,
+                                                    celular: context.props.value.celular_origen,
+                                                    tipoIdentificacion: vm.tiposDocumentoIdentidad.find(x => x.id === context.props.value.tipo_identificacion_origen).tipo,
+                                                    showButton: true,
+                                                    erp_origen: context.props.value.tamizaje_id_origen
+                                                },
+                                            },
+                                        }
+                                    )
+                                    : createElement('span', '')
+                            }
+                        }
                     },
                     {
                         text: 'Muestra',
                         align: 'left',
                         sortable: false,
-                        value: 'estado_prueba'
+                        component: {
+                            render: function (createElement) {
+                                return createElement(
+                                    `div`,{
+                                        domProps: {
+                                            innerHTML: `
+                                                <span>
+                                                    ${this.value.estado_prueba ? this.value.estado_prueba : 'N/A'}
+                                                </span>
+                                            `
+                                        }
+                                    }
+                                )
+                            },
+                            props: ['value']
+                        }
                     },
                     {
                         text: 'Dirección',
                         align: 'left',
                         sortable: false,
-                        value: 'direccion'
+                        component: {
+                            render: function (createElement) {
+                                return createElement(
+                                    `div`,
+                                    {
+                                        domProps: {
+                                            innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.direccion}</v-list-item-title>
+														<v-list-item-subtitle class="body-1">
+														${vm.municipiosTotal && vm.municipiosTotal.length && this.value.municipio_id && vm.municipiosTotal.find(x => x.id === this.value.municipio_id)
+                                                        ?  `${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).nombre}, ${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).departamento.nombre}`
+                                                        : ''}
+                                                        </v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                                        }
+                                    }
+                                )
+                            },
+                            props: ['value']
+                        }
                     },
                     {
                         text: 'Opciones',
@@ -112,7 +173,7 @@
                 this.$refs.seguimiento.open(item.erp_generado_id)
             },
             crearTamizaje (item) {
-                this.$refs.registroTamizaje.open(null, item.id, null)
+                this.$refs.registroTamizaje.open(null, item.id)
             },
             tamizajeGuardado () {
                 this.$store.commit('reloadTable', 'tablaNexos')
@@ -127,6 +188,21 @@
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')
             },
+            ...mapGetters([
+                'tiposDocumentoIdentidad',
+                'municipiosTotal'
+            ]),
+            isEmit(){
+                return this.$on('seguimiento', this.verSeguimiento)
+            }
+        },
+        watch: {
+            isEmit: {
+                handler(val){
+                    val
+                },
+                immediate: true
+            }
         },
         created() {
             this.dataTable.route = this.rutaBase

@@ -26,6 +26,7 @@ const LlamadaView = () => import('Views/covid19/llamada/LlamadaView')
 const AutopsiaView = () => import('Views/covid19/autopsia/AutopsiaView')
 const VehiculoView = () => import('Views/covid19/vehiculo/VehiculoView')
 const Nexos = () => import('Views/covid19/Nexos/NexosView')
+const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
 
 const HogarView = () => import('Views/covid19/hogar/HogarView')
 export default {
@@ -399,6 +400,20 @@ export default {
             avatar: {
                icon: 'fas fa-people-arrows',
                color: 'deep-purple darken-4',
+            }
+         }
+      },
+      {
+         path: 'parametros',
+         name: 'Parametros',
+         component: Parametros,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-parametrosVer',
+            avatar: {
+               icon: 'fas fa-network-wired',
+               color: 'indigo',
             }
          }
       },

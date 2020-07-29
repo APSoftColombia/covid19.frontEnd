@@ -170,4 +170,11 @@ export const itemsMenu = [
         color: 'deep-purple darken-4',
         routeName: 'Nexos'
     },
+    {
+        id: 25,
+        title: 'Parametros',
+        icon: 'fas fa-network-wired',
+        color: 'indigo',
+        routeName: 'Parametros'
+    },
 ]
