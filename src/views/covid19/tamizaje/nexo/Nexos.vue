@@ -21,9 +21,10 @@
                         <thead>
                         <tr>
                             <th class="text-left">Nexo</th>
-                            <th class="text-left">Persona</th>
-                            <th class="text-left">Ubicación</th>
-                            <th class="text-left">Observaciones</th>
+                          <th class="text-left">Persona</th>
+                          <th class="text-left">Ubicación</th>
+                          <th class="text-left">Observaciones</th>
+                          <th class="text-center"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,6 +63,26 @@
                                 </v-list-item>
                             </td>
                             <td>{{item.observaciones}}</td>
+                            <td class="text-center">
+                              <v-tooltip top v-if="permisos.tamizajeCrear && !item.tamizaje">
+                                <template v-slot:activator="{on}">
+                                  <v-btn icon color="primary" v-on="on" @click="crearTamizaje(item)">
+                                    <v-icon>fas fa-file-medical</v-icon>
+                                  </v-btn>
+                                </template>
+                                <span>Crear ERP</span>
+                              </v-tooltip>
+                              <template>
+                                <v-tooltip top v-if="item.tamizaje">
+                                  <template v-slot:activator="{on}">
+                                    <v-btn icon :color="item.tamizaje.medico_id ? 'primary' : 'success'" v-on="on" @click="verSeguimiento(item)">
+                                      <v-icon>fas fa-file-medical-alt</v-icon>
+                                    </v-btn>
+                                  </template>
+                                  <span>{{ item.tamizaje.medico_id ? 'Caso de Estudio' : 'Detalle ERP' }}</span>
+                                </v-tooltip>
+                              </template>
+                            </td>
                         </tr>
                         </tbody>
                     </template>
@@ -72,16 +93,27 @@
                 ref="registroNexo"
                 @guardado="val => nexoGuardado(val)"
         ></registro-reporte-comunitario>
+        <registro-tamizaje
+            v-if="permisos.tamizajeCrear"
+            ref="registroTamizaje"
+            @guardado="val => nexoGuardado(val)"
+        ></registro-tamizaje>
+      <seguimiento
+          ref="seguimiento"
+      ></seguimiento>
     </v-card>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
-
+    const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+    const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const RegistroReporteComunitario = () => import('Views/covid19/reporteComunitario/RegistroReporteComunitario')
     export default {
         name: 'Nexos',
         components: {
+            Seguimiento,
+            RegistroTamizaje,
             RegistroReporteComunitario
         },
         props: {
@@ -108,7 +140,13 @@
             },
             nexoGuardado (item) {
                 this.$emit('change', item)
-            }
+            },
+          crearTamizaje (item) {
+            this.$refs.registroTamizaje.open(null, item.id)
+          },
+          verSeguimiento (item) {
+            if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
+          }
         }
     }
 </script>

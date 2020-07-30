@@ -517,7 +517,7 @@
                 item.colortrrgba = item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo/100}`  : ''
                 item.colortext = item.total_riesgo > 50 ? 'white' : ''
                 item.options = []
-                item.options.push({event: 'actualizar', icon: 'mdi-file-document-edit', tooltip: 'Actualizar tamizaje', color: 'warning'})
+                if (this.permisos.tamizajeCrear) item.options.push({event: 'actualizar', icon: 'mdi-file-document-edit', tooltip: 'Actualizar tamizaje', color: 'warning'})
                 if (this.permisos.tamizajeGeorreferenciar) item.options.push({event: 'georeferenciar', icon: 'fas fa-map-marker-alt', tooltip: item.coordenadas ? 'Actualizar Coordenadas' : 'Asignar Coordenadas', color: item.coordenadas ? 'info' : 'grey'})
                 if (item.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
                 if (!item.medico_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color: 'success'})

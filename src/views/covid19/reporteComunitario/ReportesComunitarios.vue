@@ -7,6 +7,7 @@
                 @crearTamizaje="item => crearTamizaje(item)"
                 @verReporte="item => verReporte(item)"
                 @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
+                @seguimiento="item => verSeguimiento(item)"
         >
             <template slot="top-actions-right" v-if="permisos.reporteComunitarioCrear">
                 <v-btn
@@ -137,7 +138,7 @@
                         }
                     },
                     {
-                        text: 'Nexo',
+                        text: 'Nexo de',
                         align: 'center',
                         sortable: false,
                         value: 'tamizaje_id',
@@ -298,6 +299,9 @@
             verTamizaje (item) {
                 this.$refs.seguimiento.open(item.tamizaje_id)
             },
+            verSeguimiento (item) {
+              if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
+            },
             crearReporteComunitario () {
               this.$refs.registroReporteComunitario.open()
             },
@@ -309,8 +313,12 @@
             },
             resetOptions(item) {
                 item.options = []
-                if (this.permisos.tamizajeCrear && !item.tamizaje) item.options.push({event: 'crearTamizaje', icon: 'fas fa-file-medical', tooltip: 'Crear Encuesta de Riesgo Poblacional'})
+                if (this.permisos.tamizajeCrear && !item.tamizaje) item.options.push({event: 'crearTamizaje', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
                 item.options.push({event: 'verReporte', icon: 'mdi-file-find', tooltip: 'Detalle Reporte', color: 'success'})
+                if (this.permisos.tamizajeVer && item.tamizaje) {
+                  if (item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
+                  if (!item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Detalle ERP', color: 'success'})
+                }
                 return item
             }
         }
