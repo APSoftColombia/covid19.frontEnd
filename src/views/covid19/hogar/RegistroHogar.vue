@@ -92,16 +92,33 @@
                             </v-card-text>
                             <v-divider></v-divider>
                             <v-card-text>
-                                <span class="headline">
-                                    <v-icon large color="orange" class="mb-3">mdi-account-search</v-icon>
-                                    Personas sin hogar asignado
-                                </span>
+                              <v-list dense>
+                                <v-list-item>
+                                  <v-list-item-content>
+                                    <v-list-item-title class="title mb-0">
+                                      <v-icon large color="orange" class="mb-3">mdi-account-search</v-icon>
+                                      Personas sin hogar asignado
+                                    </v-list-item-title>
+                                  </v-list-item-content>
+                                  <v-list-item-action-text>
+                                    <v-checkbox
+                                        class="mt-0"
+                                        v-model="todos"
+                                        label="Todos los disponibles"
+                                        hide-details
+                                        @change="changeUser"
+                                    ></v-checkbox>
+                                  </v-list-item-action-text>
+                                </v-list-item>
+                                <v-divider class="ma-0 pa-0"></v-divider>
+                              </v-list>
                                 <data-table
                                         ref="tablaPersonasSinHogar"
                                         v-model="dataTable"
                                         @resetOption="item => resetOptions(item)"
                                         @agregarintegrante="item => agregarIntegrante(item)"
-                                ></data-table>
+                                >
+                                </data-table>
                             </v-card-text>
                         </v-card>
                     </v-col>
@@ -119,10 +136,12 @@
         name: 'RegistroHogar',
         components: {PersonaItemTabla},
         data: () => ({
+            todos: false,
             click: false,
             actualizado: false,
             loading: false,
             dialog: false,
+          routeBase: 'personas?filter[sin_nucleo]=1',
             dataTable: {
                 buttonZone: false,
                 nameItemState: 'tablaPersonasSinHogar',
@@ -222,13 +241,18 @@
             },
             ...mapGetters([
                 'tiposDocumentoIdentidad',
-                'epss'
+                'epss',
+                'getUser'
             ])
         },
         created() {
             this.hogar = this.clone(this.makeHogar)
+            this.changeUser()
         },
         methods: {
+          changeUser () {
+            this.dataTable.route = this.getUser && !this.todos ? this.routeBase + `&filter[user_id]=${this.getUser.id}` : this.routeBase
+          },
             guardarAutopsia () {
                 if (this.autopsia.fallecido && this.autopsia.encuestado) {
                     this.$refs.formAutopsia.validate().then(result => {

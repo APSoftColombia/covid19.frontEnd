@@ -21,6 +21,7 @@
                     :readonly="readonly"
                     :error="!!errors.length"
                     hide-details
+                    @change="$emit('change')"
             ></v-checkbox>
         </template>
         <div class="v-messages theme--light error--text" role="alert" v-if="errors.length && !disabled">

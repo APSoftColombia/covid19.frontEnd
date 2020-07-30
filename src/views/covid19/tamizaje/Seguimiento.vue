@@ -168,7 +168,7 @@
             },
             editable () {
                 if (this && this.tamizaje && this.tamizaje.medico_id) {
-                    return this.tamizaje.clasificacion !== '4' && this.tamizaje.clasificacion !== '6'
+                    return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
                 }
                 return false
             },
