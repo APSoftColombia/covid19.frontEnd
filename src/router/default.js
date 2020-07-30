@@ -27,6 +27,7 @@ const AutopsiaView = () => import('Views/covid19/autopsia/AutopsiaView')
 const VehiculoView = () => import('Views/covid19/vehiculo/VehiculoView')
 const Nexos = () => import('Views/covid19/Nexos/NexosView')
 const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
+const Muestras = () => import('Views/covid19/Muestras/MuestrasView')
 
 const HogarView = () => import('Views/covid19/hogar/HogarView')
 export default {
@@ -414,6 +415,20 @@ export default {
             avatar: {
                icon: 'fas fa-network-wired',
                color: 'indigo',
+            }
+         }
+      },
+      {
+         path: 'muestras',
+         name: 'Muestras',
+         component: Muestras,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-muestrasVer',
+            avatar: {
+               icon: 'fas fa-vials',
+               color: 'red darken-3',
             }
          }
       },

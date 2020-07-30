@@ -9,7 +9,7 @@
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
             </v-toolbar>
-            <v-card-text>
+            <v-card-text class="mt-6">
                 <ValidationObserver ref="formBarrioVereda" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                     <v-row>
                         <v-col cols="12">
@@ -109,7 +109,7 @@
         methods: {
             open(barrio_vereda = null){
                 if(barrio_vereda){
-                    this.barrioVereda = barrio_vereda
+                    this.barrioVereda = this.clone(barrio_vereda)
                 }else{
                     this.barrioVereda = this.barrioVeredaModel
                 }

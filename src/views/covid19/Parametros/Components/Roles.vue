@@ -3,6 +3,10 @@
         <v-card-title>
             <span>Roles</span>
             <v-spacer></v-spacer>
+            <v-btn class="primary" @click.stop="createRol">
+                <v-icon left>fas fa-plus</v-icon>
+                <span>Nuevo</span>
+            </v-btn>
         </v-card-title>
         <v-card-text>
             <v-simple-table dense>
@@ -63,6 +67,9 @@
             },
             editRol(rol){
                 this.$refs.formRol.open(rol)
+            },
+            createRol(){
+                this.$refs.formRol.openCreate()
             }
         },
         components: {

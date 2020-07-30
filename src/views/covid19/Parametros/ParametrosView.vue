@@ -25,7 +25,7 @@
             BarriosVeredas,
             Laboratorios,
             Roles
-        }
+        },
     }
 </script>
 

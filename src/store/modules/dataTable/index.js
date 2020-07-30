@@ -18,7 +18,9 @@ const state = {
         tablaNexos: 0,
         tablaNexosVersion: 2,
         tablaBarriosVeredas: 0,
-        tablaBarriosVeredasVersion: 1
+        tablaBarriosVeredasVersion: 1,
+        tablaMuestras: 0,
+        tablaMuestrasVersion: 1
     }
 }
 
