@@ -10,6 +10,7 @@ const state = {
     // onLine: window.navigator.onLine,
     onLine: true,
     divipol: [],
+    divipolx: [],
     municipiosTotal: [],
     identidadesSexuales: [],
     sexos: [],
@@ -96,6 +97,9 @@ const getters = {
     },
     divipol: state => {
         return state.divipol
+    },
+    divipolx: state => {
+        return state.divipolx
     },
     municipiosTotal: state => {
         return state.municipiosTotal
@@ -270,6 +274,7 @@ const actions = {
                     Vue.axios.get(`ajustes-generales/iniciales`)
                         .then(response => {
                             context.commit('assignDivipol', response.data.parametros.departamentos.find(x => x.id === context.getters.datosEmpresa.departamento_id).municipios)
+                            context.commit('assignDivipolx', response.data.parametros.divipol)
                             context.commit('assignMunicipiosTotal', response.data.parametros.departamentos)
                             context.commit('assignEstadosCiviles', response.data.parametros.estados_civiles)
                             context.commit('assignIdentidadesSexuales', response.data.parametros.identidades_sexuales)
@@ -337,6 +342,10 @@ const mutations = {
     },
     assignDivipol (state, divipol) {
         state.divipol = divipol
+    },
+    assignDivipolx (state, divipolx) {
+        console.log('divipolx', divipolx)
+        state.divipolx = divipolx[0].municipios
     },
     assignMunicipiosTotal (state, departamentos) {
         state.municipiosTotal = []

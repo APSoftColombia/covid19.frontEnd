@@ -5,7 +5,7 @@
                 <v-autocomplete
                         v-model="ubicacion.municipio_id"
                         :label="(ubicacion.municipio_id ? 'M' : 'Seleccionar m') + 'unicipio'"
-                        :items="divipol"
+                        :items="divipolx"
                         item-value="id"
                         item-text="nombre"
                         :error-messages="errors"
@@ -29,7 +29,7 @@
                         :disabled="!ubicacion.municipio_id"
                         v-model="ubicacion.barrios_vereda_id"
                         :label="(ubicacion.urbano ? (ubicacion.barrios_vereda_id ? 'B' : 'Seleccionar b') + 'arrio' : (ubicacion.barrios_vereda_id ? 'V' : 'Seleccionar v') + 'ereda')"
-                        :items="ubicacion.municipio_id ? divipol.find(y => y.id === ubicacion.municipio_id).barrios_veredas.filter(z => z.tipo === (ubicacion.urbano ? 'Barrio' : 'Vereda')) : []"
+                        :items="ubicacion.municipio_id ? divipolx.find(y => y.id === ubicacion.municipio_id).barrios_veredas.filter(z => z.tipo === (ubicacion.urbano ? 'Barrio' : 'Vereda')) : []"
                         item-value="id"
                         item-text="nombre"
                         :error-messages="errors"
@@ -73,7 +73,7 @@
         }),
         computed: {
             ...mapGetters([
-                'divipol'
+                'divipolx'
             ])
         }
     }
