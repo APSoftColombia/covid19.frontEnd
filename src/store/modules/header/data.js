@@ -177,4 +177,11 @@ export const itemsMenu = [
         color: 'indigo',
         routeName: 'Parametros'
     },
+    {
+        id: 26,
+        title: 'Muestras',
+        icon: 'fas fa-vials',
+        color: 'red darken-3',
+        routeName: 'Muestras'
+    },
 ]
