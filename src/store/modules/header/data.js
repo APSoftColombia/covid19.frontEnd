@@ -5,119 +5,136 @@ export const itemsMenu = [
         title: 'Inicio',
         icon: 'fas fa-home',
         color: 'primary',
-        routeName: 'Home'
+        routeName: 'Home',
+        typeRoute: 'general'
     },
     {
         id: 2,
         title: 'Complementos',
         icon: 'fas fa-cogs',
         color: 'teal darken-2',
-        routeName: 'Complementos'
+        routeName: 'Complementos',
+        typeRoute: 'general'
     },
     {
         id: 3,
         title: 'Formularios',
         icon: 'mdi mdi-newspaper',
         color: 'red',
-        routeName: 'Formularios'
+        routeName: 'Formularios',
+        typeRoute: 'aps'
     },
     {
         id: 4,
         title: 'Usuarios',
         icon: 'fas fa-users',
         color: 'blue',
-        routeName: 'Usuarios'
+        routeName: 'Usuarios',
+        typeRoute: 'general'
     },
     {
         id: 5,
         title: 'Encuestas',
         icon: 'fas fa-edit',
         color: 'purple',
-        routeName: 'Encuestas'
+        routeName: 'Encuestas',
+        typeRoute: 'aps'
     },
     {
         id: 6,
         title: 'Fuentes de Datos',
         icon: 'fas fa-database',
         color: 'indigo',
-        routeName: 'FuentesDatos'
+        routeName: 'FuentesDatos',
+        typeRoute: 'covid'
     },
     {
         id: 7,
         title: 'Indicadores',
         icon: 'fas fa-chart-bar',
         color: 'teal',
-        routeName: 'Indicadores'
+        routeName: 'Indicadores',
+        typeRoute: 'aps'
     },
     {
         id: 8,
         title: 'Reportes / Informes',
         icon: 'fas fa-chart-pie',
         color: 'pink',
-        routeName: 'Reportes'
+        routeName: 'Reportes',
+        typeRoute: 'aps'
     },
     {
         id: 9,
         title: 'Población',
         icon: 'mdi mdi-human-handsup',
         color: 'cyan',
-        routeName: 'Poblacion'
+        routeName: 'Poblacion',
+        typeRoute: 'aps'
     },
     {
         id: 10,
         title: 'Copias de Seguridad',
         icon: 'fas fa-cloud-download-alt',
         color: 'brown',
-        routeName: 'CopiasSeguridad'
+        routeName: 'CopiasSeguridad',
+        typeRoute: 'general'
     },
     {
         id: 11,
         title: 'Ayuda / Tutoriales',
         icon: 'fas fa-question',
         color: 'lime',
-        routeName: 'Ayuda'
+        routeName: 'Ayuda',
+        typeRoute: 'general'
     },
     {
         id: 12,
         title: 'Más Información',
         icon: 'fas fa-info-circle',
         color: 'info',
-        routeName: ''
+        routeName: '',
+        typeRoute: 'general'
     },
     {
         id: 13,
         title: 'Mapa',
         icon: 'fas fa-map-marked-alt',
         color: 'orange',
-        routeName: 'Mapa'
+        routeName: 'Mapa',
+        typeRoute: 'aps'
     },
     {
         id: 14,
         title: 'Covid-19',
         icon: 'fas fa-viruses',
         color: 'error',
-        routeName: 'Covid19'
+        routeName: 'Covid19',
+        typeRoute: 'covid'
     },
     {
         id: 15,
         title: 'Indicadores Covid-19',
         icon: 'fas fa-chart-pie',
         color: 'deep-purple',
-        routeName: 'IndicadoresCovid'
+        routeName: 'IndicadoresCovid',
+        typeRoute: 'covid'
     },
     {
         id: 16,
         title: 'Reportes / Informes Covid-19',
         icon: 'mdi-file-table',
         color: 'pink',
-        routeName: 'ReportesCovid'
+        routeName: 'ReportesCovid',
+        typeRoute: 'covid'
     },
     {
         id: 17,
         title: 'Mapa Covid-19',
         icon: 'fas fa-map-marked-alt',
         color: 'deep-orange',
-        routeName: 'MapaCovid'
+        routeName: 'MapaCovid',
+        typeRoute: 'covid'
     },
     {
         id: 18,
@@ -125,14 +142,16 @@ export const itemsMenu = [
         subtitle: 'Encuestas de Riesgo Poblacional',
         icon: 'fas fa-file-medical',
         color: 'error',
-        routeName: 'Tamizajes'
+        routeName: 'Tamizajes',
+        typeRoute: 'covid'
     },
     {
         id: 19,
         title: 'Reportes Comunitarios',
         icon: 'fas fa-file-prescription',
         color: 'green',
-        routeName: 'ReportesComunitarios'
+        routeName: 'ReportesComunitarios',
+        typeRoute: 'covid'
     },
     {
         id: 20,
@@ -140,48 +159,64 @@ export const itemsMenu = [
         personalIcon: 'Autopsias',
         icon: '',
         color: 'blue-grey darken-3',
-        routeName: 'Autopsias'
+        routeName: 'Autopsias',
+        typeRoute: 'covid'
     },
     {
         id: 21,
         title: 'Llamadas',
         icon: 'fas fa-phone-alt',
         color: 'indigo',
-        routeName: 'Llamadas'
+        routeName: 'Llamadas',
+        typeRoute: 'covid'
     },
     {
         id: 22,
         title: 'Vehículos',
         icon: 'mdi-car-multiple',
         color: 'orange',
-        routeName: 'Vehiculos'
+        routeName: 'Vehiculos',
+        typeRoute: 'covid'
     },
     {
         id: 23,
         title: 'Hogares',
         icon: 'mdi-home-group',
         color: 'cyan darken-1',
-        routeName: 'Hogares'
+        routeName: 'Hogares',
+        typeRoute: 'covid'
     },
     {
         id: 24,
         title: 'Nexos',
         icon: 'fas fa-people-arrows',
         color: 'deep-purple darken-4',
-        routeName: 'Nexos'
+        routeName: 'Nexos',
+        typeRoute: 'covid'
     },
     {
         id: 25,
         title: 'Parametros',
         icon: 'fas fa-network-wired',
         color: 'indigo',
-        routeName: 'Parametros'
+        routeName: 'Parametros',
+        typeRoute: 'general'
     },
     {
         id: 26,
         title: 'Muestras',
         icon: 'fas fa-vials',
         color: 'red darken-3',
-        routeName: 'Muestras'
+        routeName: 'Muestras',
+        typeRoute: 'covid'
+    },
+    // RCV
+    {
+        id: 27,
+        title: 'Encuestas RCV',
+        icon: 'fas fa-edit',
+        color: 'purple',
+        routeName: 'EncuestasRCV',
+        typeRoute: 'aps'
     },
 ]

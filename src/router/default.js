@@ -30,6 +30,9 @@ const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
 const Muestras = () => import('Views/covid19/Muestras/MuestrasView')
 
 const HogarView = () => import('Views/covid19/hogar/HogarView')
+
+//RCV
+const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
 export default {
    path: '/',
    component: Full,
@@ -432,5 +435,19 @@ export default {
             }
          }
       },
+      {
+         path: 'encuestas-rcv',
+         name: 'EncuestasRCV',
+         component: EncuestasViewRCV,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'aps-encuestasRCVIndex',
+            avatar: {
+               icon: 'fas fa-edit',
+               color: 'purple',
+            }
+         }
+      }
    ]
 }

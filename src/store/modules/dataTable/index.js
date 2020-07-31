@@ -20,7 +20,9 @@ const state = {
         tablaBarriosVeredas: 0,
         tablaBarriosVeredasVersion: 1,
         tablaMuestras: 0,
-        tablaMuestrasVersion: 1
+        tablaMuestrasVersion: 1,
+        tablaEncuestasRCV: 0,
+        tablaEncuestasRCVVersion: 1
     }
 }
 

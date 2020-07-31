@@ -8,7 +8,7 @@
         >
             <v-card
                     v-if="value.buttonZone"
-                    class="mx-auto"
+                    class="mx-auto elevation-0"
             >
                 <v-card-actions>
                     <slot name="top-actions-left"></slot>

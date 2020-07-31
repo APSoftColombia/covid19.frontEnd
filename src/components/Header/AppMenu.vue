@@ -15,51 +15,25 @@
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
 				</v-toolbar>
-				<v-row no-gutters>
-					<template v-for="(item, index) in itemsMenu">
-						<v-col
-								cols="12"
-								sm="6"
-								md="4"
-								lg="3"
-								xl="2"
-								:key="index"
-						>
-							<v-hover v-slot:default="{ hover }">
-								<v-card
-										:to="encuestaEnCurso ? null : {name: item.routeName}"
-										@click.stop="encuestaEnCurso ? goRuta(item) : dialogMenu = false"
-										tile
-										:color="item.color"
-										:elevation="hover ? 20 : 1"
-										:class="{ 'on-hover': hover }"
-								>
-									<v-card-text class="text-center title white--text" style="min-height: 226px !important; max-height: 226px !important;">
-										<v-icon size="140" v-if="!item.personalIcon">{{item.icon}}</v-icon>
-										<template v-else>
-											<icon-base
-													v-if="item.personalIcon === 'Autopsias'"
-													width="131"
-													height="131"
-													view-box="0 0 528.000000 518.000000"
-													icon-name="autopsia"
-											>
-												<autopsia
-														:fill="'rgba(255, 255, 255, 1)'"
-														translatex="-100.00000"
-														translatey="510.00000"
-												></autopsia>
-											</icon-base>
-										</template>
-										<br/>
-										<div :class="item.subtitle ? '' : 'mt-4 mb-1'">{{item.title}}</div>
-										<div class="caption">{{item.subtitle}}</div>
-									</v-card-text>
-								</v-card>
-							</v-hover>
-						</v-col>
-					</template>
-				</v-row>
+        <template v-if="itemsMenu && itemsMenu.length">
+          <template v-if="datosEmpresa && datosEmpresa.covid_activo === '1' && datosEmpresa.aps_activo === '1'">
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'covid').length">
+              <v-subheader class="font-weight-bold">COVID-19</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'covid')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'aps').length">
+              <v-subheader class="font-weight-bold">APS</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'aps')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'general').length">
+              <v-subheader class="font-weight-bold">GENERAL</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'general')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+          </template>
+          <template v-else>
+            <cards :items-menu="itemsMenu.filter(x => x.typeRoute === (datosEmpresa.covid_activo === '1' ? 'covid' : 'aps') || x.typeRoute === 'general')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards>
+          </template>
+        </template>
 			</v-card>
 		</v-dialog>
 		<confirmation-dialog
@@ -76,8 +50,11 @@
 
 <script>
 	import { mapGetters } from 'vuex'
-	export default {
-		data: () => ({
+  import CardsList from './appMenu/CardsList'
+  import Cards from './appMenu/Cards'
+  export default {
+  name: 'algo',
+  data: () => ({
 			dialogMenu: false,
 			dialog: {
 				heading: '',
@@ -87,10 +64,15 @@
 				btnColor: 'warning'
 			}
 		}),
+    components: {
+    CardsList,
+      Cards
+    },
 		computed: {
 			...mapGetters([
 					'itemsMenu',
-					'encuestaEnCurso'
+					'encuestaEnCurso',
+          'datosEmpresa'
 			])
 		},
 		methods: {
@@ -107,7 +89,7 @@
 				this.dialogMenu = false
 				this.$refs.confirmation.close()
 				this.$store.commit('assignEncuestaEnCurso', false)
-			},
+			}
 		}
 	}
 </script>
