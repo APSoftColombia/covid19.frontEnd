@@ -42,6 +42,7 @@
                 </template>
             </v-simple-table>
         </v-card-text>
+        <app-section-loader :status="loading"></app-section-loader>
     </v-card>
 </template>
 
@@ -52,6 +53,7 @@
         name: "Laboratorios",
         data: () => ({
             laboratorios: null,
+            loading: false,
         }),
         components: {
             FormLab,
@@ -59,8 +61,10 @@
         },
         methods: {
             getLaboratorios(){
+                this.loading = true
                 this.axios.get('laboratorios').then(response => {
                    this.laboratorios = response.data
+                    this.loading = false
                 }).catch(error => {
                     this.$store.commit('snackbar', {color: "error", message: ` al cargar laboratorios`, error: error})
                 })
