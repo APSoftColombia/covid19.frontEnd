@@ -113,6 +113,13 @@
                                     label="Activar ubicación"
                             ></v-switch>
                         </v-col>
+                      <v-col cols="12" sm="6" md="3" class="pb-0">
+                            <v-switch
+                                    color="primary"
+                                    v-model="model.principal"
+                                    label="Formulario Principal"
+                            ></v-switch>
+                        </v-col>
                         <v-col cols="12" sm="12" md="6" class="pb-0">
                             <v-autocomplete
                                     v-model="model.formulario_individual_uuid"
@@ -217,6 +224,7 @@
                 fecha_inicio: null,
                 fecha_fin: null,
                 habilitado: 1,
+                principal: 1,
                 encuestado_activo: 1,
                 ubicacion_activa: 1,
                 portada_id: null,
