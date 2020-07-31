@@ -29,11 +29,13 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
+
     const FormBV = () => import('./FormBarriosVeredas')
     const DialogEliminar = () => import('./EliminarBarrioVereda')
     export default {
         name: "BarriosVeredas",
-        data: () => ({
+        data: (vm) => ({
             formDialog: false,
             dataTable: {
                 advanceFilters: false,
@@ -42,34 +44,59 @@
                 route: 'get-barrios-veredas',
                 makeHeaders: [
                     {
-                        text: 'ID',
-                        align: 'left',
-                        sortable: false,
-                        value: 'id'
-                    },
-                    {
-                        text: 'Codigo',
-                        align: 'left',
-                        sortable: false,
-                        value: 'codigo'
-                    },
-                    {
                         text: 'Nombre',
                         align: 'left',
                         sortable: false,
-                        value: 'nombre'
-                    },
-                    {
-                        text: 'Tipo',
-                        align: 'left',
-                        sortable: false,
-                        value: 'tipo'
+                        component: {
+                            render: function (createElement) {
+                                return createElement(
+                                    `div`,
+                                    {
+                                        domProps: {
+                                            innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.id} - ${this.value.nombre}</v-list-item-title>
+														<v-list-item-subtitle class="body-1">
+													        ${this.value.codigo}, ${this.value.tipo}
+                                                        </v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                                        }
+                                    }
+                                )
+                            },
+                            props: ['value']
+                        }
                     },
                     {
                         text: 'Municipio',
                         align: 'left',
                         sortable: false,
-                        value: 'nombre_municipio'
+                        component: {
+                            render: function (createElement) {
+                                return createElement(
+                                    `div`,
+                                    {
+                                        domProps: {
+                                            innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">
+														    ${vm.municipiosTotal && vm.municipiosTotal.length && this.value.municipio_id && vm.municipiosTotal.find(x => x.id === this.value.municipio_id)
+                                                            ?  `${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).nombre}, ${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).departamento.nombre}`
+                                                            : ''}
+														</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                                        }
+                                    }
+                                )
+                            },
+                            props: ['value']
+                        }
                     },
                     {
                         text: 'Opciones',
@@ -80,6 +107,11 @@
                     }
                 ]}
         }),
+        computed: {
+            ...mapGetters([
+                'municipiosTotal'
+            ]),
+        },
         methods: {
             editar(item){
                 this.$refs.formBarrioVereda.open(item)

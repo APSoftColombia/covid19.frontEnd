@@ -27,7 +27,6 @@
                                 label="Nombre"
                                 name="nombre"
                                 rules="required"
-                                upper-case
                             >
                             </c-texto>
                         </v-col>

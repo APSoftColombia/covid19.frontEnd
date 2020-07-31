@@ -16,7 +16,7 @@
             ></filtros>
         </data-table>
         <seguimiento
-                ref="seguimiento"
+            ref="seguimiento"
         ></seguimiento>
     </v-container>
 </template>
@@ -155,8 +155,7 @@
                     },
                     {
                         text: 'Información de Prueba',
-                        align: 'left',
-                        sortable: false,
+                        align: 'center',
                         component: {
                             render: function (createElement) {
                                 return createElement(
