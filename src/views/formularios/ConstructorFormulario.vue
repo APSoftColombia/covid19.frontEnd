@@ -118,6 +118,8 @@
                                     color="primary"
                                     v-model="model.principal"
                                     label="Formulario Principal"
+                                    :true-value="1"
+                                    :false-value="0"
                             ></v-switch>
                         </v-col>
                         <v-col cols="12" sm="12" md="6" class="pb-0">
