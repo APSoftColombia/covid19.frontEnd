@@ -63,6 +63,32 @@
                 route: 'rcvs',
                 makeHeaders: [
                   {
+                    text: 'Encuesta',
+                    align: 'left',
+                    sortable: false,
+                    visibleColumn: true,
+                    component: {
+                      render: function (createElement) {
+                        return createElement(
+                            `div`,
+                            {
+                              domProps: {
+                                innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.id ? `ID: ${this.value.id}` : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate">${this.value.id && this.value.updated_at ? this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                              }
+                            }
+                        )
+                      },
+                      props: ['value']
+                    }
+                  },
+                  {
                     text: 'Afiliado',
                     align: 'left',
                     sortable: false,
@@ -145,8 +171,8 @@
                                             innerHTML: `
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.user ? this.value.user.name : ''}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">${this.value.user && this.value.user.telefono ? `Telefono: ${this.value.user.telefono}` : ''}</v-list-item-subtitle>
+														<v-list-item-title class="body-2">${this.value.nombre_usuario || ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate">${this.value.email_usuario || ''}</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
 											`
