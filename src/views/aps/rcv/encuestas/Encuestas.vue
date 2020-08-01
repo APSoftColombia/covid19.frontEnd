@@ -4,20 +4,10 @@
                 ref="tablaEncuestasRCV"
                 v-model="dataTable"
                 @resetOption="item => resetOptions(item)"
-                @crearTamizaje="item => crearTamizaje(item)"
-                @verReporte="item => verReporte(item)"
+                @crearEncuesta="item => crearEncuesta(item)"
+                @verEncuesta="item => verEncuesta(item)"
                 @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
-                @seguimiento="item => verSeguimiento(item)"
         >
-            <template slot="top-actions-right" v-if="permisos.encuestasRCVCrear">
-                <v-btn
-                        color="primary"
-                        @click.stop="crearEncuesta"
-                >
-                    <v-icon left>mdi-plus</v-icon>
-                    Crear Encuesta
-                </v-btn>
-            </template>
             <filtros
                     slot="filters"
                     ref="filtrosReportesCovid"
@@ -30,10 +20,7 @@
                 ref="registroEncuesta"
                 @guardado="val => encuestaGuardada(val)"
         ></registro-encuesta>
-        <seguimiento
-                ref="seguimiento"
-        ></seguimiento>
-        <detalle-reporte-comunitario ref="detalleReporteComunitario"></detalle-reporte-comunitario>
+        <detalle-encuesta ref="detalleEncuesta"></detalle-encuesta>
     </div>
 </template>
 
@@ -41,16 +28,14 @@
     import {mapGetters} from "vuex";
     import PersonaItemTabla from "../../../../components/Tamizaje/PersonaItemTabla";
     const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
-    const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
     const Filtros = () => import('Views/covid19/reporteComunitario/filtros/Filtros')
-    const DetalleReporteComunitario = () => import('Views/covid19/reporteComunitario/DetalleReporteComunitario')
+    const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
     export default {
-        name: 'ReportesComunitarios',
+        name: 'Encuestas',
         components: {
           RegistroEncuesta,
-            Seguimiento,
-            Filtros,
-            DetalleReporteComunitario
+          Filtros,
+          DetalleEncuesta
         },
         computed: {
             permisos () {
@@ -73,7 +58,7 @@
             rutaBase: 'rcvs',
             dataTable: {
                 buttonZone: false,
-                advanceFilters: true,
+                advanceFilters: false,
                 nameItemState: 'tablaEncuestasRCV',
                 route: 'rcvs',
                 makeHeaders: [
@@ -186,36 +171,23 @@
             goDatos (ruta) {
                 this.dataTable.route = ruta
             },
-            encuestaGuardada (tamizaje) {
-                console.log('tamizaje', tamizaje)
+            encuestaGuardada (item) {
                 this.$store.commit('reloadTable', 'tablaEncuestasRCV')
-                if (this.$refs && this.$refs.tablaTamizajes) {
-                    this.$store.commit('reloadTable', 'tablaTamizajes')
-                }
-            },
-            verTamizaje (item) {
-                this.$refs.seguimiento.open(item.tamizaje_id)
-            },
-            verSeguimiento (item) {
-              if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
+                this.$refs.detalleEncuesta.open(item)
             },
             crearEncuesta (item) {
               this.$refs.registroEncuesta.open(item)
             },
-            verReporte (item) {
-              this.$refs.detalleReporteComunitario.open(item)
+            verEncuesta (item) {
+              this.$refs.detalleEncuesta.open(item)
             },
             resetOptions(item) {
                 item.options = []
                 item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_documento_identidad_id && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id).tipo : ''
                 item.celular = item.numero_celular
                 item.identificacion = item.numero_documento_identidad
-                if (this.permisos.tamizajeCrear && !item.tamizaje) item.options.push({event: 'crearTamizaje', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
-                item.options.push({event: 'verReporte', icon: 'mdi-file-find', tooltip: 'Detalle Reporte', color: 'success'})
-                if (this.permisos.tamizajeVer && item.tamizaje) {
-                  if (item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
-                  if (!item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Detalle ERP', color: 'success'})
-                }
+                if (this.permisos.encuestasRCVCrear && !item.id) item.options.push({event: 'crearEncuesta', icon: 'fas fa-file-medical', tooltip: 'Crear Encuesta'})
+                if (item.id) item.options.push({event: 'verEncuesta', icon: 'mdi-file-find', tooltip: 'Detalle Encuesta', color: 'success'})
                 return item
             }
         }

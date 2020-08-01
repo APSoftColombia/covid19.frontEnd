@@ -14,6 +14,8 @@
                 :counter="counter"
                 @focus="changeCase"
                 @blur="changeCase"
+                persistent-hint
+                :hint="hint"
         ></v-text-field>
     </ValidationProvider>
 </template>
@@ -35,6 +37,10 @@
             default: null
         },
       name: {
+        type: String,
+        default: null
+      },
+      hint: {
         type: String,
         default: null
       },

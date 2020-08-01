@@ -4,8 +4,8 @@
             <v-card outlined tile>
                 <v-card-text>
                     <c-check
+                            label="1. Usted presenta ALGUNO de los siguientes síntomas: "
                             v-model="losSintomas"
-                            label="Usted presenta alguno de los siguientes síntomas:"
                             :rules="sinSintomas ? '' : 'required'"
                             name="sintomas"
                             :items="sintomas"

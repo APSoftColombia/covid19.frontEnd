@@ -1,6 +1,6 @@
 <template>
     <ValidationProvider :name="name" :rules="rules" v-slot="{ errors, valid }">
-        <v-radio-group class="ma-0">
+        <v-radio-group class="ma-0" v-if="label">
             <label
                     class="mb-1 v-messages__message"
                     style="width: 100% !important; line-height: inherit !important; text-align: justify !important;"

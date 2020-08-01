@@ -312,6 +312,7 @@ const state = {
     modelEncuestaRCV: {
         id: null,
         afiliado_id: null,
+        id_afiliado: null,
         talla: null,
         peso: null,
         imc: null,
