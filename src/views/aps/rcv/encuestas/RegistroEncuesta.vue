@@ -28,20 +28,48 @@
                     <v-col md="6" offset-md="3">
                         <ValidationObserver ref="formencuesta" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                           <v-row v-if="encuestaBase">
-                            <v-col cols="12">
-                              <v-list two-line>
-                                <v-list-item class="pa-0">
-                                  <v-list-item-avatar color="cyan" size="50">
-                                    <v-icon large color="white">{{encuestaBase.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
-                                  </v-list-item-avatar>
-                                  <v-list-item-content class="pa-0">
-                                    <v-list-item-title class="body-2 font-weight-bold text-truncate">
-                                      {{encuestaBase.nombre}}
-                                    </v-list-item-title>
-                                    <v-list-item-subtitle class="body-2 text-truncate">{{encuestaBase.tipoIdentificacion}} {{encuestaBase.identificacion}}{{encuestaBase.celular ? ', Cel. ' + encuestaBase.celular : ''}}</v-list-item-subtitle>
-                                  </v-list-item-content>
-                                </v-list-item>
-                              </v-list>
+                            <datos-afiliado :abierto="true" :afiliado="encuestaBase" :dense="true"></datos-afiliado>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="12" class="px-0">
+                              <v-system-bar
+                                  dark
+                                  color="indigo"
+                                  :height="40"
+                                  :window="true"
+                              >
+                                <v-icon>fas fa-user</v-icon>
+                                <span>DATOS GENERALES AFILIADO</span>
+                              </v-system-bar>
+                            </v-col>
+                            <v-col cols="12" class="pt-0">
+                              <c-texto
+                                  v-model="encuesta.afiliado_actualizado.numero_celular"
+                                  label="Celular"
+                                  rules="required|numeric|minlength:10"
+                                  name="celular"
+                              >
+                              </c-texto>
+                            </v-col>
+                            <v-col cols="12" class="pt-0">
+                              <c-texto
+                                  v-model="encuesta.afiliado_actualizado.email"
+                                  label="Email"
+                                  rules="email"
+                                  name="email"
+                                  lower-case
+                              >
+                              </c-texto>
+                            </v-col>
+                            <v-col cols="12" class="pt-0">
+                              <c-texto
+                                  v-model="encuesta.afiliado_actualizado.direccion"
+                                  label="Dirección"
+                                  rules="required"
+                                  name="dirección"
+                                  upper-case
+                              >
+                              </c-texto>
                             </v-col>
                           </v-row>
                           <v-row>
@@ -64,357 +92,8 @@
                               ></form-sintomas>
                             </v-col>
                           </v-row>
-                          <v-row>
-                            <v-col cols="12" class="px-0 pb-0">
-                              <v-system-bar
-                                  dark
-                                  color="indigo"
-                                  :height="40"
-                                  :window="true"
-                              >
-                                <v-icon>fas fa-bookmark</v-icon>
-                                <span>AMBITO PREVENCIÓN DE LA ENFERMEDAD</span>
-                              </v-system-bar>
-                            </v-col>
-                            <v-col cols="12" class="pb-0">
-                              <v-label class="font-weight-bold font-weight-black">2. Conoce usted su peso y talla?. (Registrar e identificar IMC)</v-label>
-                            </v-col>
-                            <v-col class="pb-0" cols="12" md="6">
-                              <c-number
-                                  v-model="encuesta.peso"
-                                  label="Peso"
-                                  rules="required|min:0"
-                                  name="peso"
-                                  min="0"
-                              >
-                              </c-number>
-                            </v-col>
-                            <v-col class="pb-0" cols="12" md="6">
-                              <c-number
-                                  v-model="encuesta.talla"
-                                  label="Talla"
-                                  rules="required|min:0"
-                                  name="talla"
-                                  min="0"
-                              >
-                              </c-number>
-                            </v-col>
-                            <v-col class="pb-0" cols="12">
-                              <c-number
-                                  v-model="encuesta.imc"
-                                  label="IMC"
-                                  rules="required|min:0"
-                                  name="imc"
-                                  min="0"
-                                  :hint="hintIMC"
-                                  readonly
-                                  :clearable="false"
-                              >
-                              </c-number>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col cols="12" class="pb-0">
-                              <v-label class="font-weight-bold font-weight-black">3. Se ha tomado la tensión arterial el día de hoy? (Registrar e identificar riesgo)</v-label>
-                            </v-col>
-                            <v-col class="pb-0" cols="12" md="6">
-                              <c-number
-                                  v-model="encuesta.sistolica"
-                                  label="Presión Sistólica"
-                                  rules="required|min:0"
-                                  name="presión sitólica"
-                                  min="0"
-                              >
-                              </c-number>
-                            </v-col>
-                            <v-col class="pb-0" cols="12" md="6">
-                              <c-number
-                                  v-model="encuesta.diastolica"
-                                  label="Presión Diastólica"
-                                  rules="required|min:0"
-                                  name="presión diastólica"
-                                  min="0"
-                              >
-                              </c-number>
-                            </v-col>
-                            <v-col class="pb-0" cols="12">
-                              <c-texto
-                                  :value="encuesta.sistolica && encuesta.diastolica ? `${encuesta.sistolica}/${encuesta.diastolica}` : ''"
-                                  label="Tensión Arterial"
-                                  rules="required"
-                                  name="tensión arterial"
-                                  :hint="hintTension"
-                                  readonly
-                                  :clearable="false"
-                              >
-                              </c-texto>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.actividad_fisica"
-                                      label="4. ¿Realiza diariamente al menos 30 minutos de actividad física, en el trabajo y/o en el tiempo libre?"
-                                      rules="required"
-                                      name="actividad física"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.frutas_verduras"
-                                      label="5. ¿Con qué frecuencia come verduras o frutas?"
-                                      rules="required"
-                                      name="ingesta de frutas y verduras"
-                                      :items="complementos && complementos.frutas_verduras ? complementos.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.medicacion_hta"
-                                      label="6. ¿Toma medicación para la hipertensión regularmente?"
-                                      rules="required"
-                                      name="medicación para la hipertensión"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.antecedente_glucosa"
-                                      label="7. ¿Le han encontrado alguna vez valores de azucar altos?"
-                                      rules="required"
-                                      name="azucar alta"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.familiares_diabetes"
-                                      label="8. ¿Se le ha diagnosticado diabetes (tipo 1 o tipo 2) a alguno de sus familiares allegados u otros parientes?"
-                                      rules="required"
-                                      name="familiares con diabetes"
-                                      :items="complementos && complementos.familiares_diabetes ? complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.diabetes"
-                                      label="9. Es usted diabetico?"
-                                      rules="required"
-                                      name="diabetico"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                      :column="!$vuetify.breakpoint.smAndUp"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-expand-x-transition>
-                              <v-col cols="12" v-if="encuesta.diabetes === 'Si'">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <c-radio
-                                        v-model="encuesta.tipo_diabetes"
-                                        label="10. Tipo de diabetes"
-                                        rules="required"
-                                        name="tipo de diabetes"
-                                        :items="complementos && complementos.tipo_diabetes ? complementos.tipo_diabetes.map(x => {return {value: x, text: x}}) : []"
-                                        item-text="text"
-                                        item-value="value"
-                                    >
-                                    </c-radio>
-                                  </v-card-text>
-                                </v-card>
-                              </v-col>
-                            </v-expand-x-transition>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.fumador"
-                                      label="11. Fuma?"
-                                      rules="required"
-                                      name="fuma"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                      :column="!$vuetify.breakpoint.smAndUp"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.diagnosticado_rcv"
-                                      label="12. Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL)"
-                                      rules="required"
-                                      name="diagnosticado RCV"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col cols="12" class="px-0 pb-0">
-                              <v-system-bar
-                                  dark
-                                  color="indigo"
-                                  :height="40"
-                                  :window="true"
-                              >
-                                <v-icon>fas fa-bookmark</v-icon>
-                                <span>AMBITO DE ATECIÓN AMBULATORIA</span>
-                              </v-system-bar>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.consulta_medicina_g"
-                                      label="9. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
-                                      rules="required"
-                                      name="consulta por medicina general"
-                                      :items="complementos && complementos.consulta_medicina_g ? complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.consulta_medicina_i"
-                                      label="10. Señor usuario cuando fue su última consulta por medicina interna?"
-                                      rules="required"
-                                      name="consulta por medicina interna"
-                                      :items="complementos && complementos.consulta_medicina_i ? complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.laboratorios"
-                                      label="11. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
-                                      rules="required"
-                                      name="toma de laboratorios"
-                                      :items="complementos && complementos.laboratorios ? complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                              <v-card outlined tile>
-                                <v-card-text>
-                                  <c-radio
-                                      v-model="encuesta.formula_hta_dm"
-                                      label="12. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
-                                      rules="required"
-                                      name="formulación de medicamentos"
-                                      :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                      item-text="text"
-                                      item-value="value"
-                                  >
-                                  </c-radio>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                            <v-expand-transition>
-                              <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <c-radio
-                                        v-model="encuesta.tiene_medicamentos"
-                                        label="13. Cuenta con medicamentos actualmente?"
-                                        rules="required"
-                                        name="tiene medicamentos"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
-                                        item-text="text"
-                                        item-value="value"
-                                    >
-                                    </c-radio>
-                                  </v-card-text>
-                                </v-card>
-                              </v-col>
-                            </v-expand-transition>
-                            <v-expand-transition>
-                              <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <v-label>14. Me puede indicar cuando fue la ultima entrega de medicamentos? y/o para cuando tiene programada la proxima entrega?</v-label>
-                                    <c-date
-                                        v-model="encuesta.entrega_medicamentos"
-                                        rules="required"
-                                        placeholder="Última entrega de medicamentos"
-                                        name="última entrega de medicamentos"
-                                    >
-                                    </c-date>
-                                  </v-card-text>
-                                </v-card>
-                              </v-col>
-                            </v-expand-transition>
-                          </v-row>
-                          <v-expand-transition>
-                            <v-row v-if="encuesta.formula_hta_dm === 'Si'">
+                          <template v-if="encuesta.sintomas.length < 2">
+                            <v-row>
                               <v-col cols="12" class="px-0 pb-0">
                                 <v-system-bar
                                     dark
@@ -423,17 +102,92 @@
                                     :window="true"
                                 >
                                   <v-icon>fas fa-bookmark</v-icon>
-                                  <span>EVALUACIÓN ADHERENCIA AL TRATAMIENTO (Test Morisky Green)</span>
+                                  <span>AMBITO PREVENCIÓN DE LA ENFERMEDAD</span>
                                 </v-system-bar>
                               </v-col>
+                              <v-col cols="12" class="pb-0">
+                                <v-label class="font-weight-bold font-weight-black">2. Conoce usted su peso y talla?. (Registrar e identificar IMC)</v-label>
+                              </v-col>
+                              <v-col class="pb-0" cols="12" md="6">
+                                <c-number
+                                    v-model="encuesta.peso"
+                                    label="Peso"
+                                    rules="required|min:0"
+                                    name="peso"
+                                    min="0"
+                                >
+                                </c-number>
+                              </v-col>
+                              <v-col class="pb-0" cols="12" md="6">
+                                <c-number
+                                    v-model="encuesta.talla"
+                                    label="Talla"
+                                    rules="required|min:0"
+                                    name="talla"
+                                    min="0"
+                                >
+                                </c-number>
+                              </v-col>
+                              <v-col class="pb-0" cols="12">
+                                <c-number
+                                    v-model="encuesta.imc"
+                                    label="IMC"
+                                    rules="required|min:0"
+                                    name="imc"
+                                    min="0"
+                                    :hint="hintIMC"
+                                    readonly
+                                    :clearable="false"
+                                >
+                                </c-number>
+                              </v-col>
+                            </v-row>
+                            <v-row>
+                              <v-col cols="12" class="pb-0">
+                                <v-label class="font-weight-bold font-weight-black">3. Se ha tomado la tensión arterial el día de hoy? (Registrar e identificar riesgo)</v-label>
+                              </v-col>
+                              <v-col class="pb-0" cols="12" md="6">
+                                <c-number
+                                    v-model="encuesta.sistolica"
+                                    label="Presión Sistólica"
+                                    rules="required|min:0"
+                                    name="presión sitólica"
+                                    min="0"
+                                >
+                                </c-number>
+                              </v-col>
+                              <v-col class="pb-0" cols="12" md="6">
+                                <c-number
+                                    v-model="encuesta.diastolica"
+                                    label="Presión Diastólica"
+                                    rules="required|min:0"
+                                    name="presión diastólica"
+                                    min="0"
+                                >
+                                </c-number>
+                              </v-col>
+                              <v-col class="pb-0" cols="12">
+                                <c-texto
+                                    :value="encuesta.sistolica && encuesta.diastolica ? `${encuesta.sistolica}/${encuesta.diastolica}` : ''"
+                                    label="Tensión Arterial"
+                                    rules="required"
+                                    name="tensión arterial"
+                                    :hint="hintTension"
+                                    readonly
+                                    :clearable="false"
+                                >
+                                </c-texto>
+                              </v-col>
+                            </v-row>
+                            <v-row>
                               <v-col cols="12">
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
-                                        v-model="encuesta.interrumpe_tto"
-                                        label="15. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
+                                        v-model="encuesta.actividad_fisica"
+                                        label="4. ¿Realiza diariamente al menos 30 minutos de actividad física, en el trabajo y/o en el tiempo libre?"
                                         rules="required"
-                                        name="interrumpe toma de medicamentos"
+                                        name="actividad física"
                                         :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
                                         item-text="text"
                                         item-value="value"
@@ -446,10 +200,26 @@
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
-                                        v-model="encuesta.a_tiempo_tto"
-                                        label="16. Toma los medicamentos a las horas indicadas?"
+                                        v-model="encuesta.frutas_verduras"
+                                        label="5. ¿Con qué frecuencia come verduras o frutas?"
                                         rules="required"
-                                        name="toma medicamentos a la hora indicada"
+                                        name="ingesta de frutas y verduras"
+                                        :items="complementos && complementos.frutas_verduras ? complementos.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.medicacion_hta"
+                                        label="6. ¿Toma medicación para la hipertensión regularmente?"
+                                        rules="required"
+                                        name="medicación para la hipertensión"
                                         :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
                                         item-text="text"
                                         item-value="value"
@@ -462,10 +232,10 @@
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
-                                        v-model="encuesta.suspende_mejora_tto"
-                                        label="17. Cuando se encuentra bien, ¿deja de tomar la medicación? "
+                                        v-model="encuesta.antecedente_glucosa"
+                                        label="7. ¿Le han encontrado alguna vez valores de azucar altos?"
                                         rules="required"
-                                        name="suspende medicamentos al encontrarse bien"
+                                        name="azucar alta"
                                         :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
                                         item-text="text"
                                         item-value="value"
@@ -478,10 +248,80 @@
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
-                                        v-model="encuesta.suspende_adverso_tto"
-                                        label="18. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
+                                        v-model="encuesta.familiares_diabetes"
+                                        label="8. ¿Se le ha diagnosticado diabetes (tipo 1 o tipo 2) a alguno de sus familiares allegados u otros parientes?"
                                         rules="required"
-                                        name="suspende medicamento cuando este le cae mal"
+                                        name="familiares con diabetes"
+                                        :items="complementos && complementos.familiares_diabetes ? complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                            <v-row>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.diabetes"
+                                        label="9. Es usted diabetico?"
+                                        rules="required"
+                                        name="diabetico"
+                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        item-text="text"
+                                        item-value="value"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-expand-x-transition>
+                                <v-col cols="12" v-if="encuesta.diabetes === 'Si'">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.tipo_diabetes"
+                                          label="10. Tipo de diabetes"
+                                          rules="required"
+                                          name="tipo de diabetes"
+                                          :items="complementos && complementos.tipo_diabetes ? complementos.tipo_diabetes.map(x => {return {value: x, text: x}}) : []"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                              </v-expand-x-transition>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.fumador"
+                                        label="11. Fuma?"
+                                        rules="required"
+                                        name="fuma"
+                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        item-text="text"
+                                        item-value="value"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.diagnosticado_rcv"
+                                        label="12. Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL)"
+                                        rules="required"
+                                        name="diagnosticado RCV"
                                         :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
                                         item-text="text"
                                         item-value="value"
@@ -491,7 +331,197 @@
                                 </v-card>
                               </v-col>
                             </v-row>
-                          </v-expand-transition>
+                            <v-row>
+                              <v-col cols="12" class="px-0 pb-0">
+                                <v-system-bar
+                                    dark
+                                    color="indigo"
+                                    :height="40"
+                                    :window="true"
+                                >
+                                  <v-icon>fas fa-bookmark</v-icon>
+                                  <span>AMBITO DE ATECIÓN AMBULATORIA</span>
+                                </v-system-bar>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.consulta_medicina_g"
+                                        label="9. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
+                                        rules="required"
+                                        name="consulta por medicina general"
+                                        :items="complementos && complementos.consulta_medicina_g ? complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.consulta_medicina_i"
+                                        label="10. Señor usuario cuando fue su última consulta por medicina interna?"
+                                        rules="required"
+                                        name="consulta por medicina interna"
+                                        :items="complementos && complementos.consulta_medicina_i ? complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.laboratorios"
+                                        label="11. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
+                                        rules="required"
+                                        name="toma de laboratorios"
+                                        :items="complementos && complementos.laboratorios ? complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.formula_hta_dm"
+                                        label="12. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
+                                        rules="required"
+                                        name="formulación de medicamentos"
+                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        item-text="text"
+                                        item-value="value"
+                                    >
+                                    </c-radio>
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
+                              <v-expand-transition>
+                                <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.tiene_medicamentos"
+                                          label="13. Cuenta con medicamentos actualmente?"
+                                          rules="required"
+                                          name="tiene medicamentos"
+                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                              </v-expand-transition>
+                              <v-expand-transition>
+                                <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <v-label>14. Me puede indicar cuando fue la ultima entrega de medicamentos? y/o para cuando tiene programada la proxima entrega?</v-label>
+                                      <c-date
+                                          v-model="encuesta.entrega_medicamentos"
+                                          rules="required"
+                                          placeholder="Última entrega de medicamentos"
+                                          name="última entrega de medicamentos"
+                                      >
+                                      </c-date>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                              </v-expand-transition>
+                            </v-row>
+                            <v-expand-transition>
+                              <v-row v-if="encuesta.formula_hta_dm === 'Si'">
+                                <v-col cols="12" class="px-0 pb-0">
+                                  <v-system-bar
+                                      dark
+                                      color="indigo"
+                                      :height="40"
+                                      :window="true"
+                                  >
+                                    <v-icon>fas fa-bookmark</v-icon>
+                                    <span>EVALUACIÓN ADHERENCIA AL TRATAMIENTO (Test Morisky Green)</span>
+                                  </v-system-bar>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.interrumpe_tto"
+                                          label="15. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
+                                          rules="required"
+                                          name="interrumpe toma de medicamentos"
+                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.a_tiempo_tto"
+                                          label="16. Toma los medicamentos a las horas indicadas?"
+                                          rules="required"
+                                          name="toma medicamentos a la hora indicada"
+                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.suspende_mejora_tto"
+                                          label="17. Cuando se encuentra bien, ¿deja de tomar la medicación? "
+                                          rules="required"
+                                          name="suspende medicamentos al encontrarse bien"
+                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                                <v-col cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <c-radio
+                                          v-model="encuesta.suspende_adverso_tto"
+                                          label="18. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
+                                          rules="required"
+                                          name="suspende medicamento cuando este le cae mal"
+                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          item-text="text"
+                                          item-value="value"
+                                      >
+                                      </c-radio>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                              </v-row>
+                            </v-expand-transition>
+                          </template>
                         </ValidationObserver>
                         <v-divider></v-divider>
                         <v-card-actions>
@@ -523,10 +553,12 @@
 <script>
     import {mapGetters} from 'vuex'
     const FormSintomas = () => import('Views/aps/rcv/encuestas/components/FormSIntomas')
+    import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
     export default {
         name: 'RegistroEncuesta',
       components: {
-        FormSintomas
+        FormSintomas,
+        DatosAfiliado
       },
         data: () => ({
             loading: false,
@@ -611,8 +643,17 @@
             guardarencuesta () {
                 this.$refs.formencuesta.validate().then(result => {
                     if (result) {
+                      let encuestaData = this.encuesta.sintomas.length < 2 ?
+                          this.encuesta
+                          : {
+                              id: this.encuesta.id,
+                              afiliado_id: this.encuesta.afiliado_id,
+                              id_afiliado: this.encuesta.id_afiliado,
+                              afiliado_actualizado: this.encuesta.afiliado_actualizado,
+                              sintomas: this.encuesta.sintomas
+                          }
                         this.loading = true
-                        this.axios.post(`rcvs`, this.encuesta)
+                        this.axios.post(`rcvs`, encuestaData)
                             .then(response => {
                               console.log('response encuesta', response)
                                 this.$emit('guardado', response.data)
@@ -627,13 +668,17 @@
                 })
             },
             open (encuesta = null) {
-                this.getComplementos()
-                this.encuestaBase = encuesta
-                if (this.encuestaBase && this.encuestaBase.id) {
+              this.encuestaBase = encuesta
+              this.getComplementos()
+              if (this.encuestaBase && this.encuestaBase.id) {
                   this.getencuesta(this.encuestaBase.id)
                 } else {
                   this.encuesta.afiliado_id = this.encuestaBase.id_afiliado
                   this.encuesta.id_afiliado = this.encuestaBase.id_afiliado
+                  this.encuesta.afiliado_actualizado.id = this.encuestaBase.id_afiliado
+                  this.encuesta.afiliado_actualizado.direccion = this.encuestaBase.direccion
+                  this.encuesta.afiliado_actualizado.numero_celular = this.encuestaBase.numero_celular
+                  this.encuesta.afiliado_actualizado.email = this.encuestaBase.email
                 }
                 this.dialog = true
                 this.goDuracion()

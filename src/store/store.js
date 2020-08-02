@@ -16,6 +16,7 @@ import afiliados from './modules/afiliados'
 import dataTable from './modules/dataTable'
 import models from './modules/models'
 import firebase from './modules/firebase'
+import modelsRCV from '../views/aps/rcv/store/models'
 
 Vue.use(Vuex)
 
@@ -32,7 +33,8 @@ export const store = new Vuex.Store({
         afiliados,
         dataTable,
         models,
-        firebase
+        firebase,
+        modelsRCV
     },
     // plugins: [new VuexPersistence().plugin]
     plugins: [createPersistedState({

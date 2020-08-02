@@ -20,6 +20,7 @@
             </v-toolbar>
             <v-container fluid>
                 <v-row>
+                  <definicion1></definicion1>
                     <v-col cols="12">
                       {{encuesta}}
 <!--                        <v-list two-line class="notification-wrap">-->
@@ -94,9 +95,12 @@
 
 <script>
     import {mapGetters} from 'vuex'
-
+    import Definicion1 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion1'
     export default {
         name: 'DetalleEncuesta',
+      components: {
+        Definicion1
+      },
         data: () => ({
             dialog: false,
             loading: false,
