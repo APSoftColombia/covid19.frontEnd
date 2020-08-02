@@ -219,4 +219,12 @@ export const itemsMenu = [
         routeName: 'EncuestasRCV',
         typeRoute: 'aps'
     },
+    {
+        id: 28,
+        title: 'Indicadores RCV',
+        icon: 'fas fa-chart-pie',
+        color: 'red',
+        routeName: 'IndicadoresRCV',
+        typeRoute: 'aps'
+    },
 ]

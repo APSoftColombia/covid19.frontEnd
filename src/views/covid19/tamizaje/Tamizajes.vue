@@ -15,10 +15,10 @@
                 <v-tooltip top v-if="permisos.tamizajeViajeroCrear" :disabled="$vuetify.breakpoint.smAndUp">
                     <template v-slot:activator="{on}">
                         <v-btn
-                                v-on="on"
-                                color="indigo"
-                                @click.stop="crearViajero"
-                                class="white--text mr-2"
+                            v-on="on"
+                            color="indigo"
+                            @click.stop="crearViajero"
+                            class="white--text mr-2"
                         >
                             <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-bus-marker</v-icon>
                             {{$vuetify.breakpoint.smAndUp ? 'Crear ERP Viajero' : ''}}

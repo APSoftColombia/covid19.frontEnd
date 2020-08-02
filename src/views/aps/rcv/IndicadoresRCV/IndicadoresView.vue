@@ -1,0 +1,103 @@
+<template>
+    <v-container fluid>
+        <page-title-bar title="Indicadores RCV"></page-title-bar>
+        <v-card>
+            <v-card-title>
+                RCV
+            </v-card-title>
+            <v-row>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                    <encuestas-chart
+                        v-if="returnIndicadoresData.dist_poblacion_encuestada && returnIndicadoresData.dist_poblacion_encuestada.length"
+                        :data="returnIndicadoresData.dist_poblacion_encuestada"
+                    ></encuestas-chart>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                    <find-risc-chart
+                        v-if="returnIndicadoresData.dist_riesgo_findrisc && returnIndicadoresData.dist_riesgo_findrisc.length"
+                        :data="returnIndicadoresData.dist_riesgo_findrisc"
+                    ></find-risc-chart>
+                </v-col>
+                <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
+                    <o-m-s-riesgo
+                            v-if="returnIndicadoresData.dist_riesgo_oms && returnIndicadoresData.dist_riesgo_oms.length"
+                            :data="returnIndicadoresData.dist_riesgo_oms"
+                    ></o-m-s-riesgo>
+                </v-col>
+            </v-row>
+            <app-section-loader style="z-index: 10 !important;" :status="loading"></app-section-loader>
+        </v-card>
+    </v-container>
+</template>
+
+<script>
+    const EncuestasChart = () => import('./Charts/EncuestasChart')
+    const FindRiscChart = () => import('./Charts/FindRiscChart')
+    const OMSRiesgo = () => import('./Charts/OMSRiesgo')
+    export default {
+        name: "IndicadoresView",
+        data: () => ({
+            chartData: {
+                dist_poblacion_encuestada: null,
+                dist_riesgo_findrisc: [],
+                dist_riesgo_oms: []
+            },
+            loading: false
+        }),
+        computed: {
+            returnIndicadoresData(){
+                return this.chartData
+            }
+        },
+        components: {
+            EncuestasChart,
+            FindRiscChart,
+            OMSRiesgo
+        },
+        methods: {
+            getIndicadores(){
+                this.loading = true
+                this.axios.get('indicadores-rcv').then(response => {
+                    this.chartData.dist_poblacion_encuestada = [{
+                            "country": "Encuestados",
+                            "litres": response.data.distribucion_poblacion_encuestada.Encuestados,
+                        }, {
+                            "country": "Sin Encuestar",
+                            "litres": response.data.distribucion_poblacion_encuestada.Sin_Encuestar,
+                        }]
+
+                    response.data.distribucion_riesgo_findrisc.forEach((element) => {
+                        let objeto = {
+                            "litres": element.cant,
+                            "country": element.riesgo,
+                            "color": element.rgb_riesgo,
+                            "porcentaje_findrisc": element.porcentaje_findrisc
+                        }
+                        this.chartData.dist_riesgo_findrisc.push(objeto)
+                    });
+
+                    response.data.distribucion_riesgo_oms.forEach((element) => {
+                        let objeto = {
+                            "litres": element.cant,
+                            "country": element.riesgo +` (${element.porcentaje_rxoms})`,
+                            "color": element.rgb_riesgo,
+                            "porcentaje_rxoms": element.porcentaje_rxoms
+                        }
+                        this.chartData.dist_riesgo_oms.push(objeto)
+                    });
+                    this.loading = false
+                }).catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: ` al cargar indicadores`, error: error})
+                })
+            }
+        },
+        created() {
+            this.getIndicadores()
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

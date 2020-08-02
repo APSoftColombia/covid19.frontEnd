@@ -37,6 +37,7 @@ const getters = {
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
+        if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 11))

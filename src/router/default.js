@@ -33,6 +33,8 @@ const HogarView = () => import('Views/covid19/hogar/HogarView')
 
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
+const IndicadoresViewRCV = () => import('Views/aps/rcv/IndicadoresRCV/IndicadoresView')
+
 export default {
    path: '/',
    component: Full,
@@ -446,6 +448,20 @@ export default {
             avatar: {
                icon: 'fas fa-edit',
                color: 'purple',
+            }
+         }
+      },
+      {
+         path: 'indicadores-rcv',
+         name: 'IndicadoresRCV',
+         component: IndicadoresViewRCV,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'aps-indicadoresRCVIndex',
+            avatar: {
+               icon: 'fas fa-chart-pie',
+               color: 'red',
             }
          }
       }
