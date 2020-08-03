@@ -33,8 +33,8 @@
                       - Cuidados en el Desplazamiento.
                     </v-col>
                   </template>
-                  <template v-else>
-                    <template>
+                  <template v-else-if="encuesta.resultado">
+                    <template v-if="encuesta.resultado.findrisc || encuesta.resultado.oms">
 <!--                    FINDRISC & OMS-->
                       <v-col cols="12">
                         <v-subheader>Evalución riesgo cardiovascular (FINDRISC)</v-subheader>
@@ -79,7 +79,7 @@
                           <p>Verificar fecha de entrega, recordar la importancia de asistir puntualmente a la entrega y dejar registro para seguimento.</p>
                           <p v-if="encuesta.tiene_medicamentos === 'Si'">de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y fromulación de medicamentos correspondientes. Permitame un momento le informamos el día y la hora de su cita.</p>
                         </v-col>
-                        <v-col cols="12">
+                        <v-col cols="12" v-if="encuesta.resultado.morisky">
                           <v-subheader>Evaluación adherencia al tratamiento (Test Morisky Green): {{encuesta.resultado.morisky.riesgo}}</v-subheader>
                           {{encuesta.resultado.morisky}}
                           <p v-if="encuesta.resultado.morisky.riesgo === 'Cumple'">Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>
@@ -90,9 +90,12 @@
                         <p>Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>
                       </template>
                     </template>
-                    <definicion1></definicion1>
-<!--                    <definicion2></definicion2>-->
                   </template>
+                  <template v-else>
+                    <v-subheader>La encuesta no tiene resultados disponibles.</v-subheader>
+                  </template>
+                  <definicion1></definicion1>
+<!--                  <definicion2></definicion2>-->
                 </v-row>
             </v-container>
           <v-divider class="pa-0 ma-0"></v-divider>
