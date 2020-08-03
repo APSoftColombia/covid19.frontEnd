@@ -26,6 +26,13 @@
                             :colors="returnIndicadoresData.dist_riesgo_oms_colors"
                     ></o-m-s-riesgo>
                 </v-col>
+                <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
+                    <morisky-chart
+                            v-if="returnIndicadoresData.dist_morisky && returnIndicadoresData.dist_morisky.length"
+                            :data="returnIndicadoresData.dist_morisky"
+                            :colors="returnIndicadoresData.dist_morisky_colors"
+                    ></morisky-chart>
+                </v-col>
             </v-row>
             <app-section-loader style="z-index: 10 !important;" :status="loading"></app-section-loader>
         </v-card>
@@ -37,6 +44,7 @@
     const EncuestasChart = () => import('./Charts/EncuestasChart')
     const FindRiscChart = () => import('./Charts/FindRiscChart')
     const OMSRiesgo = () => import('./Charts/OMSRiesgo')
+    const MoriskyChart = () => import('./Charts/MoriskyChart')
     export default {
         name: "IndicadoresView",
         data: () => ({
@@ -45,7 +53,9 @@
                 dist_riesgo_findrisc: [],
                 dist_riesgo_findrisc_colors: [],
                 dist_riesgo_oms: [],
-                dist_riesgo_oms_colors: []
+                dist_riesgo_oms_colors: [],
+                dist_morisky: [],
+                dist_morisky_colors: []
             },
             loading: false
         }),
@@ -57,7 +67,8 @@
         components: {
             EncuestasChart,
             FindRiscChart,
-            OMSRiesgo
+            OMSRiesgo,
+            MoriskyChart
         },
         methods: {
             getIndicadores(){
@@ -89,6 +100,15 @@
                         }
                         this.chartData.dist_riesgo_oms.push(objeto)
                         this.chartData.dist_riesgo_oms_colors.push(am4core.color(`${element.rgb_riesgo}`))
+                    });
+
+                    response.data.distribucion_morisky.forEach((element) => {
+                        let objeto = {
+                            "litres": element.cant,
+                            "country": element.nivel,
+                        }
+                        this.chartData.dist_morisky.push(objeto)
+                        this.chartData.dist_morisky_colors.push(am4core.color(`${element.rgb_riesgo}`))
                     });
                     this.loading = false
                 }).catch(error => {
