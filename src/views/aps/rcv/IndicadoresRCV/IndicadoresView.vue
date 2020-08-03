@@ -16,12 +16,14 @@
                     <find-risc-chart
                         v-if="returnIndicadoresData.dist_riesgo_findrisc && returnIndicadoresData.dist_riesgo_findrisc.length"
                         :data="returnIndicadoresData.dist_riesgo_findrisc"
+                        :colors="returnIndicadoresData.dist_riesgo_findrisc_colors"
                     ></find-risc-chart>
                 </v-col>
                 <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
                     <o-m-s-riesgo
                             v-if="returnIndicadoresData.dist_riesgo_oms && returnIndicadoresData.dist_riesgo_oms.length"
                             :data="returnIndicadoresData.dist_riesgo_oms"
+                            :colors="returnIndicadoresData.dist_riesgo_oms_colors"
                     ></o-m-s-riesgo>
                 </v-col>
             </v-row>
@@ -31,6 +33,7 @@
 </template>
 
 <script>
+    import * as am4core from "@amcharts/amcharts4/core";
     const EncuestasChart = () => import('./Charts/EncuestasChart')
     const FindRiscChart = () => import('./Charts/FindRiscChart')
     const OMSRiesgo = () => import('./Charts/OMSRiesgo')
@@ -40,7 +43,9 @@
             chartData: {
                 dist_poblacion_encuestada: null,
                 dist_riesgo_findrisc: [],
-                dist_riesgo_oms: []
+                dist_riesgo_findrisc_colors: [],
+                dist_riesgo_oms: [],
+                dist_riesgo_oms_colors: []
             },
             loading: false
         }),
@@ -70,20 +75,20 @@
                         let objeto = {
                             "litres": element.cant,
                             "country": element.riesgo,
-                            "color": element.rgb_riesgo,
                             "porcentaje_findrisc": element.porcentaje_findrisc
                         }
                         this.chartData.dist_riesgo_findrisc.push(objeto)
+                        this.chartData.dist_riesgo_findrisc_colors.push(am4core.color(`${element.rgb_riesgo}`))
                     });
 
                     response.data.distribucion_riesgo_oms.forEach((element) => {
                         let objeto = {
                             "litres": element.cant,
                             "country": element.riesgo +` (${element.porcentaje_rxoms})`,
-                            "color": element.rgb_riesgo,
                             "porcentaje_rxoms": element.porcentaje_rxoms
                         }
                         this.chartData.dist_riesgo_oms.push(objeto)
+                        this.chartData.dist_riesgo_oms_colors.push(am4core.color(`${element.rgb_riesgo}`))
                     });
                     this.loading = false
                 }).catch(error => {
