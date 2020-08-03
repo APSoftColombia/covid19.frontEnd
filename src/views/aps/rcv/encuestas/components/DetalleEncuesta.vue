@@ -19,69 +19,80 @@
                 </v-btn>
             </v-toolbar>
             <v-container fluid>
-                <v-row>
-                  <definicion1></definicion1>
+                <v-row v-if="encuesta">
+                  <template v-if="encuesta.sintomas.length > 1">
                     <v-col cols="12">
-                      {{encuesta}}
-<!--                        <v-list two-line class="notification-wrap">-->
-<!--                            <v-list-item @click="click = null" style="border-bottom: none !important;">-->
-<!--                                <v-list-item-avatar class="my-1 align-self-center">-->
-<!--                                    <v-icon color="error">fas fa-user-secret</v-icon>-->
-<!--                                </v-list-item-avatar>-->
-<!--                                <v-list-item-content class="pa-0">-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">Quien Reporta</v-list-item-subtitle>-->
-<!--                                    <v-list-item-title><h6 class="mb-0">{{encuesta.nombre_reportante}}</h6></v-list-item-title>-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">-->
-<!--                                        <v-icon small>mdi-phone</v-icon>-->
-<!--                                        {{encuesta.celular_reportante}}-->
-<!--                                    </v-list-item-subtitle>-->
-<!--                                </v-list-item-content>-->
-<!--                            </v-list-item>-->
-<!--                            <v-list-item @click="click = null" style="border-bottom: none !important;">-->
-<!--                                <v-list-item-avatar class="my-1 align-self-center">-->
-<!--                                    <v-icon color="teal" large>{{encuesta.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face'}}</v-icon>-->
-<!--                                </v-list-item-avatar>-->
-<!--                                <v-list-item-content class="pa-0">-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">Posible Caso</v-list-item-subtitle>-->
-<!--                                    <v-list-item-title><h6 class="mb-0">{{encuesta.nombres}}</h6></v-list-item-title>-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">-->
-<!--                                        {{[encuesta.edad ? `${encuesta.edad} Años` : null, encuesta.celular ? `Celular: ${encuesta.celular}` : null].filter(x => x).join(', ')}}-->
-<!--                                    </v-list-item-subtitle>-->
-<!--                                </v-list-item-content>-->
-<!--                            </v-list-item>-->
-<!--                            <v-list-item @click="click = null" style="border-bottom: none !important;">-->
-<!--                                <v-list-item-avatar class="my-1 align-self-center">-->
-<!--                                    <v-icon color="purple">fas fa-map-signs</v-icon>-->
-<!--                                </v-list-item-avatar>-->
-<!--                                <v-list-item-content class="pa-0">-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">Ubicación Posible Caso</v-list-item-subtitle>-->
-<!--                                    <v-list-item-title><h6 class="mb-0">{{encuesta.direccion}}</h6></v-list-item-title>-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">-->
-<!--                                        {{encuesta.municipio_id && divipol ? divipol.find(x => x.id === encuesta.municipio_id).nombre : ''}}-->
-<!--                                    </v-list-item-subtitle>-->
-<!--                                </v-list-item-content>-->
-<!--                            </v-list-item>-->
-<!--                            <v-list-item @click="click = null" style="border-bottom: none !important;" v-if="encuesta.observaciones">-->
-<!--                                <v-list-item-content>-->
-<!--                                    <h6 class="mb-0 info&#45;&#45;text text&#45;&#45;darken-3">Observaciones</h6>-->
-<!--                                    <p class="fs-12 mb-0 fw-normal">{{encuesta.observaciones}}</p>-->
-<!--                                </v-list-item-content>-->
-<!--                            </v-list-item>-->
-<!--                            <v-list-item @click="click = null" v-if="encuesta.user" style="border-bottom: none !important;">-->
-<!--                                <v-list-item-avatar class="my-1 align-self-center">-->
-<!--                                    <v-icon color="primary">fas fa-user</v-icon>-->
-<!--                                </v-list-item-avatar>-->
-<!--                                <v-list-item-content class="pa-0">-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">Usuario que Registra</v-list-item-subtitle>-->
-<!--                                    <v-list-item-title><h6 class="mb-0">{{encuesta.user.name}}</h6></v-list-item-title>-->
-<!--                                    <v-list-item-subtitle class="grey&#45;&#45;text fs-12 fw-normal">-->
-<!--                                        <v-icon small>mdi-phone</v-icon>-->
-<!--                                        {{encuesta.user.telefono}}-->
-<!--                                    </v-list-item-subtitle>-->
-<!--                                </v-list-item-content>-->
-<!--                            </v-list-item>-->
-<!--                        </v-list>-->
+                      De acuerdo a su sintomatología debe brindar atención inmediata:
+
+                      Anexo de IPS Urgencias  y atención domiciliaria según Municipio
+                      No hay red:
+                      Buscar en la base de portabilidad. indicar: Señor usted por favor acerquese a la IPS más cercana.
+
+                      SI EL USUARIO REFIERE QUE POR SU CONDICIÓN DE SALUD NO PUEDE DESPLAZARSE A URGENCIA: Recuerde antes de trasladar llamada al área de referencia y contrareferencia, evaluar pertinencia, si se detecta que el usuario se encuentra inestable validar si requiere ambulancia.
+                      Educación y recomendaciones:
+                      - Cuidados en el Desplazamiento.
                     </v-col>
+                  </template>
+                  <template v-else>
+                    <template>
+<!--                    FINDRISC & OMS-->
+                      <v-col cols="12">
+                        <v-subheader>Evalución riesgo cardiovascular (FINDRISC)</v-subheader>
+                        <p>De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular {{encuesta.resultado.findrisc.riesgo}}.</p>
+                        {{encuesta.resultado.findrisc}}
+                      </v-col>
+                      <v-col cols="12">
+                        <v-subheader>Evalución riesgo cardiovascular (OMS)</v-subheader>
+                        <p>De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular {{encuesta.resultado.oms.riesgo}}.</p>
+                        {{encuesta.resultado.oms}}
+                      </v-col>
+                      <v-col cols="12" v-if="!['Bajo', 'Moderado'].find(x => x === encuesta.resultado.oms.riesgo) || !['Bajo', 'Moderado', 'Ligeramente elevado'].find(x => x === encuesta.resultado.findrisc.riesgo)">
+                        <v-subheader>Información segun (FINDRISC) & (OMS)</v-subheader>
+                        <p>De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitame un momento le informamos el día y la hora d esu cita.</p>
+                      </v-col>
+                    </template>
+                    <template>
+                      <!--                    Atención medica & laboratorios-->
+                      <v-col cols="12">
+                        <v-subheader>Evalución atención medica general: {{encuesta.consulta_medicina_g}}</v-subheader>
+                        <p v-if="encuesta.consulta_medicina_g === 'MENOR A 3 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntutal a su control el día XXXXX.</p>
+                        <p v-else>de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitamen un momento le informamos el día y la hora d esu cita.</p>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-subheader>Evalución atención medica especializada: {{encuesta.consulta_medicina_i}}</v-subheader>
+                        <p v-if="encuesta.consulta_medicina_i === 'MENOR A 6 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntutal a su control el día XXXXX.</p>
+                        <p v-else>de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitamen un momento le informamos el día y la hora d esu cita.</p>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-subheader>Evalución toma de laboratorios: {{encuesta.laboratorios}}</v-subheader>
+                        <p v-if="encuesta.laboratorios === 'MENOR A 6 MESES'">
+                          de acuerdo a lo indicado por favor tener presente asistir de manera puntutal a su control el día XXXXX y recordar la toma de sus laboratorios correspondiente. {{encuesta.diabetes === 'Si' ? 'recordar la toma d ela hemoglobina glicosilada.' : '' }}
+                        </p>
+                        <p v-else>De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y toma de laboratorios correspondientes. Permitame un momento le informamos el día y la hora de su cita.</p>
+                      </v-col>
+                    </template>
+                    <template>
+                      <!--                    Medicamentos-->
+                      <template v-if="encuesta.formula_hta_dm === 'Si'">
+                        <v-col cols="12">
+                          <v-subheader>Evalución medicamentos</v-subheader>
+                          <p>Verificar fecha de entrega, recordar la importancia de asistir puntualmente a la entrega y dejar registro para seguimento.</p>
+                          <p v-if="encuesta.tiene_medicamentos === 'Si'">de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y fromulación de medicamentos correspondientes. Permitame un momento le informamos el día y la hora de su cita.</p>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-subheader>Evaluación adherencia al tratamiento (Test Morisky Green): {{encuesta.resultado.morisky.riesgo}}</v-subheader>
+                          {{encuesta.resultado.morisky}}
+                          <p v-if="encuesta.resultado.morisky.riesgo === 'Cumple'">Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>
+                          <p v-else>de acuerdo a lo indicado se realizará visita domiciliaria por parte de la promotora de salud de su municipio para verificar el estado de sus medicamentos y acordar un sistema personalizado de dosificación. Permitame un momento le informamos el día y la hora de su cita.</p>
+                        </v-col>
+                      </template>
+                      <template v-else>
+                        <p>Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>
+                      </template>
+                    </template>
+                    <definicion1></definicion1>
+<!--                    <definicion2></definicion2>-->
+                  </template>
                 </v-row>
             </v-container>
           <v-divider class="pa-0 ma-0"></v-divider>
@@ -96,10 +107,12 @@
 <script>
     import {mapGetters} from 'vuex'
     import Definicion1 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion1'
+    // import Definicion2 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion2'
     export default {
         name: 'DetalleEncuesta',
       components: {
         Definicion1
+        // Definicion2
       },
         data: () => ({
             dialog: false,
