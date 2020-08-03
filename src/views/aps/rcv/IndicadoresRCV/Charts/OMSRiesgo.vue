@@ -30,6 +30,10 @@
             data: {
                 type: Array,
                 default: null
+            },
+            colors: {
+                type: Array,
+                default: null
             }
         },
         data: () => ({
@@ -51,14 +55,12 @@
             chart.legend.maxWidth = 400;
 
             let pieSeries = chart.series.push(new am4charts.PieSeries());
+            pieSeries.colors.list = this.colors
             pieSeries.dataFields.value = "litres";
             pieSeries.dataFields.category = "country";
             pieSeries.slices.template.stroke = am4core.color("#fff");
             pieSeries.labels.template.disabled = false;
             pieSeries.ticks.template.disabled = false;
-            pieSeries.colors.step = 4;
-            pieSeries.slices.template.strokeWidth = 2;
-            pieSeries.slices.template.strokeOpacity = 1;
             pieSeries.slices.template.states.getKey("hover").properties.scale = 1.1;
             pieSeries.slices.template.events.on("hit", function(ev){
                 this.percentage = ev.target.dataItem.dataContext.country
