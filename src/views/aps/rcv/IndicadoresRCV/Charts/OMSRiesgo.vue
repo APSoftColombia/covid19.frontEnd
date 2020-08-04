@@ -52,7 +52,7 @@
             title.marginTop = 5;
             chart.legend = new am4charts.Legend();
             chart.legend.position = "bottom";
-            chart.legend.maxWidth = 400;
+            chart.legend.maxWidth = 300;
 
             let pieSeries = chart.series.push(new am4charts.PieSeries());
             pieSeries.colors.list = this.colors
