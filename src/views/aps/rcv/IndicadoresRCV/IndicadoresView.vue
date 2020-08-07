@@ -33,6 +33,7 @@
                             :colors="returnIndicadoresData.dist_morisky_colors"
                     ></morisky-chart>
                 </v-col>
+                <preguntas-chart></preguntas-chart>
             </v-row>
             <app-section-loader style="z-index: 10 !important;" :status="loading"></app-section-loader>
         </v-card>
@@ -45,6 +46,7 @@
     const FindRiscChart = () => import('./Charts/FindRiscChart')
     const OMSRiesgo = () => import('./Charts/OMSRiesgo')
     const MoriskyChart = () => import('./Charts/MoriskyChart')
+    const PreguntasChart = () => import('./Charts/PreguntasChart')
     export default {
         name: "IndicadoresView",
         data: () => ({
@@ -68,7 +70,8 @@
             EncuestasChart,
             FindRiscChart,
             OMSRiesgo,
-            MoriskyChart
+            MoriskyChart,
+            PreguntasChart
         },
         methods: {
             getIndicadores(){
