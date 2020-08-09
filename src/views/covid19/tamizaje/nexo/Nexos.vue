@@ -62,7 +62,11 @@
                                     </v-list-item-content>
                                 </v-list-item>
                             </td>
-                            <td>{{item.observaciones}}</td>
+                            <td>
+                              <div style="white-space: initial !important;">
+                                {{item.observaciones}}
+                              </div>
+                            </td>
                             <td class="text-center">
                               <v-tooltip top v-if="permisos.tamizajeCrear && !item.tamizaje">
                                 <template v-slot:activator="{on}">
