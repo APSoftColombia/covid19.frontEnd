@@ -33,6 +33,9 @@
                             :colors="returnIndicadoresData.dist_morisky_colors"
                     ></morisky-chart>
                 </v-col>
+                <div class="mx-auto mt-3 mb-3">
+                    <h4>Indicadores por Pregunta</h4>
+                </div>
                 <preguntas-chart></preguntas-chart>
             </v-row>
             <app-section-loader style="z-index: 10 !important;" :status="loading"></app-section-loader>
