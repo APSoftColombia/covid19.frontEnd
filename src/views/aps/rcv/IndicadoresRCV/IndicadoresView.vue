@@ -5,39 +5,50 @@
             <v-card-title>
                 RCV
             </v-card-title>
-            <v-row>
-                <v-col cols="12" sm="12" md="6" lg="6">
-                    <encuestas-chart
-                        v-if="returnIndicadoresData.dist_poblacion_encuestada && returnIndicadoresData.dist_poblacion_encuestada.length"
-                        :data="returnIndicadoresData.dist_poblacion_encuestada"
-                    ></encuestas-chart>
-                </v-col>
-                <v-col cols="12" sm="12" md="6" lg="6">
-                    <find-risc-chart
-                        v-if="returnIndicadoresData.dist_riesgo_findrisc && returnIndicadoresData.dist_riesgo_findrisc.length"
-                        :data="returnIndicadoresData.dist_riesgo_findrisc"
-                        :colors="returnIndicadoresData.dist_riesgo_findrisc_colors"
-                    ></find-risc-chart>
-                </v-col>
-                <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
-                    <o-m-s-riesgo
-                            v-if="returnIndicadoresData.dist_riesgo_oms && returnIndicadoresData.dist_riesgo_oms.length"
-                            :data="returnIndicadoresData.dist_riesgo_oms"
-                            :colors="returnIndicadoresData.dist_riesgo_oms_colors"
-                    ></o-m-s-riesgo>
-                </v-col>
-                <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
-                    <morisky-chart
-                            v-if="returnIndicadoresData.dist_morisky && returnIndicadoresData.dist_morisky.length"
-                            :data="returnIndicadoresData.dist_morisky"
-                            :colors="returnIndicadoresData.dist_morisky_colors"
-                    ></morisky-chart>
-                </v-col>
-                <div class="mx-auto mt-3 mb-3">
-                    <h4>Indicadores por Pregunta</h4>
-                </div>
-                <preguntas-chart></preguntas-chart>
-            </v-row>
+            <v-expansion-panels multiple popout>
+                <v-expansion-panel class="mb-2">
+                    <v-expansion-panel-header>Indicadores Generales</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <v-col cols="12" sm="12" md="6" lg="6">
+                                <encuestas-chart
+                                        v-if="returnIndicadoresData.dist_poblacion_encuestada && returnIndicadoresData.dist_poblacion_encuestada.length"
+                                        :data="returnIndicadoresData.dist_poblacion_encuestada"
+                                ></encuestas-chart>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="6" lg="6">
+                                <find-risc-chart
+                                        v-if="returnIndicadoresData.dist_riesgo_findrisc && returnIndicadoresData.dist_riesgo_findrisc.length"
+                                        :data="returnIndicadoresData.dist_riesgo_findrisc"
+                                        :colors="returnIndicadoresData.dist_riesgo_findrisc_colors"
+                                ></find-risc-chart>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
+                                <o-m-s-riesgo
+                                        v-if="returnIndicadoresData.dist_riesgo_oms && returnIndicadoresData.dist_riesgo_oms.length"
+                                        :data="returnIndicadoresData.dist_riesgo_oms"
+                                        :colors="returnIndicadoresData.dist_riesgo_oms_colors"
+                                ></o-m-s-riesgo>
+                            </v-col>
+                            <v-col cols="12" sm="12" md="10" lg="10" class="mx-auto">
+                                <morisky-chart
+                                        v-if="returnIndicadoresData.dist_morisky && returnIndicadoresData.dist_morisky.length"
+                                        :data="returnIndicadoresData.dist_morisky"
+                                        :colors="returnIndicadoresData.dist_morisky_colors"
+                                ></morisky-chart>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel class="mb-2">
+                    <v-expansion-panel-header>Indicadores Por Pregunta</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <preguntas-chart></preguntas-chart>
+                        </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
             <app-section-loader style="z-index: 10 !important;" :status="loading"></app-section-loader>
         </v-card>
     </v-container>
