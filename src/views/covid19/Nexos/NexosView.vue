@@ -167,7 +167,7 @@
             resetOptions(item) {
                 item.options = []
                 if (item.erp_generado_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color:'success'})
-                if (!item.erp_generado_id) item.options.push({event: 'crearERP', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
+                if (!item.erp_generado_id && this.permisos.tamizajeCrear) item.options.push({event: 'crearERP', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
             },
             verSeguimiento (item) {
                 this.$refs.seguimiento.open(item.erp_generado_id)
