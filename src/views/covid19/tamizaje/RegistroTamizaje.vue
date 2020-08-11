@@ -169,7 +169,7 @@
                         this.loading = true
                       let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
                         let request = tamizajeCopia.id
-                            ? this.axios.put(`tamizajesx/${tamizajeCopia.id}`, tamizajeCopia)
+                            ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
                             : this.axios.post(`tamizajes`, tamizajeCopia)
                         request
                             .then(response => {
