@@ -477,7 +477,7 @@
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.consulta_medicina_g"
-                                        label="9. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
+                                        label="13. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
                                         rules="required"
                                         name="consulta por medicina general"
                                         :items="complementos && complementos.consulta_medicina_g ? encuesta.responde_paciente ? complementos.consulta_medicina_g.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
@@ -493,7 +493,7 @@
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.consulta_medicina_i"
-                                        label="10. Señor usuario cuando fue su última consulta por medicina interna?"
+                                        label="14. Señor usuario cuando fue su última consulta por medicina interna?"
                                         rules="required"
                                         name="consulta por medicina interna"
                                         :items="complementos && complementos.consulta_medicina_i ? encuesta.responde_paciente ? complementos.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
@@ -509,7 +509,7 @@
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.laboratorios"
-                                        label="11. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
+                                        label="15. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
                                         rules="required"
                                         name="toma de laboratorios"
                                         :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
@@ -525,7 +525,7 @@
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.formula_hta_dm"
-                                        label="12. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
+                                        label="16. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
                                         rules="required"
                                         name="formulación de medicamentos"
                                         :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -542,7 +542,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.tiene_medicamentos"
-                                          label="13. Cuenta con medicamentos actualmente?"
+                                          label="17. Cuenta con medicamentos actualmente?"
                                           rules="required"
                                           name="tiene medicamentos"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -558,7 +558,7 @@
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
-                                      <v-label>14. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
+                                      <v-label>18. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
                                       <c-date
                                           v-model="encuesta.entrega_medicamentos"
                                           placeholder="Última entrega de medicamentos"
@@ -573,7 +573,7 @@
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
-                                      <v-label>14. ¿Me puede indicar para cuando tiene programada la próxima entrega de medicamentos?</v-label>
+                                      <v-label>19. ¿Me puede indicar para cuando tiene programada la próxima entrega de medicamentos?</v-label>
                                       <c-date
                                           v-model="encuesta.proxima_entrega_medicamentos"
                                           placeholder="Próxima entrega de medicamentos"
@@ -603,7 +603,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.interrumpe_tto"
-                                          label="15. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
+                                          label="20. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
                                           rules="required"
                                           name="interrumpe toma de medicamentos"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -619,7 +619,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.a_tiempo_tto"
-                                          label="16. Toma los medicamentos a las horas indicadas?"
+                                          label="21. Toma los medicamentos a las horas indicadas?"
                                           rules="required"
                                           name="toma medicamentos a la hora indicada"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -635,7 +635,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.suspende_mejora_tto"
-                                          label="17. Cuando se encuentra bien, ¿deja de tomar la medicación? "
+                                          label="22. Cuando se encuentra bien, ¿deja de tomar la medicación? "
                                           rules="required"
                                           name="suspende medicamentos al encontrarse bien"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -651,7 +651,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.suspende_adverso_tto"
-                                          label="18. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
+                                          label="23. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
                                           rules="required"
                                           name="suspende medicamento cuando este le cae mal"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -832,6 +832,7 @@
                 if (!val || val === 'No') {
                   this.encuesta.tiene_medicamentos = null
                   this.encuesta.entrega_medicamentos = null
+                  this.encuesta.proxima_entrega_medicamentos = null
                   this.encuesta.interrumpe_tto = null
                   this.encuesta.a_tiempo_tto = null
                   this.encuesta.suspende_mejora_tto = null

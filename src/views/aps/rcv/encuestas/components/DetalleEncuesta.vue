@@ -147,7 +147,7 @@
                     <definicion2></definicion2>
                     <definicion3></definicion3>
                     <definicion4></definicion4>
-                    <recomendaciones></recomendaciones>
+<!--                    <recomendaciones></recomendaciones>-->
                     <semaforo-alimentacion></semaforo-alimentacion>
                   </template>
                   <template v-else>
@@ -170,7 +170,7 @@
     import Definicion2 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion2'
     import Definicion3 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion3'
     import Definicion4 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion4'
-    import Recomendaciones from 'Views/aps/rcv/resultado/educacion/Recomendaciones'
+    // import Recomendaciones from 'Views/aps/rcv/resultado/educacion/Recomendaciones'
     import SemaforoAlimentacion from 'Views/aps/rcv/resultado/educacion/SemaforoAlimentacion'
     export default {
         name: 'DetalleEncuesta',
@@ -179,8 +179,7 @@
         Definicion1,
         Definicion2,
         Definicion3,
-        Definicion4,
-        Recomendaciones
+        Definicion4
       },
         data: () => ({
             dialog: false,
