@@ -1,0 +1,73 @@
+<template>
+    <v-row>
+        <v-col class="pb-0" cols="12">
+            <v-card outlined tile>
+                <v-card-text>
+                    <c-check
+                            label="17. ¿Que examenes le tomaron?"
+                            v-model="losExamenes"
+                            :rules="sinExamenes ? '' : 'required'"
+                            name="examenes"
+                            :items="examenes"
+                            item-text="descripcion"
+                            item-value="id"
+                            :disabled="sinExamenes"
+                    >
+                    </c-check>
+                    <v-checkbox
+                            class="mt-1 ml-2"
+                            v-model="sinExamenes"
+                            label="No sabe"
+                            hide-details
+                    ></v-checkbox>
+                </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
+</template>
+
+<script>
+    export default {
+        name: 'FormSIntomas',
+        props: {
+            arraySintomas: {
+                type: [Array, String, Number, Boolean],
+                default: () => []
+            },
+          examenes: {
+            type: Array,
+            default: () => []
+          }
+        },
+        data: () => ({
+            sinExamenes: false,
+            losExamenes: []
+        }),
+        watch: {
+            'arraySintomas': {
+                handler (val) {
+                    this.losExamenes = val
+                },
+                immediate: true
+            },
+            'sinExamenes': {
+                handler (val) {
+                    if (val) {
+                        this.$emit('changeSintomas', [])
+                    }
+                },
+                immediate: false
+            },
+            'losExamenes': {
+                handler (val) {
+                    this.$emit('changeSintomas', val)
+                },
+                immediate: false
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

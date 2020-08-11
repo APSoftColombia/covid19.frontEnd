@@ -51,7 +51,9 @@ const state = {
             nombre_completo:null,
             celular:null,
             email:null
-        }
+        },
+        /////
+        especialidad_id: null
     }
 }
 

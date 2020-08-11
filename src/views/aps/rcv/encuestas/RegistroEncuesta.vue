@@ -504,12 +504,29 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
+                              <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <v-label>15.¿Qué especialidad?</v-label>
+<!--                                    <c-radio-->
+<!--                                        v-model="encuesta.especialidad_id"-->
+<!--                                        label="15.¿Que especialidad?"-->
+<!--                                        rules="required"-->
+<!--                                        name="consulta por medicina interna"-->
+<!--                                        :items="complementos && complementos.especialidades ? encuesta.especialidades ? complementos.especialidades.filter(z => z !== 'No sabe').map(x => {return {value: x.id, text: x.nombre}}) : complementos.especialidades.map(x => {return {value: x.id, text: x.nombre}}) : []"-->
+<!--                                        item-text="text"-->
+<!--                                        item-value="value"-->
+<!--                                    >-->
+<!--                                    </c-radio>-->
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
                               <v-col cols="12">
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.laboratorios"
-                                        label="15. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
+                                        label="16. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos?"
                                         rules="required"
                                         name="toma de laboratorios"
                                         :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
@@ -520,12 +537,29 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
+                              <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <v-label>17. ¿Qué examenes le tomaron?</v-label>
+<!--                                    <c-radio-->
+<!--                                        v-model="encuesta.laboratorios"-->
+<!--                                        label="16. ¿Qué examenes le tomaron?"-->
+<!--                                        rules="required"-->
+<!--                                        name="toma de laboratorios"-->
+<!--                                        :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"-->
+<!--                                        item-text="text"-->
+<!--                                        item-value="value"-->
+<!--                                    >-->
+<!--                                    </c-radio>-->
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
                               <v-col cols="12">
                                 <v-card outlined tile>
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.formula_hta_dm"
-                                        label="16. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
+                                        label="18. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
                                         rules="required"
                                         name="formulación de medicamentos"
                                         :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -536,13 +570,30 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
+                              <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <v-label>19. ¿Que tipo de medicamentos?</v-label>
+                                    <!--                                    <c-radio-->
+                                    <!--                                        v-model="encuesta.laboratorios"-->
+                                    <!--                                        label="16. ¿Qué examenes le tomaron?"-->
+                                    <!--                                        rules="required"-->
+                                    <!--                                        name="toma de laboratorios"-->
+                                    <!--                                        :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"-->
+                                    <!--                                        item-text="text"-->
+                                    <!--                                        item-value="value"-->
+                                    <!--                                    >-->
+                                    <!--                                    </c-radio>-->
+                                  </v-card-text>
+                                </v-card>
+                              </v-col>
                               <v-expand-transition>
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.tiene_medicamentos"
-                                          label="17. Cuenta con medicamentos actualmente?"
+                                          label="20. Cuenta con medicamentos actualmente?"
                                           rules="required"
                                           name="tiene medicamentos"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -558,7 +609,7 @@
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
-                                      <v-label>18. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
+                                      <v-label>21. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
                                       <c-date
                                           v-model="encuesta.entrega_medicamentos"
                                           placeholder="Última entrega de medicamentos"
@@ -573,7 +624,7 @@
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
-                                      <v-label>19. ¿Me puede indicar para cuando tiene programada la próxima entrega de medicamentos?</v-label>
+                                      <v-label>22. ¿Me puede indicar para cuando tiene programada la próxima entrega de medicamentos?</v-label>
                                       <c-date
                                           v-model="encuesta.proxima_entrega_medicamentos"
                                           placeholder="Próxima entrega de medicamentos"
@@ -603,7 +654,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.interrumpe_tto"
-                                          label="20. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
+                                          label="23. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
                                           rules="required"
                                           name="interrumpe toma de medicamentos"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -619,7 +670,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.a_tiempo_tto"
-                                          label="21. Toma los medicamentos a las horas indicadas?"
+                                          label="24. Toma los medicamentos a las horas indicadas?"
                                           rules="required"
                                           name="toma medicamentos a la hora indicada"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -635,7 +686,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.suspende_mejora_tto"
-                                          label="22. Cuando se encuentra bien, ¿deja de tomar la medicación? "
+                                          label="25. Cuando se encuentra bien, ¿deja de tomar la medicación? "
                                           rules="required"
                                           name="suspende medicamentos al encontrarse bien"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
@@ -651,7 +702,7 @@
                                     <v-card-text>
                                       <c-radio
                                           v-model="encuesta.suspende_adverso_tto"
-                                          label="23. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
+                                          label="26. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
                                           rules="required"
                                           name="suspende medicamento cuando este le cae mal"
                                           :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
