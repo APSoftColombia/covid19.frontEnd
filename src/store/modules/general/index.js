@@ -49,7 +49,17 @@ const state = {
         {id: '3.2', selectable: true, text: '3.2', nombre: 'Definición 3.2', modal: true, help: true},
         {id: '4', selectable: true, text: '4', nombre: 'Definición 4', modal: true, help: true},
         {id: '5', selectable: true, text: '5', nombre: 'Definición 5', modal: true, help: true},
-        {id: '6', selectable: true, text: 'NC', nombre: 'No clasificado en ninguna de las definiciones.', modal: false, help: false}
+        {id: '6', selectable: true, text: 'NC', nombre: 'No clasificado en ninguna de las definiciones.', modal: false, help: false},
+        ///v
+        {id: '1', selectable: true, text: 'CP1', nombre: 'Caso Probable 1', modal: true, help: true},
+        {id: '2', selectable: true, text: 'CP2', nombre: 'Caso Probable 2', modal: true, help: true},
+        {id: '4', selectable: true, text: 'CP4', nombre: 'Caso Probable 4', modal: true, help: true},
+        {id: '5', selectable: true, text: 'CP5', nombre: 'Caso Probable 5', modal: true, help: true},
+        //
+        {id: '1', selectable: true, text: 'CC1', nombre: 'Caso Confirmado 1', modal: true, help: true},
+        {id: '2', selectable: true, text: 'CC2', nombre: 'Caso Confirmado 2', modal: true, help: true},
+        {id: '4', selectable: true, text: 'CC4', nombre: 'Caso Confirmado 4', modal: true, help: true},
+        {id: '5', selectable: true, text: 'CC5', nombre: 'Caso Confirmado 5', modal: true, help: true},
     ],
     tiposTamizaje: [
         {id: 'telefónico', nombre: 'Telefónico'},

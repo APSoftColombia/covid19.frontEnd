@@ -16,6 +16,7 @@
                 :rows="rows"
                 @focus="changeCase"
                 @blur="changeCase"
+                :hide-details="hideDetails"
         ></v-textarea>
     </ValidationProvider>
 </template>
@@ -49,6 +50,10 @@
         default: null
       },
       readonly: {
+        type: Boolean,
+        default: false
+      },
+      hideDetails: {
         type: Boolean,
         default: false
       },

@@ -4,9 +4,11 @@ const state = {
         id: null,
         afiliado_id: null,
         id_afiliado: null,
+        conoce_pesotalla: null,
         talla: null,
         peso: null,
         imc: null,
+        conoce_datostension: null,
         diastolica: null,
         sistolica: null,
         actividad_fisica: null,
@@ -24,21 +26,32 @@ const state = {
         formula_hta_dm: null,
         tiene_medicamentos: null,
         entrega_medicamentos: null,
+        proxima_entrega_medicamentos: null,
         interrumpe_tto: null,
         a_tiempo_tto: null,
         suspende_mejora_tto: null,
         suspende_adverso_tto: null,
+        observaciones: null,
         user_id: null,
         created_at: null,
         updated_at: null,
         duracion: 0,
         sintomas: [],
+        responde_paciente: 1,
         afiliado_actualizado: {
             id: null,
             direccion: null,
             numero_celular: null,
+            telefono_opcional: null,
             email: null,
         },
+        acudiente: {
+            identificacion:null,
+            tipo_identificacion:null,
+            nombre_completo:null,
+            celular:null,
+            email:null
+        }
     }
 }
 

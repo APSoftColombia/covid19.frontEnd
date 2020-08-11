@@ -66,145 +66,181 @@
         <form-persona v-model="tamizaje" @verificado="val => verificar(val)" @responsetamizaje="val => respuestaPersona = val" :tipo="tipo"></form-persona>
         <v-row>
             <template v-if="verificado === 1">
-
+              <v-col cols="12" v-if="esTamizaje">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="tamizaje.localiza_persona"
+                        label="¿Se localiza al paciente?"
+                        rules="required"
+                        name="localiza al paciente"
+                        :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                        item-text="text"
+                        item-value="value"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                    >
+                    </c-radio>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <template v-if="tamizaje.localiza_persona">
                 <v-col cols="12">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <label class="orange--text">
-                                <v-icon color="orange">mdi-alert</v-icon>
-                                Según el instructivo del Instituto Nacional de Salud, se recomienda tener especial atención con personas que esten incluidas en alguno de estos grupos.
-                            </label>
-                            <c-radio
-                                    v-model="tamizaje.grupo_atencion_especial_id"
-                                    label="Grupo de atención especial"
-                                    rules="required"
-                                    name="grupo de atención especial"
-                                    :items="gruposAtencionEspecial"
-                                    item-text="nombre"
-                                    item-value="id"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                          v-model="tamizaje.contesta_encuesta"
+                          label="Dando cumplimiento a lo dispuesto en la Ley 1581 de 2012, manifiesto que he sido informado por la EPS de lo siguiente:  Que la finalidad de la recolección de mis datos personales, consiste en: Conocer mi estado de salud, así como mi situación actual con respecto a la pandemia de Covid-19.  ¿Autoriza la realización de la Encuesta?"
+                          rules="required"
+                          name="autorización de la encuesta"
+                          :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-text="text"
+                          item-value="value"
+                      >
+                      </c-radio>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
-                <v-col cols="12">
+                <template v-if="tamizaje.contesta_encuesta">
+                  <v-col cols="12">
                     <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.riesgo_procedencia"
-                                    label="Antecedentes de Viaje: ¿Ud realizó algún viaje desde o hacia las zonas donde se presenta el virus o ha tenido cercanía con personas contagiadas en los últimos 14 días?"
-                                    rules="required"
-                                    name="riesgo de procedencia"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.riesgo_ocupacional"
-                                    label="¿Es Trabajador de la salud u otro personal del ámbito hospitalario que haya tenido contacto estrecho* con caso confirmado para enfermedad por nuevo coronavirus (COVID-19)?"
-                                    rules="required"
-                                    name="riesgo trabajador de la salud"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.riesgo_contacto"
-                                    label="¿Ha tenido contacto estrecho* en los últimos 14 días con un caso confirmado con infección respiratoria aguda grave asociada al nuevo coronavirus 2019 (COVID-19)?"
-                                    rules="required"
-                                    name="riesgo de contacto"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12" v-if="tamizaje.tamizador_id === 890">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.hospitalizado"
-                                    label="¿Ha estado hospitalizado?"
-                                    rules="required"
-                                    name="hospitalizado"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.prueba_rapida"
-                                    :label="`¿Le han realizado prueba rápida para Covid-19?`"
-                                    rules="required"
-                                    name="le tomaron prueba rápida"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                        <v-card-text v-if="tamizaje.prueba_rapida === 1">
-                            <c-radio
-                                    v-model="tamizaje.resultado_prueba_rapida"
-                                    :label="`Resultado de la prueba rápida`"
-                                    rules="required"
-                                    name="resultado de la prueba rápida"
-                                    :items="resultadosPCR.map(x => {return {text: x, value: x}})"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col cols="12">
-                    <v-card outlined tile>
-                        <v-card-text>
-                            <c-radio
-                                    v-model="tamizaje.diagnosticado_covid"
-                                    label="¿Ha sido diagnósticado con covid-19?"
-                                    rules="required"
-                                    name="diagnósticado"
-                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                                    item-text="text"
-                                    item-value="value"
-                            >
-                            </c-radio>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-                <v-col class="pb-0" cols="12" v-if="tamizaje.diagnosticado_covid">
-                    <c-date
-                            v-model="tamizaje.fecha_diagnostico"
+                      <v-card-text>
+                        <label class="orange--text">
+                          <v-icon color="orange">mdi-alert</v-icon>
+                          Según el instructivo del Instituto Nacional de Salud, se recomienda tener especial atención con personas que esten incluidas en alguno de estos grupos.
+                        </label>
+                        <c-radio
+                            v-model="tamizaje.grupo_atencion_especial_id"
+                            label="Grupo de atención especial"
                             rules="required"
-                            label="Fecha del diagnóstico"
-                            name="fecha del diagnóstico"
-                            :max="moment().format('YYYY-MM-DD')"
+                            name="grupo de atención especial"
+                            :items="gruposAtencionEspecial"
+                            item-text="nombre"
+                            item-value="id"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.riesgo_procedencia"
+                            label="Antecedentes de Viaje: ¿Ud realizó algún viaje desde o hacia las zonas donde se presenta el virus o ha tenido cercanía con personas contagiadas en los últimos 14 días?"
+                            rules="required"
+                            name="riesgo de procedencia"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.riesgo_ocupacional"
+                            label="¿Es Trabajador de la salud u otro personal del ámbito hospitalario que haya tenido contacto estrecho* con caso confirmado para enfermedad por nuevo coronavirus (COVID-19)?"
+                            rules="required"
+                            name="riesgo trabajador de la salud"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.riesgo_contacto"
+                            label="¿Ha tenido contacto estrecho* en los últimos 14 días con un caso confirmado con infección respiratoria aguda grave asociada al nuevo coronavirus 2019 (COVID-19)?"
+                            rules="required"
+                            name="riesgo de contacto"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12" v-if="tamizaje.tamizador_id === 890">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.hospitalizado"
+                            label="¿Ha estado hospitalizado?"
+                            rules="required"
+                            name="hospitalizado"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.prueba_rapida"
+                            :label="`¿Le han realizado prueba rápida para Covid-19?`"
+                            rules="required"
+                            name="le tomaron prueba rápida"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                      <v-card-text v-if="tamizaje.prueba_rapida === 1">
+                        <c-radio
+                            v-model="tamizaje.resultado_prueba_rapida"
+                            :label="`Resultado de la prueba rápida`"
+                            rules="required"
+                            name="resultado de la prueba rápida"
+                            :items="resultadosPCR.map(x => {return {text: x, value: x}})"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="tamizaje.diagnosticado_covid"
+                            label="¿Ha sido diagnósticado con covid-19?"
+                            rules="required"
+                            name="diagnósticado"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col class="pb-0" cols="12" v-if="tamizaje.diagnosticado_covid">
+                    <c-date
+                        v-model="tamizaje.fecha_diagnostico"
+                        rules="required"
+                        label="Fecha del diagnóstico"
+                        name="fecha del diagnóstico"
+                        :max="moment().format('YYYY-MM-DD')"
                     >
                     </c-date>
-                </v-col>
+                  </v-col>
+                </template>
+              </template>
             </template>
             <seguimiento
                     ref="seguimiento"
@@ -386,6 +422,14 @@
             ])
         },
         watch: {
+            'tamizaje.localiza_persona': {
+                handler (val) {
+                    if (!val) {
+                        this.tamizaje.contesta_encuesta = null
+                    }
+                },
+                immediate: false
+            },
             'tamizaje.tamizador_id': {
                 handler (val) {
                     if (val !== 890) {

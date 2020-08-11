@@ -214,6 +214,53 @@ Vue.mixin({
 				objLatLng = {lat: Number(ll[0]), lng: Number(ll[1])}
 			}
 			return objLatLng
+		},
+		cleanTamizajeDesautorizado (tamizaje) {
+			if (tamizaje) {
+				console.log('se jodio la cosa', tamizaje)
+				tamizaje.riesgo_procedencia = null
+				tamizaje.riesgo_ocupacional = null
+				tamizaje.riesgo_contacto = null
+				tamizaje.diagnosticado_covid = null
+				tamizaje.positivo_covid = null
+				tamizaje.fecha_diagnostico = null
+				tamizaje.coordenadas = null
+				tamizaje.fecha_ultima_evolucion = null
+				tamizaje.orden_medica_id = null
+				tamizaje.reasignar = null
+				tamizaje.evoluciones = []
+				tamizaje.sintomas = []
+				tamizaje.fecha_sintomas = null
+				tamizaje.nexos = []
+				tamizaje.muestras = []
+				tamizaje.tamizador = null
+				tamizaje.evolucion = null
+				tamizaje.prueba_rapida = null
+				tamizaje.resultado_prueba_rapida = null
+				tamizaje.estado_prueba = null
+				tamizaje.entidad_reporta_sivigila = null
+				tamizaje.hospitalizado = null
+				tamizaje.grupo_atencion_especial_id = null
+				tamizaje.grupo_atencion_especial = null
+				tamizaje.solicitud_prueba = null
+				tamizaje.clasificacion = null
+				if (tamizaje.infoviajero) {
+					tamizaje.infoviajero.pais_procedencia = null
+					tamizaje.infoviajero.municipio_procedencia = null
+					tamizaje.infoviajero.transporte_llegada = null
+					tamizaje.infoviajero.placa = null
+					tamizaje.infoviajero.empresa = null
+					tamizaje.infoviajero.numero_vuelo = null
+					tamizaje.infoviajero.municipio_destino = null
+					tamizaje.infoviajero.transporte_destino = null
+					tamizaje.infoviajero.direccion_permanencia = null
+					tamizaje.infoviajero.aislamiento = null
+					tamizaje.infoviajero.temperatura = null
+					tamizaje.infoviajero.departamento_procedencia = null
+					tamizaje.infoviajero.departamento_destino = null
+				}
+				return tamizaje
+			}
 		}
 	}
 })

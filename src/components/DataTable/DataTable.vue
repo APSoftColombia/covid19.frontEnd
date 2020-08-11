@@ -435,7 +435,7 @@
                             this.pagination.total = response.data.total
                             this.pagination.next = response.data.next_page_url
                             this.pagination.prev = response.data.prev_page_url
-                            this.value.items = response.data.data
+                            this.value.items = Object.freeze(response.data.data)
                             this.value.loading = false
                             this.activePetition = true
                         })

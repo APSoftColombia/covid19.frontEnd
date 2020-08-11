@@ -1,6 +1,7 @@
 <template>
 	<v-container fluid class="py-0" style="height: 100% !important;">
 		<v-row style="height: 100% !important;" justify="center" align="center">
+      <c5></c5>
 			<v-card flat class="transparent">
 				<v-responsive :aspect-ratio="16/9">
 					<v-img
@@ -15,9 +16,10 @@
 
 <script>
 	import {mapGetters} from "vuex";
-
+  const C5 = () => import('../../components/HelpModal/Definiciones/v2/confirmados/C5')
 	export default {
 		components: {
+      C5
 		},
 		data: () => ({
 			loading: false

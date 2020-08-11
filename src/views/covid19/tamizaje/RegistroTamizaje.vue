@@ -24,7 +24,7 @@
                         <v-col md="6" offset-md="3">
                             <ValidationObserver ref="formTamizaje" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                                 <form-tamizaje v-if="tamizaje" :tamizaje="tamizaje" :llamada="llamada" @verificado="val => verificado = val"></form-tamizaje>
-                                <template v-if="tamizaje && verificado === 1">
+                                <template v-if="tamizaje && verificado === 1 && autoriza">
                                     <form-sintomas
                                             :array-sintomas="tamizaje.sintomas"
                                             :fecha-sintomas="tamizaje.fecha_sintomas"
@@ -51,15 +51,17 @@
                                                     color="primary"
                                             ></v-switch>
                                         </v-col>
-                                        <v-col cols="12" class="pb-0">
-                                            <c-text-area
-                                                    v-model="tamizaje.observaciones"
-                                                    placeholder="Observaciones"
-                                            >
-                                            </c-text-area>
-                                        </v-col>
                                     </v-row>
                                 </template>
+                              <v-row v-if="tamizaje">
+                                <v-col cols="12" class="pb-0">
+                                  <c-text-area
+                                      v-model="tamizaje.observaciones"
+                                      placeholder="Observaciones"
+                                  >
+                                  </c-text-area>
+                                </v-col>
+                              </v-row>
                                 <v-card-actions>
                                     <v-btn
                                             large
@@ -113,6 +115,9 @@
             ...mapGetters([
                 'modelTamizaje'
             ]),
+          autoriza () {
+            return !!(this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta)
+          },
             time () {
                 let h = 0
                 let m = 0
@@ -157,17 +162,15 @@
                 immediate: false
             }
         },
-        created() {
-            // this.tamizaje = this.clone(this.modelTamizaje)
-        },
         methods: {
             guardarTamizaje () {
-                this.$refs.formTamizaje.validate().then(result => {
+                this.$refs.formTamizaje.validate().then(async result => {
                     if (result) {
                         this.loading = true
-                        let request = this.tamizaje.id
-                            ? this.axios.put(`tamizajes/${this.tamizaje.id}`, this.tamizaje)
-                            : this.axios.post(`tamizajes`, this.tamizaje)
+                      let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
+                        let request = tamizajeCopia.id
+                            ? this.axios.put(`tamizajesx/${tamizajeCopia.id}`, tamizajeCopia)
+                            : this.axios.post(`tamizajes`, tamizajeCopia)
                         request
                             .then(response => {
                                 this.$emit('guardado', response.data)
@@ -221,6 +224,8 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
+                        response.data.localiza_persona = 1
+                        response.data.contesta_encuesta = 1
                         response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false

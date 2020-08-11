@@ -31,6 +31,88 @@
                             <datos-afiliado :abierto="true" :afiliado="encuestaBase" :dense="true"></datos-afiliado>
                           </v-row>
                           <v-row>
+                            <v-col cols="12" class="text-center pb-0 px-0">
+                              <v-alert
+                                  color="light-blue"
+                                  border="left"
+                                  elevation="2"
+                                  colored-border
+                                  icon="mdi-information"
+                              >
+                                Se requiere su autorización para que de manera libre, voluntaria y debidamente informada, nos permita almacenar, usar, circular, suprimir, procesar y en general, dar tratamiento a los datos que fueron suministrados por Usted.
+                              </v-alert>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-card outlined tile>
+                                <v-card-text>
+                                  <c-radio
+                                      v-model="encuesta.responde_paciente"
+                                      label="Quien responde la encuesta"
+                                      rules="required"
+                                      name="quien responde la encuesta"
+                                      :items="[{value: 1, text: 'Paciente'}, {value: 0, text: 'Acudiente'}]"
+                                      item-text="text"
+                                      item-value="value"
+                                  >
+                                  </c-radio>
+                                  <template v-if="!encuesta.responde_paciente">
+                                    <span class="font-weight-bold orange--text caption">Registrar datos del acudiente</span>
+                                    <v-row>
+                                      <v-col class="pb-0" cols="12" sm="6" md="6">
+                                        <c-texto
+                                            v-model="encuesta.acudiente.identificacion"
+                                            label="Identificación"
+                                            rules="required"
+                                            name="identificación"
+                                        >
+                                        </c-texto>
+                                      </v-col>
+                                      <v-col class="pb-0" cols="12" sm="6" md="6">
+                                        <c-select-complete
+                                            v-model="encuesta.acudiente.tipo_identificacion"
+                                            label="Tipo identificación"
+                                            rules="required"
+                                            name="tipo identificación"
+                                            :items="tiposDocumentoIdentidad"
+                                            item-text="descripcion"
+                                            item-value="id"
+                                        >
+                                        </c-select-complete>
+                                      </v-col>
+                                      <v-col class="pb-0" cols="12">
+                                        <c-texto
+                                            v-model="encuesta.acudiente.nombre_completo"
+                                            label="Nombre Completo"
+                                            rules="required"
+                                            name="nombre completo"
+                                            upper-case
+                                        >
+                                        </c-texto>
+                                      </v-col>
+                                      <v-col class="pb-0" cols="12" sm="12" md="6">
+                                        <c-texto
+                                            v-model="encuesta.acudiente.celular"
+                                            label="Celular Principal"
+                                            rules="required|numeric|minlength:10"
+                                            name="celular principal"
+                                        >
+                                        </c-texto>
+                                      </v-col>
+                                      <v-col class="pb-0" cols="12" sm="12" md="6">
+                                        <c-texto
+                                            v-model="encuesta.acudiente.email"
+                                            label="Email"
+                                            rules="email"
+                                            name="email"
+                                            lower-case
+                                        >
+                                        </c-texto>
+                                      </v-col>
+                                    </v-row>
+                                  </template>
+                                </v-card-text>
+                              </v-card>
+                            </v-col>
                             <v-col cols="12" class="px-0">
                               <v-system-bar
                                   dark
@@ -42,12 +124,21 @@
                                 <span>DATOS GENERALES AFILIADO</span>
                               </v-system-bar>
                             </v-col>
-                            <v-col cols="12" class="pt-0">
+                            <v-col cols="12" md="6" class="pt-0">
                               <c-texto
                                   v-model="encuesta.afiliado_actualizado.numero_celular"
                                   label="Celular"
                                   rules="required|numeric|minlength:10"
                                   name="celular"
+                              >
+                              </c-texto>
+                            </v-col>
+                            <v-col cols="12" md="6" class="pt-0">
+                              <c-texto
+                                  v-model="encuesta.afiliado_actualizado.telefono_opcional"
+                                  label="Teléfono Opcional"
+                                  rules="numeric|minlength:10"
+                                  name="teléfono opcional"
                               >
                               </c-texto>
                             </v-col>
@@ -106,77 +197,115 @@
                                 </v-system-bar>
                               </v-col>
                               <v-col cols="12" class="pb-0">
-                                <v-label class="font-weight-bold font-weight-black">2. Conoce usted su peso y talla?. (Registrar e identificar IMC)</v-label>
-                              </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
-                                <c-number
-                                    v-model="encuesta.peso"
-                                    label="Peso"
-                                    rules="required|min:0"
-                                    name="peso"
-                                    min="0"
-                                >
-                                </c-number>
-                              </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
-                                <c-number
-                                    v-model="encuesta.talla"
-                                    label="Talla"
-                                    rules="required|min:0"
-                                    name="talla"
-                                    min="0"
-                                >
-                                </c-number>
-                              </v-col>
-                              <v-col class="pb-0" cols="12">
-                                <c-number
-                                    v-model="encuesta.imc"
-                                    label="IMC"
-                                    rules="required|min:0"
-                                    name="imc"
-                                    min="0"
-                                    :hint="hintIMC"
-                                    readonly
-                                    :clearable="false"
-                                >
-                                </c-number>
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.conoce_pesotalla"
+                                        label="2. Conoce usted su peso y talla?"
+                                        rules="required"
+                                        name="conoce peso y talla"
+                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        item-text="text"
+                                        item-value="value"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                    <template v-if="encuesta.conoce_pesotalla === 'Si'">
+                                      <span class="font-weight-bold orange--text caption">Registrar e identificar IMC</span>
+                                      <v-row>
+                                        <v-col class="pb-0" cols="12" md="6">
+                                          <c-number
+                                              v-model="encuesta.peso"
+                                              label="Peso"
+                                              rules="required|min:0"
+                                              name="peso"
+                                              min="0"
+                                          >
+                                          </c-number>
+                                        </v-col>
+                                        <v-col class="pb-0" cols="12" md="6">
+                                          <c-number
+                                              v-model="encuesta.talla"
+                                              label="Talla"
+                                              rules="required|min:0"
+                                              name="talla"
+                                              min="0"
+                                          >
+                                          </c-number>
+                                        </v-col>
+                                        <v-col class="pb-0" cols="12">
+                                          <c-number
+                                              v-model="encuesta.imc"
+                                              label="IMC"
+                                              rules="required|min:0"
+                                              name="imc"
+                                              min="0"
+                                              :hint="hintIMC"
+                                              readonly
+                                              :clearable="false"
+                                          >
+                                          </c-number>
+                                        </v-col>
+                                      </v-row>
+                                    </template>
+                                  </v-card-text>
+                                </v-card>
                               </v-col>
                             </v-row>
                             <v-row>
                               <v-col cols="12" class="pb-0">
-                                <v-label class="font-weight-bold font-weight-black">3. Se ha tomado la tensión arterial el día de hoy? (Registrar e identificar riesgo)</v-label>
-                              </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
-                                <c-number
-                                    v-model="encuesta.sistolica"
-                                    label="Presión Sistólica"
-                                    rules="required|min:0"
-                                    name="presión sitólica"
-                                    min="0"
-                                >
-                                </c-number>
-                              </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
-                                <c-number
-                                    v-model="encuesta.diastolica"
-                                    label="Presión Diastólica"
-                                    rules="required|min:0"
-                                    name="presión diastólica"
-                                    min="0"
-                                >
-                                </c-number>
-                              </v-col>
-                              <v-col class="pb-0" cols="12">
-                                <c-texto
-                                    :value="encuesta.sistolica && encuesta.diastolica ? `${encuesta.sistolica}/${encuesta.diastolica}` : ''"
-                                    label="Tensión Arterial"
-                                    rules="required"
-                                    name="tensión arterial"
-                                    :hint="hintTension"
-                                    readonly
-                                    :clearable="false"
-                                >
-                                </c-texto>
+                                <v-card outlined tile>
+                                  <v-card-text>
+                                    <c-radio
+                                        v-model="encuesta.conoce_datostension"
+                                        label="3. Se ha tomado la tensión arterial el día de hoy?"
+                                        rules="required"
+                                        name="conoce datos de la tensión"
+                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        item-text="text"
+                                        item-value="value"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                    <template v-if="encuesta.conoce_datostension === 'Si'">
+                                      <span class="font-weight-bold orange--text caption">Registrar e identificar Tensión Arterial</span>
+                                      <v-row>
+                                        <v-col class="pb-0" cols="12" md="6">
+                                          <c-number
+                                              v-model="encuesta.sistolica"
+                                              label="Presión Sistólica"
+                                              rules="required|min:0"
+                                              name="presión sitólica"
+                                              min="0"
+                                          >
+                                          </c-number>
+                                        </v-col>
+                                        <v-col class="pb-0" cols="12" md="6">
+                                          <c-number
+                                              v-model="encuesta.diastolica"
+                                              label="Presión Diastólica"
+                                              rules="required|min:0"
+                                              name="presión diastólica"
+                                              min="0"
+                                          >
+                                          </c-number>
+                                        </v-col>
+                                        <v-col class="pb-0" cols="12">
+                                          <c-texto
+                                              :value="encuesta.sistolica && encuesta.diastolica ? `${encuesta.sistolica}/${encuesta.diastolica}` : ''"
+                                              label="Tensión Arterial"
+                                              rules="required"
+                                              name="tensión arterial"
+                                              :hint="hintTension"
+                                              readonly
+                                              :clearable="false"
+                                          >
+                                          </c-texto>
+                                        </v-col>
+                                      </v-row>
+                                    </template>
+                                  </v-card-text>
+                                </v-card>
                               </v-col>
                             </v-row>
                             <v-row>
@@ -188,7 +317,7 @@
                                         label="4. ¿Realiza diariamente al menos 30 minutos de actividad física, en el trabajo y/o en el tiempo libre?"
                                         rules="required"
                                         name="actividad física"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -204,7 +333,7 @@
                                         label="5. ¿Con qué frecuencia come verduras o frutas?"
                                         rules="required"
                                         name="ingesta de frutas y verduras"
-                                        :items="complementos && complementos.frutas_verduras ? complementos.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.frutas_verduras ? encuesta.responde_paciente ? complementos.frutas_verduras.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -220,7 +349,7 @@
                                         label="6. ¿Toma medicación para la hipertensión regularmente?"
                                         rules="required"
                                         name="medicación para la hipertensión"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -236,7 +365,7 @@
                                         label="7. ¿Le han encontrado alguna vez valores de azucar altos?"
                                         rules="required"
                                         name="azucar alta"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -252,7 +381,7 @@
                                         label="8. ¿Se le ha diagnosticado diabetes (tipo 1 o tipo 2) a alguno de sus familiares allegados u otros parientes?"
                                         rules="required"
                                         name="familiares con diabetes"
-                                        :items="complementos && complementos.familiares_diabetes ? complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.familiares_diabetes ? encuesta.responde_paciente ? complementos.familiares_diabetes.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -270,7 +399,7 @@
                                         label="9. Es usted diabetico?"
                                         rules="required"
                                         name="diabetico"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO sabe'}]"
                                         item-text="text"
                                         item-value="value"
                                         :column="!$vuetify.breakpoint.smAndUp"
@@ -305,7 +434,7 @@
                                         label="11. Fuma?"
                                         rules="required"
                                         name="fuma"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                         :column="!$vuetify.breakpoint.smAndUp"
@@ -322,7 +451,7 @@
                                         label="12. Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL)"
                                         rules="required"
                                         name="diagnosticado RCV"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -351,7 +480,7 @@
                                         label="9. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
                                         rules="required"
                                         name="consulta por medicina general"
-                                        :items="complementos && complementos.consulta_medicina_g ? complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.consulta_medicina_g ? encuesta.responde_paciente ? complementos.consulta_medicina_g.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -367,7 +496,7 @@
                                         label="10. Señor usuario cuando fue su última consulta por medicina interna?"
                                         rules="required"
                                         name="consulta por medicina interna"
-                                        :items="complementos && complementos.consulta_medicina_i ? complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.consulta_medicina_i ? encuesta.responde_paciente ? complementos.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -383,7 +512,7 @@
                                         label="11. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos, recuerda que examenes le tomaron?"
                                         rules="required"
                                         name="toma de laboratorios"
-                                        :items="complementos && complementos.laboratorios ? complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -399,7 +528,7 @@
                                         label="12. Señor usuario actualmente su medico tratante le ha formulado medicamentos para la HTA y/o DM?"
                                         rules="required"
                                         name="formulación de medicamentos"
-                                        :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                        :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -416,7 +545,7 @@
                                           label="13. Cuenta con medicamentos actualmente?"
                                           rules="required"
                                           name="tiene medicamentos"
-                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                           item-text="text"
                                           item-value="value"
                                       >
@@ -429,12 +558,26 @@
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
                                     <v-card-text>
-                                      <v-label>14. Me puede indicar cuando fue la ultima entrega de medicamentos? y/o para cuando tiene programada la proxima entrega?</v-label>
+                                      <v-label>14. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
                                       <c-date
                                           v-model="encuesta.entrega_medicamentos"
-                                          rules="required"
                                           placeholder="Última entrega de medicamentos"
-                                          name="última entrega de medicamentos"
+                                          :max="moment().format('YYYY-MM-DD')"
+                                      >
+                                      </c-date>
+                                    </v-card-text>
+                                  </v-card>
+                                </v-col>
+                              </v-expand-transition>
+                              <v-expand-transition>
+                                <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
+                                  <v-card outlined tile>
+                                    <v-card-text>
+                                      <v-label>14. ¿Me puede indicar para cuando tiene programada la próxima entrega de medicamentos?</v-label>
+                                      <c-date
+                                          v-model="encuesta.proxima_entrega_medicamentos"
+                                          placeholder="Próxima entrega de medicamentos"
+                                          :min="moment().format('YYYY-MM-DD')"
                                       >
                                       </c-date>
                                     </v-card-text>
@@ -463,7 +606,7 @@
                                           label="15. ¿Deja de tomar alguna vez los medicamentos para tratar su enfermedad?"
                                           rules="required"
                                           name="interrumpe toma de medicamentos"
-                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                           item-text="text"
                                           item-value="value"
                                       >
@@ -479,7 +622,7 @@
                                           label="16. Toma los medicamentos a las horas indicadas?"
                                           rules="required"
                                           name="toma medicamentos a la hora indicada"
-                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                           item-text="text"
                                           item-value="value"
                                       >
@@ -495,7 +638,7 @@
                                           label="17. Cuando se encuentra bien, ¿deja de tomar la medicación? "
                                           rules="required"
                                           name="suspende medicamentos al encontrarse bien"
-                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                           item-text="text"
                                           item-value="value"
                                       >
@@ -511,7 +654,7 @@
                                           label="18. Si le cae mal un medicamento, ¿deja usted de tomarlo?"
                                           rules="required"
                                           name="suspende medicamento cuando este le cae mal"
-                                          :items="[{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}]"
+                                          :items="encuesta.responde_paciente ? [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}] : [{value: 'Si', text: 'SI'}, {value: 'No', text: 'NO'}, {value: 'No sabe', text: 'NO SABE'}]"
                                           item-text="text"
                                           item-value="value"
                                       >
@@ -523,6 +666,44 @@
                             </v-expand-transition>
                           </template>
                         </ValidationObserver>
+                      <v-menu
+                          v-model="menuObservaciones"
+                          :close-on-content-click="false"
+                          :close-on-click="false"
+                          min-width="350"
+                          max-width="600"
+                          offset-y
+                          offset-X
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                              v-bind="attrs"
+                              v-on="on"
+                              color="indigo"
+                              class="mr-1 mt-70"
+                              fab
+                              dark
+                              top
+                              right
+                              fixed
+                          >
+                            <v-icon>mdi-comment-text</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-card-text>
+                            <c-text-area
+                                v-model="encuesta.observaciones"
+                                label="Observaciones Generales"
+                                rows="12"
+                                :clearable="false"
+                                :auto-grow="false"
+                                :hide-details="true"
+                            >
+                            </c-text-area>
+                          </v-card-text>
+                        </v-card>
+                      </v-menu>
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-btn
@@ -563,6 +744,7 @@
         data: () => ({
             loading: false,
             dialog: false,
+            menuObservaciones: false,
             encuesta: null,
             encuestaBase: null,
             interval: null,
@@ -572,7 +754,8 @@
         }),
         computed: {
             ...mapGetters([
-                'modelEncuestaRCV'
+                'modelEncuestaRCV',
+              'tiposDocumentoIdentidad'
             ]),
             time () {
                 let h = 0
@@ -590,6 +773,27 @@
             }
         },
         watch: {
+            'encuesta.responde_paciente': {
+                handler (val) {
+                  if (!val) {
+                    this.encuesta.acudiente.identificacion = null
+                    this.encuesta.acudiente.tipo_identificacion = null
+                    this.encuesta.acudiente.nombre_completo = null
+                    this.encuesta.acudiente.celular = null
+                    this.encuesta.acudiente.email = null
+                  }
+                },
+                immediate: false
+            },
+            'encuesta.conoce_pesotalla': {
+                handler (val) {
+                  if (typeof val !== 'undefined') {
+                    this.encuesta.peso = null
+                    this.encuesta.talla = null
+                  }
+                },
+                immediate: false
+            },
             'encuesta.peso': {
                 handler () {
                   this.getIMC()
@@ -601,6 +805,15 @@
                   this.getIMC()
                 },
                 immediate: false
+            },
+            'encuesta.conoce_datostension': {
+              handler (val) {
+                if (typeof val !== 'undefined') {
+                  this.encuesta.diastolica = null
+                  this.encuesta.sistolica = null
+                }
+              },
+              immediate: false
             },
             'encuesta.diastolica': {
               handler () {
@@ -644,13 +857,16 @@
                 this.$refs.formencuesta.validate().then(result => {
                     if (result) {
                       let encuestaData = this.encuesta.sintomas.length < 2 ?
-                          this.encuesta
+                          this.clone(this.encuesta)
                           : {
                               id: this.encuesta.id,
                               afiliado_id: this.encuesta.afiliado_id,
                               id_afiliado: this.encuesta.id_afiliado,
                               afiliado_actualizado: this.encuesta.afiliado_actualizado,
                               sintomas: this.encuesta.sintomas
+                          }
+                          if (encuestaData.acudiente && (typeof encuestaData.responde_paciente !== 'undefined') && !encuestaData.responde_paciente) {
+                            encuestaData.acudiente = null
                           }
                         this.loading = true
                         this.axios.post(`rcvs`, encuestaData)
@@ -687,6 +903,7 @@
                 this.$refs.formencuesta.reset()
                 this.dialog = false
                 this.loading = false
+                this.menuObservaciones = false
                 clearInterval(this.interval)
                 this.encuesta = this.clone(this.modelEncuestaRCV)
                 this.encuestaBase = null

@@ -69,7 +69,7 @@
                                 </v-col>
                             </v-row>
                             <form-tamizaje v-if="tamizaje" tipo="viajero" :tamizaje="tamizaje" @verificado="val => verificado = val"></form-tamizaje>
-                            <template v-if="tamizaje && verificado === 1">
+                            <template v-if="tamizaje && verificado === 1 && autoriza">
                                 <v-row>
                                     <v-col class="pb-0" cols="12">
                                         <c-select-complete
@@ -243,6 +243,15 @@
                                     </v-col>
                                 </v-row>
                             </template>
+                            <v-row v-if="tamizaje">
+                              <v-col cols="12" class="pb-0">
+                                <c-text-area
+                                    v-model="tamizaje.observaciones"
+                                    placeholder="Observaciones"
+                                >
+                                </c-text-area>
+                              </v-col>
+                            </v-row>
                             <v-card-actions>
                                 <v-btn
                                         large
@@ -318,6 +327,9 @@
             ]),
             casanare () {
                 return this && this.datosEmpresa && this.datosEmpresa.departamento_id === 11
+            },
+            autoriza () {
+              return !!(this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta)
             }
         },
         watch: {
@@ -499,6 +511,8 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
+                      response.data.localiza_persona = 1
+                      response.data.contesta_encuesta = 1
                         response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false
