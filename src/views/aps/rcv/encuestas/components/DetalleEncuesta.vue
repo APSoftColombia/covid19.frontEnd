@@ -47,7 +47,7 @@
                     </v-col>
                   </template>
                   <template v-else-if="encuesta.resultado">
-                    <template v-if="encuesta.resultado.findrisc || encuesta.resultado.oms">
+                    <template v-if="encuesta.resultado.findrisc && encuesta.resultado.oms">
 <!--                    FINDRISC & OMS-->
                       <v-col cols="12">
                         <v-subheader>Evalución riesgo cardiovascular (FINDRISC)</v-subheader>

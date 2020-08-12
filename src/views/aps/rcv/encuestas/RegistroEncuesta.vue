@@ -381,7 +381,7 @@
                                         label="8. ¿Se le ha diagnosticado diabetes (tipo 1 o tipo 2) a alguno de sus familiares allegados u otros parientes?"
                                         rules="required"
                                         name="familiares con diabetes"
-                                        :items="complementos && complementos.familiares_diabetes ? encuesta.responde_paciente ? complementos.familiares_diabetes.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
+                                        :items="complementos && complementos.familiares_diabetes ? complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
                                     >
@@ -915,24 +915,25 @@
                               afiliado_id: this.encuesta.afiliado_id,
                               id_afiliado: this.encuesta.id_afiliado,
                               afiliado_actualizado: this.encuesta.afiliado_actualizado,
+                              duracion: this.encuesta.duracion,
                               sintomas: this.encuesta.sintomas
                           }
-                          if (encuestaData.acudiente && (typeof encuestaData.responde_paciente !== 'undefined') && !encuestaData.responde_paciente) {
-                            encuestaData.acudiente = null
-                          }
-                        this.loading = true
-                        this.axios.post(`rcvs`, encuestaData)
-                            .then(response => {
-                              console.log('response encuesta', response)
-                                this.$emit('guardado', response.data)
-                                this.$store.commit('snackbar', {color: 'success', message: `La encuesta se guardo correctamente.`})
-                                this.close()
-                            })
-                            .catch(error => {
-                                this.loading = false
-                                this.$store.commit('snackbar', {color: 'error', message: `al guardar la encuesta.`, error: error})
-                            })
-                    }
+                      if (encuestaData.responde_paciente) {
+                        encuestaData.acudiente = null
+                      }
+                      this.loading = true
+                      this.axios.post(`rcvs`, encuestaData)
+                          .then(response => {
+                            console.log('response encuesta', response)
+                              this.$emit('guardado', response.data)
+                              this.$store.commit('snackbar', {color: 'success', message: `La encuesta se guardo correctamente.`})
+                              this.close()
+                          })
+                          .catch(error => {
+                              this.loading = false
+                              this.$store.commit('snackbar', {color: 'error', message: `al guardar la encuesta.`, error: error})
+                          })
+                      }
                 })
             },
             open (encuesta = null) {
