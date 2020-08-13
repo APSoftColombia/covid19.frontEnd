@@ -29,8 +29,8 @@
                                 <v-checkbox
                                     :key="`check${indexTipo}${indexCheck}`"
                                     v-model="losMedicamentos"
-                                    :value="check"
-                                    :label="check"
+                                    :value="check['id']"
+                                    :label="check['nombre']"
                                     :disabled="sinMedicamentos"
                                     :error="!!errors.length"
                                     hide-details

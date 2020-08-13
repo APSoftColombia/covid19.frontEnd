@@ -898,7 +898,6 @@
                       if (encuestaData.responde_paciente) {
                         encuestaData.acudiente = null
                       }
-                      encuestaData.medicamentos = encuestaData.medicamentos && encuestaData.medicamentos.length ? encuestaData.medicamentos.join(',') : null
                       encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
                       encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
                       this.loading = true
