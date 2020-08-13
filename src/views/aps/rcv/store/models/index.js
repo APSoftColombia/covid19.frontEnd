@@ -53,7 +53,9 @@ const state = {
             email:null
         },
         /////
-        especialidad_id: null
+        especialidad: [],
+        laboratorio: [],
+        medicamentos: []
     }
 }
 

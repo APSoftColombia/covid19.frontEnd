@@ -493,9 +493,9 @@
                                   <v-card-text>
                                     <c-radio
                                         v-model="encuesta.consulta_medicina_i"
-                                        label="14. Señor usuario cuando fue su última consulta por medicina interna?"
+                                        label="14. Señor usuario cuando fue su última consulta por medicina especializada?"
                                         rules="required"
-                                        name="consulta por medicina interna"
+                                        name="consulta por medicina especializada"
                                         :items="complementos && complementos.consulta_medicina_i ? encuesta.responde_paciente ? complementos.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
                                         item-text="text"
                                         item-value="value"
@@ -505,21 +505,11 @@
                                 </v-card>
                               </v-col>
                               <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <v-label>15.¿Qué especialidad?</v-label>
-<!--                                    <c-radio-->
-<!--                                        v-model="encuesta.especialidad_id"-->
-<!--                                        label="15.¿Que especialidad?"-->
-<!--                                        rules="required"-->
-<!--                                        name="consulta por medicina interna"-->
-<!--                                        :items="complementos && complementos.especialidades ? encuesta.especialidades ? complementos.especialidades.filter(z => z !== 'No sabe').map(x => {return {value: x.id, text: x.nombre}}) : complementos.especialidades.map(x => {return {value: x.id, text: x.nombre}}) : []"-->
-<!--                                        item-text="text"-->
-<!--                                        item-value="value"-->
-<!--                                    >-->
-<!--                                    </c-radio>-->
-                                  </v-card-text>
-                                </v-card>
+                                <form-especialidades
+                                    :array-especialidades="encuesta.especialidad"
+                                    @changeEspecialidades="val => encuesta.especialidad = val"
+                                    :especialidades="complementos && complementos.especialidad ? complementos.especialidad : []"
+                                ></form-especialidades>
                               </v-col>
                               <v-col cols="12">
                                 <v-card outlined tile>
@@ -538,21 +528,11 @@
                                 </v-card>
                               </v-col>
                               <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <v-label>17. ¿Qué examenes le tomaron?</v-label>
-<!--                                    <c-radio-->
-<!--                                        v-model="encuesta.laboratorios"-->
-<!--                                        label="16. ¿Qué examenes le tomaron?"-->
-<!--                                        rules="required"-->
-<!--                                        name="toma de laboratorios"-->
-<!--                                        :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"-->
-<!--                                        item-text="text"-->
-<!--                                        item-value="value"-->
-<!--                                    >-->
-<!--                                    </c-radio>-->
-                                  </v-card-text>
-                                </v-card>
+                                <form-examenes
+                                    :array-examenes="encuesta.laboratorio"
+                                    @changeExamenes="val => encuesta.laboratorio = val"
+                                    :examenes="complementos && complementos.laboratorio ? complementos.laboratorio : []"
+                                ></form-examenes>
                               </v-col>
                               <v-col cols="12">
                                 <v-card outlined tile>
@@ -571,21 +551,11 @@
                                 </v-card>
                               </v-col>
                               <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
-                                <v-card outlined tile>
-                                  <v-card-text>
-                                    <v-label>19. ¿Que tipo de medicamentos?</v-label>
-                                    <!--                                    <c-radio-->
-                                    <!--                                        v-model="encuesta.laboratorios"-->
-                                    <!--                                        label="16. ¿Qué examenes le tomaron?"-->
-                                    <!--                                        rules="required"-->
-                                    <!--                                        name="toma de laboratorios"-->
-                                    <!--                                        :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"-->
-                                    <!--                                        item-text="text"-->
-                                    <!--                                        item-value="value"-->
-                                    <!--                                    >-->
-                                    <!--                                    </c-radio>-->
-                                  </v-card-text>
-                                </v-card>
+                                <form-medicamentos
+                                    :array-medicamentos="encuesta.medicamentos"
+                                    @changeMedicamentos="val => encuesta.medicamentos = val"
+                                    :medicamentos="complementos && complementos.medicamentos ? complementos.medicamentos : []"
+                                ></form-medicamentos>
                               </v-col>
                               <v-expand-transition>
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
@@ -716,6 +686,26 @@
                               </v-row>
                             </v-expand-transition>
                           </template>
+                          <v-divider></v-divider>
+                          <v-card-actions>
+                            <v-btn
+                                large
+                                @click.stop="close"
+                            >
+                              <v-icon>mdi-close</v-icon>
+                              Cerrar
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
+                            <v-btn
+                                large
+                                color="primary"
+                                @click.stop="guardarencuesta"
+                            >
+                              <v-icon left>fas fa-save</v-icon>
+                              Guardar encuesta
+                            </v-btn>
+                          </v-card-actions>
                         </ValidationObserver>
                       <v-menu
                           v-model="menuObservaciones"
@@ -755,25 +745,6 @@
                           </v-card-text>
                         </v-card>
                       </v-menu>
-                        <v-divider></v-divider>
-                        <v-card-actions>
-                            <v-btn
-                                    large
-                                    @click.stop="close"
-                            >
-                                <v-icon>mdi-close</v-icon>
-                                Cerrar
-                            </v-btn>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                    large
-                                    color="primary"
-                                    @click.stop="guardarencuesta"
-                            >
-                                <v-icon left>fas fa-save</v-icon>
-                                Guardar encuesta
-                            </v-btn>
-                        </v-card-actions>
                     </v-col>
                 </v-row>
             </v-container>
@@ -785,11 +756,17 @@
 <script>
     import {mapGetters} from 'vuex'
     const FormSintomas = () => import('Views/aps/rcv/encuestas/components/FormSIntomas')
+    const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
+    const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
+    const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
     import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
     export default {
         name: 'RegistroEncuesta',
       components: {
         FormSintomas,
+        FormEspecialidades,
+        FormExamenes,
+        FormMedicamentos,
         DatosAfiliado
       },
         data: () => ({
@@ -921,6 +898,9 @@
                       if (encuestaData.responde_paciente) {
                         encuestaData.acudiente = null
                       }
+                      encuestaData.medicamentos = encuestaData.medicamentos && encuestaData.medicamentos.length ? encuestaData.medicamentos.join(',') : null
+                      encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
+                      encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
                       this.loading = true
                       this.axios.post(`rcvs`, encuestaData)
                           .then(response => {

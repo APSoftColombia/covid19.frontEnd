@@ -4,17 +4,17 @@
             <v-card outlined tile>
                 <v-card-text>
                     <c-check
-                            label="17. ¿Que examenes le tomaron?"
-                            v-model="losExamenes"
-                            :rules="sinExamenes ? '' : 'required'"
-                            name="examenes"
-                            :items="examenes"
-                            :disabled="sinExamenes"
+                            label="15. ¿Qué especialidades?"
+                            v-model="lasEspecialidades"
+                            :rules="sinEspecialidades ? '' : 'required'"
+                            name="especialidades"
+                            :items="especialidades"
+                            :disabled="sinEspecialidades"
                     >
                     </c-check>
                     <v-checkbox
                             class="mt-1 ml-2"
-                            v-model="sinExamenes"
+                            v-model="sinEspecialidades"
                             label="No sabe"
                             hide-details
                     ></v-checkbox>
@@ -26,39 +26,39 @@
 
 <script>
     export default {
-        name: 'FormExamenes',
+        name: 'FormEspecialidades',
         props: {
-            arrayExamenes: {
+            arrayEspecialidades: {
                 type: [Array, String, Number, Boolean],
                 default: () => []
             },
-          examenes: {
+          especialidades: {
             type: Array,
             default: () => []
           }
         },
         data: () => ({
-            sinExamenes: false,
-            losExamenes: []
+            sinEspecialidades: false,
+            lasEspecialidades: []
         }),
         watch: {
-            'arrayExamenes': {
+            'arrayEspecialidades': {
                 handler (val) {
-                    this.losExamenes = val
+                    this.lasEspecialidades = val
                 },
                 immediate: true
             },
-            'sinExamenes': {
+            'sinEspecialidades': {
                 handler (val) {
                     if (val) {
-                        this.$emit('changeExamenes', [])
+                        this.$emit('changeEspecialidades', [])
                     }
                 },
                 immediate: false
             },
-            'losExamenes': {
+            'lasEspecialidades': {
                 handler (val) {
-                    this.$emit('changeExamenes', val)
+                    this.$emit('changeEspecialidades', val)
                 },
                 immediate: false
             }

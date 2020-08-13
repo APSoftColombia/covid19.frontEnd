@@ -50,20 +50,65 @@
                     <template v-if="encuesta.resultado.findrisc && encuesta.resultado.oms">
 <!--                    FINDRISC & OMS-->
                       <v-col cols="12">
-                        <v-subheader>Evalución riesgo cardiovascular (FINDRISC)</v-subheader>
-                        <p class="mb-0">De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular {{encuesta.resultado.findrisc.riesgo}}.</p>
-                        {{encuesta.resultado.findrisc}}
+                        <v-list two-line class="notification-wrap">
+                          <v-list-item
+                              style="border-bottom: none !important;"
+                              @click="click = null"
+                          >
+                            <v-list-item-avatar class="my-1" :size="60">
+                              <v-icon large :color="encuesta.resultado.findrisc.rgb_riesgo">mdi-alert</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                                Evalución riesgo cardiovascular (FINDRISC)
+                                <v-chip
+                                    class="ml-2"
+                                    small
+                                    :color="encuesta.resultado.findrisc.rgb_riesgo"
+                                    label
+                                    text-color="white"
+                                >
+                                  {{encuesta.resultado.findrisc.porcentaje_findrisc}}
+                                </v-chip>
+                              </v-list-item-subtitle>
+                              <v-list-item-title><h6 class="mb-0 text-justify">De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular <strong>{{(encuesta.resultado.findrisc.riesgo).toUpperCase()}}</strong>.</h6></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
                       </v-col>
                       <v-col cols="12">
-                        <v-subheader>Evalución riesgo cardiovascular (OMS)</v-subheader>
-                        <p class="mb-0">De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular {{encuesta.resultado.oms.riesgo}}.</p>
-                        {{encuesta.resultado.oms}}
+                        <v-list two-line class="notification-wrap">
+                          <v-list-item
+                              style="border-bottom: none !important;"
+                              @click="click = null"
+                          >
+                            <v-list-item-avatar class="my-1" :size="60">
+                              <v-icon large :color="encuesta.resultado.oms.rgb_riesgo">mdi-alert</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                                Evalución riesgo cardiovascular (OMS)
+                                <v-chip
+                                    class="ml-2"
+                                    small
+                                    :color="encuesta.resultado.oms.rgb_riesgo"
+                                    label
+                                    text-color="white"
+                                >
+                                  {{encuesta.resultado.oms.porcentaje_rxoms}}
+                                </v-chip>
+                              </v-list-item-subtitle>
+                              <v-list-item-title><h6 class="mb-0 text-justify">De acuerdo a las respuestas brindadas señor usuario me permito informar que se refleja un riesgo cardiovascular <strong>{{(encuesta.resultado.oms.riesgo).toUpperCase()}}</strong>.</h6></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
                       </v-col>
                       <v-col cols="12" v-if="!['Bajo', 'Moderado'].find(x => x === encuesta.resultado.oms.riesgo) || !['Bajo', 'Moderado', 'Ligeramente elevado'].find(x => x === encuesta.resultado.findrisc.riesgo)">
                         <v-alert
-                            border="top"
+                            border="left"
                             colored-border
-                            type="info"
+                            icon="mdi-information"
+                            type="light-blue"
                             elevation="2"
                         >
                           De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitame un momento le informamos el día y la hora de su cita.
@@ -73,11 +118,12 @@
                     <template>
                       <!--                    Atención medica & laboratorios-->
                       <v-col cols="12">
-                        <v-subheader>Evalución atención medica general: {{encuesta.consulta_medicina_g}}</v-subheader>
+                        <v-subheader class="font-weight-bold">Evalución atención medica general: {{encuesta.consulta_medicina_g}}</v-subheader>
                         <v-alert
-                            border="top"
+                            border="left"
                             colored-border
-                            type="info"
+                            icon="mdi-information"
+                            type="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_g === 'MENOR A 3 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX.</p>
@@ -85,11 +131,12 @@
                         </v-alert>
                       </v-col>
                       <v-col cols="12">
-                        <v-subheader>Evalución atención medica especializada: {{encuesta.consulta_medicina_i}}</v-subheader>
+                        <v-subheader class="font-weight-bold">Evalución atención medica especializada: {{encuesta.consulta_medicina_i}}</v-subheader>
                         <v-alert
-                            border="top"
+                            border="left"
                             colored-border
-                            type="info"
+                            icon="mdi-information"
+                            type="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_i === 'MENOR A 6 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX.</p>
@@ -97,11 +144,12 @@
                         </v-alert>
                       </v-col>
                       <v-col cols="12">
-                        <v-subheader>Evalución toma de laboratorios: {{encuesta.laboratorios}}</v-subheader>
+                        <v-subheader class="font-weight-bold">Evalución toma de laboratorios: {{encuesta.laboratorios}}</v-subheader>
                         <v-alert
-                            border="top"
+                            border="left"
                             colored-border
-                            type="info"
+                            icon="mdi-information"
+                            type="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.laboratorios === 'MENOR A 6 MESES'">de acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX y recordar la toma de sus laboratorios correspondiente. {{encuesta.diabetes === 'Si' ? 'recordar la toma d ela hemoglobina glicosilada.' : '' }}</p>
@@ -113,11 +161,12 @@
                       <!--                    Medicamentos-->
                       <template v-if="encuesta.formula_hta_dm === 'Si'">
                         <v-col cols="12">
-                          <v-subheader>Evalución medicamentos</v-subheader>
+                          <v-subheader class="font-weight-bold">Evalución medicamentos</v-subheader>
                           <v-alert
-                              border="top"
+                              border="left"
                               colored-border
-                              type="info"
+                              icon="mdi-information"
+                              type="light-blue"
                               elevation="2"
                           >
                             <p class="mb-0">Verificar fecha de entrega, recordar la importancia de asistir puntualmente a la entrega y dejar registro para seguimento.</p>
@@ -125,12 +174,13 @@
                           </v-alert>
                         </v-col>
                         <v-col cols="12" v-if="encuesta.resultado.morisky">
-                          <v-subheader>Evaluación adherencia al tratamiento (Test Morisky Green): {{encuesta.resultado.morisky.riesgo}}</v-subheader>
+                          <v-subheader class="font-weight-bold">Evaluación adherencia al tratamiento (Test Morisky Green): {{encuesta.resultado.morisky.riesgo}}</v-subheader>
                           {{encuesta.resultado.morisky}}
                           <v-alert
-                              border="top"
+                              border="left"
                               colored-border
-                              type="info"
+                              icon="mdi-information"
+                              type="light-blue"
                               elevation="2"
                           >
                             <p class="mb-0" v-if="encuesta.resultado.morisky.riesgo === 'Cumple'">Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>
@@ -142,11 +192,13 @@
                         <p>Pasar a la fase de Recomendaciones y educación de acuerdo a las repsuestas brindadas por el usuario.</p>
                       </template>
                     </template>
-                    <!--FINDRISC & OMS-->
-                    <definicion1></definicion1>
-                    <definicion2></definicion2>
-                    <definicion3></definicion3>
-                    <definicion4></definicion4>
+                    <!--Educación-->
+                    <template v-if="encuesta.resultado.oms && encuesta.resultado.oms.riesgo !== 'Indeterminado'">
+                      <definicion1 v-if="encuesta.resultado.oms.riesgo === 'Bajo'"></definicion1>
+                      <definicion2 v-if="encuesta.resultado.oms.riesgo === 'Moderado'"></definicion2>
+                      <definicion3 v-if="encuesta.resultado.oms.riesgo === 'Alto'"></definicion3>
+                      <definicion4 v-if="encuesta.resultado.oms.riesgo === 'Muy alto' || encuesta.resultado.oms.riesgo === 'Crítico'"></definicion4>
+                    </template>
 <!--                    <recomendaciones></recomendaciones>-->
                     <semaforo-alimentacion></semaforo-alimentacion>
                   </template>
