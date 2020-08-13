@@ -511,8 +511,8 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
-                      response.data.localiza_persona = 1
-                      response.data.contesta_encuesta = 1
+                      // response.data.localiza_persona = 1
+                      // response.data.contesta_encuesta = 1
                         response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false
