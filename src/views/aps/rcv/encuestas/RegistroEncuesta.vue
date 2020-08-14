@@ -504,13 +504,15 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
-                              <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
-                                <form-especialidades
-                                    :array-especialidades="encuesta.especialidad"
-                                    @changeEspecialidades="val => encuesta.especialidad = val"
-                                    :especialidades="complementos && complementos.especialidad ? complementos.especialidad : []"
-                                ></form-especialidades>
-                              </v-col>
+                              <v-expand-transition>
+                                <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
+                                  <form-especialidades
+                                      :array-especialidades="encuesta.especialidad"
+                                      @changeEspecialidades="val => encuesta.especialidad = val"
+                                      :especialidades="complementos && complementos.especialidad ? complementos.especialidad : []"
+                                  ></form-especialidades>
+                                </v-col>
+                              </v-expand-transition>
                               <v-col cols="12">
                                 <v-card outlined tile>
                                   <v-card-text>
@@ -527,13 +529,15 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
-                              <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
-                                <form-examenes
-                                    :array-examenes="encuesta.laboratorio"
-                                    @changeExamenes="val => encuesta.laboratorio = val"
-                                    :examenes="complementos && complementos.laboratorio ? complementos.laboratorio : []"
-                                ></form-examenes>
-                              </v-col>
+                              <v-expand-transition>
+                                <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
+                                  <form-examenes
+                                      :array-examenes="encuesta.laboratorio"
+                                      @changeExamenes="val => encuesta.laboratorio = val"
+                                      :examenes="complementos && complementos.laboratorio ? complementos.laboratorio : []"
+                                  ></form-examenes>
+                                </v-col>
+                              </v-expand-transition>
                               <v-col cols="12">
                                 <v-card outlined tile>
                                   <v-card-text>
@@ -550,13 +554,15 @@
                                   </v-card-text>
                                 </v-card>
                               </v-col>
-                              <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
-                                <form-medicamentos
-                                    :array-medicamentos="encuesta.medicamentos"
-                                    @changeMedicamentos="val => encuesta.medicamentos = val"
-                                    :medicamentos="complementos && complementos.medicamentos ? complementos.medicamentos : []"
-                                ></form-medicamentos>
-                              </v-col>
+                              <v-expand-transition>
+                                <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
+                                  <form-medicamentos
+                                      :array-medicamentos="encuesta.medicamentos"
+                                      @changeMedicamentos="val => encuesta.medicamentos = val"
+                                      :medicamentos="complementos && complementos.medicamentos ? complementos.medicamentos : []"
+                                  ></form-medicamentos>
+                                </v-col>
+                              </v-expand-transition>
                               <v-expand-transition>
                                 <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
                                   <v-card outlined tile>
@@ -855,16 +861,33 @@
               },
               immediate: false
             },
+          'encuesta.consulta_medicina_i': {
+              handler (val) {
+                if (!val || val === 'No sabe') {
+                  this.encuesta.especialidad = []
+                }
+              },
+              immediate: false
+            },
+          'encuesta.laboratorios': {
+              handler (val) {
+                if (!val || val === 'No sabe') {
+                  this.encuesta.laboratorio = []
+                }
+              },
+              immediate: false
+            },
           'encuesta.formula_hta_dm': {
               handler (val) {
                 if (!val || val === 'No') {
                   this.encuesta.tiene_medicamentos = null
+                  this.encuesta.medicamentos = []
                   this.encuesta.entrega_medicamentos = null
                   this.encuesta.proxima_entrega_medicamentos = null
                   this.encuesta.interrumpe_tto = null
                   this.encuesta.a_tiempo_tto = null
                   this.encuesta.suspende_mejora_tto = null
-                  this.encuesta.suspende_mejora_tto = null
+                  this.encuesta.suspende_adverso_tto = null
                 }
               },
               immediate: false
