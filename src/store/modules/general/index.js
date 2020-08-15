@@ -42,25 +42,26 @@ const state = {
         'Universidades Públicas'
     ],
     clasificacionesCovid: [
-        {id: '1', selectable: true, text: '1', nombre: 'Definición 1', modal: true, help: true},
-        {id: '2', selectable: true, text: '2', nombre: 'Definición 2', modal: true, help: true},
-        {id: '3', selectable: false, text: '3', nombre: 'Definición 3', modal: true, help: true},
-        {id: '3.1', selectable: true, text: '3.1', nombre: 'Definición 3.1', modal: true, help: true},
-        {id: '3.2', selectable: true, text: '3.2', nombre: 'Definición 3.2', modal: true, help: true},
-        {id: '4', selectable: true, text: '4', nombre: 'Definición 4', modal: true, help: true},
-        {id: '5', selectable: true, text: '5', nombre: 'Definición 5', modal: true, help: true},
-        ///v
-        {id: '1', selectable: true, text: 'CP1', nombre: 'Caso Probable 1', modal: true, help: true},
-        {id: '2', selectable: true, text: 'CP2', nombre: 'Caso Probable 2', modal: true, help: true},
-        {id: '4', selectable: true, text: 'CP4', nombre: 'Caso Probable 4', modal: true, help: true},
-        {id: '5', selectable: true, text: 'CP5', nombre: 'Caso Probable 5', modal: true, help: true},
+        ////VI
+        {version: 1, idShow: 'VI1', id: '1', selectable: false, text: '1', nombre: 'V1 Definición 1', modal: true, help: true},
+        {version: 1, idShow: 'VI2', id: '2', selectable: false, text: '2', nombre: 'V1 Definición 2', modal: true, help: true},
+        {version: 1, idShow: 'VI3', id: '3', selectable: false, text: '3', nombre: 'V1 Definición 3', modal: true, help: true},
+        {version: 1, idShow: 'VI3.1', id: '3.1', selectable: false, text: '3.1', nombre: 'V1 Definición 3.1', modal: true, help: true},
+        {version: 1, idShow: 'VI3.2', id: '3.2', selectable: false, text: '3.2', nombre: 'V1 Definición 3.2', modal: true, help: true},
+        {version: 1, idShow: 'VI4', id: '4', selectable: false, text: '4', nombre: 'V1 Definición 4', modal: true, help: true},
+        {version: 1, idShow: 'VI5', id: '5', selectable: false, text: '5', nombre: 'V1 Definición 5', modal: true, help: true},
+        ///VII
+        {version: 2, idShow: 'VIIP1', id: '1', selectable: true, text: 'CP1', nombre: 'V2 Caso Probable 1', modal: true, help: true},
+        {version: 2, idShow: 'VIIP2', id: '2', selectable: true, text: 'CP2', nombre: 'V2 Caso Probable 2', modal: true, help: true},
+        {version: 2, idShow: 'VIIP4', id: '4', selectable: true, text: 'CP4', nombre: 'V2 Caso Probable 4', modal: true, help: true},
+        {version: 2, idShow: 'VIIP5', id: '5', selectable: true, text: 'CP5', nombre: 'V2 Caso Probable 5', modal: true, help: true},
         //
-        {id: '1', selectable: true, text: 'CC1', nombre: 'Caso Confirmado 1', modal: true, help: true},
-        {id: '2', selectable: true, text: 'CC2', nombre: 'Caso Confirmado 2', modal: true, help: true},
-        {id: '4', selectable: true, text: 'CC4', nombre: 'Caso Confirmado 4', modal: true, help: true},
-        {id: '5', selectable: true, text: 'CC5', nombre: 'Caso Confirmado 5', modal: true, help: true},
+        {version: 2, idShow: 'VIIC1', id: '1', selectable: true, text: 'CC1', nombre: 'V2 Caso Confirmado 1', modal: true, help: true},
+        {version: 2, idShow: 'VIIC2', id: '2', selectable: true, text: 'CC2', nombre: 'V2 Caso Confirmado 2', modal: true, help: true},
+        {version: 2, idShow: 'VIIC4', id: '4', selectable: true, text: 'CC4', nombre: 'V2 Caso Confirmado 4', modal: true, help: true},
+        {version: 2, idShow: 'VIIC5', id: '5', selectable: true, text: 'CC5', nombre: 'V2 Caso Confirmado 5', modal: true, help: true},
         ///////////////
-        {id: '6', selectable: true, text: 'NC', nombre: 'No clasificado en ninguna de las definiciones.', modal: false, help: false}
+        {version: 1, id: '6', selectable: true, text: 'NC', nombre: 'No clasificado en ninguna de las definiciones.', modal: false, help: false}
     ],
     tiposTamizaje: [
         {id: 'telefónico', nombre: 'Telefónico'},

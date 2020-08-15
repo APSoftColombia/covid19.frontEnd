@@ -70,9 +70,10 @@
                     v-model="filters.models.clasificacion"
                     label="Clasificación"
                     :items="clasificacionesCovid"
-                    item-value="id"
+                    item-value="idShow"
                     item-text="nombre"
                     multiple
+                    :return-object="true"
             >
             </c-select-complete>
         </v-col>
@@ -257,7 +258,7 @@
             this.getComplementos()
             if (this.esMedico) {
                 this.filters.models.evolucion = ['Mejoró', 'Sigue igual', 'Empeoró', 'Sin seguimiento']
-                this.filters.models.clasificacion = ['1','2','3', '3.1', '3.2','4','5']
+                this.filters.models.clasificacion = this.clasificacionesCovid && this.clasificacionesCovid.length ? this.clasificacionesCovid.filter(x => x.id !== '6') : []
                 this.aplicaFiltros()
             }
         },
@@ -288,7 +289,7 @@
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[evolucion]=' + this.filters.models.evolucion.join(',')
                 }
                 if (this.filters.models.clasificacion.length) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[clasificacion]=' + this.filters.models.clasificacion.join(',')
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[clasificacion]=' + this.filters.models.clasificacion.map(x => x.id).join(',')
                 }
                 if (this.filters.models.estado_afectacion !== null) {
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado_afectacion]=' + this.filters.models.estado_afectacion

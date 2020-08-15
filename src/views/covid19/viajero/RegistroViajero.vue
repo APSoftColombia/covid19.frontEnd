@@ -203,19 +203,6 @@
                                         >
                                         </c-texto>
                                     </v-col>
-                                    <v-col class="pb-0" cols="12">
-                                        <c-number
-                                                v-model="tamizaje.infoviajero.temperatura"
-                                                label="Temperatura"
-                                                rules="required|min:0|max:50"
-                                                name="temperatura"
-                                                min="0"
-                                                max="50"
-                                                suffix="°C"
-                                                :clearable="false"
-                                        >
-                                        </c-number>
-                                    </v-col>
                                 </v-row>
                                 <form-sintomas
                                         :array-sintomas="tamizaje.sintomas"
@@ -224,6 +211,73 @@
                                         @changeFecha="val => tamizaje.fecha_sintomas = val"
                                         :class="tamizaje.sintomas.length ? '' : 'pb-3'"
                                 ></form-sintomas>
+                              <template>
+                                <v-row>
+                                  <v-col class="pb-0" cols="12">
+                                    <v-checkbox
+                                        class="shrink mt-0 mb-1"
+                                        v-model="activaPR"
+                                        :label="activaPR ? 'Frecuencia de Pulso (PR)' : 'Toma de Frecuencia de Pulso (PR)'"
+                                        :ripple="!activaPR"
+                                        hide-details
+                                        @change="!activaPR ? tamizaje.frecuencia_pulso = null : ''"
+                                    ></v-checkbox>
+                                    <c-number
+                                        v-if="activaPR"
+                                        placeholder="Frecuencia de Pulso"
+                                        v-model="tamizaje.frecuencia_pulso"
+                                        name="frecuencia de pulso"
+                                        rules="required|min:0"
+                                        min="0"
+                                        step="1"
+                                    >
+                                    </c-number>
+                                  </v-col>
+                                </v-row>
+                                <v-row>
+                                  <v-col class="pb-0" cols="12">
+                                    <v-checkbox
+                                        class="shrink mt-0 mb-1"
+                                        v-model="activaSPO2"
+                                        :label="activaSPO2 ? 'Saturación de Oxígeno (SPO2)' : 'Toma de Saturación de Oxígeno (SPO2)'"
+                                        :ripple="!activaSPO2"
+                                        hide-details
+                                        @change="!activaSPO2 ? tamizaje.saturacion_oxigeno = null : ''"
+                                    ></v-checkbox>
+                                    <c-number
+                                        v-if="activaSPO2"
+                                        placeholder="Saturación de Oxígeno"
+                                        v-model="tamizaje.saturacion_oxigeno"
+                                        name="saturación de oxígeno"
+                                        rules="required|min:0"
+                                        min="0"
+                                    >
+                                    </c-number>
+                                  </v-col>
+                                </v-row>
+                                <v-row>
+                                  <v-col cols="12">
+                                    <v-checkbox
+                                        class="shrink mt-0 mb-1"
+                                        v-model="activaTemperatura"
+                                        :label="activaTemperatura ? 'Temperatura' : 'Toma de Temperatura'"
+                                        :ripple="!activaTemperatura"
+                                        hide-details
+                                        @change="!activaTemperatura ? tamizaje.temperatura = null : ''"
+                                    ></v-checkbox>
+                                    <c-number
+                                        v-if="activaTemperatura"
+                                        placeholder="Temperatura"
+                                        v-model="tamizaje.temperatura"
+                                        name="temperatura"
+                                        suffix="°C"
+                                        rules="required|min:0"
+                                        min="0"
+                                    >
+                                    </c-number>
+                                  </v-col>
+                                </v-row>
+                              </template>
                                 <v-row>
                                     <v-col cols="12" v-if="vieneExterior">
                                         <v-card outlined tile>
@@ -296,6 +350,9 @@
             verificado: 0,
             loading: false,
             dialog: false,
+            activaPR: true,
+            activaSPO2: true,
+            activaTemperatura: true,
             tamizaje: null,
             puntosControl: []
         }),
@@ -455,24 +512,20 @@
 
         },
         created() {
-            // this.assign()
             this.getPuntosCotrol()
         },
         methods: {
-            assign () {
-                // this.tamizaje = this.clone(this.modelTamizaje)
-                // this.tamizaje.infoviajero = this.clone(this.modelViajero)
-                // if (this.datosEmpresa) this.tamizaje.infoviajero.departamento_destino = parseInt(this.datosEmpresa.departamento_id)
-            },
             guardarTamizaje () {
-                this.$refs.formTamizajeViajero.validate().then(result => {
+                this.$refs.formTamizajeViajero.validate().then(async result => {
                     if (result) {
                         this.loading = true
                         this.tamizaje.tamizador_id = 891
                         this.tamizaje.tipo_tamizaje = 'presencial'
-                        let request = this.tamizaje.id
-                            ? this.axios.put(`tamizaje-viajeros/${this.tamizaje.id}`, this.tamizaje)
-                            : this.axios.post(`tamizaje-viajeros`, this.tamizaje)
+                        let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
+                        tamizajeCopia.infoviajero.temperatura = tamizajeCopia.temperatura
+                        let request = tamizajeCopia.id
+                            ? this.axios.put(`tamizaje-viajeros/${tamizajeCopia.id}`, tamizajeCopia)
+                            : this.axios.post(`tamizaje-viajeros`, tamizajeCopia)
                         request
                             .then(response => {
                                 this.$emit('guardado', response.data)
@@ -491,7 +544,11 @@
                 if (idViajero) {
                     this.getViajero(idViajero)
                 } else {
+                    this.activaPR = true
+                    this.activaSPO2 = true
+                    this.activaTemperatura = true
                     this.tamizaje = this.clone(this.modelTamizaje)
+                    this.tamizaje.localiza_persona = true
                     this.tamizaje.infoviajero = this.clone(this.modelViajero)
                     if (this.datosEmpresa) this.tamizaje.infoviajero.departamento_destino = parseInt(this.datosEmpresa.departamento_id)
                 }
@@ -500,7 +557,6 @@
                 this.$refs.formTamizajeViajero.reset()
                 this.dialog = false
                 this.loading = false
-                // this.assign()
                 this.tamizaje = null
                 this.verificado = 0
             },
@@ -511,8 +567,9 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
-                      // response.data.localiza_persona = 1
-                      // response.data.contesta_encuesta = 1
+                        this.activaPR = response.data.frecuencia_pulso !== null
+                        this.activaSPO2 = response.data.saturacion_oxigeno !== null
+                        this.activaTemperatura = response.data.temperatura !== null
                         response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false

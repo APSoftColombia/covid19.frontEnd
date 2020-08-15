@@ -34,26 +34,14 @@
                             <v-list-item-title><h6 class="mb-0 text-justify">{{evolucion.lugar_evolucion.id === 3 ? 'Atención en ' : ''}}{{evolucion.lugar_evolucion.orden}}</h6></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item
-                            v-if="evolucion.clasificacion"
-                            flat
-                            style="border-bottom: none !important;"
-                            @click="click = null"
-                    >
-                        <v-list-item-avatar class="my-1">
-                            <v-icon color="error">mdi-clipboard-list</v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content class="pa-0">
-                            <v-list-item-subtitle class="grey--text fs-12 fw-normal">Clasificación del paciente</v-list-item-subtitle>
-                            <v-list-item-title><h6 class="mb-0 text-justify">{{clasificacionesCovid ? clasificacionesCovid.find(x => x.id === evolucion.clasificacion).nombre : ''}}</h6></v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action v-if="evolucion.clasificacion !== '6'">
-                            <v-btn icon color="blue" @click.stop="verAyuda(clasificacionesCovid ? clasificacionesCovid.find(x => x.id === evolucion.clasificacion) : null)">
-                                <v-icon>help</v-icon>
-                            </v-btn>
-                        </v-list-item-action>
-                    </v-list-item>
                 </v-list>
+              <list-item-clasificacion
+                  v-if="evolucion.clasificacion"
+                  :clasificacion="evolucion.clasificacion"
+                  :version="evolucion.version_lineamientos"
+                  :confirmado="evolucion.positivo_covid"
+                  @click="val => verAyuda(val)"
+              ></list-item-clasificacion>
             </v-col>
             <template v-if="!evolucion.fallida">
                 <v-col cols="12">
@@ -338,7 +326,7 @@
 
 <script>
     import {mapGetters} from "vuex";
-
+    import ListItemClasificacion from './components/ListItemClasificacion'
     const HelpModal = () => import('../../../../components/HelpModal/HelpModal')
     export default {
         name: 'DatosEvolucion',
@@ -353,6 +341,7 @@
           }
         },
         components: {
+            ListItemClasificacion,
             HelpModal
         },
         data: () => ({

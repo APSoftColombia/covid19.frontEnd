@@ -79,7 +79,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import BotonClasificacion from "../../../components/Tamizaje/BotonClasificacion";
+    import BotonClasificacion from '../../../components/Tamizaje/BotonClasificacion'
     import SemaforoAvatar from "../../../components/Tamizaje/SemaforoAvatar";
     import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla";
     import axios from 'axios'
@@ -393,6 +393,8 @@
                                         {
                                             props: {
                                                 clasificacion: context.props.value.clasificacion,
+                                                version: context.props.value.version_lineamientos,
+                                                confirmado: context.props.value.positivo_covid,
                                                 color: 'orange',
                                                 textColor: 'white'
                                             },
@@ -483,6 +485,7 @@
                 this.dataTable.route = ruta
             },
             verModalClasificacion (modal) {
+              console.log('modal', modal)
                 this.$refs.helpModal.open(modal)
             },
             crearTamizaje () {

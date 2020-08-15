@@ -1,22 +1,31 @@
 <template>
-    <v-tooltip top v-if="obj">
-        <template v-slot:activator="{on}">
-            <v-btn
-                    v-on="on"
-                    :color="color"
-                    :class="`${textColor}--text`"
-                    @click="$emit('click', obj)"
-            >{{obj.text}}</v-btn>
-        </template>
-        <span>{{obj.nombre}}</span>
-    </v-tooltip>
+  <v-list two-line flat class="notification-wrap" v-if="obj">
+    <v-list-item
+        flat
+        style="border-bottom: none !important;"
+        @click="click = null"
+    >
+      <v-list-item-avatar class="my-1">
+        <v-icon color="orange">mdi-clipboard-list</v-icon>
+      </v-list-item-avatar>
+      <v-list-item-content class="pa-0">
+        <v-list-item-subtitle class="grey--text fs-12 fw-normal">Clasificación del paciente</v-list-item-subtitle>
+        <v-list-item-title><h6 class="mb-0 text-justify">{{obj.nombre}}</h6></v-list-item-title>
+      </v-list-item-content>
+      <v-list-item-action v-if="obj.id !== '6'">
+        <v-btn icon color="blue" @click.stop="$emit('click', obj)">
+          <v-icon>mdi-help-circle</v-icon>
+        </v-btn>
+      </v-list-item-action>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapGetters} from 'vuex'
 
     export default {
-        name: 'BotonClasificacion',
+        name: 'ListItemClasificacion',
         props: {
             clasificacion: {
                 type: String,
@@ -29,14 +38,6 @@
             confirmado: {
               type: Number,
               Default: 0
-            },
-            color: {
-                type: String,
-                Default: undefined
-            },
-            textColor: {
-                type: String,
-                Default: 'white'
             }
         },
         computed: {
@@ -45,6 +46,7 @@
             ])
         },
         data: () => ({
+          click: null,
            obj: null
         }),
         watch: {

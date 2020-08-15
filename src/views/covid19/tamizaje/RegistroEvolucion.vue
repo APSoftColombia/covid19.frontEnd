@@ -82,12 +82,6 @@
                             </template>
                             <template v-else>
                                 <template v-if="!evolucion.fallida">
-                                    <!--                                <form-sintomas-->
-                                    <!--                                        :array-sintomas="evolucion.sintomas"-->
-                                    <!--                                        :fecha-sintomas="evolucion.fecha_sintomas"-->
-                                    <!--                                        @changeSintomas="val => evolucion.sintomas = val"-->
-                                    <!--                                        @changeFecha="val => evolucion.fecha_sintomas = val"-->
-                                    <!--                                ></form-sintomas>-->
                                     <v-row>
                                         <v-col cols="12">
                                             <sintomas-fecha
@@ -95,6 +89,75 @@
                                                     :evolucion="evolucion"
                                             ></sintomas-fecha>
                                         </v-col>
+                                    </v-row>
+                                  <template>
+                                    <v-row>
+                                      <v-col class="pb-0" cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaPR"
+                                            :label="activaPR ? 'Frecuencia de Pulso (PR)' : 'Toma de Frecuencia de Pulso (PR)'"
+                                            :ripple="!activaPR"
+                                            hide-details
+                                            @change="!activaPR ? evolucion.frecuencia_pulso = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaPR"
+                                            placeholder="Frecuencia de Pulso"
+                                            v-model="evolucion.frecuencia_pulso"
+                                            name="frecuencia de pulso"
+                                            rules="required|min:0"
+                                            min="0"
+                                            step="1"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                    <v-row>
+                                      <v-col class="pb-0" cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaSPO2"
+                                            :label="activaSPO2 ? 'Saturación de Oxígeno (SPO2)' : 'Toma de Saturación de Oxígeno (SPO2)'"
+                                            :ripple="!activaSPO2"
+                                            hide-details
+                                            @change="!activaSPO2 ? evolucion.saturacion_oxigeno = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaSPO2"
+                                            placeholder="Saturación de Oxígeno"
+                                            v-model="evolucion.saturacion_oxigeno"
+                                            name="saturación de oxígeno"
+                                            rules="required|min:0"
+                                            min="0"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                    <v-row>
+                                      <v-col cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaTemperatura"
+                                            :label="activaTemperatura ? 'Temperatura' : 'Toma de Temperatura'"
+                                            :ripple="!activaTemperatura"
+                                            hide-details
+                                            @change="!activaTemperatura ? evolucion.temperatura = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaTemperatura"
+                                            placeholder="Temperatura"
+                                            v-model="evolucion.temperatura"
+                                            name="temperatura"
+                                            suffix="°C"
+                                            rules="required|min:0"
+                                            min="0"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                  </template>
+                                  <v-row>
                                         <v-col cols="12" class="pb-0">
                                             <v-card outlined tile>
                                                 <v-card-text>
@@ -275,7 +338,7 @@
                                                             label="Clasificación del Paciente de acuerdo con LINEAMIENTOS PARA LA DETECCIÓN Y MANEJO DE CASOS DE COVID-19 POR LOS PRESTADORES DE SERVICIOS DE SALUD EN COLOMBIA."
                                                             rules="required"
                                                             name="clasificación COVID-19"
-                                                            :items="clasificacionesCovid ? clasificacionesCovid.filter(x => x.selectable) : []"
+                                                            :items="clasificacionesCovidSeleccionables"
                                                             item-text="nombre"
                                                             item-value="id"
                                                             classitempb="pb-2"
@@ -572,6 +635,9 @@
             verFormularioAislamiento: 0,
             loading: false,
             dialog: false,
+            activaPR: true,
+            activaSPO2: true,
+            activaTemperatura: true,
             evolucion: null,
             tamizaje: null,
             comorbilidades: []
@@ -588,6 +654,12 @@
                 'estadosAfectacion',
                 'signosAlarma'
             ]),
+          clasificacionesCovidSeleccionables () {
+              if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {
+                return this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes(this.tamizaje.positivo_covid ? 'CC' : 'CP')) || x.text === 'NC')
+              }
+              return []
+          },
             estadosAfectacionFiltrados () {
                 let listado = []
                 if (this) {
@@ -744,6 +816,9 @@
             open (idEvolucion = null, tamizaje = null) {
                 if (idEvolucion) this.getEvolucion(idEvolucion)
                 else if (tamizaje) {
+                    this.activaPR = true
+                    this.activaSPO2 = true
+                    this.activaTemperatura = true
                     this.tamizaje = tamizaje
                     this.evolucion.tamizaje_id = this.tamizaje.id
                     this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
@@ -772,6 +847,9 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
+                      this.activaPR = response.data.frecuencia_pulso !== null
+                      this.activaSPO2 = response.data.saturacion_oxigeno !== null
+                      this.activaTemperatura = response.data.temperatura !== null
                         this.evolucion = response.data
                         this.loading = false
                     })

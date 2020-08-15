@@ -19,13 +19,15 @@
                 :multiple="multiple"
                 :loading="loading"
                 @change="$emit('change')"
+                :return-object="returnObject"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
-                <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
+              <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
             </template>
         </v-select>
         <v-autocomplete
                 v-else
+                ref="theRefS"
                 v-model="model"
                 :label="label"
                 :placeholder="placeholder"
@@ -41,10 +43,11 @@
                 :hide-details="hideDetails"
                 :multiple="multiple"
                 :loading="loading"
+                :return-object="returnObject"
                 @change="$emit('change')"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
-                <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
+                <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRefS && itemText ? $refs.theRefS.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
             </template>
         </v-autocomplete>
     </ValidationProvider>
@@ -95,6 +98,10 @@
                 default: null
             },
             readonly: {
+                type: Boolean,
+                default: false
+            },
+            returnObject: {
                 type: Boolean,
                 default: false
             },

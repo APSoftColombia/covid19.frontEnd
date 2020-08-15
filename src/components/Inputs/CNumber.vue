@@ -3,6 +3,7 @@
         <v-text-field
                 v-model.number="model"
                 type="number"
+                :placeholder="placeholder"
                 :min="min"
                 :max="max"
                 :step="step"
@@ -29,6 +30,10 @@
         default: null
       },
       label: {
+        type: String,
+        default: null
+      },
+      placeholder: {
         type: String,
         default: null
       },

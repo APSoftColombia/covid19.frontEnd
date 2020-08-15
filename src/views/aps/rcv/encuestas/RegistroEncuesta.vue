@@ -39,7 +39,7 @@
                                   colored-border
                                   icon="mdi-information"
                               >
-                                Se requiere su autorización para que de manera libre, voluntaria y debidamente informada, nos permita almacenar, usar, circular, suprimir, procesar y en general, dar tratamiento a los datos que fueron suministrados por Usted.
+                                Dando cumplimiento a lo dispuesto en la Ley 1581 de 2012, manifiesto que he sido informado por la EPS de lo siguiente:Que la finalidad de la recolección de mis datos personales, consiste en: Conocer y hacer seguimiento a mi estado de salud.
                               </v-alert>
                             </v-col>
                             <v-col cols="12">
@@ -720,14 +720,14 @@
                           min-width="350"
                           max-width="600"
                           offset-y
-                          offset-X
+                          nudge-left="290"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                               v-bind="attrs"
                               v-on="on"
                               color="indigo"
-                              class="mr-1 mt-70"
+                              class="mr-3 mt-70"
                               fab
                               dark
                               top

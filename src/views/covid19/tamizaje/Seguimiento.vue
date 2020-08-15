@@ -31,7 +31,21 @@
                     </v-btn>
                 </div>
                 <datos-personales :tamizaje="tamizaje"></datos-personales>
-                <datos-tamizaje class="mt-2" :tamizaje="tamizaje"></datos-tamizaje>
+                <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
+              <v-alert
+                  v-if="tamizaje.medico"
+                  class="mt-3"
+                  v-model="alertPurebas"
+                  dismissible
+                  close-icon="mdi-delete"
+                  color="orange"
+                  border="left"
+                  elevation="2"
+                  colored-border
+                  icon="mdi-alert"
+              >
+                Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se relacionen correctamente.
+              </v-alert>
                 <v-tabs
                         class="mt-3"
                         v-if="tamizaje.medico"
@@ -156,6 +170,7 @@
             Nexos
         },
         data: () => ({
+          alertPurebas: true,
             dialog: false,
             loading: false,
             loadingPDF: false,
@@ -198,6 +213,7 @@
                 })
             },
             open (idTamizaje = null) {
+                this.alertPurebas = true
                 if (idTamizaje) this.getTamizaje(idTamizaje)
                 this.dialog = true
             },

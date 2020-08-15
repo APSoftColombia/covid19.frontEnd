@@ -60,6 +60,9 @@ const state = {
         grupo_atencion_especial: null,
         solicitud_prueba: 0,
         clasificacion: null,
+        frecuencia_pulso: null,
+        saturacion_oxigeno: null,
+        temperatura: null,
         ////
         user_id: null,
         created_at: null,
@@ -219,7 +222,10 @@ const state = {
         estado_afectacion: null,
         forzado_telefonico: 0,
         entidad_reporta_sivigila: null,
-        tipo: null
+        tipo: null,
+        frecuencia_pulso: null,
+        saturacion_oxigeno: null,
+        temperatura: null
 
     },
     modelReporteComunitario: {

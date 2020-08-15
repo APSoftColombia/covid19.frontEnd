@@ -12,36 +12,65 @@
                 </v-btn>
             </v-card-title>
             <v-container>
-                <definicion1 v-if="item.id === '1'" :item="item"></definicion1>
-                <definicion2 v-if="item.id === '2'" :item="item"></definicion2>
-                <definicion3 v-if="item.id === '3'" :item="item"></definicion3>
-                <definicion31 v-if="item.id === '3.1'" :item="item"></definicion31>
-                <definicion32 v-if="item.id === '3.2'" :item="item"></definicion32>
-                <definicion4 v-if="item.id === '4'" :item="item"></definicion4>
-                <definicion5 v-if="item.id === '5'" :item="item"></definicion5>
+                <definicionvi1 v-if="item.idShow === 'VI1'" :item="item"></definicionvi1>
+                <definicionvi2 v-if="item.idShow === 'VI2'" :item="item"></definicionvi2>
+                <definicionvi3 v-if="item.idShow === 'VI3'" :item="item"></definicionvi3>
+                <definicionvi31 v-if="item.idShow === 'VI3.1'" :item="item"></definicionvi31>
+                <definicionvi32 v-if="item.idShow === 'VI3.2'" :item="item"></definicionvi32>
+                <definicionvi4 v-if="item.idShow === 'VI4'" :item="item"></definicionvi4>
+                <definicionvi5 v-if="item.idShow === 'VI5'" :item="item"></definicionvi5>
+
+              <definicionviip1 v-if="item.idShow === 'VIIP1'" :item="item"></definicionviip1>
+              <definicionviip2 v-if="item.idShow === 'VIIP2'" :item="item"></definicionviip2>
+              <definicionviip4 v-if="item.idShow === 'VIIP4'" :item="item"></definicionviip4>
+              <definicionviip5 v-if="item.idShow === 'VIIP5'" :item="item"></definicionviip5>
+
+              <definicionviic1 v-if="item.idShow === 'VIIC1'" :item="item"></definicionviic1>
+              <definicionviic2 v-if="item.idShow === 'VIIC2'" :item="item"></definicionviic2>
+              <definicionviic4 v-if="item.idShow === 'VIIC4'" :item="item"></definicionviic4>
+              <definicionviic5 v-if="item.idShow === 'VIIC5'" :item="item"></definicionviic5>
             </v-container>
         </v-card>
     </v-dialog>
 </template>
 
 <script>
-    const Definicion1 = () => import('./Definiciones/Definicion1')
-    const Definicion2 = () => import('./Definiciones/Definicion2')
-    const Definicion3 = () => import('./Definiciones/Definicion3')
-    const Definicion31 = () => import('./Definiciones/Definicion31')
-    const Definicion32 = () => import('./Definiciones/Definicion32')
-    const Definicion4 = () => import('./Definiciones/Definicion4')
-    const Definicion5 = () => import('./Definiciones/Definicion5')
+    const Definicionvi1 = () => import('./Definiciones/Definicion1')
+    const Definicionvi2 = () => import('./Definiciones/Definicion2')
+    const Definicionvi3 = () => import('./Definiciones/Definicion3')
+    const Definicionvi31 = () => import('./Definiciones/Definicion31')
+    const Definicionvi32 = () => import('./Definiciones/Definicion32')
+    const Definicionvi4 = () => import('./Definiciones/Definicion4')
+    const Definicionvi5 = () => import('./Definiciones/Definicion5')
+    ///VII
+    const Definicionviip1 = () => import('./Definiciones/v2/probables/P1')
+    const Definicionviip2 = () => import('./Definiciones/v2/probables/P2')
+    const Definicionviip4 = () => import('./Definiciones/v2/probables/P4')
+    const Definicionviip5 = () => import('./Definiciones/v2/probables/P5')
+
+    const Definicionviic1 = () => import('./Definiciones/v2/confirmados/C1')
+    const Definicionviic2 = () => import('./Definiciones/v2/confirmados/C2')
+    const Definicionviic4 = () => import('./Definiciones/v2/confirmados/C4')
+    const Definicionviic5 = () => import('./Definiciones/v2/confirmados/C5')
     export default {
         name: 'HelpModal',
         components: {
-            Definicion1,
-            Definicion2,
-            Definicion3,
-            Definicion31,
-            Definicion32,
-            Definicion4,
-            Definicion5
+          Definicionvi1,
+          Definicionvi2,
+          Definicionvi3,
+          Definicionvi31,
+          Definicionvi32,
+          Definicionvi4,
+          Definicionvi5,
+          /////VII
+          Definicionviip1,
+          Definicionviip2,
+          Definicionviip4,
+          Definicionviip5,
+          Definicionviic1,
+          Definicionviic2,
+          Definicionviic4,
+          Definicionviic5
         },
         data: () => ({
             dialog: false,

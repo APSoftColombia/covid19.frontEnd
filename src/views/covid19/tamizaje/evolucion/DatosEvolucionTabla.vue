@@ -98,14 +98,15 @@
                         </v-avatar>
                     </td>
                     <td>
-                        <v-tooltip top v-if="evolucion.clasificacion">
-                            <template v-slot:activator="{on}">
-                                <v-chip label class="white--text elevation-2" color="orange" v-on="on" @click.stop="verAyuda(clasificacionesCovid ? clasificacionesCovid.find(x => x.id === evolucion.clasificacion) : null)">
-                                    <span>{{clasificacionesCovid ? clasificacionesCovid.find(x => x.id === evolucion.clasificacion).text : ''}}</span>
-                                </v-chip>
-                            </template>
-                            <span>{{clasificacionesCovid ? clasificacionesCovid.find(x => x.id === evolucion.clasificacion).nombre : ''}}</span>
-                        </v-tooltip>
+                      <boton-clasificacion
+                          :clasificacion="evolucion.clasificacion"
+                          :version="evolucion.version_lineamientos"
+                          :confirmado="evolucion.positivo_covid"
+                          color="orange"
+                          textColor="white"
+                          @click="val => verAyuda(val)"
+                      >
+                      </boton-clasificacion>
                     </td>
                     <td>
                         <v-list-item class="pa-0">
@@ -258,7 +259,7 @@
 
 <script>
     import {mapGetters} from "vuex";
-
+    import BotonClasificacion from '../../../../components/Tamizaje/BotonClasificacion'
     const HelpModal = () => import('../../../../components/HelpModal/HelpModal')
     const RHCModal = () => import('../../../../components/HelpModal/RHCModal')
     export default {
@@ -271,7 +272,8 @@
         },
         components: {
             HelpModal,
-            RHCModal
+            RHCModal,
+            BotonClasificacion
         },
         data: () => ({
         }),

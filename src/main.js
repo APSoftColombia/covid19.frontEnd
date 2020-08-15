@@ -218,7 +218,6 @@ Vue.mixin({
 		cleanTamizajeDesautorizado (tamizaje) {
 			if (tamizaje) {
 				if (!tamizaje.localiza_persona || !tamizaje.contesta_encuesta) {
-					console.log('se jodio la cosa', tamizaje)
 					tamizaje.riesgo_procedencia = null
 					tamizaje.riesgo_ocupacional = null
 					tamizaje.riesgo_contacto = null
@@ -245,6 +244,11 @@ Vue.mixin({
 					tamizaje.grupo_atencion_especial = null
 					tamizaje.solicitud_prueba = null
 					tamizaje.clasificacion = null
+					///
+					if (!tamizaje.localiza_persona) tamizaje.contesta_encuesta = null
+					tamizaje.frecuencia_pulso = null
+					tamizaje.saturacion_oxigeno = null
+					tamizaje.temperatura = null
 					if (tamizaje.infoviajero) {
 						tamizaje.infoviajero.pais_procedencia = null
 						tamizaje.infoviajero.municipio_procedencia = null

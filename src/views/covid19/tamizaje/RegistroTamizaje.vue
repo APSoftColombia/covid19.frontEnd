@@ -31,9 +31,76 @@
                                             @changeSintomas="val => tamizaje.sintomas = val"
                                             @changeFecha="val => tamizaje.fecha_sintomas = val"
                                     ></form-sintomas>
-                                    <v-divider v-if="tamizaje.sintomas && tamizaje.sintomas.length"></v-divider>
-                                    <v-row class="mt-4">
-                                        <v-col class="pb-0" cols="12" v-if="esMovil">
+                                    <v-divider class="ma-0" v-if="tamizaje.sintomas && tamizaje.sintomas.length"></v-divider>
+                                  <template>
+                                    <v-row>
+                                      <v-col class="pb-0" cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaPR"
+                                            :label="activaPR ? 'Frecuencia de Pulso (PR)' : 'Toma de Frecuencia de Pulso (PR)'"
+                                            :ripple="!activaPR"
+                                            hide-details
+                                            @change="!activaPR ? tamizaje.frecuencia_pulso = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaPR"
+                                            placeholder="Frecuencia de Pulso"
+                                            v-model="tamizaje.frecuencia_pulso"
+                                            name="frecuencia de pulso"
+                                            rules="required|min:0"
+                                            min="0"
+                                            step="1"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                    <v-row>
+                                      <v-col class="pb-0" cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaSPO2"
+                                            :label="activaSPO2 ? 'Saturación de Oxígeno (SPO2)' : 'Toma de Saturación de Oxígeno (SPO2)'"
+                                            :ripple="!activaSPO2"
+                                            hide-details
+                                            @change="!activaSPO2 ? tamizaje.saturacion_oxigeno = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaSPO2"
+                                            placeholder="Saturación de Oxígeno"
+                                            v-model="tamizaje.saturacion_oxigeno"
+                                            name="saturación de oxígeno"
+                                            rules="required|min:0"
+                                            min="0"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                    <v-row>
+                                      <v-col cols="12">
+                                        <v-checkbox
+                                            class="shrink mt-0 mb-1"
+                                            v-model="activaTemperatura"
+                                            :label="activaTemperatura ? 'Temperatura' : 'Toma de Temperatura'"
+                                            :ripple="!activaTemperatura"
+                                            hide-details
+                                            @change="!activaTemperatura ? tamizaje.temperatura = null : ''"
+                                        ></v-checkbox>
+                                        <c-number
+                                            v-if="activaTemperatura"
+                                            placeholder="Temperatura"
+                                            v-model="tamizaje.temperatura"
+                                            name="temperatura"
+                                            suffix="°C"
+                                            rules="required|min:0"
+                                            min="0"
+                                        >
+                                        </c-number>
+                                      </v-col>
+                                    </v-row>
+                                  </template>
+                                    <v-row v-if="esMovil">
+                                        <v-col class="pb-0" cols="12">
                                             <c-location
                                                     v-model="tamizaje.coordenadas"
                                                     label="Coordenadas"
@@ -41,7 +108,7 @@
                                             >
                                             </c-location>
                                         </v-col>
-                                        <v-col class="pb-0" cols="12" v-if="esMovil && tamizaje.tamizador_id === 892">
+                                        <v-col class="pb-0" cols="12" v-if="tamizaje.tamizador_id === 892">
                                             <v-switch
                                                     class="mt-0"
                                                     label="Solicitar Toma de Muestra"
@@ -57,7 +124,7 @@
                                 <v-col cols="12" class="pb-0">
                                   <c-text-area
                                       v-model="tamizaje.observaciones"
-                                      placeholder="Observaciones"
+                                      label="Observaciones"
                                   >
                                   </c-text-area>
                                 </v-col>
@@ -106,6 +173,9 @@
         data: () => ({
             loading: false,
             dialog: false,
+            activaPR: true,
+            activaSPO2: true,
+            activaTemperatura: true,
             tamizaje: null,
             llamada: null,
             interval: null,
@@ -190,6 +260,9 @@
                     this.getTamizaje(idTamizaje)
                 } else {
                     this.tamizaje = this.clone(this.modelTamizaje)
+                    this.activaPR = true
+                    this.activaSPO2 = true
+                    this.activaTemperatura = true
                     if (idReporte) this.tamizaje.reporte_id = idReporte
                     else if (llamada) {
                         this.llamada = this.clone(llamada)
@@ -224,8 +297,9 @@
                         if (response.data && response.data.sintomas && response.data.sintomas.length) {
                             response.data.sintomas = response.data.sintomas.map(x => x.id)
                         }
-                        // response.data.localiza_persona = 1
-                        // response.data.contesta_encuesta = 1
+                        this.activaPR = response.data.frecuencia_pulso !== null
+                        this.activaSPO2 = response.data.saturacion_oxigeno !== null
+                        this.activaTemperatura = response.data.temperatura !== null
                         response.data.si_eps = response.data.eps_id ? 1 : 0
                         this.tamizaje = response.data
                         this.loading = false
