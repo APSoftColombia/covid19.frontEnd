@@ -141,6 +141,56 @@
                         </v-list-item>
                     </v-list>
                 </v-col>
+              <v-col cols="12">
+                <v-row no-gutters>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-list two-line class="notification-wrap">
+                      <v-list-item style="border-bottom: none !important;" v-if="evolucion.temperatura !== null">
+                        <v-list-item-avatar class="my-1 align-self-center">
+                          <v-icon color="deep-orange">fas fa-thermometer-three-quarters</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">Temperatura</v-list-item-subtitle>
+                          <v-list-item-title><h4 class="mb-0">
+                            {{evolucion.temperatura}}
+                            <v-icon>mdi-temperature-celsius</v-icon>
+                          </h4></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-list two-line class="notification-wrap">
+                      <v-list-item style="border-bottom: none !important;" v-if="evolucion.saturacion_oxigeno !== null">
+                        <v-list-item-avatar class="my-1 align-self-center">
+                          <v-icon color="purple">fas fa-tachometer-alt</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">Saturación de Oxígeno</v-list-item-subtitle>
+                          <v-list-item-title><h4 class="mb-0">
+                            {{evolucion.saturacion_oxigeno}}
+                          </h4></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-list two-line class="notification-wrap">
+                      <v-list-item style="border-bottom: none !important;" v-if="evolucion.frecuencia_pulso !== null">
+                        <v-list-item-avatar class="my-1 align-self-center">
+                          <v-icon color="red">mdi-heart-pulse</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">Frecuencia de Pulso</v-list-item-subtitle>
+                          <v-list-item-title><h4 class="mb-0">
+                            {{evolucion.frecuencia_pulso}}
+                          </h4></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-col>
+                </v-row>
+              </v-col>
                 <v-col cols="12" v-if="evolucion.comorbilidades && evolucion.comorbilidades.length">
                     <v-card flat>
                         <v-card-title>

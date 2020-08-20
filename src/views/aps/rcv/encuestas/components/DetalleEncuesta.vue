@@ -35,7 +35,7 @@
                         <br/>
                         No hay red:
                         <br/>
-                        Buscar en la base de portabilidad. indicar: Señor usted por favor acerquese a la IPS más cercana.
+                        Buscar en la base de portabilidad. Indicar: Señor usted por favor acerquese a la IPS más cercana.
                         <br/>
                         <br/>
                         SI EL USUARIO REFIERE QUE POR SU CONDICIÓN DE SALUD NO PUEDE DESPLAZARSE A URGENCIA: Recuerde antes de trasladar llamada al área de referencia y contrareferencia, evaluar pertinencia, si se detecta que el usuario se encuentra inestable validar si requiere ambulancia.
@@ -108,7 +108,7 @@
                             border="left"
                             colored-border
                             icon="mdi-information"
-                            type="light-blue"
+                            color="light-blue"
                             elevation="2"
                         >
                           De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitame un momento le informamos el día y la hora de su cita.
@@ -123,7 +123,7 @@
                             border="left"
                             colored-border
                             icon="mdi-information"
-                            type="light-blue"
+                            color="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_g === 'MENOR A 3 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX.</p>
@@ -136,7 +136,7 @@
                             border="left"
                             colored-border
                             icon="mdi-information"
-                            type="light-blue"
+                            color="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_i === 'MENOR A 6 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX.</p>
@@ -149,7 +149,7 @@
                             border="left"
                             colored-border
                             icon="mdi-information"
-                            type="light-blue"
+                            color="light-blue"
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.laboratorios === 'MENOR A 6 MESES'">de acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control el día XXXXX y recordar la toma de sus laboratorios correspondiente. {{encuesta.diabetes === 'Si' ? 'recordar la toma d ela hemoglobina glicosilada.' : '' }}</p>
@@ -166,7 +166,7 @@
                               border="left"
                               colored-border
                               icon="mdi-information"
-                              type="light-blue"
+                              color="light-blue"
                               elevation="2"
                           >
                             <p class="mb-0">Verificar fecha de entrega, recordar la importancia de asistir puntualmente a la entrega y dejar registro para seguimento.</p>
@@ -174,13 +174,27 @@
                           </v-alert>
                         </v-col>
                         <v-col cols="12" v-if="encuesta.resultado.morisky">
-                          <v-subheader class="font-weight-bold">Evaluación adherencia al tratamiento (Test Morisky Green): {{encuesta.resultado.morisky.riesgo}}</v-subheader>
-                          {{encuesta.resultado.morisky}}
+                          <v-list two-line class="notification-wrap mb-3">
+                            <v-list-item
+                                style="border-bottom: none !important;"
+                                @click="click = null"
+                            >
+                              <v-list-item-avatar class="my-1" :size="60">
+                                <v-icon large :color="encuesta.resultado.morisky.rgb_riesgo">mdi-alert</v-icon>
+                              </v-list-item-avatar>
+                              <v-list-item-content class="pa-0">
+                                <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                                  Evaluación adherencia al tratamiento (Test Morisky Green)
+                                </v-list-item-subtitle>
+                                <v-list-item-title><h6 class="mb-0 text-justify">El Paciente <strong>{{(encuesta.resultado.morisky.riesgo).toUpperCase()}}</strong>.</h6></v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list>
                           <v-alert
                               border="left"
                               colored-border
                               icon="mdi-information"
-                              type="light-blue"
+                              color="light-blue"
                               elevation="2"
                           >
                             <p class="mb-0" v-if="encuesta.resultado.morisky.riesgo === 'Cumple'">Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>

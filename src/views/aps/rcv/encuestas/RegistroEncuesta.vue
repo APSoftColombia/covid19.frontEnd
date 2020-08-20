@@ -17,7 +17,7 @@
             </v-chip>
             <v-toolbar dark color="primary">
                 <v-icon left>fas fa-edit</v-icon>
-                <v-toolbar-title>{{encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Nueva encuesta`}}</v-toolbar-title>
+                <v-toolbar-title id="inicio">{{encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Nueva encuesta`}}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon dark @click="close">
                     <v-icon>mdi-close</v-icon>
@@ -25,7 +25,7 @@
             </v-toolbar>
             <v-container fluid>
                 <v-row no-gutters>
-                    <v-col md="6" offset-md="3">
+                    <v-col md="6" offset-md="3" v-if="dialog">
                         <ValidationObserver ref="formencuesta" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                           <v-row v-if="encuestaBase">
                             <datos-afiliado :abierto="true" :afiliado="encuestaBase" :dense="true"></datos-afiliado>
@@ -761,7 +761,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    const FormSintomas = () => import('Views/aps/rcv/encuestas/components/FormSIntomas')
+    import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
     const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
     const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
     const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
@@ -955,15 +955,15 @@
                 this.goDuracion()
             },
             close () {
-                this.$refs.formencuesta.reset()
-                this.dialog = false
-                this.loading = false
-                this.menuObservaciones = false
-                clearInterval(this.interval)
-                this.encuesta = this.clone(this.modelEncuestaRCV)
-                this.encuestaBase = null
-                this.hintIMC = ''
-                this.hintTension = ''
+              this.$refs.formencuesta.reset()
+              this.dialog = false
+              this.loading = false
+              this.menuObservaciones = false
+              clearInterval(this.interval)
+              this.encuesta = this.clone(this.modelEncuestaRCV)
+              this.encuestaBase = null
+              this.hintIMC = ''
+              this.hintTension = ''
             },
             goDuracion () {
                 this.interval = setInterval(() => {

@@ -45,18 +45,6 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item @click="click = null" style="border-bottom: none !important;" v-if="tamizaje.infoviajero.temperatura">
-                                <v-list-item-avatar class="my-1 align-self-center">
-                                    <v-icon color="orange">fas fa-thermometer-three-quarters</v-icon>
-                                </v-list-item-avatar>
-                                <v-list-item-content class="pa-0">
-                                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">Temperatura</v-list-item-subtitle>
-                                    <v-list-item-title><h4 class="mb-0">
-                                        {{tamizaje.infoviajero.temperatura}}
-                                        <v-icon>mdi-temperature-celsius</v-icon>
-                                    </h4></v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
                         </v-list>
                     </v-col>
                     <v-col cols="12" v-if="tamizaje.tamizador_id === 890 && tamizaje.entidad_reporta_sivigila">
@@ -131,6 +119,56 @@
                             </v-card-text>
                         </v-card>
                     </v-col>
+                  <v-col cols="12">
+                    <v-row no-gutters>
+                      <v-col cols="12" sm="12" md="4">
+                        <v-list two-line class="notification-wrap">
+                          <v-list-item style="border-bottom: none !important;" v-if="tamizaje.temperatura !== null || (tamizaje.infoviajero && tamizaje.infoviajero.temperatura !== null)">
+                            <v-list-item-avatar class="my-1 align-self-center">
+                              <v-icon color="deep-orange">fas fa-thermometer-three-quarters</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="grey--text fs-12 fw-normal">Temperatura</v-list-item-subtitle>
+                              <v-list-item-title><h4 class="mb-0">
+                                {{tamizaje.temperatura || (tamizaje.infoviajero && tamizaje.infoviajero.temperatura)}}
+                                <v-icon>mdi-temperature-celsius</v-icon>
+                              </h4></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="4">
+                        <v-list two-line class="notification-wrap">
+                          <v-list-item style="border-bottom: none !important;" v-if="tamizaje.saturacion_oxigeno !== null">
+                            <v-list-item-avatar class="my-1 align-self-center">
+                              <v-icon color="purple">fas fa-tachometer-alt</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="grey--text fs-12 fw-normal">Saturación de Oxígeno</v-list-item-subtitle>
+                              <v-list-item-title><h4 class="mb-0">
+                                {{tamizaje.saturacion_oxigeno}}
+                              </h4></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="4">
+                        <v-list two-line class="notification-wrap">
+                          <v-list-item style="border-bottom: none !important;" v-if="tamizaje.frecuencia_pulso !== null">
+                            <v-list-item-avatar class="my-1 align-self-center">
+                              <v-icon color="red">mdi-heart-pulse</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="grey--text fs-12 fw-normal">Frecuencia de Pulso</v-list-item-subtitle>
+                              <v-list-item-title><h4 class="mb-0">
+                                {{tamizaje.frecuencia_pulso}}
+                              </h4></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list>
+                      </v-col>
+                    </v-row>
+                  </v-col>
                     <v-col cols="12">
                         <v-card flat>
                             <v-card-title>

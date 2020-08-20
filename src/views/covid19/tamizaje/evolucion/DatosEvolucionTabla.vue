@@ -15,6 +15,7 @@
                     </th>
                     <th>Realizado por</th>
                     <th style="max-width: 200px !important;">Síntomas</th>
+                  <th style="max-width: 100px !important; white-space: inherit !important;"></th>
                     <th style="max-width: 200px !important;">
                         <v-tooltip top>
                             <template v-slot:activator="{on}">
@@ -128,7 +129,7 @@
                             </v-list-item-action>
                         </v-list-item>
                     </td>
-                    <td :style="evolucion.fallida ? 'white-space: inherit !important;' : 'max-width: 200px !important;'" :colspan="evolucion.fallida ? 10 : 1">
+                    <td :style="evolucion.fallida ? 'white-space: inherit !important;' : 'max-width: 200px !important;'" :colspan="evolucion.fallida ? 11 : 1">
                         <p class="ma-0" v-if="evolucion.fallida">{{evolucion.observaciones}}</p>
                         <template v-else>
                             <v-chip-group
@@ -154,6 +155,57 @@
                         </template>
                     </td>
                     <template v-if="!evolucion.fallida">
+                      <td style="max-width: 100px !important; white-space: inherit !important;">
+                        <v-tooltip right v-if="evolucion.temperatura">
+                          <template v-slot:activator="{on}">
+                            <v-chip
+                                v-on="on"
+                                class="mr-1"
+                                color="deep-orange"
+                                label
+                                dark
+                                small
+                            >
+                              <v-icon left small>fas fa-thermometer-half</v-icon>
+                              {{evolucion.temperatura}}
+                              <v-icon small>mdi-temperature-celsius</v-icon>
+                            </v-chip>
+                          </template>
+                          <span>Temperatura</span>
+                        </v-tooltip>
+                        <v-tooltip right v-if="evolucion.saturacion_oxigeno">
+                          <template v-slot:activator="{on}">
+                            <v-chip
+                                v-on="on"
+                                class="mr-1"
+                                color="purple"
+                                label
+                                dark
+                                small
+                            >
+                              <v-icon left small>fas fa-tachometer-alt</v-icon>
+                              {{evolucion.saturacion_oxigeno}}
+                            </v-chip>
+                          </template>
+                          <span>Saturación de Oxígeno</span>
+                        </v-tooltip>
+                        <v-tooltip right v-if="evolucion.frecuencia_pulso">
+                          <template v-slot:activator="{on}">
+                            <v-chip
+                                v-on="on"
+                                class="mr-1"
+                                color="red"
+                                label
+                                dark
+                                small
+                            >
+                              <v-icon left small>mdi-heart-pulse</v-icon>
+                              {{evolucion.frecuencia_pulso}}
+                            </v-chip>
+                          </template>
+                          <span>Frecuencia de Pulso</span>
+                        </v-tooltip>
+                      </td>
                         <td style="max-width: 200px !important;">
                             <v-chip-group
                                     column
@@ -297,7 +349,7 @@
 <style scoped>
     .tablaseguimientos .v-data-table table thead tr td, .v-data-table table thead tr th, .v-data-table table tbody tr td, .v-data-table table tbody tr th, .v-data-table table tfoot tr td, .v-data-table table tfoot tr t {
         height: 2rem !important;
-        padding: 0 5px !important;
+        padding: 3px 5px !important;
     }
 
     .tablaseguimientos .v-data-table td, .v-data-table th {

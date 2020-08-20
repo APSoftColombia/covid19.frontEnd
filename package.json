@@ -1,6 +1,6 @@
 {
   "name": "APSOFT",
-  "version": "4.5.5",
+  "version": "4.5.9",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
