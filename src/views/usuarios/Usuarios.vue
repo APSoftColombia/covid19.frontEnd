@@ -14,14 +14,23 @@
                         dense
                         hide-details
                         clearable
+                        :disabled="showInTable"
                 ></v-text-field>
                 <v-btn color="primary" @click="crearUsuario">
                     <v-icon left>mdi-plus</v-icon>
                     Crear Usuario
                 </v-btn>
+                <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="ml-4" icon v-bind="attrs" v-on="on" @click="showInTable = !showInTable">
+                            <v-icon color="primary">{{ showInTable ? 'fas fa-id-card-alt' : 'fas fa-table' }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ showInTable ? 'Ver en Cartas' : 'Ver en Tabla' }}</span>
+                </v-tooltip>
             </template>
         </page-title-bar>
-        <v-row>
+        <v-row v-if="!showInTable">
             <v-col cols="12">
                 <v-text-field
                         prepend-inner-icon="mdi-account-search"
@@ -51,6 +60,13 @@
                 ></card-usuario>
             </v-col>
         </v-row>
+        <v-row v-else>
+            <v-col cols="12">
+                <usuarios-table
+                    @userDisabled="getUsuarios(false)"
+                ></usuarios-table>
+            </v-col>
+        </v-row>
         <registro-usuario ref="dialogRegistroUsuario" @save="user => guardaUsuario(user)"></registro-usuario>
         <app-section-loader :status="loading"></app-section-loader>
     </v-container>
@@ -59,13 +75,15 @@
 <script>
     const RegistroUsuario = () => import('Views/usuarios/components/RegistroUsuario')
     const CardUsuario = () => import('Views/usuarios/components/CardUsuario')
+    const UsuariosTable = () => import('Views/usuarios/components/UsuariosTable')
     export default {
         name: 'Usuarios',
         data: () => ({
             loading: false,
             usuarios: [],
             users: [],
-            search: null
+            search: null,
+            showInTable: false
         }),
         watch: {
             search: {
@@ -83,7 +101,8 @@
         },
         components: {
             RegistroUsuario,
-            CardUsuario
+            CardUsuario,
+            UsuariosTable
         },
         created () {
             this.getUsuarios()
@@ -99,8 +118,10 @@
             crearUsuario () {
                 this.$refs.dialogRegistroUsuario.open()
             },
-            getUsuarios () {
-                this.loading = true
+            getUsuarios (loading = true) {
+                if(loading){
+                    this.loading = true
+                }
                 this.axios.get(`user`)
                     .then(response => {
                         this.users = response.data
