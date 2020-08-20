@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                 <template v-for="(aislamiento, aislamientoIndex) in aislamientos">
-                    <dato-aislamiento-t-r @verdetalle="val => verDetalle(val)" :aislamiento="aislamiento" :numero="aislamientos.length - aislamientoIndex" :key="`aislamiento${aislamientoIndex}`"></dato-aislamiento-t-r>
+                    <dato-aislamiento-t-r @verdetalle="val => verDetalle(val)" :aislamiento="aislamiento" :numero="aislamientos.length - aislamientoIndex" :key="`aislamiento${aislamientoIndex}`" :nombre="nombre"></dato-aislamiento-t-r>
                 </template>
                 </tbody>
             </template>
@@ -34,6 +34,10 @@
             aislamientos: {
               type: Array,
               default: () => []
+          },
+          nombre: {
+                type: String,
+                defaulut: null
           }
         },
         components: {

@@ -85,11 +85,21 @@
                 </template>
                 <span>Ver Detalle</span>
             </v-tooltip>
+            <v-tooltip top>
+                <template v-slot:activator="{on}">
+                    <v-btn icon color="info" v-on="on" @click.stop="generarPDF(aislamiento)">
+                        <v-icon>fas fa-file-pdf</v-icon>
+                    </v-btn>
+                </template>
+                <span>Descargar PDF</span>
+            </v-tooltip>
         </td>
     </tr>
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: 'DatoAislamientoTR',
         props: {
@@ -100,6 +110,10 @@
             numero: {
                 type: [String, Number],
                 default: 0
+            },
+            nombre: {
+                type: String,
+                default: null
             }
         },
         computed: {
@@ -110,7 +124,25 @@
         methods: {
             verDetalle (item) {
                 this.$emit('verdetalle', item)
-            }
+            },
+            generarPDF(aislamiento){
+                const apiAxios = axios.create()
+                apiAxios.defaults.baseURL = `http://aps.backend.test/api`
+                apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+                apiAxios({
+                    url: `pdf-aislamiento/${aislamiento.id}?download=${true}`,
+                    method: 'GET',
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    console.log(response.data)
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `Orden de Aislamiento ${this.nombre}.pdf`);
+                    document.body.appendChild(link);
+                    link.click();
+                });
+            },
         }
     }
 </script>

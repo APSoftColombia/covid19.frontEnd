@@ -29,13 +29,34 @@
                 <v-btn
                         large
                         color="deep-purple"
-                        @click.stop="guardarAislamiento"
+                        @click.stop="dialogEnviarPDF = true"
                         class="white--text"
                 >
                     <v-icon left>fas fa-save</v-icon>
                     Guardar Aislamiento
                 </v-btn>
             </v-card-actions>
+            <v-dialog max-width="650px" v-model="dialogEnviarPDF">
+                <v-card>
+                    <v-card-title>Generar PDF</v-card-title>
+                    <v-card-text>
+                        <p>
+                            ¿Desea enviar la orden de aislamiento en formato PDF al correo del usuario?
+                        </p>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn large @click.stop="guardarAislamiento(false)">
+                            <v-icon>mdi-close</v-icon>
+                            No
+                        </v-btn>
+                        <v-btn large color="deep-purple" @click.stop="guardarAislamiento(true)" class="white--text">
+                            <v-icon left>fas fa-check</v-icon>
+                            Si
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
             <app-section-loader :status="loading"></app-section-loader>
         </v-card>
     </v-dialog>
@@ -44,6 +65,7 @@
 <script>
     import {mapGetters} from 'vuex'
     import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
+    import axios from "axios";
     export default {
         name: 'RegistroAislamiento',
         components: {
@@ -54,7 +76,9 @@
             dialog: false,
             aislamiento: null,
             seguimiento_aislamiento: null,
-            tamizaje: null
+            tamizaje: null,
+            dialogEnviarPDF: false,
+            idAislamiento: null
         }),
         computed: {
             ...mapGetters([
@@ -67,11 +91,13 @@
             this.seguimiento_aislamiento = this.clone(this.modelSeguimientoAislamiento)
         },
         methods: {
-            guardarAislamiento () {
+            guardarAislamiento (enviarPDF = null) {
+                this.dialogEnviarPDF = false
                 this.$refs.formAislamiento.validate().then(result => {
                     if (result) {
                         this.loading = true
                         let request = null
+                        this.aislamiento.enviarPDF = enviarPDF
                         if (this.aislamiento.id) {
                             request = this.axios.put(`aislamientos/${this.aislamiento.id}`, this.aislamiento)
                         } else {
@@ -83,6 +109,9 @@
                         request
                             .then(response => {
                                 this.$emit('guardado', response.data)
+                                if(enviarPDF){
+                                    this.generarPDF(response.data.id)
+                                }
                                 this.$store.commit('snackbar', {color: 'success', message: `El aislamiento se guardo correctamente.`})
                                 this.close()
                             })
@@ -91,6 +120,14 @@
                                 this.$store.commit('snackbar', {color: 'error', message: `al guardar el aislamiento.`, error: error})
                             })
                     }
+                })
+            },
+            generarPDF(id){
+                const apiAxios = axios.create()
+                apiAxios.defaults.baseURL = `http://aps.backend.test/api`
+                apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+                apiAxios.get( `pdf-aislamiento/${id}`).then( response => {
+                    console.log(response)
                 })
             },
             open (aislamiento = null, tamizaje = null) {
