@@ -27,6 +27,7 @@
                 <datos-aislamiento-tabla
                         @guardado="item => aislamientoGuardado(item)"
                         :aislamientos="tamizaje.aislamientos"
+                        :nombre="tamizaje.nombre1 + ' ' + tamizaje.apellido1"
                 ></datos-aislamiento-tabla>
             </v-col>
         </v-row>
