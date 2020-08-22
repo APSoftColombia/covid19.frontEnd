@@ -169,7 +169,7 @@
             >
             </c-select-complete>
         </v-col>
-        <v-col class="pb-0" cols="12" sm="12" md="6" v-if="value.tamizador_id === 892">
+        <v-col class="pb-0" cols="12" sm="12" md="6">
             <c-select-complete
                     :disabled="!persona.municipio_id || identificacionVerificada < 1"
                     v-model="persona.barrio_id"
@@ -327,15 +327,15 @@
                     }
                 },
                 immediate: false
-            },
-            'value.tamizador_id': {
-                handler(val) {
-                    if (val) {
-                        this.persona.barrio_id = null
-                    }
-                },
-                immediate: false
             }
+            // 'value.tamizador_id': {
+            //     handler(val) {
+            //         if (val) {
+            //             this.persona.barrio_id = null
+            //         }
+            //     },
+            //     immediate: false
+            // }
         },
         created () {
             this.assignPerson()

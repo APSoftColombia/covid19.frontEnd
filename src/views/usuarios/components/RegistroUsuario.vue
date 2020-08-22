@@ -119,7 +119,7 @@
                                 <v-autocomplete
                                         v-model="usuario.roles"
                                         :label="(usuario.roles && usuario.roles.length ? '' : 'Seleccionar ') + 'Roles'"
-                                        :items="roles"
+                                        :items="rolesx"
                                         item-value="id"
                                         item-text="nombre"
                                         :error-messages="errors"
@@ -174,7 +174,7 @@
             },
             tiposDocumentoIdentidad: [],
             permisos: [],
-            roles: [],
+            rolesx: [],
             filterEpsTamizajes (item, queryText) {
                 const hasValue = val => val != null ? val : ''
                 const text = hasValue(item.codigo + ' ' + item.nombre)
@@ -229,7 +229,7 @@
                     .then(response => {
                         this.tiposDocumentoIdentidad = response.data.tipos_documento_identidad
                         this.permisos = response.data.permisos
-                        this.roles = response.data.roles
+                        this.rolesx = response.data.roles
                         if (id) this.usuario = response.data.usuario
                         this.loading = false
                     })
