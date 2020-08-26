@@ -126,7 +126,7 @@
                 const apiAxios = axios.create()
                 apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
-                apiAxios.get( `pdf-aislamiento/${id}`).then( response => {
+                this.axios.get( `pdf-aislamiento/${id}`).then( response => {
                     console.log(response)
                 })
             },

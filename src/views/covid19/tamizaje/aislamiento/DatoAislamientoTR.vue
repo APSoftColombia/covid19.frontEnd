@@ -129,19 +129,17 @@
                 const apiAxios = axios.create()
                 apiAxios.defaults.baseURL = `http://aps.backend.test/api`
                 apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
-                apiAxios({
-                    url: `pdf-aislamiento/${aislamiento.id}?download=${true}`,
-                    method: 'GET',
-                    responseType: 'blob', // important
-                }).then((response) => {
-                    console.log(response.data)
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', `Orden de Aislamiento ${this.nombre}.pdf`);
-                    document.body.appendChild(link);
-                    link.click();
-                });
+              this.axios( {
+                url: `pdf-aislamiento/${aislamiento.id}?download=${true}`, //your url
+                method: 'GET',
+                responseType: 'blob', // important
+              }).then(async response => {
+                const fileURL = window.URL.createObjectURL(
+                    new Blob([response.data], {type: 'application/pdf'}))
+                await window.open(fileURL, '_blank')
+              }).catch(error => {
+                this.$store.commit('snackbar', {color: 'error', message: 'al descargar el PDF', error: error})
+              })
             },
         }
     }
