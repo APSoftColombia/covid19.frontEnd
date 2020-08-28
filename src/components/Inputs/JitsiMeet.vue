@@ -48,7 +48,8 @@
             </v-tooltip>
           </v-toolbar>
           <div
-              style="resize: both !important; overflow: hidden !important; min-width: 400px !important; width: 500px !important;">
+              :style="`resize: both !important; overflow: hidden !important; min-width: ${esMovil ? '300' : '400'}px !important; width: ${esMovil ? '300' : '500'}px !important;`"
+          >
             <vue-jitsi-meet
                 v-if="!loading"
                 ref="jitsiRef"
@@ -131,7 +132,7 @@ export default {
         displayName: null,
       },
       configOverwrite: {
-        enableNoisyMicDetection: false
+        enableNoisyMicDetection: true
       },
       interfaceConfigOverwrite: {
         SHOW_JITSI_WATERMARK: false,
