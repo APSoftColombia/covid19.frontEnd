@@ -49,12 +49,12 @@
          ])
       },
      mounted() {
-       // window.FreshworksWidget('show')
-       // window.FreshworksWidget('identify', 'ticketForm', {
-       //   name: this.user.name,
-       //   email: this.user.email,
-       // })
-       // window.FreshworksWidget('hide', 'ticketForm', ['name', 'email'])
+       window.FreshworksWidget('show')
+       window.FreshworksWidget('identify', 'ticketForm', {
+         name: this.user.name,
+         email: this.user.email,
+       })
+       window.FreshworksWidget('hide', 'ticketForm', ['name', 'email'])
      },
      methods: {
          logoutUser() {

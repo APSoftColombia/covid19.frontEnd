@@ -75,7 +75,6 @@
 </template>
 
 <script>
-  window.FreshworksWidget('hide')
 	import AppConfig from 'Constants/AppConfig'
 	import Vue from "vue";
 	export default {
@@ -90,6 +89,7 @@
 			brand: AppConfig.brand
 		}),
 		created () {
+      window.FreshworksWidget('hide')
 			this.getDatosEmpresa()
 		},
 		methods: {
