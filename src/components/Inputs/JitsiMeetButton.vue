@@ -47,16 +47,20 @@ export default {
         this.videollamada.loading = true
         this.videollamada.room =  this.tamizaje.id + this.$uuid.v1()
         this.videollamada.link =  'https://meet.jit.si/' + this.videollamada.room
-        this.axios.post(`send-videocall-link/${this.tamizaje.id}`, {link: this.videollamada.link})
-            .then(() => {
-              this.videollamada.confirmado = true
-              this.videollamada.loading = false
-              this.$emit('enlinea', this.videollamada)
-            })
-            .catch(error => {
-              this.videollamada.loading = false
-              this.$store.commit('snackbar', {color: 'error', message: `al enviar la invitación para la videollamada.`, error: error})
-            })
+
+        this.videollamada.confirmado = true
+        this.videollamada.loading = false
+        this.$emit('enlinea', this.videollamada)
+        // this.axios.post(`send-videocall-link/${this.tamizaje.id}`, {link: this.videollamada.link})
+        //     .then(() => {
+        //       this.videollamada.confirmado = true
+        //       this.videollamada.loading = false
+        //       this.$emit('enlinea', this.videollamada)
+        //     })
+        //     .catch(error => {
+        //       this.videollamada.loading = false
+        //       this.$store.commit('snackbar', {color: 'error', message: `al enviar la invitación para la videollamada.`, error: error})
+        //     })
       }
     }
   }

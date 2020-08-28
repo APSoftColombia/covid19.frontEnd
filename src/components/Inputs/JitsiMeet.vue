@@ -1,5 +1,5 @@
 <template>
-  <div v-if="enlinea">
+  <div v-if="enlinea && !esMovil">
     <div>
       <div id="mydiv" style="position: fixed !important;">
         <div>
@@ -48,8 +48,7 @@
             </v-tooltip>
           </v-toolbar>
           <div
-              :style="`resize: both !important; overflow: hidden !important; min-width: ${esMovil ? '300' : '400'}px !important; width: ${esMovil ? '300' : '500'}px !important;`"
-          >
+              style="resize: both !important; overflow: hidden !important; min-width: 400px !important; width: 500px !important;">
             <vue-jitsi-meet
                 v-if="!loading"
                 ref="jitsiRef"
@@ -146,6 +145,9 @@ export default {
     this.jitsiOptions.roomName = this.enlinea.room
     this.jitsiOptions.userInfo.email = this.user.email
     this.jitsiOptions.userInfo.displayName = this.user.name
+    if (this.esMovil) {
+      this.abrirPestaña()
+    }
     this.loading = false
   },
   computed: {
