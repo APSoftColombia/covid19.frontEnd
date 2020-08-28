@@ -1,6 +1,6 @@
 {
   "name": "APSOFT",
-  "version": "4.5.9",
+  "version": "4.6.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.16",
+    "@mycure/vue-jitsi-meet": "0.0.7",
     "@types/leaflet": "^1.5.12",
     "algoliasearch": "^3.33.0",
     "amcharts3": "^3.21.14",

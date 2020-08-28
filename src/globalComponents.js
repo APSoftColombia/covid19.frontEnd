@@ -50,6 +50,8 @@ import CTextArea from 'Components/Inputs/CTextArea'
 import CChip from 'Components/Inputs/CChip'
 import CComboBox from 'Components/Inputs/CComboBox'
 import CLocation from 'Components/Inputs/CLocation'
+import JitsiMeet from 'Components/Inputs/JitsiMeet'
+import JitsiMeetButton from 'Components/Inputs/JitsiMeetButton'
 
 //Iconos SVG
 import IconBase from 'Components/Icons/IconBase'
@@ -88,6 +90,8 @@ const GlobalComponents = {
       Vue.component('CDateRange', CDateRange)
       Vue.component('CComboBox', CComboBox)
       Vue.component('CLocation', CLocation)
+      Vue.component('JitsiMeet', JitsiMeet)
+      Vue.component('JitsiMeetButton', JitsiMeetButton)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)
