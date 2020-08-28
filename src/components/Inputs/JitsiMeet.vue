@@ -165,7 +165,7 @@ export default {
       this.cerrarVideo()
     },
     cerrarVideo () {
-      this.$refs.jitsiRef.$destroy()
+      if (this.$refs && this.$refs.jitsiRef) this.$refs.jitsiRef.$destroy()
       this.$emit('cerrar', true)
     }
   }

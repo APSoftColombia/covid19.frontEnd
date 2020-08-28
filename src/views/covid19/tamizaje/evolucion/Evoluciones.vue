@@ -12,10 +12,6 @@
                 </template>
                 <span>Vista de {{viewTable ? $vuetify.breakpoint.smAndUp ? 'línea de tiempo' : 'secciones' : 'tabla'}}</span>
             </v-tooltip>
-          <v-btn dark @click="agregarEvolucion" color="primary darken-3" class="mr-2">
-            <v-icon left>mdi-plus</v-icon>
-            Agregar seguimiento
-          </v-btn>
             <template v-if="permisos.seguimientoCrear && editable">
                 <v-tooltip top v-if="$vuetify.breakpoint.xsOnly">
                     <template v-slot:activator="{on}">
