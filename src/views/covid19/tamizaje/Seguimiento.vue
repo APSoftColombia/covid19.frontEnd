@@ -48,7 +48,6 @@
               </v-alert>
                 <v-tabs
                         class="mt-3"
-                        v-if="tamizaje.medico"
                         id="tabsSeguimiento"
                         v-model="tab"
                         fixed-tabs
