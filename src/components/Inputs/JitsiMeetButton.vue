@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip top>
+  <v-tooltip top v-if="show">
     <template v-slot:activator="{on}">
       <v-btn
           :loading="videollamada.loading"
@@ -24,6 +24,10 @@
 export default {
   name: 'JitsiMeetButton',
   props: {
+    show: {
+      type: Boolean,
+      default: true
+    },
     block: {
       type: Boolean,
       default: false
@@ -47,20 +51,18 @@ export default {
         this.videollamada.loading = true
         this.videollamada.room =  this.tamizaje.id + this.$uuid.v1()
         this.videollamada.link =  'https://meet.jit.si/' + this.videollamada.room
-
-        this.videollamada.confirmado = true
-        this.videollamada.loading = false
+        this.axios.post(`send-videocall-link/${this.tamizaje.id}`, {link: this.videollamada.link})
+            .then(() => {
+              this.videollamada.confirmado = true
+              this.videollamada.loading = false
+              this.$emit('enlinea', this.videollamada)
+            })
+            .catch(error => {
+              this.videollamada.loading = false
+              this.$store.commit('snackbar', {color: 'error', message: `al enviar la invitación para la videollamada.`, error: error})
+            })
+      } else {
         this.$emit('enlinea', this.videollamada)
-        // this.axios.post(`send-videocall-link/${this.tamizaje.id}`, {link: this.videollamada.link})
-        //     .then(() => {
-        //       this.videollamada.confirmado = true
-        //       this.videollamada.loading = false
-        //       this.$emit('enlinea', this.videollamada)
-        //     })
-        //     .catch(error => {
-        //       this.videollamada.loading = false
-        //       this.$store.commit('snackbar', {color: 'error', message: `al enviar la invitación para la videollamada.`, error: error})
-        //     })
       }
     }
   }

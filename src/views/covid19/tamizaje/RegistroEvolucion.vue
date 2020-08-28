@@ -23,7 +23,7 @@
                   <jitsi-meet ref="jitsimeet" v-if="enlinea" :enlinea="enlinea" @cargado="val => showbuttonmeet = !val" @cerrar="enlinea = null, showbuttonmeet = true"></jitsi-meet>
                   <v-col cols="12" md="6" v-if="enlinea"></v-col>
                   <v-col md="6" :offset-md="enlinea ? '0' : '3'">
-                    <jitsi-meet-button v-if="showbuttonmeet" block :tamizaje="tamizaje" @enlinea="val => enlinea = val"></jitsi-meet-button>
+                    <jitsi-meet-button :show="showbuttonmeet" block :tamizaje="tamizaje" @enlinea="val => enlinea = val"></jitsi-meet-button>
                       <datos-personales :abierto="false" :tamizaje="tamizaje"></datos-personales>
                       <ValidationObserver ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                           <v-row>

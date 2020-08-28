@@ -85,7 +85,7 @@
                     </v-tab>
                 </v-tabs>
 <!--                <v-divider class="mt-0"></v-divider>-->
-                <v-tabs-items v-model="tab" class="mt-2" touchless>
+                <v-tabs-items v-model="tab" class="mt-2" touchless v-if="dialog">
                     <v-tab-item
                             value="tab-1"
                     >

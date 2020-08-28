@@ -1,5 +1,5 @@
 <template>
-  <div v-if="enlinea && !esMovil">
+  <div>
     <div>
       <div id="mydiv" style="position: fixed !important;">
         <div>
@@ -50,7 +50,7 @@
           <div
               style="resize: both !important; overflow: hidden !important; min-width: 400px !important; width: 500px !important;">
             <vue-jitsi-meet
-                v-if="!loading"
+                v-if="enlinea && !esMovil && !loading"
                 ref="jitsiRef"
                 domain="meet.jit.si"
                 :options="jitsiOptions"
