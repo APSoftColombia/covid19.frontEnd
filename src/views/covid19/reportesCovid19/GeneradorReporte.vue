@@ -32,11 +32,36 @@
                     <template v-for="(variable, indexVariable) in reporte.variables">
                         <v-col class="pb-0" cols="12" sm="12" md="6" :key="`variable${indexVariable}`">
                             <c-texto
-                                    v-if="variable.type === 'text'"
+                                    v-if="variable.type === 'text' && !variable.parameter"
                                     v-model="variable.value"
                                     :label="variable.label"
                             >
                             </c-texto>
+                          <template v-if="variable.type === 'text' && variable.parameter && variable.parameter !== 'municipios'">
+                            <v-col class="pb-0" cols="12" sm="12">
+                              <c-select-complete
+                                  v-model="variable.value"
+                                  :label="variable.label"
+                                  :items="returnDataParameter(variable.parameter)"
+                                  :item-text="variable.item_text"
+                                  :item-value="variable.item_value"
+                              >
+                              </c-select-complete>
+                            </v-col>
+                          </template>
+                          <template v-if="variable.type === 'text' && variable.parameter && variable.parameter === 'municipios'">
+                            <v-col class="pb-0" cols="12" sm="12">
+                              <c-select-complete
+                                  :disabled="firtsParameterDefined('departamentos')"
+                                  v-model="variable.value"
+                                  :label="variable.label"
+                                  :items="municipios"
+                                  :item-text="variable.item_text"
+                                  :item-value="variable.item_value"
+                              >
+                              </c-select-complete>
+                            </v-col>
+                          </template>
                             <c-number
                                     v-if="variable.type === 'number'"
                                     v-model.number="variable.value"
@@ -93,8 +118,16 @@
             }
         },
         data: () => ({
-            loading: false
+            loading: false,
+            municipios: []
         }),
+      watch: {
+          reporte: {
+            handler(value){
+                value && this.restoreData()
+            }
+        }
+      },
         methods: {
             descargar () {
                 this.$refs.formVariables.validate().then(result => {
@@ -130,7 +163,37 @@
                             })
                     }
                 })
+            },
+          restoreData(){
+            this.municipios = []
+          },
+          returnDataParameter(parameter){
+              return this.$store.getters[parameter]
+          },
+          firtsParameterDefined(value){
+            let isDefined = this.reporte.variables.find(x => x.parameter === value)
+            if((isDefined && !isDefined.value) || (isDefined && !isDefined.label)) {
+              return true
             }
+            if(isDefined && isDefined.value){
+              this.returnSecondData(isDefined.value)
+              return false
+            }else{
+              this.returnSecondData(null)
+            }
+          },
+          returnSecondData(id){
+              if(id){
+                this.municipios = this.$store.getters.departamentos.find(x => x.id === id).municipios
+              }
+              if(!this.municipios.length) {
+                this.$store.getters.departamentos.forEach((element) => {
+                  element.municipios.forEach((municipio) => {
+                    this.municipios.push(municipio)
+                  })
+                })
+              }
+          }
         }
     }
 </script>

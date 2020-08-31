@@ -99,7 +99,7 @@ const actions = {
                     }, 500)
                 })
         })
-    }
+    },
 }
 
 // mutations
@@ -147,6 +147,7 @@ const mutations = {
         }, 500)
     }
 }
+
 
 export default {
     state,
