@@ -51,15 +51,33 @@
 					</v-list>
 				</v-card>
 			</v-col>
+      <v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
+        <v-card>
+          <v-list two-line>
+            <v-list-item @click="flag = false">
+              <v-list-item-avatar color="green">
+                <v-icon color="white">fas fa-file-csv</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-bold">Carga Masiva de Registros</v-list-item-title>
+                <v-list-item-subtitle>Carga masiva de registros SIVIGILA.</v-list-item-subtitle>
+              </v-list-item-content>
+              <cargador-seguimientos-sivigila></cargador-seguimientos-sivigila>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
 	const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
+  const CargadorSeguimientosSivigila = () => import('Views/complementos/CargadorRegistrosSIVIGILA')
 	export default {
 		components: {
-			CargadorSeguimientos
+			CargadorSeguimientos,
+      CargadorSeguimientosSivigila
 		},
 		data: () => ({
 			loadingGenerales: false
