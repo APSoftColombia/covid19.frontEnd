@@ -58,8 +58,8 @@
 													<v-list-item-content style="display: grid !important;">
 														<v-list-item-title class="body-3">${this.value.name}</v-list-item-title>
 														<v-list-item-subtitle class="body-1">
-														    ${ this.value.tipo + ' ' + this.value.numero_documento_identidad }
-                                    ${'Cel.' + this.value.telefono }
+														    ${ this.value.tipo + ': ' + this.value.numero_documento_identidad }
+                                    ${'Cel: ' + this.value.telefono }
 														</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
@@ -93,9 +93,9 @@
                         `div`,{
                           domProps: {
                             innerHTML: `
-                                <span style="max-width: 100px !important">
+                                <p style="max-width: 300px; overflow: hidden; white-space: nowrap;">
                                     ${vm.epss && vm.epss.length && vm.epss.find(x => x.id === this.value.eps_id) ? vm.epss.find(x => x.id === this.value.eps_id).nombre : 'N/A'}
-                                </span>
+                                </p>
                             `
                           }
                         }

@@ -512,6 +512,7 @@
             },
             tamizajeGuardado (tamizaje) {
                 console.log('tamizaje', tamizaje)
+                this.verSeguimiento(tamizaje)
                 this.$store.commit('reloadTable', 'tablaTamizajes')
             },
             resetOptions(item) {

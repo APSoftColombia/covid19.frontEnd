@@ -19,7 +19,7 @@
             </v-chip>
             <v-toolbar dark :color="tamizaje ? 'warning' : 'primary'">
                 <v-icon left>fas fa-{{tamizaje ? 'people-arrows' : 'file-prescription'}}</v-icon>
-                <v-toolbar-title>{{reporte && reporte.id ? `${tamizaje ? 'Nexo' : 'Reporte'} No. ${reporte.id}` : `Nuevo ${tamizaje ? 'Nexo' : 'Reporte'}`}}</v-toolbar-title>
+                <v-toolbar-title>{{reporte && reporte.id ? `${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte'} No. ${reporte.id}` : `Nuevo ${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte'}`}}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon dark @click="close">
                     <v-icon>mdi-close</v-icon>
@@ -158,7 +158,7 @@
                                     @click.stop="guardarReporte"
                             >
                                 <v-icon left>fas fa-save</v-icon>
-                                Guardar {{tamizaje ? 'Nexo' : 'Reporte'}}
+                                Guardar {{sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte'}}
                             </v-btn>
                         </v-card-actions>
                     </v-col>
@@ -173,6 +173,12 @@
     import {mapGetters} from 'vuex'
     export default {
         name: 'RegistroReporteComunitario',
+      props: {
+        sonNexos: {
+          type: Boolean,
+          default: null
+        }
+      },
         data: () => ({
             loading: false,
             dialog: false,

@@ -48,7 +48,6 @@
               </v-alert>
                 <v-tabs
                         class="mt-3"
-                        v-if="tamizaje.medico"
                         id="tabsSeguimiento"
                         v-model="tab"
                         fixed-tabs
@@ -59,26 +58,28 @@
                 >
                     <v-tabs-slider></v-tabs-slider>
                     <v-tab
+                        v-if="tamizaje.medico"
                             href="#tab-1"
                     >
                         Seguimientos
                         <v-icon>fas fa-chart-line</v-icon>
                     </v-tab>
                     <v-tab
+                        v-if="tamizaje.medico"
                             href="#tab-4"
                     >
                         Ordenes de Aislamiento
                         <v-icon>mdi-door-closed-lock</v-icon>
                     </v-tab>
                     <v-tab
-                            v-if="(tamizaje.muestras && tamizaje.muestras.filter(x => x.resultado).length) || (tamizaje.nexos && tamizaje.nexos.length)"
                             href="#tab-2"
                     >
-                        Nexos
+                        {{ sonNexos ? 'Nexos' : 'Convivientes' }}
                         <v-icon>fas fa-people-arrows</v-icon>
                     </v-tab>
                     <v-tab
-                            href="#tab-3"
+                        v-if="tamizaje.medico"
+                        href="#tab-3"
                     >
                         Muestras
                         <v-icon>fas fa-vials</v-icon>
@@ -115,7 +116,6 @@
                         </div>
                     </v-tab-item>
                     <v-tab-item
-                            v-if="(tamizaje.muestras && tamizaje.muestras.filter(x => x.resultado).length) || (tamizaje.nexos && tamizaje.nexos.length)"
                             value="tab-2"
                     >
                         <nexos
@@ -123,6 +123,7 @@
                                 :tamizaje="tamizaje"
                                 :editable="editable"
                                 @change="changeTamizaje(tamizaje.id)"
+                                :sonNexos="sonNexos"
                         ></nexos>
                         <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                             <v-icon color="warning" large left>mdi-alert-outline</v-icon>
@@ -189,7 +190,10 @@
             },
             ...mapGetters([
                 'modelTamizaje'
-            ])
+            ]),
+          sonNexos() {
+              return !!(this.tamizaje.muestras && this.tamizaje.muestras.filter(x => x.resultado).length)
+          }
         },
         created() {
             this.tamizaje = this.clone(this.modelTamizaje)

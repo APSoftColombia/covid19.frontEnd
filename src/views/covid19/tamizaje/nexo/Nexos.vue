@@ -2,17 +2,17 @@
     <v-card flat>
         <v-toolbar dark color="warning" dense>
             <v-icon left>fas fa-people-arrows</v-icon>
-            <v-toolbar-title>Nexos</v-toolbar-title>
-            <template v-if="permisos.seguimientoCrear && editable">
+            <v-toolbar-title>{{ sonNexos ? 'Nexos' : 'Convivientes' }}</v-toolbar-title>
+            <template v-if="editable">
                 <v-spacer></v-spacer>
                 <v-btn dark @click="agregarNexo" color="warning darken-3">
                     <v-icon left>mdi-plus</v-icon>
-                    Agregar nexo
+                    Agregar {{ sonNexos ? 'nexo' : 'conviviente' }}
                 </v-btn>
             </template>
         </v-toolbar>
         <v-card-text class="text-center font-lg" v-if="!tamizaje.nexos.length">
-            No registra nexos
+            No registra {{ sonNexos ? 'nexos' : 'convivientes' }}
         </v-card-text>
         <v-row v-else>
             <v-col cols="12" class="pt-0">
@@ -20,7 +20,7 @@
                     <template v-slot:default>
                         <thead>
                         <tr>
-                            <th class="text-left">Nexo</th>
+                            <th class="text-left">{{ sonNexos ? 'Nexo' : 'Conviviente' }}</th>
                           <th class="text-left">Persona</th>
                           <th class="text-left">Ubicación</th>
                           <th class="text-left">Observaciones</th>
@@ -96,6 +96,7 @@
         <registro-reporte-comunitario
                 ref="registroNexo"
                 @guardado="val => nexoGuardado(val)"
+                :sonNexos="sonNexos"
         ></registro-reporte-comunitario>
         <registro-tamizaje
             v-if="permisos.tamizajeCrear"
@@ -128,6 +129,10 @@
             editable: {
                 type: Boolean,
                 default: false
+            },
+            sonNexos: {
+              type: Boolean,
+              default: null
             }
         },
         computed: {
@@ -136,7 +141,7 @@
             ]),
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')
-            }
+            },
         },
         methods: {
             agregarNexo () {
@@ -145,12 +150,12 @@
             nexoGuardado (item) {
                 this.$emit('change', item)
             },
-          crearTamizaje (item) {
-            this.$refs.registroTamizaje.open(null, item.id)
-          },
-          verSeguimiento (item) {
-            if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
-          }
+            crearTamizaje (item) {
+              this.$refs.registroTamizaje.open(null, item.id)
+            },
+            verSeguimiento (item) {
+              if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
+            }
         }
     }
 </script>
