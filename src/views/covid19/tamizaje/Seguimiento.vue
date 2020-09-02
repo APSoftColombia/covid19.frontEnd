@@ -118,7 +118,7 @@
                   value="tab-2"
               >
                 <nexos
-                    v-if="permisos.nexosVer"
+                    v-if="permisos.nexoVer"
                     :tamizaje="tamizaje"
                     :editable="editableNexos"
                     @change="changeTamizaje(tamizaje.id)"
