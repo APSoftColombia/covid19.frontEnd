@@ -30,12 +30,13 @@
     const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
     const Filtros = () => import('Views/covid19/reporteComunitario/filtros/Filtros')
     const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
+    import MenuItem from "../Componentes/MenuItem";
     export default {
         name: 'Encuestas',
         components: {
           RegistroEncuesta,
           Filtros,
-          DetalleEncuesta
+          DetalleEncuesta,
         },
         computed: {
             permisos () {
@@ -43,7 +44,7 @@
             },
             ...mapGetters([
                 'municipiosTotal',
-              'tiposDocumentoIdentidad'
+                'tiposDocumentoIdentidad'
             ])
         },
         watch: {
@@ -133,29 +134,34 @@
                             props: ['value']
                         }
                     },
-                    {
-                        text: 'Estado',
-                        align: 'left',
-                        sortable: false,
-                        visibleColumn: true,
-                        value: 'id',
-                        component: {
-                            render: function (createElement) {
-                                return createElement(
-                                    `div`,{
-                                        domProps: {
-                                            innerHTML: `
-												<div style="white-space: initial !important;">
-													${this.value.id ? 'Encuestado' : 'Pendiente'}
-												</div>
-											`
-                                        }
+                  {
+                    text: 'Riesgo',
+                    align: 'left',
+                    sortable: true,
+                    component: {
+                      functional: true,
+                      render: function (createElement, context) {
+                        return context.props.value.riesgo_general
+                            ? createElement(
+                                MenuItem,
+                                {
+                                  props: {
+                                    value: {
+                                      riesgo_general: context.props.value.riesgo_general,
+                                      items: [
+                                        {title: 'Riesgo OMS: ', value: context.props.value.riesgo_oms},
+                                        {title: 'Riesgo FINDRISC: ', value: context.props.value.riesgo_findrisc},
+                                        {title: 'Morisky Green: ', value: context.props.value.morisky_green},
+                                        {title: 'Periodicidad de Seguimiento: ', value: context.props.value.periodicidad_seguimiento + " Dias"}
+                                      ]
                                     }
-                                )
-                            },
-                            props: ['value']
-                        }
-                    },
+                                  }
+                                }
+                            )
+                            : createElement('div', 'Pendiente')
+                      }
+                    }
+                  },
                     {
                         text: 'Usuario Registra',
                         align: 'left',
