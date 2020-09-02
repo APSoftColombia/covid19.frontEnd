@@ -111,7 +111,7 @@
                             color="light-blue"
                             elevation="2"
                         >
-                          De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitame un momento le informamos el día y la hora de su cita.
+                          De acuerdo a lo indicado se asignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permítame un momento le informamos el día y la hora de su cita.
                         </v-alert>
                       </v-col>
                     </template>
@@ -127,7 +127,7 @@
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_g === 'MENOR A 3 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control.</p>
-                          <p class="mb-0" v-else>de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitamen un momento le informamos el día y la hora de su cita.</p>
+                          <p class="mb-0" v-else>de acuerdo a lo indicado se asignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permítame un momento le informamos el día y la hora de su cita.</p>
                         </v-alert>
                       </v-col>
                       <v-col cols="12">
@@ -140,7 +140,7 @@
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.consulta_medicina_i === 'MENOR A 6 MESES'">De acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control.</p>
-                          <p class="mb-0" v-else>de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permitamen un momento le informamos el día y la hora de su cita.</p>
+                          <p class="mb-0" v-else>de acuerdo a lo indicado se asignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV. Permítame un momento le informamos el día y la hora de su cita.</p>
                         </v-alert>
                       </v-col>
                       <v-col cols="12">
@@ -153,7 +153,7 @@
                             elevation="2"
                         >
                           <p class="mb-0" v-if="encuesta.laboratorios === 'MENOR A 6 MESES'">de acuerdo a lo indicado por favor tener presente asistir de manera puntual a su control y recordar la toma de sus laboratorios correspondiente. {{encuesta.diabetes === 'Si' ? 'recordar la toma d ela hemoglobina glicosilada.' : '' }}</p>
-                          <p class="mb-0" v-else>De acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y toma de laboratorios correspondientes. Permitame un momento le informamos el día y la hora de su cita.</p>
+                          <p class="mb-0" v-else>De acuerdo a lo indicado se asignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y toma de laboratorios correspondientes. Permítame un momento le informamos el día y la hora de su cita.</p>
                         </v-alert>
                       </v-col>
                     </template>
@@ -170,7 +170,7 @@
                               elevation="2"
                           >
                             <p class="mb-0">Verificar fecha de entrega, recordar la importancia de asistir puntualmente a la entrega y dejar registro para seguimento.</p>
-                            <p class="mb-0" v-if="encuesta.tiene_medicamentos === 'Si'">de acuerdo a lo indicado se aignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y fromulación de medicamentos correspondientes. Permitame un momento le informamos el día y la hora de su cita.</p>
+                            <p class="mb-0" v-if="encuesta.tiene_medicamentos === 'Si'">de acuerdo a lo indicado se asignará una cita con su IPS primaria para iniciar proceso de retoma al programa de RCV y fromulación de medicamentos correspondientes. Permítame un momento le informamos el día y la hora de su cita.</p>
                           </v-alert>
                         </v-col>
                         <v-col cols="12" v-if="encuesta.resultado.morisky">
@@ -199,7 +199,7 @@
                               elevation="2"
                           >
 <!--                            <p class="mb-0" v-if="encuesta.resultado.morisky.riesgo === 'Cumple'">Pasar a la fase de Recomendaciones y educación de acuerdo  a las repsuestas brindadas por el usuario.</p>-->
-                            <p class="mb-0">de acuerdo a lo indicado se realizará visita domiciliaria por parte de la promotora de salud de su municipio para verificar el estado de sus medicamentos y acordar un sistema personalizado de dosificación. Permitame un momento le informamos el día y la hora de su cita.</p>
+                            <p class="mb-0">de acuerdo a lo indicado se realizará visita domiciliaria por parte de la promotora de salud de su municipio para verificar el estado de sus medicamentos y acordar un sistema personalizado de dosificación. Permítame un momento le informamos el día y la hora de su cita.</p>
                           </v-alert>
                         </v-col>
                       </template>
