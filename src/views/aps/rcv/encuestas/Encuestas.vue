@@ -217,7 +217,6 @@
                 item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_documento_identidad_id && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id).tipo : ''
                 item.celular = item.numero_celular
                 item.identificacion = item.numero_documento_identidad
-                item.nombre = [item.nombre1, item.nombre2, item.apellido1, item.apellido1].filter(x => x).join(' ')
                 if (this.permisos.encuestasRCVCrear && !item.id) item.options.push({event: 'crearEncuesta', icon: 'fas fa-file-medical', tooltip: 'Crear Encuesta'})
                 if (item.id) item.options.push({event: 'verEncuesta', icon: 'mdi-file-find', tooltip: 'Detalle Encuesta', color: 'success'})
                 return item
