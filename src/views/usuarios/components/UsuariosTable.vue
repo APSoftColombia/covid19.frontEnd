@@ -93,8 +93,8 @@
                         `div`,{
                           domProps: {
                             innerHTML: `
-                                <p style="max-width: 300px; overflow: hidden; white-space: nowrap;">
-                                    ${vm.epss && vm.epss.length && vm.epss.find(x => x.id === this.value.eps_id) ? vm.epss.find(x => x.id === this.value.eps_id).nombre : 'N/A'}
+                                <p style="max-width: 300px; white-space: normal">
+                                    ${vm.epss && vm.epss.length && vm.epss.find(x => x.id === this.value.eps_id) ? vm.epss.find(x => x.id === this.value.eps_id).nombre : ''}
                                 </p>
                             `
                           }

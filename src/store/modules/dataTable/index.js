@@ -16,13 +16,15 @@ const state = {
         tablaPersonasSinHogar: 0,
         tablaPersonasSinHogarVersion: 2,
         tablaNexos: 0,
-        tablaNexosVersion: 2,
+        tablaNexosVersion: 3,
         tablaBarriosVeredas: 0,
         tablaBarriosVeredasVersion: 2,
         tablaMuestras: 0,
         tablaMuestrasVersion: 1,
         tablaEncuestasRCV: 0,
-        tablaEncuestasRCVVersion: 4
+        tablaEncuestasRCVVersion: 4,
+        tablaUsers: 0,
+        tablaUsersVersion: 0
     }
 }
 

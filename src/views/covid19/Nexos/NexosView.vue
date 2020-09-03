@@ -72,6 +72,27 @@
                             }
                         }
                     },
+                  {
+                    text: 'Parentesco',
+                    align: 'left',
+                    sortable: false,
+                    component: {
+                      render: function (createElement) {
+                        return createElement(
+                            `div`,{
+                              domProps: {
+                                innerHTML: `
+                                              <p style="max-width: 150px; white-space: normal">
+                                                  ${vm.parentescos && vm.parentescos.length && vm.parentescos.find(x => x.id === this.value.parentesco_id) ? vm.parentescos.find(x => x.id === this.value.parentesco_id).descripcion : ''}
+                                              </p>
+                                            `
+                              }
+                            }
+                        )
+                      },
+                      props: ['value']
+                    }
+                  },
                     {
                         text: 'Origen',
                         align: 'left',
@@ -190,7 +211,8 @@
             },
             ...mapGetters([
                 'tiposDocumentoIdentidad',
-                'municipiosTotal'
+                'municipiosTotal',
+                'parentescos'
             ]),
             isEmit(){
                 return this.$on('seguimiento', this.verSeguimiento)

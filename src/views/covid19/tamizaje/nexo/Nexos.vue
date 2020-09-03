@@ -23,6 +23,7 @@
                             <th class="text-left">{{ sonNexos ? 'Nexo' : 'Conviviente' }}</th>
                           <th class="text-left">Persona</th>
                           <th class="text-left">Ubicación</th>
+                          <th class="text-left">Parentesco</th>
                           <th class="text-left">Observaciones</th>
                           <th class="text-center"></th>
                         </tr>
@@ -62,6 +63,11 @@
                                     </v-list-item-content>
                                 </v-list-item>
                             </td>
+                          <td>
+                            <div style="max-width: 150px; white-space: normal">
+                              {{ parentescos && parentescos.length && parentescos.find(x => x.id === item.parentesco_id) ? parentescos.find(x => x.id === item.parentesco_id).descripcion : '' }}
+                            </div>
+                          </td>
                             <td>
                               <div style="white-space: initial !important;">
                                 {{item.observaciones}}
@@ -137,7 +143,8 @@
         },
         computed: {
             ...mapGetters([
-                'municipiosTotal'
+                'municipiosTotal',
+                'parentescos'
             ]),
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')

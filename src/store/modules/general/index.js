@@ -93,7 +93,8 @@ const state = {
     ambitosAtencion: [],
     tiposSoporteVentilatorio: [],
     estadosAfectacion: [],
-    gruposAtencionEspecial: []
+    gruposAtencionEspecial: [],
+    parentescos: []
 }
 
 // getters
@@ -241,6 +242,9 @@ const getters = {
     },
     gruposAtencionEspecial: state => {
         return state.gruposAtencionEspecial
+    },
+    parentescos: state => {
+        return state.parentescos
     }
 }
 // actions
@@ -325,6 +329,7 @@ const actions = {
                             context.commit('assignTiposSoporteVentilatorio', response.data.parametros.soporte_ventilatorios)
                             context.commit('assignEstadosAfectacion', response.data.parametros.estados_afectacion)
                             context.commit('assignGruposAtencionEspecial', response.data.parametros.grupos_atencion_especial_covid)
+                            context.commit('assignParentescos', response.data.parametros.parentescos)
                             resolve(true)
                         })
                         .catch(error => {
@@ -457,6 +462,9 @@ const mutations = {
     },
     assignGruposAtencionEspecial (state, gruposAtencionEspecial) {
         state.gruposAtencionEspecial = gruposAtencionEspecial
+    },
+    assignParentescos (state, parentescos) {
+        state.parentescos = parentescos
     },
     snackbar (state, data) {
         let timeout = 8000

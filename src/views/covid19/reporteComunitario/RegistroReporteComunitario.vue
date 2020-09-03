@@ -98,7 +98,7 @@
                                     >
                                     </c-number>
                                 </v-col>
-                                <v-col class="pb-0" cols="12" sm="12">
+                                <v-col class="pb-0" cols="6" sm="6">
                                     <c-texto
                                             v-model="reporte.direccion"
                                             label="Dirección"
@@ -108,6 +108,18 @@
                                     >
                                     </c-texto>
                                 </v-col>
+                              <v-col class="pb-0" cols="12" sm="6" md="6">
+                                <c-select-complete
+                                    v-model="reporte.parentesco_id"
+                                    label="Parentesco"
+                                    rules="required"
+                                    name="parentesco"
+                                    :items="parentescos"
+                                    item-value="id"
+                                    item-text="descripcion"
+                                >
+                                </c-select-complete>
+                              </v-col>
                                 <v-col class="pb-0" cols="12" sm="12">
                                     <c-select-complete
                                             v-model="reporte.departamento_id"
@@ -192,7 +204,8 @@
                 'modelReporteComunitario',
                 'departamentos',
                 'sexosCovid',
-                'datosEmpresa'
+                'datosEmpresa',
+                'parentescos'
             ]),
             time () {
                 let h = 0
