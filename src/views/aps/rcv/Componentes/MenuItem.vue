@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-menu offset-x left open-on-hover transition="slide-x-transition">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-on="on" :color="value.riesgo_general === 'Alto' ? 'error' : value.riesgo_general === 'Medio' ? 'warning' : value.riesgo_general === 'Indeterminado' ? 'grey' : 'success'" rounded>
+        <v-btn dark v-on="on" :color="value.riesgo_general === 'Alto' ? 'error' : value.riesgo_general === 'Medio' ? 'warning' : value.riesgo_general === 'Indeterminado' ? 'grey' : 'success'" rounded>
           {{ value.riesgo_general }}
         </v-btn>
       </template>
