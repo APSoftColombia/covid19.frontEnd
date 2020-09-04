@@ -58,6 +58,30 @@
                 >
                 </c-text-area>
             </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-autocomplete
+                v-model="aislamiento.codigo_habilitacion"
+                outlined
+                dense
+                label="IPS que ordena aislamiento"
+                :loading="loadingPrestador"
+                :search-input.sync="searchPrestador"
+                :items="prestadores"
+                hide-selected
+                item-value="codigohabilitacion"
+                item-text="nombre"
+                :filter="filterPrestadores"
+                placeholder="IPS que ordena aislamiento"
+                single-line
+            >
+              <template v-slot:selection="{ item }">
+                <span style="width: 100% !important;" class="text-truncate">{{`${item.nitsnit + "-" + item.nombre}`}}</span>
+              </template>
+              <template v-slot:item="{ item }">
+                <span>{{`${item.nitsnit}-${item.nombre}`}}</span>
+              </template>
+            </v-autocomplete>
+          </v-col>
         </v-row>
         <form-seguimiento-aislamiento
                 :aislamiento="aislamiento"
@@ -86,6 +110,17 @@
                 default: null
             }
         },
+      data: () => ({
+        filterPrestadores (item, queryText) {
+          const hasValue = val => val != null ? val : ''
+          const text = hasValue(item.nitsnit + ' ' + item.nombre)
+          const query = hasValue(queryText)
+          return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+        },
+        searchPrestador: null,
+        prestadores: [],
+        loadingPrestador: false,
+      }),
         components: {
             FormSeguimientoAislamiento
         },
@@ -112,7 +147,18 @@
                     this.aislamiento.fecha_egreso = val
                 },
                 immediate: false
-            }
+            },
+          'searchPrestador'(val) {
+            if(this.loadingPrestador)
+              return
+            this.loadingPrestador = true
+            this.axios.get(`prestadores?filter[search]=${val}`)
+                .then(response => {
+                  this.prestadores = response.data
+                }).catch(e => {
+              this.$store.commit('snackbar', {color: 'error', message: `al buscar prestadores`, error: e})
+            })
+          },
         }
     }
 </script>
