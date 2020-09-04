@@ -214,7 +214,8 @@
                       <definicion3 v-if="encuesta.resultado.oms.riesgo === 'Alto'"></definicion3>
                       <definicion4 v-if="encuesta.resultado.oms.riesgo === 'Muy alto' || encuesta.resultado.oms.riesgo === 'Crítico'"></definicion4>
                     </template>
-<!--                    <recomendaciones></recomendaciones>-->
+                    <recomendaciones-diabeticos v-if="encuesta.diabetes === 'Si'"></recomendaciones-diabeticos>
+                    <recomendaciones></recomendaciones>
                     <semaforo-alimentacion></semaforo-alimentacion>
                   </template>
                   <template v-else>
@@ -237,11 +238,14 @@
     import Definicion2 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion2'
     import Definicion3 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion3'
     import Definicion4 from 'Views/aps/rcv/resultado/educacion/definiciones/Definicion4'
-    // import Recomendaciones from 'Views/aps/rcv/resultado/educacion/Recomendaciones'
+    import Recomendaciones from 'Views/aps/rcv/resultado/educacion/Recomendaciones'
+    import RecomendacionesDiabeticos from 'Views/aps/rcv/resultado/educacion/RecomendacionesDiabeticos'
     import SemaforoAlimentacion from 'Views/aps/rcv/resultado/educacion/SemaforoAlimentacion'
     export default {
         name: 'DetalleEncuesta',
       components: {
+        Recomendaciones,
+        RecomendacionesDiabeticos,
         SemaforoAlimentacion,
         Definicion1,
         Definicion2,
