@@ -155,7 +155,9 @@
             this.axios.get(`prestadores?filter[search]=${val}`)
                 .then(response => {
                   this.prestadores = response.data
+                  this.loadingPrestador = false
                 }).catch(e => {
+                  this.loadingPrestador = false
               this.$store.commit('snackbar', {color: 'error', message: `al buscar prestadores`, error: e})
             })
           },
