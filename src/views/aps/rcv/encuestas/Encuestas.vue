@@ -28,7 +28,7 @@
     import {mapGetters} from "vuex";
     import PersonaItemTabla from "../../../../components/Tamizaje/PersonaItemTabla";
     const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
-    const Filtros = () => import('Views/covid19/reporteComunitario/filtros/Filtros')
+    const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
     const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
     import MenuItem from "../componentes/MenuItem";
     export default {
@@ -57,9 +57,10 @@
         },
         data: (vm) => ({
             rutaBase: 'rcvs',
+            loading: false,
             dataTable: {
                 buttonZone: false,
-                advanceFilters: false,
+                advanceFilters: true,
                 nameItemState: 'tablaEncuestasRCV',
                 route: 'rcvs',
                 makeHeaders: [
