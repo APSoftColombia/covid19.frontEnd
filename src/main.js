@@ -25,6 +25,9 @@ import Croppa from 'vue-croppa'
 import moment from 'moment'
 import VueSignaturePad from 'vue-signature-pad'
 import UUID from 'vue-uuid'
+import lodash from 'lodash'
+window.lodash = lodash
+
 // global components
 import GlobalComponents from './globalComponents'
 // router

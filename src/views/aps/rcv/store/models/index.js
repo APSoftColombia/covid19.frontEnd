@@ -52,6 +52,9 @@ const state = {
             celular:null,
             email:null
         },
+        paciente_hospitalizado: null,
+        codigo_ips_hospitalizacion: null,
+        ips_hospitalizacion: null,
         /////
         especialidad: [],
         laboratorio: [],

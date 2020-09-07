@@ -30,7 +30,7 @@
     const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
     const Filtros = () => import('Views/covid19/reporteComunitario/filtros/Filtros')
     const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
-    import MenuItem from "../Componentes/MenuItem";
+    import MenuItem from "../componentes/MenuItem";
     export default {
         name: 'Encuestas',
         components: {
