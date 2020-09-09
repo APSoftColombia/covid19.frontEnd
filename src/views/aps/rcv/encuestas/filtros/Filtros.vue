@@ -72,7 +72,7 @@
       <v-col class="pb-0" cols="12" sm="12" md="12">
           <v-checkbox
               v-model="filters.models.hasRcv"
-              label="Con Encuesta RCV"
+              label="Afiliados con Riesgo Cardiovascular"
               @change="aplicaFiltros"
           ></v-checkbox>
       </v-col>
