@@ -209,8 +209,24 @@
                       :sintomas="complementos && complementos.sintomas ? complementos.sintomas : []"
                   ></form-sintomas>
                 </v-col>
+                <v-col cols="12" v-if="encuesta.sintomas.length > 1">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                          v-model="encuesta.dispuesto"
+                          label="¿El paciente acepta seguir con la realización de la encuesta?"
+                          rules="required"
+                          name="acepta seguir con la encuesta"
+                          :items="[{value: 1, text: 'Si'}, {value: 0, text: 'No'}]"
+                          item-text="text"
+                          item-value="value"
+                      >
+                      </c-radio>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
               </v-row>
-              <template v-if="encuesta.sintomas.length < 2">
+              <template v-if="encuesta.dispuesto">
                 <v-row>
                   <v-col cols="12" class="px-0 pb-0">
                     <v-system-bar
@@ -950,7 +966,7 @@ export default {
     guardarencuesta() {
       this.$refs.formencuesta.validate().then(result => {
         if (result) {
-          let encuestaData = this.encuesta.sintomas.length < 2 ?
+          let encuestaData = this.encuesta.dispuesto ?
               this.clone(this.encuesta)
               : {
                 id: this.encuesta.id,
@@ -958,7 +974,10 @@ export default {
                 id_afiliado: this.encuesta.id_afiliado,
                 afiliado_actualizado: this.encuesta.afiliado_actualizado,
                 duracion: this.encuesta.duracion,
-                sintomas: this.encuesta.sintomas
+                sintomas: this.encuesta.sintomas,
+                paciente_hospitalizado: this.encuesta.paciente_hospitalizado,
+                codigo_ips_hospitalizacion: this.encuesta.codigo_ips_hospitalizacion,
+                dispuesto: this.encuesta.dispuesto
               }
           if (encuestaData.responde_paciente) {
             encuestaData.acudiente = null

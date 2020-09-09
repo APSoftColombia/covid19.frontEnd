@@ -46,15 +46,16 @@ const state = {
             email: null,
         },
         acudiente: {
-            identificacion:null,
-            tipo_identificacion:null,
-            nombre_completo:null,
-            celular:null,
-            email:null
+            identificacion: null,
+            tipo_identificacion: null,
+            nombre_completo: null,
+            celular: null,
+            email: null
         },
         paciente_hospitalizado: null,
         codigo_ips_hospitalizacion: null,
         ips_hospitalizacion: null,
+        dispuesto: 1,
         /////
         especialidad: [],
         laboratorio: [],

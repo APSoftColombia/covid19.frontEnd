@@ -225,7 +225,8 @@ const state = {
         tipo: null,
         frecuencia_pulso: null,
         saturacion_oxigeno: null,
-        temperatura: null
+        temperatura: null,
+        duracion: null
 
     },
     modelReporteComunitario: {
