@@ -25,12 +25,13 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
-    import PersonaItemTabla from "../../../../components/Tamizaje/PersonaItemTabla";
+    import {mapGetters} from 'vuex'
+    import PersonaItemTabla from '../../../../components/Tamizaje/PersonaItemTabla'
     const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
     const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
     const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
-    import MenuItem from "../componentes/MenuItem";
+    import MenuItem from '../componentes/MenuItem'
+    import IconTooltip from '../componentes/IconTooltip'
     export default {
         name: 'Encuestas',
         components: {
@@ -160,6 +161,26 @@
                                 }
                             )
                             : createElement('div', 'Pendiente')
+                      }
+                    }
+                  },
+                  {
+                    text: '',
+                    align: 'left',
+                    sortable: true,
+                    component: {
+                      functional: true,
+                      render: function (createElement, context) {
+                        return (!context.props.value.diastolica && !context.props.value.sistolica) && context.props.value.riesgo_general
+                            ? createElement(
+                                IconTooltip,
+                                {
+                                  props: {
+                                    tooltip: 'No registra datos de Tensión Arterial'
+                                  }
+                                }
+                            )
+                            : createElement('div', '')
                       }
                     }
                   },

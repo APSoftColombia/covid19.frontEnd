@@ -20,7 +20,7 @@
             </v-toolbar>
             <v-container fluid>
                 <v-row v-if="encuesta">
-                  <template v-if="encuesta.sintomas.length > 1">
+                  <template v-if="encuesta.sintomas.length > 1 && !encuesta.dispuesto">
                     <v-col cols="12">
                       <v-alert
                           border="right"

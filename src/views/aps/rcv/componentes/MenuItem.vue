@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-menu offset-x left open-on-hover transition="slide-x-transition">
+    <v-menu v-if="value" offset-x left open-on-hover transition="slide-x-transition">
       <template v-slot:activator="{ on, attrs }">
         <v-btn dark v-on="on"
                :color="`darken-1 ${value.riesgo_general === 'Alto' ? 'error' : value.riesgo_general === 'Medio' ? 'warning' : value.riesgo_general === 'Indeterminado' ? 'grey' : 'success'}`"
