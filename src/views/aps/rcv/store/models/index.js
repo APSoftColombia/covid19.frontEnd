@@ -56,6 +56,8 @@ const state = {
         codigo_ips_hospitalizacion: null,
         ips_hospitalizacion: null,
         dispuesto: 1,
+        glucometro: null,
+        tensiometro: null,
         /////
         especialidad: [],
         laboratorio: [],

@@ -239,6 +239,46 @@
                       <span>AMBITO PREVENCIÓN DE LA ENFERMEDAD</span>
                     </v-system-bar>
                   </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" class="pb-0">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="encuesta.glucometro"
+                            label="¿Cuenta con Glucómetro en casa?"
+                            rules="required"
+                            name="cuenta con glucómetro"
+                            :items="[{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}]"
+                            item-text="text"
+                            item-value="value"
+                            :column="!$vuetify.breakpoint.smAndUp"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" class="pb-0">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="encuesta.tensiometro"
+                            label="¿Cuenta con Tensiómetro en casa?"
+                            rules="required"
+                            name="cuenta con tensiómetro"
+                            :items="[{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}]"
+                            item-text="text"
+                            item-value="value"
+                            :column="!$vuetify.breakpoint.smAndUp"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="12" class="pb-0">
                     <v-card outlined tile>
                       <v-card-text>
