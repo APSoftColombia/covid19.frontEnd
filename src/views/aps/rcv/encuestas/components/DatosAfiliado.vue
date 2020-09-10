@@ -1,5 +1,5 @@
 <template>
-    <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">
+    <v-expansion-panels v-if="afiliado" v-model="panel" multiple style="z-index: 0 !important;">
         <v-expansion-panel>
             <v-expansion-panel-header class="py-1 pl-0">
                 <v-list-item>
@@ -71,7 +71,7 @@
         },
         data: () => ({
             datos: [],
-            panel: [0]
+            panel: []
         }),
         watch: {
             abierto: {
