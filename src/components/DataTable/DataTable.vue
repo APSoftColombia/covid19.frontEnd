@@ -429,6 +429,7 @@
                                 this.$emit('resetOption', item)
                             })
                             response.data.per_page = this.value.optionsPerPage.find(page => page.value === parseInt(response.data.per_page)) ? parseInt(response.data.per_page) : -1
+                            this.value.total = response.data.total
                             this.pagination.last_page = response.data.last_page
                             this.pagination.from = response.data.from
                             this.pagination.to = response.data.to
