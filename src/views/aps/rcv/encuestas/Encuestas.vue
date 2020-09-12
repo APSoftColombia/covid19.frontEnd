@@ -7,11 +7,13 @@
                 @crearEncuesta="item => crearEncuesta(item)"
                 @verEncuesta="item => verEncuesta(item)"
                 @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
+                @length="length"
         >
             <filtros
                     slot="filters"
                     ref="filtrosReportesCovid"
                     :ruta-base="rutaBase"
+                    :lengthRows="returnDataTableData"
                     @filtra="val => goDatos(val)"
             ></filtros>
         </data-table>
@@ -20,7 +22,9 @@
                 ref="registroEncuesta"
                 @guardado="val => encuestaGuardada(val)"
         ></registro-encuesta>
-        <detalle-encuesta ref="detalleEncuesta"></detalle-encuesta>
+        <detalle-encuesta
+            ref="detalleEncuesta"
+        ></detalle-encuesta>
     </div>
 </template>
 
@@ -46,7 +50,10 @@
             ...mapGetters([
                 'municipiosTotal',
                 'tiposDocumentoIdentidad'
-            ])
+            ]),
+          returnDataTableData(){
+              return this.dataTable
+          }
         },
         watch: {
             permisos: {
@@ -58,12 +65,14 @@
         },
         data: (vm) => ({
             rutaBase: 'rcvs',
+            lengthData: null,
             loading: false,
             dataTable: {
                 buttonZone: false,
                 advanceFilters: true,
                 nameItemState: 'tablaEncuestasRCV',
                 route: 'rcvs',
+                total: null,
                 makeHeaders: [
                   {
                     text: 'Encuesta',
@@ -221,18 +230,21 @@
             }
         }),
         methods: {
+            length(value){
+              this.lengthData = value
+            },
             goDatos (ruta) {
                 this.dataTable.route = ruta
             },
             encuestaGuardada (item) {
                 this.$store.commit('reloadTable', 'tablaEncuestasRCV')
-                this.$refs.detalleEncuesta.open(item)
+                this.$refs.detalleEncuesta.open(item, false, true)
             },
             crearEncuesta (item) {
               this.$refs.registroEncuesta.open(item)
             },
             verEncuesta (item) {
-              this.$refs.detalleEncuesta.open(item)
+              this.$refs.detalleEncuesta.open(item, true, false)
             },
             resetOptions(item) {
                 item.options = []
@@ -243,7 +255,7 @@
                 if (item.id) item.options.push({event: 'verEncuesta', icon: 'mdi-file-find', tooltip: 'Detalle Encuesta', color: 'success'})
                 return item
             }
-        }
+        },
     }
 </script>
 
