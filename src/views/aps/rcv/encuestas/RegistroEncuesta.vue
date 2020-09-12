@@ -840,20 +840,25 @@
           </v-col>
         </v-row>
       </v-container>
+      <detalle-encuesta
+          ref="detalleEncuesta"
+          :resultadosOpen="true"
+          :abierto="false"
+      ></detalle-encuesta>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
-
-const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
-const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
-const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
-import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
-import BuscadorIps from '../componentes/BuscadorIps'
+  import {mapGetters} from 'vuex'
+  import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
+  const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
+  const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
+  const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
+  const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
+  import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
+  import BuscadorIps from '../componentes/BuscadorIps'
 
 export default {
   name: 'RegistroEncuesta',
@@ -863,7 +868,8 @@ export default {
     FormEspecialidades,
     FormExamenes,
     FormMedicamentos,
-    DatosAfiliado
+    DatosAfiliado,
+    DetalleEncuesta
   },
   data: () => ({
     loading: false,
@@ -1031,6 +1037,7 @@ export default {
                 this.$emit('guardado', response.data)
                 this.$store.commit('snackbar', {color: 'success', message: `La encuesta se guardo correctamente.`})
                 this.close()
+                this.$refs.detalleEncuesta.open(response.data)
               })
               .catch(error => {
                 this.loading = false

@@ -8,7 +8,7 @@
           </v-list-item-avatar>
           <v-list-item-content class="pa-0">
             <v-list-item-title>
-              <h6 class="mb-0">{{encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Encuesta`}}</h6>
+              <h6 class="mb-0"></h6>
             </v-list-item-title>
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
@@ -55,8 +55,21 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-
-              <template v-if="encuesta.sintomas.length < 2">
+              <template v-if="encuesta.dispuesto">
+                <v-list-item @click="click = null">
+                  <v-list-item-content class="pa-0">
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                      <p>¿Cuenta con Glucómetro en casa? <span :style="`color: ${color(encuesta.glucometro)}`">{{ encuesta.glucometro }}</span></p>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="click = null">
+                  <v-list-item-content class="pa-0">
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                      <p>¿Cuenta con Tensiómetro en casa? <span :style="`color: ${color(encuesta.tensiometro)}`">{{ encuesta.tensiometro }}</span></p>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
                 <v-list-item :class="`${encuesta.peso && encuesta.talla ? 'v-list-item--two-line' : ''}`" @click="click = null">
                   <v-list-item-content class="pa-0">
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">
@@ -297,7 +310,11 @@
       encuesta: {
         type: Object,
         default: null
-      }
+      },
+      abierto: {
+        type: Boolean,
+        default: true
+      },
     },
     data: () => ({
       panel: [0],

@@ -21,9 +21,9 @@
                 </v-btn>
             </v-toolbar>
             <v-container fluid>
-              <datos-afiliado :afiliado="encuesta.afiliado"></datos-afiliado>
-              <resultados-encuesta class="mt-3" :encuesta="encuesta"></resultados-encuesta>
-              <respuestas-encuesta class="mt-3" :encuesta="encuesta"></respuestas-encuesta>
+              <datos-afiliado :afiliado="encuesta.afiliado" :abierto="abierto"></datos-afiliado>
+              <respuestas-encuesta class="mt-3" :encuesta="encuesta" :abierto="abierto"></respuestas-encuesta>
+              <resultados-encuesta class="mt-3" :encuesta="encuesta" :abierto="resultadosOpen"></resultados-encuesta>
             </v-container>
           <!--<v-divider class="pa-0 ma-0"></v-divider>
           <v-card-actions class="justify-center">
@@ -41,6 +41,16 @@
     const RespuestasEncuesta = () => import('Views/aps/rcv/encuestas/components/RespuestasEncuesta')
     export default {
         name: 'DetalleEncuesta',
+      props: {
+        resultadosOpen: {
+          type: Boolean,
+          default: false
+        },
+        abierto: {
+          type: Boolean,
+          default: true
+        },
+      },
       components: {
         ResultadosEncuesta,
         DatosAfiliado,

@@ -8,7 +8,7 @@
           </v-list-item-avatar>
           <v-list-item-content class="pa-0">
             <v-list-item-title>
-              <h6 class="mb-0">{{encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Encuesta`}}</h6>
+              <h6 class="mb-0"></h6>
             </v-list-item-title>
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
@@ -116,7 +116,7 @@
               </v-col>
             </template>
             <template>
-              <!--                    Atención medica & laboratorios-->
+              <!--                    Atención medica & laboratorios                                  -->
               <v-col cols="12">
                 <v-subheader class="font-weight-bold">Evalución atención medica general: {{encuesta.consulta_medicina_g}}</v-subheader>
                 <v-alert
@@ -241,7 +241,11 @@
       encuesta: {
         type: Object,
         default: null
-      }
+      },
+      abierto: {
+        type: Boolean,
+        default: true
+      },
     },
     data: () => ({
       panel: [0]
