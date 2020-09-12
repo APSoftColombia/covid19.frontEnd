@@ -13,9 +13,15 @@
                 {{ [tamizaje.nombre1, tamizaje.nombre2, tamizaje.apellido1, tamizaje.apellido2].filter(x => x).join(' ') }}
               </h4>
             </v-list-item-title>
-            <v-list-item-title><h6 class="mb-0">
+            <v-list-item-title>
+              <h6 class="mb-0">
               {{ tiposDocumentoIdentidad && tamizaje.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === tamizaje.tipo_identificacion).tipo : '' }}
-              {{ tamizaje.identificacion }}</h6></v-list-item-title>
+              {{ tamizaje.identificacion }}
+              </h6>
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{calculaEdad(tamizaje && tamizaje.fecha_nacimiento).stringDate}}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-expansion-panel-header>
@@ -25,7 +31,7 @@
           <template v-for="(item, indexItem) in datos">
             <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
               <v-list two-line class="notification-wrap">
-                <v-list-item ripple>
+                <v-list-item>
                   <v-list-item-avatar class="my-1">
                     <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
                   </v-list-item-avatar>

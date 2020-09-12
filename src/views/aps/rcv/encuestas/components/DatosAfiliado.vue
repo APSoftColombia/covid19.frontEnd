@@ -18,7 +18,7 @@
                           </h6>
                         </v-list-item-title>
                       <v-list-item-subtitle>
-                        {{edad}}
+                        {{calculaEdad(afiliado && afiliado.fecha_nacimiento).stringDate}}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
@@ -29,7 +29,7 @@
                     <template v-for="(item, indexItem) in datos">
                         <v-col cols="12" :md="item.colmd" :lg="item.collg" xl="3" :key="`col${indexItem}`">
                             <v-list two-line class="notification-wrap">
-                                <v-list-item ripple>
+                                <v-list-item>
                                     <v-list-item-avatar class="my-1">
                                         <v-icon :color="item.iconColor">{{item.icon}}</v-icon>
                                     </v-list-item-avatar>
@@ -94,28 +94,7 @@
             ...mapGetters([
                 'tiposDocumentoIdentidad',
                 'municipiosTotal'
-            ]),
-          edad () {
-            if (this && this.afiliado && this.afiliado.fecha_nacimiento) {
-              let a = this.moment()
-              let b = this.moment(this.afiliado.fecha_nacimiento)
-              let years = a.diff(b, 'year')
-              b.add(years, 'years')
-
-              let months = a.diff(b, 'months')
-              b.add(months, 'months')
-
-              let days = a.diff(b, 'days')
-              b.add(days, 'days')
-              let stringDate = ``
-              stringDate = stringDate + (years ? `${years} año${years === 1 ? '' : 's'}` : '')
-              stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? ''  : 'es'}` : '')
-              stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
-              return stringDate
-            } else {
-              return ''
-            }
-          }
+            ])
         },
         methods: {
             assign () {

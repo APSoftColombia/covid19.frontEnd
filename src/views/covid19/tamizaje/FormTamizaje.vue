@@ -400,7 +400,6 @@
         data: () => ({
             verificado: 0,
             loadingidentidad: false,
-            edad: null,
             dialog: false,
             respuestaPersona: null
         }),
@@ -467,12 +466,6 @@
                 },
                 immediate: false
             },
-            'tamizaje.fecha_nacimiento': {
-                handler(val) {
-                    val && this.calculaEdad()
-                },
-                immediate: true
-            },
             'tamizaje.si_eps': {
                 handler(val) {
                     !val && (this.tamizaje.eps_id = null)
@@ -495,29 +488,6 @@
             }
         },
         methods: {
-            calculaEdad() {
-                if (this.tamizaje.fecha_nacimiento) {
-                    let a = this.moment()
-                    let b = this.moment(this.tamizaje.fecha_nacimiento)
-                    let years = a.diff(b, 'year');
-                    b.add(years, 'years');
-
-                    let months = a.diff(b, 'months');
-                    b.add(months, 'months');
-
-                    let days = a.diff(b, 'days');
-                    b.add(days, 'days');
-                    let stringDate = ``
-                    stringDate = stringDate + (years ? `${years} año${years === 1 ? '' : 's'}` : '')
-                    stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? '' : 'es'}` : '')
-                    stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
-                    this.tamizaje.edad = years
-                    this.edad = stringDate
-                } else {
-                    this.tamizaje.edad = null
-                    this.edad = null
-                }
-            },
             verSeguimiento (id) {
                 this.$refs.seguimiento.open(id)
                 // this.dialog = false
