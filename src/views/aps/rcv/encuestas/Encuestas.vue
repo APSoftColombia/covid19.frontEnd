@@ -7,7 +7,6 @@
                 @crearEncuesta="item => crearEncuesta(item)"
                 @verEncuesta="item => verEncuesta(item)"
                 @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
-                @length="length"
         >
             <filtros
                     slot="filters"
@@ -25,6 +24,7 @@
         <detalle-encuesta
             ref="detalleEncuesta"
         ></detalle-encuesta>
+
     </div>
 </template>
 
@@ -230,9 +230,6 @@
             }
         }),
         methods: {
-            length(value){
-              this.lengthData = value
-            },
             goDatos (ruta) {
                 this.dataTable.route = ruta
             },
