@@ -248,7 +248,7 @@
       },
     },
     data: () => ({
-      panel: [0]
+      panel: []
     }),
     components: {
       Recomendaciones,

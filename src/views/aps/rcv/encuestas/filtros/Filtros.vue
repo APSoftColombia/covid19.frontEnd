@@ -4,7 +4,7 @@
             <c-select-complete
                     v-model="filters.models.departamento_id"
                     label="Departamento"
-                    :items="departamentos"
+                    :items="complementosRCV && complementosRCV.departamentos_rcv ? complementosRCV.departamentos_rcv : []"
                     item-value="id"
                     item-text="nombre"
             >
@@ -72,9 +72,9 @@
         <c-select-complete
             v-model="filters.models.user"
             label="Usuario"
-            :items="users"
+            :items="complementosRCV && complementosRCV.usuarios_rcv ? complementosRCV.usuarios_rcv : []"
             item-value="id"
-            item-text="name"
+            item-text="Usuario"
         >
         </c-select-complete>
       </v-col>
@@ -92,6 +92,8 @@
           <v-checkbox
               v-model="filters.models.hasRcv"
               label="Afiliados con Riesgo Cardiovascular"
+              :true-value="true"
+              :false-value="false"
               @change="aplicaFiltros"
           ></v-checkbox>
       </v-col>
@@ -139,7 +141,7 @@
                     riesgo_findrisc: null,
                     riesgo_oms: null,
                     riesgo_morisky: null,
-                    hasRcv: null,
+                    hasRcv: true,
                     departamento_id: null,
                     user: null,
                     tension_arterial: null,
@@ -188,7 +190,7 @@
         }),
         computed: {
             ...mapGetters([
-                'departamentos'
+              'complementosRCV'
             ]),
           /*
           canShowExcelButton(){
@@ -252,8 +254,6 @@
           }
         },
       created() {
-          this.getUsers()
-          this.filters.models.hasRcv = false
           this.aplicaFiltros()
       }
     }

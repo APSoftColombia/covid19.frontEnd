@@ -317,7 +317,7 @@
       },
     },
     data: () => ({
-      panel: [0],
+      panel: [],
       complementos: []
     }),
     watch: {

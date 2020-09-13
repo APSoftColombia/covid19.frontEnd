@@ -2,14 +2,6 @@
 	<v-container fluid style="height: 100% !important; background-color: white !important;">
 		<v-row style="height: 100% !important;" justify="center" align="center">
 			<v-col cols="12" sm="6" v-if="$vuetify.breakpoint.smAndUp">
-<!--				<v-expand-transition>-->
-<!--					<v-img-->
-<!--							v-if="imagenName"-->
-<!--							:src="`/static/logos/${imagenName}`"-->
-<!--							width="100%"-->
-<!--					>-->
-<!--					</v-img>-->
-<!--				</v-expand-transition>-->
 				<v-row style="height: 100% !important;" justify="center" align="center">
 					<v-card flat class="transparent" v-if="imagenName">
 						<v-responsive :aspect-ratio="3/4">
@@ -29,10 +21,6 @@
 								:src="`/static/logos/logoLogin.png`"
 								class="img-responsive mb-4 rounded"
 						/>
-<!--						<img-->
-<!--								:src="appLogo"-->
-<!--								class="img-responsive mb-4"-->
-<!--						/>-->
 						<h2 class="mb-4">Inicio de sesión</h2>
 						<p class="fs-14">Ingrese nombre de usuario y contraseña para acceder.</p>
 						<ValidationObserver class="mb-5" ref="observer" v-slot="{ invalid, validated, passes, validate }" tag="form" autocomplete="off" @submit.prevent="signIn">

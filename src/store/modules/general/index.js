@@ -43,25 +43,168 @@ const state = {
     ],
     clasificacionesCovid: [
         ////VI
-        {version: 1, idShow: 'VI1', id: '1', selectable: false, text: '1', nombre: 'V1 Definición 1', modal: true, help: true},
-        {version: 1, idShow: 'VI2', id: '2', selectable: false, text: '2', nombre: 'V1 Definición 2', modal: true, help: true},
-        {version: 1, idShow: 'VI3', id: '3', selectable: false, text: '3', nombre: 'V1 Definición 3', modal: true, help: true},
-        {version: 1, idShow: 'VI3.1', id: '3.1', selectable: false, text: '3.1', nombre: 'V1 Definición 3.1', modal: true, help: true},
-        {version: 1, idShow: 'VI3.2', id: '3.2', selectable: false, text: '3.2', nombre: 'V1 Definición 3.2', modal: true, help: true},
-        {version: 1, idShow: 'VI4', id: '4', selectable: false, text: '4', nombre: 'V1 Definición 4', modal: true, help: true},
-        {version: 1, idShow: 'VI5', id: '5', selectable: false, text: '5', nombre: 'V1 Definición 5', modal: true, help: true},
+        {
+            version: 1,
+            idShow: 'VI1',
+            id: '1',
+            selectable: false,
+            text: '1',
+            nombre: 'V1 Definición 1',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI2',
+            id: '2',
+            selectable: false,
+            text: '2',
+            nombre: 'V1 Definición 2',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI3',
+            id: '3',
+            selectable: false,
+            text: '3',
+            nombre: 'V1 Definición 3',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI3.1',
+            id: '3.1',
+            selectable: false,
+            text: '3.1',
+            nombre: 'V1 Definición 3.1',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI3.2',
+            id: '3.2',
+            selectable: false,
+            text: '3.2',
+            nombre: 'V1 Definición 3.2',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI4',
+            id: '4',
+            selectable: false,
+            text: '4',
+            nombre: 'V1 Definición 4',
+            modal: true,
+            help: true
+        },
+        {
+            version: 1,
+            idShow: 'VI5',
+            id: '5',
+            selectable: false,
+            text: '5',
+            nombre: 'V1 Definición 5',
+            modal: true,
+            help: true
+        },
         ///VII
-        {version: 2, idShow: 'VIIP1', id: '1', selectable: true, text: 'CP1', nombre: 'V2 Caso Probable 1', modal: true, help: true},
-        {version: 2, idShow: 'VIIP2', id: '2', selectable: true, text: 'CP2', nombre: 'V2 Caso Probable 2', modal: true, help: true},
-        {version: 2, idShow: 'VIIP4', id: '4', selectable: true, text: 'CP4', nombre: 'V2 Caso Probable 4', modal: true, help: true},
-        {version: 2, idShow: 'VIIP5', id: '5', selectable: true, text: 'CP5', nombre: 'V2 Caso Probable 5', modal: true, help: true},
+        {
+            version: 2,
+            idShow: 'VIIP1',
+            id: '1',
+            selectable: true,
+            text: 'CP1',
+            nombre: 'V2 Caso Probable 1',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIP2',
+            id: '2',
+            selectable: true,
+            text: 'CP2',
+            nombre: 'V2 Caso Probable 2',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIP4',
+            id: '4',
+            selectable: true,
+            text: 'CP4',
+            nombre: 'V2 Caso Probable 4',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIP5',
+            id: '5',
+            selectable: true,
+            text: 'CP5',
+            nombre: 'V2 Caso Probable 5',
+            modal: true,
+            help: true
+        },
         //
-        {version: 2, idShow: 'VIIC1', id: '1', selectable: true, text: 'CC1', nombre: 'V2 Caso Confirmado 1', modal: true, help: true},
-        {version: 2, idShow: 'VIIC2', id: '2', selectable: true, text: 'CC2', nombre: 'V2 Caso Confirmado 2', modal: true, help: true},
-        {version: 2, idShow: 'VIIC4', id: '4', selectable: true, text: 'CC4', nombre: 'V2 Caso Confirmado 4', modal: true, help: true},
-        {version: 2, idShow: 'VIIC5', id: '5', selectable: true, text: 'CC5', nombre: 'V2 Caso Confirmado 5', modal: true, help: true},
+        {
+            version: 2,
+            idShow: 'VIIC1',
+            id: '1',
+            selectable: true,
+            text: 'CC1',
+            nombre: 'V2 Caso Confirmado 1',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIC2',
+            id: '2',
+            selectable: true,
+            text: 'CC2',
+            nombre: 'V2 Caso Confirmado 2',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIC4',
+            id: '4',
+            selectable: true,
+            text: 'CC4',
+            nombre: 'V2 Caso Confirmado 4',
+            modal: true,
+            help: true
+        },
+        {
+            version: 2,
+            idShow: 'VIIC5',
+            id: '5',
+            selectable: true,
+            text: 'CC5',
+            nombre: 'V2 Caso Confirmado 5',
+            modal: true,
+            help: true
+        },
         ///////////////
-        {version: 1, id: '6', selectable: true, text: 'NC', nombre: 'No clasificado en ninguna de las definiciones.', modal: false, help: false}
+        {
+            version: 1,
+            id: '6',
+            selectable: true,
+            text: 'NC',
+            nombre: 'No clasificado en ninguna de las definiciones.',
+            modal: false,
+            help: false
+        }
     ],
     tiposTamizaje: [
         {id: 'telefónico', nombre: 'Telefónico'},
@@ -70,6 +213,11 @@ const state = {
     tiposLlamada: [
         {id: 'entrante', nombre: 'Entrante'},
         {id: 'saliente', nombre: 'Saliente'}
+    ],
+    tiposMuestras: [
+        {value: 0, text: 'Negativo', color: 'red'},
+        {value: 1, text: 'Positivo', color: 'green'},
+        {value: 2, text: 'No Procesado | Falla Preanalítica', color: 'blue-grey'}
     ],
     sintomas: [],
     tamizadores: [],
@@ -99,11 +247,14 @@ const state = {
 
 // getters
 const getters = {
+    tiposMuestras: state => {
+        return state.tiposMuestras
+    },
     loadingIndicadores: state => {
-      return state.loadingIndicadores
+        return state.loadingIndicadores
     },
     datosEmpresa: state => {
-      return state.datosEmpresa
+        return state.datosEmpresa
     },
     onLine: state => {
         return state.onLine
@@ -124,7 +275,9 @@ const getters = {
         return state.sexos
     },
     sexosCovid: state => {
-        return state.sexos.map(x => {return {value: x, text: x === 'F' ? 'Femenino' : 'Masculino'}})
+        return state.sexos.map(x => {
+            return {value: x, text: x === 'F' ? 'Femenino' : 'Masculino'}
+        })
     },
     estadosCiviles: state => {
         return state.estadosCiviles
@@ -174,7 +327,9 @@ const getters = {
         return state.lugarEncuestas
     },
     mediosTransporte: state => {
-        return state.mediosTransporte.map(x => {return {value: x, text: x}})
+        return state.mediosTransporte.map(x => {
+            return {value: x, text: x}
+        })
     },
     paises: state => {
         return state.paises
@@ -249,7 +404,7 @@ const getters = {
 }
 // actions
 const actions = {
-    reloadOnline (context) {
+    reloadOnline(context) {
         fetch('https://sosaludaps.tk')
             .then(response => {
                 context.commit('onLine', response.ok)
@@ -257,7 +412,7 @@ const actions = {
             context.commit('onLine', true)
         })
     },
-    async getDatosEmpresa (context){
+    async getDatosEmpresa(context) {
         return await new Promise(resolve => {
             if (context.getters.onLine) {
                 Vue.axios.get(`configuraciones`)
@@ -268,21 +423,28 @@ const actions = {
                     })
                     .catch(error => {
                         resolve(false)
-                        context.commit('snackbar', {color: 'error', message: 'al recuperar los datos de empresa.', error: error})
+                        context.commit('snackbar', {
+                            color: 'error',
+                            message: 'al recuperar los datos de empresa.',
+                            error: error
+                        })
                     })
             } else {
                 resolve(true)
-                context.commit('snackbar', {color: 'warning', message: `no hay conexión al servidor para realizar ésta operación.`})
+                context.commit('snackbar', {
+                    color: 'warning',
+                    message: `no hay conexión al servidor para realizar ésta operación.`
+                })
             }
         })
     },
-    reloadStorage (){
+    reloadStorage() {
         localStorage.removeItem('vuex')
         setTimeout(() => {
             location.reload()
         }, 1000)
     },
-    async getAjustesGenerales (context, force = false){
+    async getAjustesGenerales(context, force = false) {
         return await new Promise(resolve => {
             if (!context.getters.divipol.length || force) {
                 if (context.getters.onLine) {
@@ -321,8 +483,14 @@ const actions = {
                             context.commit('assignComorbAutopsias', response.data.parametros.comorbautopsias)
                             context.commit('assignClasificacionesAutopsia', response.data.parametros.clasificacion_autopsia)
                             context.commit('assignCausasExternas', response.data.parametros.causasexternas)
-                            context.commit('assignLaboratorios', response.data.parametros.laboratorios.concat([{id: 0, laboratorio: 'Otro'}]))
-                            context.commit('assignTomadores', response.data.parametros.tomadores.concat([{id: 0, institucion: 'Otro'}]))
+                            context.commit('assignLaboratorios', response.data.parametros.laboratorios.concat([{
+                                id: 0,
+                                laboratorio: 'Otro'
+                            }]))
+                            context.commit('assignTomadores', response.data.parametros.tomadores.concat([{
+                                id: 0,
+                                institucion: 'Otro'
+                            }]))
                             //////
                             context.commit('assignAmbitosAtencion', response.data.parametros.ambitos)
                             context.commit('assignTiposAislamiento', response.data.parametros.tipo_aislamiento)
@@ -335,11 +503,18 @@ const actions = {
                         .catch(error => {
                             context.commit('onReload')
                             resolve(false)
-                            context.commit('snackbar', {color: 'error', message: 'al recuperar los ajustes generales.', error: error})
+                            context.commit('snackbar', {
+                                color: 'error',
+                                message: 'al recuperar los ajustes generales.',
+                                error: error
+                            })
                         })
                 } else {
                     resolve(true)
-                    context.commit('snackbar', {color: 'warning', message: `no hay conexión a internet para realizar ésta operación.`})
+                    context.commit('snackbar', {
+                        color: 'warning',
+                        message: `no hay conexión a internet para realizar ésta operación.`
+                    })
                 }
             }
         })
@@ -348,125 +523,125 @@ const actions = {
 
 // mutations
 const mutations = {
-    setLoadingIndicadores (state, loading) {
+    setLoadingIndicadores(state, loading) {
         state.loadingIndicadores = loading
     },
-    onLine (state, online) {
+    onLine(state, online) {
         state.onLine = online
     },
-    assignDatosEmpresa (state, datosEmpresa) {
+    assignDatosEmpresa(state, datosEmpresa) {
         state.datosEmpresa = datosEmpresa
     },
-    assignDivipol (state, divipol) {
+    assignDivipol(state, divipol) {
         state.divipol = divipol
     },
-    assignDivipolx (state, divipolx) {
+    assignDivipolx(state, divipolx) {
         console.log('divipolx', divipolx)
         state.divipolx = divipolx[0].municipios
     },
-    assignMunicipiosTotal (state, departamentos) {
+    assignMunicipiosTotal(state, departamentos) {
         state.municipiosTotal = []
         departamentos.forEach(x => {
             state.municipiosTotal = state.municipiosTotal.concat(x.municipios)
         })
     },
-    assignIdentidadesSexuales (state, identidadesSexuales) {
+    assignIdentidadesSexuales(state, identidadesSexuales) {
         state.identidadesSexuales = identidadesSexuales
     },
-    assignSexos (state, sexos) {
+    assignSexos(state, sexos) {
         state.sexos = sexos
     },
-    assignEstadosCiviles (state, estadosCiviles) {
+    assignEstadosCiviles(state, estadosCiviles) {
         state.estadosCiviles = estadosCiviles
     },
-    assignTiposSangre (state, tiposSangre) {
+    assignTiposSangre(state, tiposSangre) {
         state.tiposSangre = tiposSangre
     },
-    assignTiposDocumentoIdentidad (state, tiposDocumentoIdentidad) {
+    assignTiposDocumentoIdentidad(state, tiposDocumentoIdentidad) {
         state.tiposDocumentoIdentidad = tiposDocumentoIdentidad
     },
-    assignTiposCampoCalculado (state, tiposCampoCalculado) {
+    assignTiposCampoCalculado(state, tiposCampoCalculado) {
         state.tiposCampoCalculado = tiposCampoCalculado
     },
-    assignCausalesVisitaFallida (state, causalesVisitaFallida) {
+    assignCausalesVisitaFallida(state, causalesVisitaFallida) {
         state.causalesVisitaFallida = causalesVisitaFallida
     },
-    assignDireccionamientos (state, direccionamientos) {
+    assignDireccionamientos(state, direccionamientos) {
         state.direccionamientos = direccionamientos
     },
-    assignSintomas (state, sintomas) {
+    assignSintomas(state, sintomas) {
         state.sintomas = sintomas
     },
-    assignTamizadores (state, tamizadores) {
+    assignTamizadores(state, tamizadores) {
         state.tamizadores = tamizadores
     },
-    assignEpss (state, epss) {
+    assignEpss(state, epss) {
         state.epss = epss
     },
-    assignLugarEncuestas (state, lugarEncuestas) {
+    assignLugarEncuestas(state, lugarEncuestas) {
         state.lugarEncuestas = lugarEncuestas
     },
-    assignMediosTransporte (state, mediosTransporte) {
+    assignMediosTransporte(state, mediosTransporte) {
         state.mediosTransporte = mediosTransporte
     },
-    assignPaises (state, paises) {
+    assignPaises(state, paises) {
         state.paises = paises
     },
-    assignDepartamentos (state, departamentos) {
+    assignDepartamentos(state, departamentos) {
         state.departamentos = departamentos
     },
-    assignComorbilidades (state, comorbilidades) {
+    assignComorbilidades(state, comorbilidades) {
         state.comorbilidades = comorbilidades
     },
-    assignOrdenesMedicas (state, ordenesMedicas) {
+    assignOrdenesMedicas(state, ordenesMedicas) {
         state.ordenesMedicas = ordenesMedicas
     },
-    assignTiposEvolucion (state, tiposEvolucion) {
+    assignTiposEvolucion(state, tiposEvolucion) {
         state.tiposEvolucion = tiposEvolucion
     },
-    assignSintomasAutopsia (state, sintomasAutopsia) {
+    assignSintomasAutopsia(state, sintomasAutopsia) {
         state.sintomasAutopsia = sintomasAutopsia
     },
-    assignResultadosPCR (state, resultadosPCR) {
+    assignResultadosPCR(state, resultadosPCR) {
         state.resultadosPCR = resultadosPCR
     },
-    assignComorbAutopsias (state, comorbAutopsias) {
+    assignComorbAutopsias(state, comorbAutopsias) {
         state.comorbAutopsias = comorbAutopsias
     },
-    assignClasificacionesAutopsia (state, clasificacionesAutopsia) {
+    assignClasificacionesAutopsia(state, clasificacionesAutopsia) {
         state.clasificacionesAutopsia = clasificacionesAutopsia
     },
-    assignCausasExternas (state, causasExternas) {
+    assignCausasExternas(state, causasExternas) {
         state.causasExternas = causasExternas
     },
-    assignTiposMuestra (state, tiposMuestra) {
+    assignTiposMuestra(state, tiposMuestra) {
         state.tiposMuestra = tiposMuestra
     },
-    assignLaboratorios (state, laboratorios) {
+    assignLaboratorios(state, laboratorios) {
         state.laboratorios = laboratorios
     },
-    assignTomadores (state, tomadores) {
+    assignTomadores(state, tomadores) {
         state.tomadores = tomadores
     },
-    assignAmbitosAtencion (state, ambitosAtencion) {
+    assignAmbitosAtencion(state, ambitosAtencion) {
         state.ambitosAtencion = ambitosAtencion
     },
-    assignTiposAislamiento (state, tiposAislamiento) {
+    assignTiposAislamiento(state, tiposAislamiento) {
         state.tiposAislamiento = tiposAislamiento
     },
-    assignTiposSoporteVentilatorio (state, tiposSoporteVentilatorio) {
+    assignTiposSoporteVentilatorio(state, tiposSoporteVentilatorio) {
         state.tiposSoporteVentilatorio = tiposSoporteVentilatorio
     },
-    assignEstadosAfectacion (state, estadosAfectacion) {
+    assignEstadosAfectacion(state, estadosAfectacion) {
         state.estadosAfectacion = estadosAfectacion
     },
-    assignGruposAtencionEspecial (state, gruposAtencionEspecial) {
+    assignGruposAtencionEspecial(state, gruposAtencionEspecial) {
         state.gruposAtencionEspecial = gruposAtencionEspecial
     },
-    assignParentescos (state, parentescos) {
+    assignParentescos(state, parentescos) {
         state.parentescos = parentescos
     },
-    snackbar (state, data) {
+    snackbar(state, data) {
         let timeout = 8000
         let message = ''
         if (data.error) {
@@ -511,8 +686,8 @@ const mutations = {
 }
 
 export default {
-	state,
-	getters,
-	actions,
-	mutations
+    state,
+    getters,
+    actions,
+    mutations
 }

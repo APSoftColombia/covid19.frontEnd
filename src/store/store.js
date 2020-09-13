@@ -17,6 +17,7 @@ import dataTable from './modules/dataTable'
 import models from './modules/models'
 import firebase from './modules/firebase'
 import modelsRCV from '../views/aps/rcv/store/models'
+import RCV from '../views/aps/rcv/store/rcv'
 
 Vue.use(Vuex)
 
@@ -34,6 +35,7 @@ export const store = new Vuex.Store({
         dataTable,
         models,
         firebase,
+        RCV,
         modelsRCV
     },
     // plugins: [new VuexPersistence().plugin]

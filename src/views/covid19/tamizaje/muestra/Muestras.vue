@@ -75,10 +75,11 @@
                                                                 large
                                                                 class="mb-1"
                                                                 v-on="on"
-                                                                :color="muestra.resultado === null ? '' : muestra.resultado === 1 ? 'error' : 'success'"
+                                                                :dark="muestra.resultado !== null"
+                                                                :color="muestra.resultado === null ? '' : tiposMuestras.find(x => x.value === muestra.resultado).color"
                                                                 @click="descargarResultado(muestra, (tamizaje.muestras.length - muestraIndex))"
                                                         >
-                                                            {{muestra.resultado === null ? 'Pendiente' : muestra.resultado === 1 ? 'Positivo' : 'Negativo'}}
+                                                            {{muestra.resultado === null ? 'Pendiente' : tiposMuestras.find(x => x.value === muestra.resultado).text }}
                                                             <v-icon large v-if="muestra.path_resultado" right>mdi-file-download</v-icon>
                                                         </v-btn>
                                                     </template>
@@ -155,10 +156,11 @@
                                                 large
                                                 class="mb-1"
                                                 v-on="on"
-                                                :color="muestra.resultado === null ? '' : muestra.resultado === 1 ? 'error' : 'success'"
+                                                :dark="muestra.resultado !== null"
+                                                :color="muestra.resultado === null ? '' : tiposMuestras.find(x => x.value === muestra.resultado).color"
                                                 @click="descargarResultado(muestra, (tamizaje.muestras.length - muestraIndex))"
                                         >
-                                            {{muestra.resultado === null ? 'Pendiente' : muestra.resultado === 1 ? 'Positivo' : 'Negativo'}}
+                                            {{muestra.resultado === null ? 'Pendiente' : tiposMuestras.find(x => x.value === muestra.resultado).text}}
                                             <v-icon large v-if="muestra.path_resultado" right>mdi-file-download</v-icon>
                                         </v-btn>
                                     </template>
@@ -213,7 +215,8 @@
         computed: {
             ...mapGetters([
                 'tomadores',
-                'laboratorios'
+                'laboratorios',
+                'tiposMuestras'
             ]),
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')

@@ -206,7 +206,7 @@
                   <form-sintomas
                       :array-sintomas="encuesta.sintomas"
                       @changeSintomas="val => encuesta.sintomas = val"
-                      :sintomas="complementos && complementos.sintomas ? complementos.sintomas : []"
+                      :sintomas="complementosRCV && complementosRCV.sintomas ? complementosRCV.sintomas : []"
                   ></form-sintomas>
                 </v-col>
                 <v-col cols="12" v-if="encuesta.sintomas.length > 1">
@@ -417,7 +417,7 @@
                             label="5. ¿Con qué frecuencia come verduras o frutas?"
                             rules="required"
                             name="ingesta de frutas y verduras"
-                            :items="complementos && complementos.frutas_verduras ? encuesta.responde_paciente ? complementos.frutas_verduras.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
+                            :items="complementosRCV && complementosRCV.frutas_verduras ? encuesta.responde_paciente ? complementosRCV.frutas_verduras.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
                             item-text="text"
                             item-value="value"
                         >
@@ -465,7 +465,7 @@
                             label="8. ¿Se le ha diagnosticado diabetes (tipo 1 o tipo 2) a alguno de sus familiares allegados u otros parientes?"
                             rules="required"
                             name="familiares con diabetes"
-                            :items="complementos && complementos.familiares_diabetes ? complementos.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
+                            :items="complementosRCV && complementosRCV.familiares_diabetes ? complementosRCV.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
                             item-text="text"
                             item-value="value"
                         >
@@ -501,7 +501,7 @@
                               label="10. Tipo de diabetes"
                               rules="required"
                               name="tipo de diabetes"
-                              :items="complementos && complementos.tipo_diabetes ? complementos.tipo_diabetes.map(x => {return {value: x, text: x}}) : []"
+                              :items="complementosRCV && complementosRCV.tipo_diabetes ? complementosRCV.tipo_diabetes.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
                           >
@@ -564,7 +564,7 @@
                             label="13. Señor usuario cuando fue su ultima consulta por medicina general?  (Registrar e identificar riesgo)"
                             rules="required"
                             name="consulta por medicina general"
-                            :items="complementos && complementos.consulta_medicina_g ? encuesta.responde_paciente ? complementos.consulta_medicina_g.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
+                            :items="complementosRCV && complementosRCV.consulta_medicina_g ? encuesta.responde_paciente ? complementosRCV.consulta_medicina_g.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
                             item-text="text"
                             item-value="value"
                         >
@@ -580,7 +580,7 @@
                             label="14. Señor usuario cuando fue su última consulta por medicina especializada?"
                             rules="required"
                             name="consulta por medicina especializada"
-                            :items="complementos && complementos.consulta_medicina_i ? encuesta.responde_paciente ? complementos.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
+                            :items="complementosRCV && complementosRCV.consulta_medicina_i ? encuesta.responde_paciente ? complementosRCV.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
                             item-text="text"
                             item-value="value"
                         >
@@ -593,7 +593,7 @@
                       <form-especialidades
                           :array-especialidades="encuesta.especialidad"
                           @changeEspecialidades="val => encuesta.especialidad = val"
-                          :especialidades="complementos && complementos.especialidad ? complementos.especialidad : []"
+                          :especialidades="complementosRCV && complementosRCV.especialidad ? complementosRCV.especialidad : []"
                       ></form-especialidades>
                     </v-col>
                   </v-expand-transition>
@@ -605,7 +605,7 @@
                             label="16. Señor usuario cuando fue la ultima vez que le tomaron laboratorios clinicos?"
                             rules="required"
                             name="toma de laboratorios"
-                            :items="complementos && complementos.laboratorios ? encuesta.responde_paciente ? complementos.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementos.laboratorios.map(x => {return {value: x, text: x}}) : []"
+                            :items="complementosRCV && complementosRCV.laboratorios ? encuesta.responde_paciente ? complementosRCV.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.laboratorios.map(x => {return {value: x, text: x}}) : []"
                             item-text="text"
                             item-value="value"
                         >
@@ -618,7 +618,7 @@
                       <form-examenes
                           :array-examenes="encuesta.laboratorio"
                           @changeExamenes="val => encuesta.laboratorio = val"
-                          :examenes="complementos && complementos.laboratorio ? complementos.laboratorio : []"
+                          :examenes="complementosRCV && complementosRCV.laboratorio ? complementosRCV.laboratorio : []"
                       ></form-examenes>
                     </v-col>
                   </v-expand-transition>
@@ -643,7 +643,7 @@
                       <form-medicamentos
                           :array-medicamentos="encuesta.medicamentos"
                           @changeMedicamentos="val => encuesta.medicamentos = val"
-                          :medicamentos="complementos && complementos.medicamentos ? complementos.medicamentos : []"
+                          :medicamentos="complementosRCV && complementosRCV.medicamentos ? complementosRCV.medicamentos : []"
                       ></form-medicamentos>
                     </v-col>
                   </v-expand-transition>
@@ -873,11 +873,11 @@ export default {
     encuestaBase: null,
     interval: null,
     hintIMC: '',
-    hintTension: '',
-    complementos: []
+    hintTension: ''
   }),
   computed: {
     ...mapGetters([
+      'complementosRCV',
       'modelEncuestaRCV',
       'tiposDocumentoIdentidad'
     ]),
@@ -1041,7 +1041,6 @@ export default {
     },
     open(encuesta = null) {
       this.encuestaBase = encuesta
-      this.getComplementos()
       if (this.encuestaBase && this.encuestaBase.id) {
         this.getencuesta(this.encuestaBase.id)
       } else {
@@ -1070,20 +1069,6 @@ export default {
       this.interval = setInterval(() => {
         this.encuesta.duracion++
       }, 1000)
-    },
-    getComplementos() {
-      this.axios.get(`complementos-rcv`)
-          .then(response => {
-            console.log('response get encuesta', response)
-            this.complementos = response.data
-          })
-          .catch(error => {
-            this.$store.commit('snackbar', {
-              color: 'error',
-              message: `al recuperar los complementos para la encuesta.`,
-              error: error
-            })
-          })
     },
     getencuesta(idencuesta) {
       this.loading = true

@@ -87,7 +87,7 @@
                             <c-select-complete
                                     v-model="muestra.resultado"
                                     label="Resultado"
-                                    :items="[{value: 0, text: 'Negativo'}, {value: 1, text: 'Positivo'}]"
+                                    :items="[{value: 0, text: 'Negativo'}, {value: 1, text: 'Positivo'}, {value: 2, text: 'No Procesado | Falla Preanalítica'}]"
                                     item-value="value"
                                     item-text="text"
                             >

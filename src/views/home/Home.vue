@@ -22,25 +22,7 @@
 		computed: {
 			...mapGetters([
 				'datosEmpresa'
-			]),
-			casanare () {
-				return this && this.datosEmpresa && this.datosEmpresa.departamento_id != 0
-			},
-			styleMargin () {
-				if (this && this.$vuetify && this.$vuetify.breakpoint) {
-					if (this.casanare) {
-						if (this.$vuetify.breakpoint.lgAndUp) return -300
-						if (this.$vuetify.breakpoint.mdOnly) return -200
-						if (this.$vuetify.breakpoint.smOnly) return -100
-						if (this.$vuetify.breakpoint.xsOnly) return 0
-					}
-				}
-				return  0
-			}
-		},
-		created () {
-		},
-		methods: {
+			])
 		}
 	}
 </script>
