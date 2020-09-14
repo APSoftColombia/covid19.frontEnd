@@ -113,7 +113,15 @@
     watch: {
       model: {
         handler(val) {
-          this.$emit('input', (typeof val !== 'undefined' && val !== null) ? val : [])
+          if (typeof val !== 'undefined' && val !== null) {
+            if(val.length === 2 && !this.moment(val[1]).isAfter(val[0], 'day')) {
+              this.$emit('input', [val[1], val[0]])
+            } else {
+              this.$emit('input', val)
+            }
+          } else {
+            this.$emit('input', [])
+          }
         },
         immediate: false
       },
