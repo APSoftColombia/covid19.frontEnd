@@ -854,7 +854,7 @@
   const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
   import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
   import BuscadorIps from '../componentes/BuscadorIps'
-
+  var intervalo
 export default {
   name: 'RegistroEncuesta',
   components: {
@@ -871,7 +871,6 @@ export default {
     menuObservaciones: false,
     encuesta: null,
     encuestaBase: null,
-    interval: null,
     hintIMC: '',
     hintTension: ''
   }),
@@ -1052,23 +1051,20 @@ export default {
         this.encuesta.afiliado_actualizado.email = this.encuestaBase.email
       }
       this.dialog = true
-      this.goDuracion()
+      intervalo = setInterval(() => {
+        this.encuesta.duracion++
+      }, 1000)
     },
     close() {
       this.$refs.formencuesta.reset()
       this.dialog = false
       this.loading = false
+      clearInterval(intervalo)
       this.menuObservaciones = false
-      clearInterval(this.interval)
       this.encuesta = this.clone(this.modelEncuestaRCV)
       this.encuestaBase = null
       this.hintIMC = ''
       this.hintTension = ''
-    },
-    goDuracion() {
-      this.interval = setInterval(() => {
-        this.encuesta.duracion++
-      }, 1000)
     },
     getencuesta(idencuesta) {
       this.loading = true
