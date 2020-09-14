@@ -268,12 +268,12 @@ export default {
         tooltip: 'Detalle Encuesta',
         color: 'success'
       })
-      if (item.id) item.options.push({
-        event: 'editarEncuesta',
-        icon: 'mdi-file-document-edit',
-        tooltip: 'Editar Encuesta',
-        color: 'orange'
-      })
+      // if (item.id) item.options.push({
+      //   event: 'editarEncuesta',
+      //   icon: 'mdi-file-document-edit',
+      //   tooltip: 'Editar Encuesta',
+      //   color: 'orange'
+      // })
       return item
     }
   },
