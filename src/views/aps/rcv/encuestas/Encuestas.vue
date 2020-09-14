@@ -9,11 +9,23 @@
         @editarEncuesta="item => editarEncuesta(item)"
         @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
     >
+      <template slot="top-actions-right">
+        <v-btn
+            color="success"
+            class="white--text mr-2"
+            v-if="returnDataTableTotal.total < 50000"
+            @click.stop="descargarExcel"
+            :disabled="loadingButton"
+            :loading="loadingButton"
+        >
+          <v-icon left>far fa-file-excel</v-icon>
+          Generar Excel
+        </v-btn>
+      </template>
       <filtros
           slot="filters"
           ref="filtrosReportesCovid"
           :ruta-base="rutaBase"
-          :lengthRows="returnDataTableData"
           @filtra="val => goDatos(val)"
       ></filtros>
     </data-table>
@@ -54,7 +66,7 @@ export default {
       'municipiosTotal',
       'tiposDocumentoIdentidad'
     ]),
-    returnDataTableData() {
+    returnDataTableTotal() {
       return this.dataTable
     }
   },
@@ -70,6 +82,7 @@ export default {
     rutaBase: 'rcvs',
     lengthData: null,
     loading: false,
+    loadingButton: false,
     dataTable: {
       buttonZone: false,
       advanceFilters: true,
@@ -251,6 +264,35 @@ export default {
     },
     verEncuesta(item) {
       this.$refs.detalleEncuesta.open(item, true, false)
+    },
+    descargarExcel(){
+      this.loadingButton = true
+      this.axios( {
+        url: `${this.dataTable.route}&excel=${true}`, //your url
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then(response => {
+        if(response.status === 204){
+          this.$store.commit('snackbar', {color: 'info', message: `Los filtros aplicados no han generado registros para exportar`})
+          this.loadingButton = false
+        }else{
+          //Create a Blob from the PDF Stream
+          const file = new Blob(
+              [response.data],
+              {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+          const fileURL = URL.createObjectURL(file);
+          const a = document.createElement("a");
+          document.body.appendChild(a);
+          a.style = "display: none";
+          a.href = fileURL
+          a.download = 'Encuestas RCV.xlsx'
+          a.click();
+          this.loadingButton = false
+        }
+      }).catch(error => {
+        this.loadingButton = false
+        this.$store.commit('snackbar', {color: 'error', message: 'al descargar excel', error: error})
+      })
     },
     resetOptions(item) {
       item.options = []
