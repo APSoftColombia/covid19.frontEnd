@@ -114,7 +114,7 @@
       model: {
         handler(val) {
           if (typeof val !== 'undefined' && val !== null) {
-            if(val.length === 2 && !this.moment(val[1]).isAfter(val[0], 'day')) {
+            if(val.length === 2 && (val[0] !== val[1]) && !this.moment(val[1]).isAfter(val[0], 'day')) {
               this.$emit('input', [val[1], val[0]])
             } else {
               this.$emit('input', val)
