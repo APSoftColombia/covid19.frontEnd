@@ -419,7 +419,7 @@
                     this.activePetition = false
                     this.value.loading = true
                     // let stringSort = this.pagination.sortBy ? (`&sort=${(this.pagination.descending ? '-' : '')}${this.pagination.sortBy}`) : ''
-                    this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
+                  this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
                         .then(response => {
                             this.filtrado = true
                             response.data.data.forEach(item => {
