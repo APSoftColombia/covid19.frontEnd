@@ -97,16 +97,6 @@
               @change="aplicaFiltros"
           ></v-checkbox>
       </v-col>
-      <!--<v-col class="pb-0" cols="12" sm="12" md="12">
-        <v-btn
-            @click="download"
-            class="success mb-2"
-            v-if="canShowExcelButton < 20"
-        >
-          <v-icon left>far fa-file-excel</v-icon>
-          <span>Descargar Excel</span>
-        </v-btn>
-      </v-col>-->
     </v-row>
 </template>
 
@@ -124,12 +114,6 @@
                 type: String,
                 default: ''
             },
-          /*
-            lengthRows: {
-                type: Object,
-                default: null
-            }
-            */
         },
         data: () => ({
             filters: {
@@ -208,16 +192,16 @@
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[hasEncuestaRcv]=' + this.filters.models.encuesta
                 }
                 if (this.filters.models.riesgo_general !== null) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[general]=' + this.filters.models.riesgo_general
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_general]=' + this.filters.models.riesgo_general
                 }
                 if (this.filters.models.riesgo_findrisc !== null) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[findrisc]=' + this.filters.models.riesgo_findrisc
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_findrisc]=' + this.filters.models.riesgo_findrisc
                 }
                 if (this.filters.models.riesgo_morisky !== null) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[morisky]=' + this.filters.models.riesgo_morisky
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[morisky_green]=' + this.filters.models.riesgo_morisky
                 }
                 if (this.filters.models.riesgo_oms !== null) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[oms]=' + this.filters.models.riesgo_oms
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_oms]=' + this.filters.models.riesgo_oms
                 }
                 if (this.filters.models.fecha_creacion !== null) {
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fecha]=' + this.filters.models.fecha_creacion.join(',')
@@ -234,11 +218,6 @@
                 if (this.filters.models.tension_arterial !== null) {
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tension]=' + this.filters.models.tension_arterial
                 }
-                /*
-                if (this.filters.models.excel !== null) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'excel=' + this.filters.models.excel
-                }
-                */
                 this.$emit('filtra', rutaTemp)
             },
           getUsers(){

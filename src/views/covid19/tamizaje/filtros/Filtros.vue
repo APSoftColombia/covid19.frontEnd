@@ -50,7 +50,7 @@
             <c-select-complete
                     v-model="filters.models.municipio_id"
                     label="Municipio"
-                    :items="divipol"
+                    :items="complementos.municipios"
                     item-value="id"
                     item-text="nombre"
             >
@@ -117,14 +117,14 @@
             <v-autocomplete
                     label="Médico"
                     v-model="filters.models.medico_id"
-                    :items="medicos"
+                    :items="complementos.medicos"
                     outlined
                     dense
                     :filter="filterMedicos"
                     item-value="id"
                     persistent-hint
                     clearable
-                    :hint="filters.models.medico_id && medicos.find(x => x.id === filters.models.medico_id).telefono ? `Teléfono: ${medicos.find(x => x.id === filters.models.medico_id).telefono}` : '' "
+                    :hint="filters.models.medico_id && complementos.medicos.find(x => x.id === filters.models.medico_id).telefono ? `Teléfono: ${complementos.medicos.find(x => x.id === filters.models.medico_id).telefono}` : '' "
             >
                 <template v-slot:selection="{ item, index }">
                     <div class="pa-0 text-truncate" style="width: 100% !important;">
@@ -145,14 +145,14 @@
             <v-autocomplete
                     label="EPS"
                     v-model="filters.models.eps_id"
-                    :items="epsTamizajes"
+                    :items="complementos.eps"
                     outlined
                     dense
                     :filter="filterEpsTamizajes"
                     item-value="id"
                     persistent-hint
                     clearable
-                    :hint="filters.models.eps_id && epsTamizajes.find(x => x.id === filters.models.eps_id).codigo ? `Código: ${epsTamizajes.find(x => x.id === filters.models.eps_id).codigo}` : '' "
+                    :hint="filters.models.eps_id && complementos.eps.find(x => x.id === filters.models.eps_id).codigo ? `Código: ${complementos.eps.find(x => x.id === filters.models.eps_id).codigo}` : '' "
             >
                 <template v-slot:selection="{ item, index }">
                     <div class="pa-0 text-truncate" style="width: 100% !important;">
@@ -178,17 +178,13 @@
     export default {
         name: 'Filtros',
         props: {
-            medicos: {
-                type: Array,
-                default: () => []
-            },
             rutaBase: {
                 type: String,
                 default: ''
             }
         },
         data: () => ({
-            epsTamizajes: [],
+            complementos: [],
             filterMedicos (item, queryText) {
                 const hasValue = val => val != null ? val : ''
                 const text = hasValue(item.numero_documento_identidad + ' ' + item.name)
@@ -243,7 +239,6 @@
         }),
         computed: {
             ...mapGetters([
-                'divipol',
                 'clasificacionesCovid',
                 'tiposEvolucion',
                 'ordenesMedicas',
@@ -314,7 +309,7 @@
             getComplementos () {
                 this.axios.get(`complementos-tamizajes`)
                     .then(response => {
-                        this.epsTamizajes = response.data.eps_tamizajes
+                        this.complementos = response.data
                     })
                     .catch(error => {
                         this.$store.commit('snackbar', {color: 'error', message: `al recuperar los complementos para los filtros de ERP.`, error: error})

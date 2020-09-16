@@ -44,7 +44,6 @@
             <filtros
                     slot="filters"
                     v-if="permisos.filtrosTamizaje"
-                    :medicos="medicos"
                     ref="filtrosTamizaje"
                     :ruta-base="rutaBase"
                     @filtra="val => goDatos(val)"

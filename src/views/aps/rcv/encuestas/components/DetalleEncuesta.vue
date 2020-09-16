@@ -73,8 +73,10 @@
             close() {
                 this.dialog = false
                 this.encuesta = this.clone(this.modelEncuestaRCV)
-              this.datosAbierto = false
-              this.resultadosAbierto = false
+                this.datosAbierto = false
+                this.resultadosAbierto = false
+                this.datosAbierto = false
+                this.resultadosAbierto = false
             },
           getencuesta (idencuesta) {
             this.loading = true
