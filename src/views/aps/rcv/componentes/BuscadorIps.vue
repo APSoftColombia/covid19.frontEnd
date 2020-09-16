@@ -98,6 +98,10 @@ name: 'BuscadorIps',
     }
   },
   methods: {
+    assign (item) {
+      this.ips = item
+      if (item) this.ipss.push(item)
+    },
     buscarIPS: window.lodash.debounce(async function () {
       if (this.ipsSearch) {
         this.ipsLoading = true

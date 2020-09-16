@@ -99,7 +99,12 @@
                 },
                 immediate: false
             }
+        },
+      methods: {
+        noSaber() {
+          this.sinMedicamentos = true
         }
+      }
     }
 </script>
 

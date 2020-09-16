@@ -131,6 +131,7 @@
                       </c-radio>
                       <div class="mt-4" v-if="encuesta.paciente_hospitalizado">
                         <buscador-ips
+                            ref="buscadorips"
                             label="IPS de Hospitalización"
                             v-model="encuesta.codigo_ips_hospitalizacion"
                             name="ips de hospitalización"
@@ -591,6 +592,7 @@
                   <v-expand-transition>
                     <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
                       <form-especialidades
+                          ref="formEspecialidades"
                           :array-especialidades="encuesta.especialidad"
                           @changeEspecialidades="val => encuesta.especialidad = val"
                           :especialidades="complementosRCV && complementosRCV.especialidad ? complementosRCV.especialidad : []"
@@ -619,6 +621,7 @@
                           :array-examenes="encuesta.laboratorio"
                           @changeExamenes="val => encuesta.laboratorio = val"
                           :examenes="complementosRCV && complementosRCV.laboratorio ? complementosRCV.laboratorio : []"
+                          ref="formExamenes"
                       ></form-examenes>
                     </v-col>
                   </v-expand-transition>
@@ -644,6 +647,7 @@
                           :array-medicamentos="encuesta.medicamentos"
                           @changeMedicamentos="val => encuesta.medicamentos = val"
                           :medicamentos="complementosRCV && complementosRCV.medicamentos ? complementosRCV.medicamentos : []"
+                          ref="formMedicamentos"
                       ></form-medicamentos>
                     </v-col>
                   </v-expand-transition>
@@ -847,14 +851,16 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
-  const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
-  const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
-  const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
-  import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
-  import BuscadorIps from '../componentes/BuscadorIps'
-  var intervalo
+import {mapGetters} from 'vuex'
+import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
+
+const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
+const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
+const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
+import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
+import BuscadorIps from '../componentes/BuscadorIps'
+
+var intervalo
 export default {
   name: 'RegistroEncuesta',
   components: {
@@ -906,7 +912,7 @@ export default {
     },
     'encuesta.responde_paciente': {
       handler(val) {
-        if (!val) {
+        if (val) {
           this.encuesta.acudiente.identificacion = null
           this.encuesta.acudiente.tipo_identificacion = null
           this.encuesta.acudiente.nombre_completo = null
@@ -918,7 +924,7 @@ export default {
     },
     'encuesta.conoce_pesotalla': {
       handler(val) {
-        if (typeof val !== 'undefined') {
+        if (!val || val === 'No') {
           this.encuesta.peso = null
           this.encuesta.talla = null
         }
@@ -939,7 +945,7 @@ export default {
     },
     'encuesta.conoce_datostension': {
       handler(val) {
-        if (typeof val !== 'undefined') {
+        if (!val || val === 'No') {
           this.encuesta.diastolica = null
           this.encuesta.sistolica = null
         }
@@ -991,7 +997,7 @@ export default {
     },
     'encuesta.diabetes': {
       handler(val) {
-        if (!val || val === 'No') {
+        if (!val || val === 'No' || val === 'No Sabe') {
           this.encuesta.tipo_diabetes = null
         }
       },
@@ -1024,9 +1030,9 @@ export default {
           encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
           encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
           this.loading = true
-          this.axios.post(`rcvs`, encuestaData)
+          let request = encuestaData.id ? this.axios.put(`rcvs/${encuestaData.id}`, encuestaData) : this.axios.post(`rcvs`, encuestaData)
+          request
               .then(response => {
-                console.log('response encuesta', response)
                 this.$emit('guardado', response.data)
                 this.$store.commit('snackbar', {color: 'success', message: `La encuesta se guardo correctamente.`})
                 this.close()
@@ -1040,6 +1046,7 @@ export default {
     },
     open(encuesta = null) {
       this.encuestaBase = encuesta
+      this.dialog = true
       if (this.encuestaBase && this.encuestaBase.id) {
         this.getencuesta(this.encuestaBase.id)
       } else {
@@ -1049,11 +1056,10 @@ export default {
         this.encuesta.afiliado_actualizado.direccion = this.encuestaBase.direccion
         this.encuesta.afiliado_actualizado.numero_celular = this.encuestaBase.numero_celular
         this.encuesta.afiliado_actualizado.email = this.encuestaBase.email
+        intervalo = setInterval(() => {
+          this.encuesta.duracion++
+        }, 1000)
       }
-      this.dialog = true
-      intervalo = setInterval(() => {
-        this.encuesta.duracion++
-      }, 1000)
     },
     close() {
       this.$refs.formencuesta.reset()
@@ -1071,7 +1077,50 @@ export default {
       this.axios.get(`rcvs/${idencuesta}`)
           .then(response => {
             console.log('response get encuesta', response)
-            // this.datos = response.data.filter(x => x.geolocalizacion)
+            if (response.data.afiliado) {
+              response.data.afiliado_actualizado = {
+                id: response.data.afiliado.id,
+                direccion: response.data.afiliado.direccion,
+                numero_celular: response.data.afiliado.numero_celular,
+                telefono_opcional: null,
+                email: response.data.afiliado.email
+              }
+            } else {
+              response.data.afiliado_actualizado = {
+                id: null,
+                direccion: null,
+                numero_celular: null,
+                telefono_opcional: null,
+                email: null
+              }
+            }
+            if (!response.data.acudiente) {
+              response.data.acudiente = {
+                identificacion: null,
+                tipo_identificacion: null,
+                nombre_completo: null,
+                celular: null,
+                email: null
+              }
+            }
+
+            response.data.responde_paciente = response.data.acudiente.id ? 0 : 1
+            response.data.conoce_pesotalla = (response.data.peso && response.data.talla) ? 'Si' : 'No'
+            response.data.conoce_datostension = (response.data.diastolica && response.data.sistolica) ? 'Si' : 'No'
+            response.data.ips_hospitalizacion = response.data.prestador || null
+            response.data.sintomas = response.data.sintomas.map(x => x.id)
+            response.data.medicamentos = response.data.medicamentos.map(x => x.id)
+            setTimeout(() => {
+              if (this.$refs.buscadorips) this.$refs.buscadorips.assign(response.data.ips_hospitalizacion)
+              console.log('ejecuta')
+            }, 400)
+            this.encuesta = response.data
+            console.log('asigna')
+            setTimeout(() => {
+              if (!response.data.medicamentos.length && this.$refs.formMedicamentos) this.$refs.formMedicamentos.noSaber()
+              if (!response.data.laboratorio.length && this.$refs.formExamenes) this.$refs.formExamenes.noSaber()
+              if (!response.data.especialidad.length && this.$refs.formEspecialidades) this.$refs.formEspecialidades.noSaber()
+            }, 1000)
             this.loading = false
           })
           .catch(error => {

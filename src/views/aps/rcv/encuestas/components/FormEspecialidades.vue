@@ -62,7 +62,12 @@
                 },
                 immediate: false
             }
+        },
+      methods: {
+        noSaber() {
+          this.sinEspecialidades = true
         }
+      }
     }
 </script>
 

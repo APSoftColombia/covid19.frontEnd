@@ -11,7 +11,7 @@
     >
       <template slot="top-actions-right">
         <v-btn
-            color="success"
+            color="green"
             class="white--text mr-2"
             v-if="returnDataTableTotal.total < 50000"
             @click.stop="descargarExcel"
@@ -310,12 +310,12 @@ export default {
         tooltip: 'Detalle Encuesta',
         color: 'success'
       })
-      // if (item.id) item.options.push({
-      //   event: 'editarEncuesta',
-      //   icon: 'mdi-file-document-edit',
-      //   tooltip: 'Editar Encuesta',
-      //   color: 'orange'
-      // })
+      if (this.permisos.encuestasRCVCrear && item.id) item.options.push({
+        event: 'editarEncuesta',
+        icon: 'mdi-file-document-edit',
+        tooltip: 'Editar Encuesta',
+        color: 'orange'
+      })
       return item
     }
   },

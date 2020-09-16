@@ -62,7 +62,12 @@
                 },
                 immediate: false
             }
+        },
+      methods: {
+        noSaber() {
+          this.sinExamenes = true
         }
+      }
     }
 </script>
 
