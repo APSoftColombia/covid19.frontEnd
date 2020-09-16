@@ -1066,6 +1066,7 @@ export default {
       this.dialog = false
       this.loading = false
       clearInterval(intervalo)
+      this.$emit('close')
       this.menuObservaciones = false
       this.encuesta = this.clone(this.modelEncuestaRCV)
       this.encuestaBase = null

@@ -33,11 +33,12 @@
         v-if="permisos.encuestasRCVCrear"
         ref="registroEncuesta"
         @guardado="val => encuestaGuardada(val)"
+        @close="loading = false"
     ></registro-encuesta>
     <detalle-encuesta
         ref="detalleEncuesta"
     ></detalle-encuesta>
-
+    <app-section-loader :status="loading"></app-section-loader>
   </div>
 </template>
 
@@ -257,9 +258,11 @@ export default {
       this.$refs.detalleEncuesta.open(item, false, true)
     },
     crearEncuesta(item) {
+      this.loading = true
       this.$refs.registroEncuesta.open(item)
     },
     editarEncuesta(item) {
+      this.loading = true
       this.$refs.registroEncuesta.open(item)
     },
     verEncuesta(item) {
