@@ -50,6 +50,15 @@ const getters = {
 
 // actions
 const actions = {
+    reloadUsuario(context) {
+        Vue.axios.get('user-fresh')
+            .then(response => {
+                console.log('response userrrrr', response.data)
+            })
+            .catch(error => {
+                context.commit('snackbar', {color: 'error', message: `al recuperar los datos del usuario.`, error: error})
+            })
+    },
     async signIn(context, user){
         Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${context.state.hostPort}`
         Nprogress.start()

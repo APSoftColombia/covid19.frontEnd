@@ -313,7 +313,7 @@ export default {
         tooltip: 'Detalle Encuesta',
         color: 'success'
       })
-      if (this.permisos.encuestasRCVCrear && item.id) item.options.push({
+      if (this.permisos.encuestasRCVEditar && item.id) item.options.push({
         event: 'editarEncuesta',
         icon: 'mdi-file-document-edit',
         tooltip: 'Editar Encuesta',

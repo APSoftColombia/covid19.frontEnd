@@ -97,6 +97,7 @@ export default {
       }
     })
     store.commit('assignEncuestaEnCurso', false)
+    store.dispatch('reloadUsuario')
   },
   created() {
   },
