@@ -53,7 +53,7 @@ const actions = {
     reloadUsuario(context) {
         Vue.axios.get('user-fresh')
             .then(response => {
-                console.log('response userrrrr', response.data)
+                context.commit('refreshUser', response.data)
             })
             .catch(error => {
                 context.commit('snackbar', {color: 'error', message: `al recuperar los datos del usuario.`, error: error})
@@ -113,6 +113,12 @@ const actions = {
 
 // mutations
 const mutations = {
+    refreshUser (state, data) {
+        state.user = data.user
+        state.permisos = data.permisos
+        localStorage.setItem('user',JSON.stringify(state.user))
+        localStorage.setItem('permisos',JSON.stringify(state.permisos))
+    },
     loginUserSuccess (state, data) {
         state.user = data.user
         state.token_type = data.token_type

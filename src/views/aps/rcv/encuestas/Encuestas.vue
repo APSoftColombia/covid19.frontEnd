@@ -13,7 +13,7 @@
         <v-btn
             color="green"
             class="white--text mr-2"
-            v-if="returnDataTableTotal.total < 50000"
+            v-if="returnDataTableTotal && returnDataTableTotal.total > 0 && returnDataTableTotal.total < 50000 && permisos.encuestasRCVDownloadExcel"
             @click.stop="descargarExcel"
             :disabled="loadingButton"
             :loading="loadingButton"
@@ -71,21 +71,13 @@ export default {
       return this.dataTable
     }
   },
-  watch: {
-    permisos: {
-      handler(val) {
-        if (val && val.encuestasRCVCrear) this.dataTable.buttonZone = true
-      },
-      immediate: true
-    }
-  },
   data: (vm) => ({
     rutaBase: 'rcvs',
     lengthData: null,
     loading: false,
     loadingButton: false,
     dataTable: {
-      buttonZone: false,
+      buttonZone: true,
       advanceFilters: true,
       nameItemState: 'tablaEncuestasRCV',
       route: 'rcvs',
