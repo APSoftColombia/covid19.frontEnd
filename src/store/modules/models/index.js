@@ -289,7 +289,12 @@ const state = {
         path_resultado: null,
         tomador_muestra_id: null,
         laboratorio_id: null,
-        nombre_tomador: null
+        nombre_tomador: null,
+        ///////
+        fecha_recepcion_procesamiento: null,
+        fecha_procesamiento: null,
+        fecha_notificacion_eps: null,
+        fecha_notificacion_afiliado: null
     },
     modelLlamada: {
         id: null,

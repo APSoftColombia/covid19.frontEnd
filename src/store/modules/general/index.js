@@ -214,9 +214,9 @@ const state = {
         {id: 'entrante', nombre: 'Entrante'},
         {id: 'saliente', nombre: 'Saliente'}
     ],
-    tiposMuestras: [
-        {value: 0, text: 'Negativo', color: 'red'},
-        {value: 1, text: 'Positivo', color: 'green'},
+    tiposResultadosCovid: [
+        {value: 0, text: 'Negativo', color: 'green'},
+        {value: 1, text: 'Positivo', color: 'red'},
         {value: 2, text: 'No Procesado | Falla Preanalítica', color: 'blue-grey'}
     ],
     sintomas: [],
@@ -247,8 +247,8 @@ const state = {
 
 // getters
 const getters = {
-    tiposMuestras: state => {
-        return state.tiposMuestras
+    tiposResultadosCovid: state => {
+        return state.tiposResultadosCovid
     },
     loadingIndicadores: state => {
         return state.loadingIndicadores
