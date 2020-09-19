@@ -8,7 +8,7 @@
         :loading="ipsLoading"
         :search-input.sync="ipsSearch"
         no-filter
-        placehoder="Buscar por código de habilitación, NIT o nombre"
+        placeholder="Buscar por código de habilitación, NIT o nombre"
         no-data-text="No hay resultados para mostrar"
         return-object
         outlined
