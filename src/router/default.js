@@ -28,12 +28,13 @@ const VehiculoView = () => import('Views/covid19/vehiculo/VehiculoView')
 const Nexos = () => import('Views/covid19/Nexos/NexosView')
 const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
 const Muestras = () => import('Views/covid19/Muestras/MuestrasView')
-
 const HogarView = () => import('Views/covid19/hogar/HogarView')
+const InformeEjecutivoERP = () => import('Views/covid19/InformeEjecutivo/InformeEjecutivo')
 
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
 const IndicadoresViewRCV = () => import('Views/aps/rcv/IndicadoresRCV/IndicadoresView')
+const InformeEjecutivo = () => import('Views/aps/rcv/InformeEjecutivo/InformeEjecutivo')
 
 export default {
    path: '/',
@@ -438,6 +439,20 @@ export default {
          }
       },
       {
+         path: 'informe-ejecutivo-erp',
+         name: 'InformeEjecutivoERP',
+         component: InformeEjecutivoERP,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-informeEjecutivoTamizajesIndex',
+            avatar: {
+               icon: 'mdi-file-table',
+               color: 'blue darken-3',
+            }
+         }
+      },
+      {
          path: 'encuestas-rcv',
          name: 'EncuestasRCV',
          component: EncuestasViewRCV,
@@ -462,6 +477,20 @@ export default {
             avatar: {
                icon: 'fas fa-chart-pie',
                color: 'red',
+            }
+         }
+      },
+      {
+         path: 'informe-ejecutivo-rcv',
+         name: 'InformeEjecutivoRcv',
+         component: InformeEjecutivo,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'aps-informeEjecutivoRcvIndex',
+            avatar: {
+               icon: 'mdi-file-table',
+               color: 'blue',
             }
          }
       }

@@ -35,9 +35,11 @@ const getters = {
         if (getters.getPermission('covid-muestrasVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 26))
         if (getters.getPermission('covid-parametrosVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 25))
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
+        if (getters.getPermission('covid-informeEjecutivoTamizajesIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 31))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
+        if (getters.getPermission('aps-informeEjecutivoRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 29))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 11))

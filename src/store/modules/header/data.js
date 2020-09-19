@@ -210,6 +210,14 @@ export const itemsMenu = [
         routeName: 'Muestras',
         typeRoute: 'covid'
     },
+    {
+        id: 31,
+        title: 'Informe Ejecutivo ERP',
+        icon: 'mdi-file-table',
+        color: 'blue darken-3',
+        routeName: 'InformeEjecutivoERP',
+        typeRoute: 'covid'
+    },
     // RCV
     {
         id: 27,
@@ -225,6 +233,14 @@ export const itemsMenu = [
         icon: 'fas fa-chart-pie',
         color: 'red',
         routeName: 'IndicadoresRCV',
+        typeRoute: 'aps'
+    },
+    {
+        id: 29,
+        title: 'Informe Ejecutivo RCV',
+        icon: 'mdi-file-table',
+        color: 'blue',
+        routeName: 'InformeEjecutivoRcv',
         typeRoute: 'aps'
     },
 ]
