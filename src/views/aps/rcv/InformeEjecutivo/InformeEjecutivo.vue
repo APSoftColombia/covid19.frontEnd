@@ -46,7 +46,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Distribución Por Riesgo OMS</p>
+                  <p>Distribución Por Riesgo General</p>
                 </div>
                 <simple-table
                     :titulo="'Por Riesgo OMS'"
@@ -123,75 +123,79 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  const SimpleTable = () => import('../../../../components/SimpleTable/SimpleTable')
-  export default {
-    name: "InformeEjecutivo",
-    data: () => ({
-      dataInforme: [],
-      data: {},
-      loading: false,
-      defaultDepartamentos: []
-    }),
-    components: {
-      SimpleTable
+import {mapGetters} from "vuex";
+
+const SimpleTable = () => import('../../../../components/SimpleTable/SimpleTable')
+export default {
+  name: "InformeEjecutivo",
+  data: () => ({
+    dataInforme: [],
+    data: {},
+    loading: false,
+    defaultDepartamentos: []
+  }),
+  components: {
+    SimpleTable
+  },
+  computed: {
+    ...mapGetters([
+      'complementosRCV',
+      'departamentos'
+    ]),
+  },
+  methods: {
+    getDataInforme() {
+      this.loading = true
+      let data = this.setParametros()
+      this.axios.post('informe-ejecutivo_rcv', data).then(response => {
+        this.dataInforme = response.data
+        this.returnTotales()
+        this.loading = false
+      }).catch(error => {
+        this.loading = false
+        this.$store.commit('snackbar', {color: 'error', message: ` al conseguir datos de informe`, error: error})
+      })
     },
-    computed: {
-      ...mapGetters([
-        'complementosRCV',
-        'departamentos'
-      ]),
-    },
-    methods: {
-      getDataInforme(){
-        this.loading = true
-        let data = this.setParametros()
-        this.axios.post('informe-ejecutivo_rcv', data).then(response => {
-          this.dataInforme = response.data
-          this.returnTotales()
-          this.loading = false
-        }).catch(error => {
-          this.loading = false
-          this.$store.commit('snackbar', {color: 'error', message: ` al conseguir datos de informe`, error: error})
-        })
-      },
-      setParametros(){
-        this.data = {
-          fecha_inicio: this.data.fecha_inicio ? this.data.fecha_inicio : this.moment().format('YYYY-MM-DD'),
-          fecha_fin: this.data.fecha_fin ? this.data.fecha_fin : this.moment().format('YYYY-MM-DD'),
-          departamentos: this.data.departamentos && this.data.departamentos.length ? this.data.departamentos : this.returnDepartamentos()
-        }
-        return this.data
-      },
-      returnDepartamentos(){
-        if(!this.defaultDepartamentos.length && (this.complementosRCV && this.complementosRCV.departamentos_rcv && this.complementosRCV.departamentos_rcv.length)) {
-          this.complementosRCV.departamentos_rcv.forEach((departamento) => {
-            this.defaultDepartamentos.push(departamento.id)
-          })
-        }
-        return this.defaultDepartamentos
-      },
-      returnTotales(){
-        if(this.dataInforme.resumen_operativo.length) {
-          let total = {c1: "TOTAL", c2: "", c3: 0, c4: 0, c5: 0, c6: 0, c7: 0, c8: 0}
-          for (const[llave, valor] of Object.entries(this.dataInforme.resumen_operativo)){
-            llave
-            total.c3 += valor.cantidad
-            total.c4 += parseFloat(valor.promedio)
-            total.c5 += valor.Bajo
-            total.c6 += valor.Medio
-            total.c7 += valor.Alto
-            total.c8 += valor.Indeterminado
-          }
-          this.dataInforme.resumen_operativo.push(total)
-        }
+    setParametros() {
+      this.data = {
+        fecha_inicio: this.data.fecha_inicio ? this.data.fecha_inicio : this.moment().format('YYYY-MM-DD'),
+        fecha_fin: this.data.fecha_fin ? this.data.fecha_fin : this.moment().format('YYYY-MM-DD'),
+        departamentos: this.data.departamentos && this.data.departamentos.length ? this.data.departamentos : this.returnDepartamentos()
       }
+      return this.data
     },
-    created() {
-      this.setParametros()
-      this.getDataInforme()
+    returnDepartamentos() {
+      if (!this.defaultDepartamentos.length && (this.complementosRCV && this.complementosRCV.departamentos_rcv && this.complementosRCV.departamentos_rcv.length)) {
+        this.complementosRCV.departamentos_rcv.forEach((departamento) => {
+          this.defaultDepartamentos.push(departamento.id)
+        })
+      }
+      return this.defaultDepartamentos
+    },
+    returnTotales() {
+      if (this.dataInforme.resumen_operativo.length) {
+        let total = {c1: "TOTAL", c2: "", c3: 0, c4: 0, c5: 0, c6: 0, c7: 0, c8: 0}
+        for (const [llave, valor] of Object.entries(this.dataInforme.resumen_operativo)) {
+          llave
+          total.c3 += valor.cantidad
+          total.c4 += parseFloat(valor.promedio)
+          total.c5 += valor.Bajo
+          total.c6 += valor.Medio
+          total.c7 += valor.Alto
+          total.c8 += valor.Indeterminado
+        }
+        this.dataInforme.resumen_operativo.push(total)
+        let promedioTotal = this.clone(this.dataInforme.resumen_operativo)
+        promedioTotal.pop()
+        this.dataInforme.resumen_operativo[this.dataInforme.resumen_operativo.length - 1].c4 = parseFloat(window.lodash.sumBy(promedioTotal, x => parseFloat(x.promedio)) / (this.dataInforme.resumen_operativo.length - 1)).toFixed(1)
+      }
     }
+  },
+  created() {
+    this.setParametros()
+    this.getDataInforme()
   }
+}
 </script>
 
 <style scoped>
