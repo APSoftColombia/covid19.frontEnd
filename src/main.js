@@ -251,6 +251,7 @@ Vue.mixin({
 		},
 		cleanTamizajeDesautorizado (tamizaje) {
 			if (tamizaje) {
+				if (tamizaje.localiza_persona) tamizaje.no_efectividad = null
 				if (!tamizaje.localiza_persona || !tamizaje.contesta_encuesta) {
 					tamizaje.riesgo_procedencia = null
 					tamizaje.riesgo_ocupacional = null

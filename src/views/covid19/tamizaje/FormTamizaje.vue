@@ -241,6 +241,18 @@
                   </v-col>
                 </template>
               </template>
+              <template v-if="tamizaje.localiza_persona === 0">
+                <v-col cols="12 pb-0">
+                  <c-select-complete
+                      v-model="tamizaje.no_efectividad"
+                      placeholder="Motivo de no localización"
+                      rules="required"
+                      name="motivo de no localización"
+                      :items="tiposNoEfectiva || []"
+                  >
+                  </c-select-complete>
+                </v-col>
+              </template>
             </template>
             <seguimiento
                     ref="seguimiento"
@@ -417,7 +429,8 @@
                 'tamizadores',
                 'tiposTamizaje',
                 'resultadosPCR',
-                'gruposAtencionEspecial'
+                'gruposAtencionEspecial',
+                'tiposNoEfectiva'
             ])
         },
         watch: {

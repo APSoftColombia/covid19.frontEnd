@@ -3,7 +3,7 @@
         <v-card>
             <template>
                 <v-chip
-                        v-if="tamizaje && tamizaje.tipo_tamizaje === 'telefónico'"
+                        v-if="tamizaje"
                         :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"
                         color="primary darken-3"
                         label
@@ -164,6 +164,7 @@
     import {mapGetters} from 'vuex'
     import FormTamizaje from 'Views/covid19/tamizaje/FormTamizaje'
     const FormSintomas = () => import('Views/covid19/tamizaje/FormSIntomas')
+    var intervalo
     export default {
         name: 'RegistroTamizaje',
         components: {
@@ -178,7 +179,6 @@
             activaTemperatura: true,
             tamizaje: null,
             llamada: null,
-            interval: null,
             verificado: 0
         }),
         computed: {
@@ -211,25 +211,6 @@
                     }
                 },
                 immediate: false
-            },
-            'tamizaje.tipo_tamizaje': {
-                handler (val) {
-                    if (this && this.tamizaje) {
-                        if (val && val === 'telefónico') {
-                            this.$nextTick(() => {
-                                this.tamizaje.duracion = 0
-                                if (this.llamada) {
-                                    this.tamizaje.duracion = this.clone(this.llamada.duracion)
-                                }
-                                this.goDuracion()
-                            })
-                        } else {
-                            clearInterval(this.interval)
-                            this.tamizaje.duracion = 0
-                        }
-                    }
-                },
-                immediate: false
             }
         },
         methods: {
@@ -238,19 +219,19 @@
                     if (result) {
                         this.loading = true
                       let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
-                        let request = tamizajeCopia.id
-                            ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
-                            : this.axios.post(`tamizajes`, tamizajeCopia)
-                        request
-                            .then(response => {
-                                this.$emit('guardado', response.data)
-                                this.$store.commit('snackbar', {color: 'success', message: `El tamizaje se guardo correctamente.`})
-                                this.close()
-                            })
-                            .catch(error => {
-                                this.loading = false
-                                this.$store.commit('snackbar', {color: 'error', message: `al guardar el tamizaje.`, error: error})
-                            })
+                      let request = tamizajeCopia.id
+                          ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
+                          : this.axios.post(`tamizajes`, tamizajeCopia)
+                      request
+                          .then(response => {
+                              this.$emit('guardado', response.data)
+                              this.$store.commit('snackbar', {color: 'success', message: `El tamizaje se guardo correctamente.`})
+                              this.close()
+                          })
+                          .catch(error => {
+                              this.loading = false
+                              this.$store.commit('snackbar', {color: 'error', message: `al guardar el tamizaje.`, error: error})
+                          })
                     }
                 })
             },
@@ -270,6 +251,9 @@
                         this.tamizaje.llamada_entrante = this.llamada.tipo === 'entrante' ? 1 : 0
                         this.tamizaje.duracion = this.llamada.duracion
                     }
+                  intervalo = setInterval(() => {
+                    this.tamizaje.duracion++
+                  }, 1000)
                 }
             },
             close () {
@@ -278,16 +262,11 @@
                 this.loading = false
                 this.llamada = null
                 this.verificado = 0
-                clearInterval(this.interval)
+                clearInterval(intervalo)
                 this.tamizaje = null
                 // setTimeout(() => {
                 //     // this.tamizaje = this.clone(this.modelTamizaje)
                 // }, 400)
-            },
-            goDuracion () {
-                this.interval = setInterval(() => {
-                    this.tamizaje.duracion ++
-                }, 1000)
             },
             getTamizaje (idTamizaje) {
                 this.loading = true

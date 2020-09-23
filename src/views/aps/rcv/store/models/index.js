@@ -58,6 +58,8 @@ const state = {
         dispuesto: 1,
         glucometro: null,
         tensiometro: null,
+        fallida: 0,
+        no_efectividad: null,
         /////
         especialidad: [],
         laboratorio: [],

@@ -59,11 +59,24 @@
                           :items="[{value: 0, text: 'SI'}, {value: 1, text: 'NO'}]"
                           item-text="text"
                           item-value="value"
+                          :column="!$vuetify.breakpoint.smAndUp"
                       >
                       </c-radio>
                     </v-card-text>
                   </v-card>
                 </v-col>
+                <template v-if="evolucion.fallida === 1">
+                  <v-col cols="12 pb-0">
+                    <c-select-complete
+                        v-model="evolucion.no_efectividad"
+                        placeholder="Motivo de no localización"
+                        rules="required"
+                        name="motivo de no localización"
+                        :items="tiposNoEfectiva || []"
+                    >
+                    </c-select-complete>
+                  </v-col>
+                </template>
               </v-row>
               <template v-if="esPsicologo || esTrabajadorSocial">
                 <v-row>
@@ -695,7 +708,8 @@ export default {
       'modelAislamiento',
       'modelSeguimientoAislamiento',
       'estadosAfectacion',
-      'signosAlarma'
+      'signosAlarma',
+      'tiposNoEfectiva'
     ]),
     clasificacionesCovidSeleccionables() {
       if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {
@@ -828,8 +842,12 @@ export default {
           this.evolucion.lugar_atencion = copia.lugar_atencion
           this.evolucion.orden_medica_id = copia.orden_medica_id
           this.evolucion.fallida = copia.fallida
+          this.evolucion.no_efectividad = copia.no_efectividad
           this.evolucion.observaciones = copia.observaciones
           this.evolucion.tipo = copia.tipo
+          this.evolucion.duracion = copia.duracion
+        } else {
+          this.evolucion.no_efectividad = null
         }
         let sintomasx = this.evolucion.sintomas && this.evolucion.sintomas.length ? this.evolucion.sintomas.filter(x => x.id).map(x => {
           return {id: x.id, fecha_inicio: x.fecha_inicio}
@@ -881,9 +899,9 @@ export default {
     close() {
       this.$refs.formEvolucion.reset()
       if (this.$refs && this.$refs.jitsimeet) this.$refs.jitsimeet.cerrarVideo()
-      clearInterval(intervalo)
       this.dialog = false
       this.loading = false
+      clearInterval(intervalo)
       this.evolucion = this.clone(this.modelEvolucion)
       this.comorbilidades = []
       this.verFormularioAislamiento = false

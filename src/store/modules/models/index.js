@@ -31,7 +31,7 @@ const state = {
         observaciones: null,
         localiza_persona: null,
         contesta_encuesta: null,
-        duracion: null,
+        duracion: 0,
         infoviajero: null,
         //////////
         riesgo_procedencia: null,
@@ -63,6 +63,7 @@ const state = {
         frecuencia_pulso: null,
         saturacion_oxigeno: null,
         temperatura: null,
+        no_efectividad: null,
         ////
         user_id: null,
         created_at: null,
@@ -226,7 +227,8 @@ const state = {
         frecuencia_pulso: null,
         saturacion_oxigeno: null,
         temperatura: null,
-        duracion: null
+        duracion: 0,
+        no_efectividad: null
 
     },
     modelReporteComunitario: {
