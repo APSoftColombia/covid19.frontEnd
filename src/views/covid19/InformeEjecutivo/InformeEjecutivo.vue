@@ -20,7 +20,7 @@
             >
             </c-date>
           </v-col>
-          <v-col cols="12" sm="12" md="4" lg="4">
+          <v-col cols="12" sm="12" md="3" lg="3">
             <c-select-complete
                 v-model="data.departamentos"
                 label="Departamentos"
@@ -35,6 +35,16 @@
             <v-btn color="green" class="white--text" @click="getDataInforme" block>
               <span>Filtrar</span>
             </v-btn>
+          </v-col>
+          <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
+                  <v-icon>fas fa-file-pdf</v-icon>
+                </v-btn>
+              </template>
+              <span>Generar PDF</span>
+            </v-tooltip>
           </v-col>
         </v-row>
       </v-card-title>
@@ -115,7 +125,8 @@
       dataInforme: [],
       data: {},
       loading: false,
-      defaultDepartamentos: []
+      defaultDepartamentos: [],
+      loadingPDF: false
     }),
     components: {
       SimpleTable
@@ -129,8 +140,7 @@
     methods: {
       getDataInforme() {
         this.loading = true
-        let data = this.setParametros()
-        this.axios.post('informe-ejecutivo_tamizajes', data).then(response => {
+        this.axios.post('informe-ejecutivo_tamizajes', this.data).then(response => {
           this.dataInforme = response.data
           let por_edad = response.data.reporte_edad.find(x => x.Hombre > 0 || x.Mujer > 0)
           if(!por_edad) {
@@ -142,14 +152,6 @@
           this.$store.commit('snackbar', {color: 'error', message: ` al conseguir datos de informe`, error: error})
         })
       },
-      setParametros() {
-        this.data = {
-          fecha_inicio: this.data.fecha_inicio ? this.data.fecha_inicio : this.moment().format('YYYY-MM-DD'),
-          fecha_fin: this.data.fecha_fin ? this.data.fecha_fin : this.moment().format('YYYY-MM-DD'),
-          departamentos: this.data.departamentos && this.data.departamentos.length ? this.data.departamentos : this.returnDepartamentos()
-        }
-        return this.data
-      },
       returnDepartamentos() {
         if (!this.defaultDepartamentos.length && (this.complementosRCV && this.complementosRCV.departamentos_rcv && this.complementosRCV.departamentos_rcv.length)) {
           this.complementosRCV.departamentos_rcv.forEach((departamento) => {
@@ -158,9 +160,33 @@
         }
         return this.defaultDepartamentos
       },
+      descargarPDF(){
+        this.loadingPDF = true
+        this.axios( {
+          url: `generar-pdf-informe-ejecutivo_tamizajes?fecha_inicio=${this.data.fecha_inicio ? this.data.fecha_inicio : ''}&fecha_final=${this.data.fecha_fin ? this.data.fecha_fin : ''}&departamentos=${this.data.departamentos ? this.data.departamentos : []}`, //your url,
+          method: 'GET',
+          responseType: 'blob', // important
+        }).then(async response => {
+          if(response.status === 204) {
+            this.$store.commit('snackbar', {color: 'info', message: 'Los parametros aplicados no han generado registros para crear PDF'})
+          }else{
+            const fileURL = window.URL.createObjectURL(
+                new Blob([response.data], {type: 'application/pdf'}))
+            await window.open(fileURL, '_blank')
+          }
+          this.loadingPDF = false
+        }).catch(error => {
+          this.loadingPDF = false
+          this.$store.commit('snackbar', {color: 'error', message: 'al descargar el PDF', error: error})
+        })
+      },
     },
     created() {
-      this.setParametros()
+      this.data = {
+        fecha_inicio: this.moment().format('YYYY-MM-DD'),
+        fecha_fin: this.moment().format('YYYY-MM-DD'),
+        departamentos: this.returnDepartamentos()
+      }
       this.getDataInforme()
     }
   }
