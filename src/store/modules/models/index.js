@@ -221,7 +221,7 @@ const state = {
         aislamiento: null,
         seguimiento_aislamiento: null,
         estado_afectacion: null,
-        forzado_telefonico: 0,
+        seguimiento_telefonico: 0,
         entidad_reporta_sivigila: null,
         tipo: null,
         frecuencia_pulso: null,

@@ -43,7 +43,7 @@
               <v-row>
                 <v-col cols="12" class="pb-0" v-if="[2, 3].find(x => x === tamizaje.orden_medica_id)">
                   <v-switch
-                      v-model="evolucion.forzado_telefonico"
+                      v-model="evolucion.seguimiento_telefonico"
                       label="Seguimiento Telefónico"
                       color="primary"
                       :true-value="1"
@@ -438,7 +438,7 @@
                       >
                       </c-text-area>
                     </v-col>
-                    <template v-if="evolucion.lugar_atencion === 2">
+                    <template v-if="evolucion.lugar_atencion === 2 && !evolucion.seguimiento_telefonico">
                       <v-col cols="12" class="pb-0">
                         <v-card flat>
                           <v-toolbar dense color="teal">
@@ -512,7 +512,7 @@
                         ></c-text-area>
                       </v-col>
                     </template>
-                    <v-col cols="12" class="pb-0" v-if="evolucion.lugar_atencion === 3">
+                    <v-col cols="12" class="pb-0" v-if="evolucion.lugar_atencion === 3 && !evolucion.seguimiento_telefonico">
                       <c-text-area
                           v-model="evolucion.evolucion_diaria_hospitalaria"
                           label="Evolución diaria"
@@ -552,7 +552,7 @@
                     <!--                                        >-->
                     <!--                                        </c-select-complete>-->
                     <!--                                    </v-col>-->
-                    <v-col cols="12" v-if="evolucion.lugar_atencion === 2 && evolucion.clasificacion !== '6'">
+                    <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
                       <v-switch
                           label="Solicitar Toma de Muestra"
                           v-model="evolucion.solicitud_prueba"
@@ -751,19 +751,15 @@ export default {
       },
       immediate: false
     },
-    'evolucion.forzado_telefonico': {
+    'evolucion.seguimiento_telefonico': {
       handler(val) {
         if (val) {
-          this.evolucion.lugar_atencion = 1
-          this.evolucion.solicitud_prueba = 0
           this.evolucion.evolucion_diaria_hospitalaria = null
           this.evolucion.motivo_consulta = null
           this.evolucion.anamnesis = null
           this.evolucion.examen_fisico = null
           this.evolucion.cie10 = null
           this.evolucion.tratamiento = null
-        } else {
-          this.evolucion.lugar_atencion = this.tamizaje ? this.tamizaje.orden_medica_id : null
         }
       },
       immediate: false
@@ -840,6 +836,7 @@ export default {
           this.evolucion = this.clone(this.modelEvolucion)
           this.evolucion.tamizaje_id = copia.tamizaje_id
           this.evolucion.lugar_atencion = copia.lugar_atencion
+          this.evolucion.seguimiento_telefonico = copia.seguimiento_telefonico
           this.evolucion.orden_medica_id = copia.orden_medica_id
           this.evolucion.fallida = copia.fallida
           this.evolucion.no_efectividad = copia.no_efectividad
@@ -888,6 +885,7 @@ export default {
         this.evolucion.tamizaje_id = this.tamizaje.id
         this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
         this.evolucion.orden_medica_id = this.tamizaje.orden_medica_id
+        this.evolucion.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
         this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
         this.evolucion.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
       }

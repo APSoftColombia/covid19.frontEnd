@@ -99,8 +99,8 @@
                                       </v-col>
                                     </v-row>
                                   </template>
-                                    <v-row v-if="esMovil">
-                                        <v-col class="pb-0" cols="12">
+                                    <v-row>
+                                        <v-col class="pb-0" cols="12" v-if="esMovil">
                                             <c-location
                                                     v-model="tamizaje.coordenadas"
                                                     label="Coordenadas"
@@ -108,7 +108,7 @@
                                             >
                                             </c-location>
                                         </v-col>
-                                        <v-col class="pb-0" cols="12" v-if="tamizaje.tamizador_id === 892">
+                                        <v-col class="pb-0" cols="12">
                                             <v-switch
                                                     class="mt-0"
                                                     label="Solicitar Toma de Muestra"
@@ -201,16 +201,6 @@
                     s = initime
                 }
                 return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
-            }
-        },
-        watch: {
-            'tamizaje.tamizador_id': {
-                handler (val) {
-                    if (val && val !== 892) {
-                        this.tamizaje.estado_prueba = null
-                    }
-                },
-                immediate: false
             }
         },
         methods: {
