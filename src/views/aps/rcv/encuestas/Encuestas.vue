@@ -44,7 +44,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import PersonaItemTabla from '../../../../components/Tamizaje/PersonaItemTabla'
+import ItemListDataPaciente from 'Views/aps/rcv/componentes/ItemListDataPaciente'
 
 const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
 const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
@@ -118,7 +118,7 @@ export default {
             render: function (createElement, context) {
               return context.props.value
                   ? createElement(
-                      PersonaItemTabla,
+                      ItemListDataPaciente,
                       {
                         props: {
                           value: context.props.value

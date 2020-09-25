@@ -674,9 +674,11 @@
                       <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
                         <form-medicamentos
                             :array-medicamentos="encuesta.medicamentos"
-                            @changeMedicamentos="val => encuesta.medicamentos = val"
                             :medicamentos="complementosRCV && complementosRCV.medicamentos ? complementosRCV.medicamentos : []"
+                            :otrosmedicamentos="encuesta.otros_medicamentos"
                             ref="formMedicamentos"
+                            @changeMedicamentos="val => encuesta.medicamentos = val"
+                            @changeOtros="val => encuesta.otros_medicamentos = val"
                         ></form-medicamentos>
                       </v-col>
                     </v-expand-transition>
@@ -1166,7 +1168,7 @@ export default {
             }, 400)
             this.encuesta = response.data
             setTimeout(() => {
-              if (!response.data.medicamentos.length && this.$refs.formMedicamentos) this.$refs.formMedicamentos.noSaber()
+              if (!response.data.medicamentos.length && !response.data.otros_medicamentos && this.$refs.formMedicamentos) this.$refs.formMedicamentos.noSaber()
               if (!response.data.laboratorio.length && this.$refs.formExamenes) this.$refs.formExamenes.noSaber()
               if (!response.data.especialidad.length && this.$refs.formEspecialidades) this.$refs.formEspecialidades.noSaber()
             }, 1000)

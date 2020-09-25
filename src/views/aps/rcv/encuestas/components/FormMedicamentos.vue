@@ -3,7 +3,7 @@
         <v-col class="pb-0" cols="12">
             <v-card outlined tile>
                 <v-card-text>
-                    <ValidationProvider name="medicamentos" :rules="sinMedicamentos ? '' : 'required'" v-slot="{ errors, valid }">
+                    <ValidationProvider name="medicamentos" :rules="sinMedicamentos || otros ? '' : 'required'" v-slot="{ errors, valid }">
                       <v-radio-group class="ma-0" key="grupoLabelxx">
                         <label
                             class="mb-1 v-messages__message"
@@ -41,7 +41,7 @@
                           </v-card>
                         </template>
                       </v-row>
-                      <div class="mt-2 v-messages theme--light error--text" role="alert" v-if="errors.length && !sinMedicamentos">
+                      <div class="mt-2 mb-4 v-messages theme--light error--text" role="alert" v-if="errors.length && !sinMedicamentos">
                         <div class="v-messages__wrapper">
                           <div class="v-messages__message">
                             {{errors[0]}}
@@ -49,8 +49,19 @@
                         </div>
                       </div>
                     </ValidationProvider>
+                  <div class="mt-5">
+                    <c-texto
+                        v-model="otros"
+                        label="Otros Medicamentos"
+                        :rules="(losMedicamentos && losMedicamentos.length) || sinMedicamentos ? '' : 'required'"
+                        name="otros medicamentos"
+                        upper-case
+                        :disabled="sinMedicamentos"
+                    >
+                    </c-texto>
+                  </div>
                     <v-checkbox
-                            class="mt-3 ml-2"
+                            class="mt-0 ml-2"
                             v-model="sinMedicamentos"
                             label="Desconoce los tipos de medicamentos"
                             hide-details
@@ -72,11 +83,16 @@
           medicamentos: {
             type: Object,
             default: null
+          },
+          otrosmedicamentos: {
+            type: String,
+            default: null
           }
         },
         data: () => ({
             sinMedicamentos: false,
-            losMedicamentos: []
+            losMedicamentos: [],
+            otros: null
         }),
         watch: {
             'arrayMedicamentos': {
@@ -85,10 +101,17 @@
                 },
                 immediate: true
             },
+            'otrosmedicamentos': {
+                handler (val) {
+                    this.otros = val
+                },
+                immediate: true
+            },
             'sinMedicamentos': {
                 handler (val) {
                     if (val) {
                         this.$emit('changeMedicamentos', [])
+                        this.$emit('changeOtros', null)
                     }
                 },
                 immediate: false
@@ -98,7 +121,13 @@
                     this.$emit('changeMedicamentos', val)
                 },
                 immediate: false
-            }
+            },
+          'otros': {
+            handler (val) {
+              this.$emit('changeOtros', val)
+            },
+            immediate: false
+          }
         },
       methods: {
         noSaber() {
