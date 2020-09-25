@@ -32,6 +32,7 @@ const actions = {
 // mutations
 const mutations = {
     assingRF5 (state, reload) {
+        console.log('asignando', reload)
         state.rF5 = reload
     },
     onReload (state, version) {
