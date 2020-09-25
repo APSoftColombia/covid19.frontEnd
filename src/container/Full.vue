@@ -84,9 +84,11 @@ export default {
       immediate: true
     }
   },
-  async beforeCreate() {
+  beforeCreate() {
+    console.log('es 111111')
     store.dispatch('getDatosEmpresa').then(response => {
       if (response) {
+        console.log('es 222222')
         store.dispatch('getReloadFirebase')
         store.dispatch('reloadOnline')
         store.dispatch('getAjustesGenerales')

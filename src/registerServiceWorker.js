@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import { store } from './store/store'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -10,7 +11,8 @@ if (process.env.NODE_ENV === 'production') {
         'For more details, visit https://goo.gl/AFskqB')
     },
     registered () {
-      localStorage.setItem('rF5',0)
+      // localStorage.setItem('rF5',0)
+      store.commit('assingRF5', 0)
       console.log('Service worker has been registered.')
       /* eslint-disable */
       let deferredPrompt
@@ -31,7 +33,8 @@ if (process.env.NODE_ENV === 'production') {
       console.log('New content is downloading.')
     },
     updated () {
-      localStorage.setItem('rF5',1)
+      // localStorage.setItem('rF5',1)
+      store.commit('assingRF5', 1)
       console.log('New content is available; please refresh.')
     },
     offline () {
