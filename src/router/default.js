@@ -30,6 +30,7 @@ const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
 const Muestras = () => import('Views/covid19/Muestras/MuestrasView')
 const HogarView = () => import('Views/covid19/hogar/HogarView')
 const InformeEjecutivoERP = () => import('Views/covid19/InformeEjecutivo/InformeEjecutivo')
+const Cets = () => import('Views/covid19/Cet/Cets')
 
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
@@ -435,6 +436,20 @@ export default {
             avatar: {
                icon: 'fas fa-vials',
                color: 'red darken-3',
+            }
+         }
+      },
+      {
+         path: 'cet',
+         name: 'Cets',
+         component: Cets,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-cetsVer',
+            avatar: {
+               icon: 'fas fa-hand-holding-usd',
+               color: 'teal',
             }
          }
       },

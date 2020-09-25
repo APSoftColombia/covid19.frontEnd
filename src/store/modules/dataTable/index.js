@@ -24,7 +24,9 @@ const state = {
         tablaEncuestasRCV: 0,
         tablaEncuestasRCVVersion: 5,
         tablaUsers: 0,
-        tablaUsersVersion: 0
+        tablaUsersVersion: 0,
+        tablaCets: 0,
+        tablaCetsVersion: 0
     }
 }
 

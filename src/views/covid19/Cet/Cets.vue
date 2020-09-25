@@ -1,0 +1,224 @@
+<template>
+  <v-container fluid>
+    <page-title-bar title="Compensaciones Económicas Temporal"></page-title-bar>
+    <data-table
+        ref="tablaCets"
+        v-model="dataTable"
+        @resetOption="item => resetOptions(item)"
+        @addContacto="item => addContactos(item)"
+        @infoContacto="item => infoContacto(item)"
+        @apply-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.aplicaFiltros()"
+    >
+      <template slot="top-actions-right">
+        <cargar-registros
+            @reloadTable="reloadTable"
+        ></cargar-registros>
+      </template>
+      <filtros
+          slot="filters"
+          ref="filtrosCets"
+          :ruta-base="rutaBase"
+          @filtra="val => goDatos(val)"
+      ></filtros>
+    </data-table>
+    <cet-view
+        ref="addContactos"
+        @reloadTable="reloadTable"
+    ></cet-view>
+    <informacion-contacto
+        ref="infoContacto"
+    ></informacion-contacto>
+  </v-container>
+</template>
+
+<script>
+  import {mapGetters} from 'vuex'
+  import PersonaItemTabla from "Components/Tamizaje/PersonaItemTabla";
+  import CetView from "./CetView";
+  import InformacionContacto from "./InformacionContacto";
+  const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
+  const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
+  export default {
+    name: "Cets",
+    data: (vm) => ({
+      rutaBase: 'infocets',
+      dataTable: {
+        advanceFilters: true,
+        buttonZone: true,
+        nameItemState: 'tablaCets',
+        route: null,
+        makeHeaders: [
+          {
+            text: 'ID',
+            align: 'left',
+            sortable: false,
+            visibleColumn: true,
+            component: {
+              render: function (createElement) {
+                return createElement(
+                    `div`,
+                    {
+                      domProps: {
+                        innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">Caso: ${this.value.numero_caso}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate">BDUA: ${this.value.bdua_afl_id}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                      }
+                    }
+                )
+              },
+              props: ['value']
+            }
+          },
+          {
+            text: 'Fecha Diagnostico',
+            align: 'left',
+            sortable: false,
+            value: 'fecha_diagnostico'
+          },
+          {
+            text: 'Persona',
+            align: 'left',
+            sortable: false,
+            component: {
+              functional: true,
+              render: function (createElement, context) {
+                return context.props.value
+                    ? createElement(
+                        PersonaItemTabla,
+                        {
+                          props: {
+                            value: {
+                              sexo : context.props.value.sexo,
+                              nombre: context.props.value.nombre,
+                              tipoIdentificacion: context.props.value.tipoid,
+                              identificacion: context.props.value.identificacion,
+                              celular: context.props.value.celular
+                            }
+                          }
+                        }
+                    )
+                    : createElement('span', '')
+              }
+            }
+          },
+          {
+            text: 'Fecha de Nacimiento',
+            align: 'left',
+            sortable: false,
+            value: 'fecha_nacimiento'
+          },
+          {
+            text: 'Entidad',
+            align: 'left',
+            sortable: false,
+            visibleColumn: true,
+            component: {
+              render: function (createElement) {
+                return createElement(
+                    `div`,
+                    {
+                      domProps: {
+                        innerHTML: `
+												<v-list-item style="max-width: 300px; white-space: normal">
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.codeps && vm.epss && vm.epss.length && vm.epss.find(x => x.codigo === this.value.codeps) && vm.epss.find(x => x.codigo === this.value.codeps).nombre ? vm.epss.find(x => x.codigo === this.value.codeps).nombre : ''}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                      }
+                    }
+                )
+              },
+              props: ['value']
+            }
+          },
+          {
+            text: 'Tipo',
+            align: 'left',
+            sortable: false,
+            visibleColumn: true,
+            component: {
+              render: function (createElement) {
+                return createElement(
+                    `div`,
+                    {
+                      domProps: {
+                        innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-3">${this.value.covid_contacto === 1 ? 'Confirmado' : 'Contacto'}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                      }
+                    }
+                )
+              },
+              props: ['value']
+            }
+          },
+          {
+            text: 'Opciones',
+            align: 'center',
+            sortable: false,
+            actions: true,
+            singlesActions: true
+          }
+        ]
+      }
+    }),
+    computed: {
+      ...mapGetters([
+          'epss'
+      ]),
+      permisos() {
+        return this.$store.getters.getPermissionModule('covid')
+      },
+    },
+    components: {
+      Filtros,
+      CetView,
+      CargarRegistros,
+      InformacionContacto
+    },
+    methods: {
+      resetOptions(item) {
+        if (item.covid_contacto === 1 && this.permisos.cetsCrear) item.options.push({
+          event: 'addContacto',
+          icon: 'fas fa-user-plus',
+          tooltip: 'Añadir Contactos'
+        })
+        if (item.fallecido || item.id_bdua_af_confirmado) item.options.push({
+          event: 'infoContacto',
+          icon: 'fas fa-info-circle',
+          tooltip: 'Información de Contacto'
+        })
+        return item
+      },
+      addContactos(item){
+        this.$refs.addContactos.open(item.id)
+      },
+      infoContacto(item){
+        this.$refs.infoContacto.open(item.id)
+      },
+      goDatos(ruta) {
+        this.dataTable.route = ruta
+      },
+      reloadTable(){
+        this.$store.commit('reloadTable', 'tablaCets')
+      }
+    },
+    created() {
+      this.dataTable.route = this.rutaBase
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,174 @@
+<template>
+  <v-dialog v-model="dialog" width="920px">
+    <v-card v-if="contacto">
+      <v-toolbar dark color='indigo'>
+        <v-icon left>fas fa-clipboard-list</v-icon>
+        <v-toolbar-title>{{ contacto.numero_caso ? 'Caso No.' + contacto.numero_caso : '' }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon dark @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12">
+            <div class="text-center">
+              <p>Datos del Confirmado</p>
+            </div>
+            <datos-afiliado
+                :afiliado="contacto.confirmado"
+                :abierto="true"
+                :readOnly="true"
+                :flat="true"
+                :columMD="4"
+            ></datos-afiliado>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col cols="12">
+            <div class="text-center">
+              <p>Datos del Contacto</p>
+            </div>
+          </v-col>
+          <template v-for="(item, indexItem) in datos">
+            <v-col cols="12" :md="item.colmd" :lg="item.collg" xl="3" :key="`col${indexItem}`">
+              <v-list two-line class="notification-wrap">
+                <v-list-item>
+                  <v-list-item-avatar class="my-1">
+                    <v-icon :color="item.iconColor">{{item.icon}}</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content class="pa-0">
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{item.label}}</v-list-item-subtitle>
+                    <v-list-item-title><h6 class="mb-0">{{item.body}}</h6></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action v-if="item.action">
+                    <v-list-item-action-text>{{item.action}}</v-list-item-action-text>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-col>
+          </template>
+        </v-row>
+      </v-card-text>
+      <v-divider class="pa-0 ma-0"></v-divider>
+      <v-card-actions class="justify-center">
+        <v-btn block text @click="close">Cerrar</v-btn>
+      </v-card-actions>
+      <app-section-loader :status="loading"></app-section-loader>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+  import {mapGetters} from "vuex";
+  const DatosAfiliado = () => import('./Componentes/DatosAfiliado')
+  export default {
+    name: "InformacionContacto",
+    data: () => ({
+      contacto: [],
+      datos: [],
+      dialog: false,
+      loading: false
+    }),
+    components: {
+      DatosAfiliado
+    },
+    computed: {
+      ...mapGetters([
+        'epss'
+      ]),
+    },
+    methods: {
+      open(id = null){
+        if(id){
+          this.dialog = true
+          this.getInfoContacto(id)
+        }
+      },
+      close(){
+        this.contacto = []
+        this.dialog = false
+      },
+      getInfoContacto(id){
+        this.loading = true
+        this.axios.get(`show-contacto/${id}`).then(response => {
+          this.contacto = response.data
+          this.assign()
+          this.loading = false
+        }).catch(error => {
+          this.loading = false
+          this.$store.commit('snackbar', {color: 'success', message: ` al conseguir informacion del contacto`, error:error})
+        })
+      },
+      assign () {
+        this.datos = []
+        this.datos.push(
+            {
+              label: 'Nombre',
+              body: this.contacto.nombre,
+              icon: this.contacto.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman',
+              iconColor: 'primary',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Numero Documento',
+              body: this.contacto.tipoid + ' ' + this.contacto.identificacion,
+              icon: 'fas fa-id-card',
+              iconColor: 'indigo',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Fecha Nacimiento',
+              body: this.contacto.fecha_nacimiento ? this.moment(this.fixFecha(this.contacto.fecha_nacimiento)).format('DD/MM/YYYY') : '',
+              icon: 'mdi-calendar-month',
+              iconColor: 'warning',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Sexo',
+              body: this.contacto.sexo ? this.contacto.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
+              icon: 'mdi-human-male-female',
+              iconColor: 'primary',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Fecha Diagnostico',
+              body: this.contacto.fecha_diagnostico ? this.moment(this.fixFecha(this.contacto.fecha_diagnostico)).format('DD/MM/YYYY') : '',
+              icon: 'mdi-calendar-month',
+              iconColor: 'warning',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Fallecido',
+              body: this.contacto.fallecido ? 'Si' : 'No',
+              icon: '',
+              iconColor: 'warning',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'EPS',
+              body: this.contacto.codeps && this.epss.find(x => x.codigo === this.contacto.codeps) && this.epss.find(x => x.codigo === this.contacto.codeps).nombre ? this.epss.find(x => x.codigo === this.contacto.codeps).nombre : '',
+              icon: '',
+              iconColor: 'warning',
+              colmd: '4',
+              collg: '4'
+            },
+        )
+      },
+      fixFecha(fecha){
+        let splitFecha = fecha.split('/')
+        return new Date(+splitFecha[2], splitFecha[1] - 1, +splitFecha[0])
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
