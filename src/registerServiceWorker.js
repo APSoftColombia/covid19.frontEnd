@@ -12,8 +12,8 @@ if (process.env.NODE_ENV === 'production') {
     },
     registered () {
       // localStorage.setItem('rF5',0)
-      store.commit('assingRF5', 0)
       console.log('Service worker has been registered.')
+      store.commit('assingRF5', 0)
       /* eslint-disable */
       let deferredPrompt
       window.addEventListener('beforeinstallprompt', (e) => {
@@ -34,8 +34,8 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated () {
       // localStorage.setItem('rF5',1)
-      store.commit('assingRF5', 1)
       console.log('New content is available; please refresh.')
+      store.commit('assingRF5', 1)
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')
