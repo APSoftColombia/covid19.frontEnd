@@ -60,6 +60,7 @@ const state = {
         tensiometro: null,
         fallida: 0,
         no_efectividad: null,
+        otro_medicamento: null,
         /////
         especialidad: [],
         laboratorio: [],
