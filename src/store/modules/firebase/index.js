@@ -19,7 +19,9 @@ const getters = {
 // actions
 const actions = {
     async getReloadFirebase (context) {
-        db.collection('versiones').doc('4aUoNgJxWiPvy7SEusZX').onSnapshot(convo => {
+        // db.collection('versiones').doc('4aUoNgJxWiPvy7SEusZX').onSnapshot(convo => {
+        console.log('context.getters.datosEmpresa', context.getters.datosEmpresa)
+        db.collection('versiones').doc('pruebas').onSnapshot(convo => {
             console.log('seaaaaa')
             let source = convo && convo.data() ? convo.data() : null
             context.commit('onReload', source ? source.version : null)
