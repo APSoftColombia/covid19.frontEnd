@@ -80,7 +80,7 @@ export default {
       buttonZone: true,
       advanceFilters: true,
       nameItemState: 'tablaEncuestasRCV',
-      route: 'rcvs',
+      route: null,
       total: null,
       makeHeaders: [
         {
