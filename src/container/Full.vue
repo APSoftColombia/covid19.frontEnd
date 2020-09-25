@@ -84,14 +84,13 @@ export default {
       immediate: true
     }
   },
-  beforeCreate() {
-    store.dispatch('getReloadFirebase')
-    store.dispatch('reloadOnline')
+  async beforeCreate() {
     store.dispatch('getDatosEmpresa').then(response => {
       if (response) {
+        store.dispatch('getReloadFirebase')
+        store.dispatch('reloadOnline')
         store.dispatch('getAjustesGenerales')
         if (this.datosEmpresa.aps_activo === '1') {
-          console.log('this.datosEmpresa', this.datosEmpresa)
           store.dispatch('getComplementosRCV')
         }
       }

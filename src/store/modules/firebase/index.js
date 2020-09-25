@@ -3,7 +3,6 @@ import {db} from '../../../plugins/firebase'
 const state = {
     versionFirebase: localStorage.getItem('version_firebase'),
     reloadComplementos: localStorage.getItem('reload_complementos'),
-    versionF5: localStorage.getItem('versionF5'),
     rF5: localStorage.getItem('rF5')
 }
 
@@ -23,7 +22,6 @@ const actions = {
         db.collection('versiones').doc('4aUoNgJxWiPvy7SEusZX').onSnapshot(convo => {
             console.log('seaaaaa')
             let source = convo && convo.data() ? convo.data() : null
-            context.commit('onReloadF5', source ? source.versionF5 : null)
             context.commit('onReload', source ? source.version : null)
         })
     }
@@ -36,12 +34,6 @@ const mutations = {
             localStorage.setItem('version_firebase',version)
             state.reloadComplementos = 1
             localStorage.setItem('reload_complementos',1)
-        }
-    },
-    onReloadF5 (state, version) {
-        if (!version || (state.versionF5 !== version.toString())) {
-            state.rF5 = 1
-            localStorage.setItem('versionF5',version)
         }
     },
     offReload (state) {
