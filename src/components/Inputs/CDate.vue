@@ -8,7 +8,7 @@
             min-width="290px"
     >
         <template v-slot:activator="{ on }">
-            <ValidationProvider :name="name" :vid="vid" :rules="rules" v-slot="{ errors, valid }">
+            <ValidationProvider :name="name" :vid="vid" :rules="(rules ? `${rules}|`: '') + 'dateValid'" v-slot="{ errors, valid }">
                 <v-text-field
                         v-model="dateFormatted"
                         :label="label"
@@ -121,7 +121,8 @@
       },
       value: {
         handler(val) {
-          this.model = ((typeof val !== 'undefined') ? val : null)
+          console.log('eeeeee', val)
+          this.model = ((typeof val !== 'undefined') && this.moment(val).isValid() ? val : null)
         },
         immediate: true
       }

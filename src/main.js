@@ -188,7 +188,7 @@ Vue.mixin({
 	},
 	methods: {
 		calculaEdad (fechaNacimiento) {
-			if (fechaNacimiento) {
+			if (fechaNacimiento && this.moment(fechaNacimiento).isValid()) {
 				let a = this.moment()
 				let b = this.moment(fechaNacimiento)
 				let years = a.diff(b, 'year')

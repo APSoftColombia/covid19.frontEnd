@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import moment from 'moment'
+Vue.prototype.moment = moment
 import { required, email, required_if, numeric, is_not, confirmed } from 'vee-validate/dist/rules'
 import { extend } from 'vee-validate'
 
@@ -32,7 +34,7 @@ extend('numeric', {
 
 extend('email', {
     ...email,
-    message: 'El correo no es valido'
+    message: 'El correo no es válido'
 })
 
 extend('required_if', {
@@ -48,6 +50,14 @@ extend('integridadSQL', {
         }
     },
     message: 'La consulta no está permitida'
+})
+
+extend('dateValid', {
+    validate(value) {
+        console.log('valuevalue', value)
+        return moment(value, 'DD/MM/YYYY').isValid() ? true : false
+    },
+    message: 'La fecha no es válida'
 })
 
 extend('min', {
