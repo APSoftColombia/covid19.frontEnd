@@ -890,13 +890,11 @@ const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamen
 const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
 const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
 import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
-import BuscadorIps from '../componentes/BuscadorIps'
 
 var intervalo
 export default {
   name: 'RegistroEncuesta',
   components: {
-    BuscadorIps,
     FormSintomas,
     FormEspecialidades,
     FormExamenes,

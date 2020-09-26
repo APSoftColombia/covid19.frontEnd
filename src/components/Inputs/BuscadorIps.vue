@@ -10,12 +10,11 @@
         no-filter
         placeholder="Buscar por código de habilitación, NIT o nombre"
         no-data-text="No hay resultados para mostrar"
-        return-object
         outlined
         :error-messages="errors"
         hide-selected
         persistent-hint
-        :hint="ips ? [ips.telefono ? `Tel.${ips.telefono}`: null, `${ips.direccion} ${ips.nompio}, ${ips.nomdepto}`].filter(x => x).join(' | '): null"
+        :hint="ips && ipss.find(x => x[itemValue] === ips) ? [ipss.find(x => x[itemValue] === ips).telefono ? `Tel.${ipss.find(x => x[itemValue] === ips).telefono}`: null, `${ipss.find(x => x[itemValue] === ips).direccion} ${ipss.find(x => x[itemValue] === ips).nompio}, ${ipss.find(x => x[itemValue] === ips).nomdepto}`].filter(x => x).join(' | '): null"
         @change="val => $emit('change', val)"
     >
       <template v-slot:selection="data">
@@ -42,7 +41,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-divider></v-divider>
+          <v-divider class="ma-0"></v-divider>
         </div>
       </template>
     </v-autocomplete>
@@ -50,11 +49,16 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 export default {
 name: 'BuscadorIps',
   props: {
     label: {
       type: String,
+      default: null
+    },
+    value: {
+      type: [String, Number, Object],
       default: null
     },
     name: {
@@ -85,24 +89,23 @@ name: 'BuscadorIps',
     },
     ips: {
       handler(val) {
-        this.$emit('input', (typeof val !== 'undefined') ? val[this.itemValue] : null)
-        this.$emit('inputObject', (typeof val !== 'undefined') ? val : null)
+        this.$emit('input', (typeof val !== 'undefined') ? val : null)
+        this.$emit('inputObject', (typeof val !== 'undefined') ? this.ipss.find(x => x[this.itemValue] === val) : null)
       },
       immediate: false
     },
     value: {
       handler(val) {
-        this.model = ((typeof val !== 'undefined') ? val : null)
+        this.ips = ((typeof val !== 'undefined') ? val : null)
       },
       immediate: true
     }
   },
   methods: {
     assign (item) {
-      this.ips = item
       if (item) this.ipss.push(item)
     },
-    buscarIPS: window.lodash.debounce(async function () {
+    buscarIPS: lodash.debounce(async function () {
       if (this.ipsSearch) {
         this.ipsLoading = true
         this.axios.get(`prestadores?filter[search]=${this.ipsSearch}`)
