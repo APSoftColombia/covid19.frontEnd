@@ -218,6 +218,15 @@ export const itemsMenu = [
         routeName: 'InformeEjecutivoERP',
         typeRoute: 'covid'
     },
+    {
+        id: 32,
+        title: 'CET',
+        subtitle: 'Compensaciones Económicas Temporal',
+        icon: 'fas fa-hand-holding-usd',
+        color: 'teal',
+        routeName: 'Cets',
+        typeRoute: 'covid'
+    },
     // RCV
     {
         id: 27,
