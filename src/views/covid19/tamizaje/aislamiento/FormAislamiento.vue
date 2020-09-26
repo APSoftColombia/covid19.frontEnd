@@ -63,8 +63,6 @@
                 ref="buscadorips"
                 label="IPS que ordena aislamiento"
                 v-model="aislamiento.codigo_habilitacion"
-                name="IPS que ordena aislamiento"
-                rules="required"
             ></buscador-ips>
           </v-col>
         </v-row>
