@@ -306,47 +306,6 @@
                         </c-date>
                       </v-col>
                     </template>
-                    <!--                                <v-col cols="12">-->
-                    <!--                                    <v-card outlined tile>-->
-                    <!--                                        <v-card-text>-->
-                    <!--                                            <c-radio-->
-                    <!--                                                    v-model="evolucion.muestra_covid"-->
-                    <!--                                                    label="¿Ya le han tomado la muestra para COVID-19?"-->
-                    <!--                                                    rules="required"-->
-                    <!--                                                    name="toma de muestra"-->
-                    <!--                                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"-->
-                    <!--                                                    item-text="text"-->
-                    <!--                                                    item-value="value"-->
-                    <!--                                            >-->
-                    <!--                                            </c-radio>-->
-                    <!--                                        </v-card-text>-->
-                    <!--                                    </v-card>-->
-                    <!--                                </v-col>-->
-                    <!--                                <v-col class="pb-0" cols="12" sm="12" v-if="evolucion.muestra_covid">-->
-                    <!--                                    <c-date-->
-                    <!--                                            v-model="evolucion.fecha_muestra"-->
-                    <!--                                            label="Fecha de la muestra"-->
-                    <!--                                            rules="required"-->
-                    <!--                                            name="fecha de la muestra"-->
-                    <!--                                    >-->
-                    <!--                                    </c-date>-->
-                    <!--                                </v-col>-->
-                    <!--                                <v-col cols="12">-->
-                    <!--                                    <v-card outlined tile>-->
-                    <!--                                        <v-card-text>-->
-                    <!--                                            <c-radio-->
-                    <!--                                                    v-model="evolucion.probable_muerte_covid19"-->
-                    <!--                                                    label="¿Muerte probable por COVID-19?"-->
-                    <!--                                                    rules="required"-->
-                    <!--                                                    name="muerte probable COVID-19"-->
-                    <!--                                                    :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"-->
-                    <!--                                                    item-text="text"-->
-                    <!--                                                    item-value="value"-->
-                    <!--                                            >-->
-                    <!--                                            </c-radio>-->
-                    <!--                                        </v-card-text>-->
-                    <!--                                    </v-card>-->
-                    <!--                                </v-col>-->
                   </v-row>
                 </template>
                 <v-row>
@@ -542,16 +501,6 @@
                       >
                       </c-select-complete>
                     </v-col>
-                    <!--                                    <v-col cols="12" class="pb-0">-->
-                    <!--                                        <c-select-complete-->
-                    <!--                                                v-model="evolucion.evolucion"-->
-                    <!--                                                label="Evolución"-->
-                    <!--                                                rules="required"-->
-                    <!--                                                name="evolución"-->
-                    <!--                                                :items="tiposEvolucion"-->
-                    <!--                                        >-->
-                    <!--                                        </c-select-complete>-->
-                    <!--                                    </v-col>-->
                     <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
                       <v-switch
                           label="Solicitar Toma de Muestra"
@@ -649,7 +598,6 @@
 
 <script>
 import {mapGetters} from 'vuex'
-// const FormSintomas = () => import('Views/covid19/tamizaje/FormSIntomas')
 const SintomasFecha = () => import('Views/covid19/tamizaje/evolucion/components/SintomasFecha')
 const FormComorbilidades = () => import('Views/covid19/tamizaje/FormComorbilidades')
 const HelpModal = () => import('../../../components/HelpModal/HelpModal')
@@ -660,7 +608,6 @@ var intervalo
 export default {
   name: 'RegistroEvolucion',
   components: {
-    // FormSintomas,
     DatosPersonales,
     FormComorbilidades,
     HelpModal,

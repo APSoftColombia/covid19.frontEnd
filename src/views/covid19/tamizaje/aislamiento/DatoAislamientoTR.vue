@@ -65,10 +65,10 @@
             </v-list-item>
         </td>
       <td>
-        <v-list-item class="pa-0" v-if="aislamiento.prestador">
+        <v-list-item class="pa-0">
           <v-list-item-content class="pa-0 text-center">
-            <v-list-item-subtitle>{{ aislamiento.prestador.nombre }}</v-list-item-subtitle>
-            <v-list-item-subtitle>NIT: {{ aislamiento.prestador.nitsnit }}</v-list-item-subtitle>
+            <v-list-item-subtitle v-if="aislamiento.ordenado_por">{{ aislamiento.ordenado_por }}</v-list-item-subtitle>
+            <v-list-item-subtitle v-if="aislamiento.prestador">{{ aislamiento.prestador.nombre }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </td>

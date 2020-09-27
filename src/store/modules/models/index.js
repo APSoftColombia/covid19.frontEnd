@@ -101,6 +101,8 @@ const state = {
         tipo: null,
         individual: null,
         ambito: null,
+        ordenado_por: null,
+        codigo_habilitacion: null,
         otro_ambito: null,
         user_id: null,
         created_at: null,

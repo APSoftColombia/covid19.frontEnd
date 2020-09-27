@@ -10,7 +10,7 @@
                     <th>Fecha</th>
                     <th>Soportes</th>
                     <th>Proceso</th>
-                    <th class="text-center">IPS</th>
+                    <th>Ordenado Por</th>
                     <th>Usuario</th>
                     <th>Detalle</th>
                 </tr>
