@@ -32,6 +32,9 @@
                         <tr v-for="(item, nexoIndex) in tamizaje.nexos" :key="`nexo${nexoIndex}`">
                             <td>
                                 <v-list-item class="pa-0">
+                                  <div class="mr-2">
+                                    <icon-tooltip v-if="[item.tipo_identificacion, item.identificacion, item.nombre1, item.apellido1, item.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
+                                  </div>
                                     <v-list-item-content class="pa-0">
                                         <v-list-item-title class="body-2">Id: {{item.id}}</v-list-item-title>
                                         <v-list-item-subtitle class="title caption">
@@ -47,7 +50,10 @@
                                     </v-list-item-avatar>
                                     <v-list-item-content class="pa-0">
                                         <v-list-item-title class="body-2">{{item.nombres}}</v-list-item-title>
-                                        <v-list-item-subtitle class="title caption">
+                                        <v-list-item-subtitle class="title caption" v-if="item.tipo_identificacion && item.identificacion">
+                                            {{ `${item.tipo_identificacion}${item.identificacion}` }}
+                                        </v-list-item-subtitle>
+                                      <v-list-item-subtitle class="title caption">
                                             {{[item.edad ? ('Edad: ' + item.edad) : '', item.celular ? ('Cel: ' + item.celular) : ''].filter(x => x).join(', ')}}
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
@@ -74,6 +80,14 @@
                               </div>
                             </td>
                             <td class="text-center">
+                              <v-tooltip top v-if="editable">
+                                <template v-slot:activator="{on}">
+                                  <v-btn icon color="orange" v-on="on" @click="editarNexo(item)">
+                                    <v-icon>mdi-pencil</v-icon>
+                                  </v-btn>
+                                </template>
+                                <span>{{ 'Editar' }}</span>
+                              </v-tooltip>
                               <v-tooltip top v-if="permisos.tamizajeCrear && !item.tamizaje">
                                 <template v-slot:activator="{on}">
                                   <v-btn icon color="primary" v-on="on" @click="crearTamizaje(item)">
@@ -154,6 +168,9 @@
             agregarNexo () {
                 this.$refs.registroNexo.open(null, this.tamizaje)
             },
+          editarNexo (nexo) {
+            this.$refs.registroNexo.open(nexo, this.tamizaje)
+          },
             nexoGuardado (item) {
                 this.$emit('change', item)
             },

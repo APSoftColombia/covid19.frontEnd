@@ -50,7 +50,7 @@ const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta'
 const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
 const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
 import MenuItem from '../componentes/MenuItem'
-import IconTooltip from '../componentes/IconTooltip'
+import IconTooltip from '../../../../components/Inputs/IconTooltip'
 
 export default {
   name: 'Encuestas',
