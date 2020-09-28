@@ -42,10 +42,13 @@ import './lib/VuelyCss'
 // messages
 import messages from './lang'
 
+//ServiceWorker
+import './registerServiceWorker'
+
 // vee-validate
 import './plugins/veeValidate'
 import './plugins/onLine'
-import './registerServiceWorker'
+
 
 Vue.config.productionTip = false
 
