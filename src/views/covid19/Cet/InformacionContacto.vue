@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="920px">
+  <v-dialog v-model="dialog" width="1000px">
     <v-card v-if="contacto">
       <v-toolbar dark color='indigo'>
         <v-icon left>fas fa-clipboard-list</v-icon>
@@ -12,7 +12,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="12">
-            <div class="text-center">
+            <div class="text-center font-weight-bold">
               <p>Datos del Confirmado</p>
             </div>
             <datos-afiliado
@@ -26,7 +26,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col cols="12">
-            <div class="text-center">
+            <div class="text-center font-weight-bold">
               <p>Datos del Contacto</p>
             </div>
           </v-col>
@@ -75,7 +75,10 @@
     },
     computed: {
       ...mapGetters([
-        'epss'
+        'epss',
+        'municipiosTotal',
+        'parentescos',
+        'entidadesFinancieras'
       ]),
     },
     methods: {
@@ -112,50 +115,150 @@
               collg: '4'
             },
             {
-              label: 'Numero Documento',
-              body: this.contacto.tipoid + ' ' + this.contacto.identificacion,
-              icon: 'fas fa-id-card',
-              iconColor: 'indigo',
-              colmd: '4',
-              collg: '4'
-            },
-            {
-              label: 'Fecha Nacimiento',
-              body: this.contacto.fecha_nacimiento ? this.moment(this.fixFecha(this.contacto.fecha_nacimiento)).format('DD/MM/YYYY') : '',
+              label: 'Fecha Diagnostico',
+              body: this.contacto.fecha_diagnostico ? this.moment(this.fixFecha(this.contacto.fecha_diagnostico)).format('DD/MM/YYYY') : '-',
               icon: 'mdi-calendar-month',
               iconColor: 'warning',
               colmd: '4',
               collg: '4'
             },
             {
-              label: 'Sexo',
-              body: this.contacto.sexo ? this.contacto.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
-              icon: 'mdi-human-male-female',
+              label: 'Numero Documento',
+              body: this.contacto.tipoid + ' ' + this.contacto.identificacion,
+              icon: 'fas fa-id-card',
               iconColor: 'primary',
               colmd: '4',
               collg: '4'
             },
             {
-              label: 'Fecha Diagnostico',
-              body: this.contacto.fecha_diagnostico ? this.moment(this.fixFecha(this.contacto.fecha_diagnostico)).format('DD/MM/YYYY') : '',
-              icon: 'mdi-calendar-month',
-              iconColor: 'warning',
+              label: 'Fecha de Expedición',
+              body: this.contacto.fecha_expedicion ? this.moment(this.contacto.fecha_expedicion).format('DD/MM/YYYY') : '-',
+              icon: 'fas fa-id-card',
+              iconColor: 'info',
               colmd: '4',
               collg: '4'
             },
             {
-              label: 'Fallecido',
-              body: this.contacto.fallecido ? 'Si' : 'No',
-              icon: '',
-              iconColor: 'warning',
+              label: 'Fecha Nacimiento',
+              body: this.contacto.fecha_nacimiento ? this.moment(this.fixFecha(this.contacto.fecha_nacimiento)).format('DD/MM/YYYY') : '-',
+              icon: 'mdi-calendar-month',
+              iconColor: 'error',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Sexo',
+              body: this.contacto.sexo ? this.contacto.sexo === 'M' ? 'Masculino' : 'Femenino' : '-',
+              icon: 'mdi-human-male-female',
+              iconColor: 'green',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Email',
+              body: this.contacto.email ? this.contacto.email : '-',
+              icon: 'fas fa-at',
+              iconColor: 'purple',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Telefono Fijo',
+              body: this.contacto.telefono_fijo ? this.contacto.telefono_fijo : '-',
+              icon: 'fas fa-phone',
+              iconColor: 'blue',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Celular',
+              body: this.contacto.celular ? this.contacto.celular : '-',
+              icon: 'fas fa-mobile-alt',
+              iconColor: 'pink',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Municipio',
+              body: this.contacto.codigo_municipio && this.municipiosTotal.find(x => x.codigo === this.contacto.codigo_municipio)
+                  ? `${this.municipiosTotal.find(x => x.codigo === this.contacto.codigo_municipio).nombre}-${this.municipiosTotal.find(x => x.codigo === this.contacto.codigo_municipio).departamento.nombre}`
+                  : '-',
+              icon: 'mdi-map-marker-radius',
+              iconColor: 'indigo',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Dirección',
+              body: this.contacto.direccion ? this.contacto.direccion : '-',
+              icon: 'fas fa-map-marked',
+              iconColor: 'teal',
               colmd: '4',
               collg: '4'
             },
             {
               label: 'EPS',
-              body: this.contacto.codeps && this.epss.find(x => x.codigo === this.contacto.codeps) && this.epss.find(x => x.codigo === this.contacto.codeps).nombre ? this.epss.find(x => x.codigo === this.contacto.codeps).nombre : '',
-              icon: '',
-              iconColor: 'warning',
+              body: this.contacto.codeps && this.epss.find(x => x.codigo === this.contacto.codeps) && this.epss.find(x => x.codigo === this.contacto.codeps).nombre ? this.epss.find(x => x.codigo === this.contacto.codeps).nombre : '-',
+              icon: 'fas fa-h-square',
+              iconColor: 'cyan',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Parentesco',
+              body: this.contacto.parentesco_id && this.parentescos.find(x => x.id === this.contacto.parentesco_id) ? this.parentescos.find(x => x.id === this.contacto.parentesco_id).descripcion : '-',
+              icon: 'fas fa-people-arrows',
+              iconColor: 'light-green',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Fallecido',
+              body: this.contacto.fallecido != null ? this.contacto.fallecido ? 'Si' : 'No' : '-',
+              icon: 'fas fa-dizzy',
+              iconColor: 'red',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Comparten Gastos',
+              body: this.contacto.comparten_gastos != null ? this.contacto.comparten_gastos ? 'Si' : 'No' : '-',
+              icon: 'fas fa-file-invoice-dollar',
+              iconColor: 'lime',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Cumple Aislamiento',
+              body: this.contacto.cumple_aislamiento != null ? this.contacto.cumple_aislamiento ? 'Si' : 'No' : '-',
+              icon: 'fas fa-handshake-alt-slash',
+              iconColor: 'deep-orange',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Autoriza Giro Familiar',
+              body: this.contacto.giro_a_familiar != null ? this.contacto.giro_a_familiar ? 'Si' : 'No' : '-',
+              icon: 'fas fa-hand-holding-usd',
+              iconColor: 'blue-grey',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Autoriza EPS',
+              body: this.contacto.autoriza_eps != null ? this.contacto.autoriza_eps ? 'Si' : 'No' : '-',
+              icon: 'fas fa-user-check',
+              iconColor: 'light-blue',
+              colmd: '4',
+              collg: '4'
+            },
+            {
+              label: 'Entidad Financiera',
+              body: this.contacto.entidad_financiera_id && this.entidadesFinancieras && this.entidadesFinancieras.length
+              && this.entidadesFinancieras.find(x => x.id === this.contacto.entidad_financiera_id)
+                  ? this.entidadesFinancieras.find(x => x.id === this.contacto.entidad_financiera_id).razon_social : '-',
+              icon: 'fas fa-university',
+              iconColor: 'teal darken-4',
               colmd: '4',
               collg: '4'
             },

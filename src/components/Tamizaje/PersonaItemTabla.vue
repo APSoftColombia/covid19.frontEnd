@@ -1,6 +1,9 @@
 <template>
     <div style="min-width: 360px !important; max-width: 400px !important;">
         <v-list-item class="pa-0">
+          <div class="mr-2" v-if="!isNotFromNexos">
+            <icon-tooltip v-if="[this.value.tipo_identificacion, this.value.identificacion, this.value.nombre1, this.value.apellido1, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
+          </div>
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
             <v-icon :color="colorText" large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
             <v-list-item-content class="pa-0" v-if="isNotFromNexos">

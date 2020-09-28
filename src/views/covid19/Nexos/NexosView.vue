@@ -10,6 +10,7 @@
                         @resetOption="item => resetOptions(item)"
                         @seguimiento="item => verSeguimiento(item)"
                         @crearERP="item => crearTamizaje(item)"
+                        @Editar="item => editarNexo(item)"
                         @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
                     >
                         <filtros
@@ -28,8 +29,12 @@
         <registro-tamizaje
                 v-if="permisos.tamizajeCrear"
                 ref="registroTamizaje"
-                @guardado="item => tamizajeGuardado()"
+                @guardado="item => reloadTable()"
         ></registro-tamizaje>
+        <registro-reporte-comunitario
+            ref="registroNexo"
+            @editado="val => nexoEditado(val)"
+        ></registro-reporte-comunitario>
         <app-section-loader :status="loading"></app-section-loader>
     </v-container>
 </template>
@@ -40,6 +45,7 @@
     import Filtros from './Filtros/Filtros'
     const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+    const RegistroReporteComunitario = () => import('Views/covid19/Nexos/EditarNexo')
     export default {
         name: "NexosView",
         data: (vm) => ({
@@ -189,6 +195,7 @@
                 item.options = []
                 if (item.erp_generado_id) item.options.push({event: 'seguimiento', icon: 'mdi-file-find', tooltip: 'Detalle ERP', color:'success'})
                 if (!item.erp_generado_id && this.permisos.tamizajeCrear) item.options.push({event: 'crearERP', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
+                item.options.push({event: 'Editar', icon:'mdi-pencil', tooltip:'Editar', color:'warning'})
             },
             verSeguimiento (item) {
                 this.$refs.seguimiento.open(item.erp_generado_id)
@@ -196,14 +203,21 @@
             crearTamizaje (item) {
                 this.$refs.registroTamizaje.open(null, item.id)
             },
-            tamizajeGuardado () {
+            reloadTable () {
                 this.$store.commit('reloadTable', 'tablaNexos')
+            },
+            editarNexo (nexo) {
+              this.$refs.registroNexo.open(nexo)
+            },
+            nexoEditado () {
+              this.reloadTable()
             },
         },
         components : {
             Seguimiento,
             RegistroTamizaje,
-            Filtros
+            Filtros,
+            RegistroReporteComunitario
         },
         computed: {
             permisos () {

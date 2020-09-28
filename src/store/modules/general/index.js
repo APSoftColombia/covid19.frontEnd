@@ -244,7 +244,8 @@ const state = {
     gruposAtencionEspecial: [],
     parentescos: [],
     tiposNoEfectiva: [],
-    tiposOrdenador: []
+    tiposOrdenador: [],
+    entidadesFinancieras: []
 }
 
 // getters
@@ -408,6 +409,9 @@ const getters = {
     },
     tiposOrdenador: state => {
         return state.tiposOrdenador
+    },
+    entidadesFinancieras: state => {
+        return state.entidadesFinancieras
     }
 }
 // actions
@@ -508,6 +512,7 @@ const actions = {
                             context.commit('assignParentescos', response.data.parametros.parentescos)
                             context.commit('assignTiposNoEfectiva', response.data.parametros.no_efectividad)
                             context.commit('assignTiposOrdenador', response.data.parametros.ordenadores)
+                            context.commit('assignEntidadesFinancieras', response.data.parametros.entidadesFinancieras)
                             resolve(true)
                         })
                         .catch(error => {
@@ -656,6 +661,9 @@ const mutations = {
     },
     assignTiposOrdenador(state, tiposOrdenador) {
         state.tiposOrdenador = tiposOrdenador
+    },
+    assignEntidadesFinancieras(state, entidadesFinancieras) {
+        state.entidadesFinancieras = entidadesFinancieras
     },
     snackbar(state, data) {
         let timeout = 8000
