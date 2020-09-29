@@ -110,7 +110,18 @@
                     fecha_inicio: null
                 }
                 })
+              this.evolucion.sintomas = this.sintomas
             },
+          assign(sintomas) {
+            this.evolucion.sintomas.forEach(x => {
+              sintomas.forEach(z => {
+                if(x.valueid === z.id) {
+                  x.id = z.id
+                  x.fecha_inicio = z.fecha_inicio
+                }
+              })
+            })
+          },
             validate () {
                 console.log('this.evolucion.sintomas', this.evolucion.sintomas)
                 if (this.evolucion.sintomas.length) {

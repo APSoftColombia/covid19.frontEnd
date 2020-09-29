@@ -9,7 +9,9 @@
               <v-list-item-title>{{ evolucion.id ? `Seguimiento No. ${evolucion.id}` : 'Nuevo Seguimiento' }}
               </v-list-item-title>
               <v-list-item-subtitle v-if="evolucion.lugar_atencion">
-                {{ evolucion.lugar_atencion === 3 ? 'Atención en ' : '' }}{{ ordenesMedicas.find(x => x.id === evolucion.lugar_atencion).orden }}
+                {{
+                  evolucion.lugar_atencion === 3 ? 'Atención en ' : ''
+                }}{{ ordenesMedicas.find(x => x.id === evolucion.lugar_atencion).orden }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -19,13 +21,14 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <div :style="`right: ${$vuetify.breakpoint.xsOnly ? '84' : '104' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '4' : '14' }px !important; position: fixed !important; z-index: 2 !important;`">
+      <div
+          :style="`right: ${$vuetify.breakpoint.xsOnly ? '84' : '104' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '4' : '14' }px !important; position: fixed !important; z-index: 2 !important;`">
         <v-chip
             color="darken-2 primary"
             label
         >
           <v-icon left>mdi-timer</v-icon>
-          {{time}}
+          {{ time }}
         </v-chip>
       </div>
       <v-container fluid>
@@ -112,9 +115,14 @@
               </template>
               <template v-else>
                 <template v-if="!evolucion.fallida">
-                  <v-row>
+                  <v-row justify="center">
+                    <v-btn color="primary" v-if="ultimoSeguimientoOK && !solicitaUltimo"
+                           @click="copiarUltimoSeguimiento">
+                      Obtener Copia de último seguimiento
+                    </v-btn>
                     <v-col cols="12">
                       <sintomas-fecha
+                          v-if="dialog"
                           ref="sintomasFecha"
                           :evolucion="evolucion"
                       ></sintomas-fecha>
@@ -471,7 +479,8 @@
                         ></c-text-area>
                       </v-col>
                     </template>
-                    <v-col cols="12" class="pb-0" v-if="evolucion.lugar_atencion === 3 && !evolucion.seguimiento_telefonico">
+                    <v-col cols="12" class="pb-0"
+                           v-if="evolucion.lugar_atencion === 3 && !evolucion.seguimiento_telefonico">
                       <c-text-area
                           v-model="evolucion.evolucion_diaria_hospitalaria"
                           label="Evolución diaria"
@@ -598,12 +607,14 @@
 
 <script>
 import {mapGetters} from 'vuex'
+
 const SintomasFecha = () => import('Views/covid19/tamizaje/evolucion/components/SintomasFecha')
 const FormComorbilidades = () => import('Views/covid19/tamizaje/FormComorbilidades')
 const HelpModal = () => import('../../../components/HelpModal/HelpModal')
 const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
 import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
 import FormSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/FormSeguimientoAislamiento'
+
 var intervalo
 export default {
   name: 'RegistroEvolucion',
@@ -616,6 +627,7 @@ export default {
     SintomasFecha
   },
   data: () => ({
+    solicitaUltimo: false,
     enlinea: null,
     showbuttonmeet: true,
     verFormularioAislamiento: 0,
@@ -687,6 +699,9 @@ export default {
     },
     verFormSeguimientoAislamiento() {
       return !this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso
+    },
+    ultimoSeguimientoOK() {
+      return this && !this.solicitaUltimo && this.tamizaje && !this.tamizaje.positivo_covid && !this.esTrabajadorSocial && !this.esPsicologo && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.find(x => !x.fallida)
     }
   },
   watch: {
@@ -850,6 +865,7 @@ export default {
       this.evolucion = this.clone(this.modelEvolucion)
       this.comorbilidades = []
       this.verFormularioAislamiento = false
+      this.solicitaUltimo = false
     },
     verAyuda(item) {
       this.$refs.helpModal.open(item)
@@ -872,6 +888,61 @@ export default {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar la evolución.`, error: error})
           })
+    },
+    copiarUltimoSeguimiento() {
+      this.loading = true
+      let evolucionActual = this.clone(this.evolucion)
+      let evolucionCopiada = this.clone(this.ultimoSeguimientoOK)
+      /// Asignación
+      this.activaPR = true
+      this.activaSPO2 = true
+      this.activaTemperatura = true
+      let newEvolution = this.clone(this.modelEvolucion)
+      newEvolution.tamizaje_id = this.tamizaje.id
+      newEvolution.lugar_atencion = this.tamizaje.orden_medica_id
+      newEvolution.orden_medica_id = this.tamizaje.orden_medica_id
+      newEvolution.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
+      newEvolution.frecuencia_pulso = evolucionCopiada.frecuencia_pulso
+      newEvolution.saturacion_oxigeno = evolucionCopiada.saturacion_oxigeno
+      newEvolution.temperatura = evolucionCopiada.temperatura
+      newEvolution.antinflamatorios = evolucionCopiada.antinflamatorios
+      newEvolution.ibuprofeno = evolucionCopiada.ibuprofeno
+      newEvolution.hospitalizado = evolucionCopiada.hospitalizado
+      newEvolution.lugar_hospitalizacion = evolucionCopiada.lugar_hospitalizacion
+      newEvolution.causa_hospitalizacion = evolucionCopiada.causa_hospitalizacion
+      newEvolution.fecha_ingreso = evolucionCopiada.fecha_ingreso
+      newEvolution.observaciones = evolucionCopiada.observaciones
+      newEvolution.sivigila = evolucionCopiada.sivigila
+      newEvolution.entidad_reporta_sivigila = evolucionCopiada.entidad_reporta_sivigila
+      newEvolution.ssc = evolucionCopiada.ssc
+      newEvolution.crue = evolucionCopiada.crue
+      newEvolution.motivo_consulta = evolucionCopiada.motivo_consulta
+      newEvolution.anamnesis = evolucionCopiada.anamnesis
+      newEvolution.examen_fisico = evolucionCopiada.examen_fisico
+      newEvolution.cie10 = evolucionCopiada.cie10
+      newEvolution.tratamiento = evolucionCopiada.tratamiento
+      newEvolution.evolucion_diaria_hospitalaria = evolucionCopiada.evolucion_diaria_hospitalaria
+      newEvolution.orden_medica_id = evolucionCopiada.orden_medica_id
+      newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
+      newEvolution.duracion = evolucionActual.duracion
+      newEvolution.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
+      this.evolucion = newEvolution
+      this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      newEvolution.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
+      let sintomasAsignar = this.clone(evolucionCopiada.sintomas.filter(z => z.solicita_fecha)).map(x => {
+        return {
+          id: x.id,
+          valueid: x.id,
+          descripcion: x.descripcion,
+          fecha_inicio: x.pivot.fecha_inicio
+        }
+      })
+      setTimeout(() => {
+        this.$refs.sintomasFecha.assign(sintomasAsignar)
+        this.verFormularioAislamiento = false
+        this.loading = false
+      }, 500)
+      this.solicitaUltimo = true
     }
   }
 }

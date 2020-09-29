@@ -51,7 +51,7 @@
                                     <v-list-item-content class="pa-0">
                                         <v-list-item-title class="body-2">{{item.nombres}}</v-list-item-title>
                                         <v-list-item-subtitle class="title caption" v-if="item.tipo_identificacion && item.identificacion">
-                                            {{ `${item.tipo_identificacion}${item.identificacion}` }}
+                                            {{ `${tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo}${item.identificacion}` }}
                                         </v-list-item-subtitle>
                                       <v-list-item-subtitle class="title caption">
                                             {{[item.edad ? ('Edad: ' + item.edad) : '', item.celular ? ('Cel: ' + item.celular) : ''].filter(x => x).join(', ')}}
@@ -158,6 +158,7 @@
         computed: {
             ...mapGetters([
                 'municipiosTotal',
+                'tiposDocumentoIdentidad',
                 'parentescos'
             ]),
             permisos () {
