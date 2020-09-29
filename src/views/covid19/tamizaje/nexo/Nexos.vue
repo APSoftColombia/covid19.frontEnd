@@ -80,7 +80,7 @@
                               </div>
                             </td>
                             <td class="text-center">
-                              <v-tooltip top v-if="editable">
+                              <v-tooltip top v-if="permisos.nexoCrear">
                                 <template v-slot:activator="{on}">
                                   <v-btn icon color="orange" v-on="on" @click="editarNexo(item)">
                                     <v-icon>mdi-pencil</v-icon>
