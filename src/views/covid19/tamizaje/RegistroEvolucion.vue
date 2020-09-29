@@ -864,7 +864,7 @@ export default {
       clearInterval(intervalo)
       this.evolucion = this.clone(this.modelEvolucion)
       this.comorbilidades = []
-      this.verFormularioAislamiento = false
+      this.verFormularioAislamiento = 0
       this.solicitaUltimo = false
     },
     verAyuda(item) {
@@ -923,7 +923,8 @@ export default {
       newEvolution.tratamiento = evolucionCopiada.tratamiento
       newEvolution.evolucion_diaria_hospitalaria = evolucionCopiada.evolucion_diaria_hospitalaria
       newEvolution.orden_medica_id = evolucionCopiada.orden_medica_id
-      newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
+      // newEvolution.clasificacion = evolucionCopiada.clasificacion
+      // newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
       newEvolution.duracion = evolucionActual.duracion
       newEvolution.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
       this.evolucion = newEvolution
@@ -939,7 +940,7 @@ export default {
       })
       setTimeout(() => {
         this.$refs.sintomasFecha.assign(sintomasAsignar)
-        this.verFormularioAislamiento = false
+        this.verFormularioAislamiento = 0
         this.loading = false
       }, 500)
       this.solicitaUltimo = true
