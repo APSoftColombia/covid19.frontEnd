@@ -10,45 +10,47 @@
         </v-btn>
       </v-toolbar>
       <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <div class="text-center font-weight-bold">
-              <p>Datos del Confirmado</p>
-            </div>
-            <datos-afiliado
-                :afiliado="contacto.confirmado"
-                :abierto="true"
-                :readOnly="true"
-                :flat="true"
-                :columMD="4"
-            ></datos-afiliado>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <div class="text-center font-weight-bold">
-              <p>Datos del Contacto</p>
-            </div>
-          </v-col>
-          <template v-for="(item, indexItem) in datos">
-            <v-col cols="12" :md="item.colmd" :lg="item.collg" xl="3" :key="`col${indexItem}`">
-              <v-list two-line class="notification-wrap">
-                <v-list-item>
-                  <v-list-item-avatar class="my-1">
-                    <v-icon :color="item.iconColor">{{item.icon}}</v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-content class="pa-0">
-                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{item.label}}</v-list-item-subtitle>
-                    <v-list-item-title><h6 class="mb-0">{{item.body}}</h6></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-action v-if="item.action">
-                    <v-list-item-action-text>{{item.action}}</v-list-item-action-text>
-                  </v-list-item-action>
-                </v-list-item>
-              </v-list>
+        <div class="mt-5">
+          <v-row v-if="contacto.covid_contacto === 2 && contacto.confirmado">
+            <v-col cols="12">
+              <div class="text-center font-weight-bold">
+                <p>Datos del Confirmado</p>
+              </div>
+              <datos-afiliado
+                  :afiliado="contacto.confirmado"
+                  :abierto="true"
+                  :readOnly="true"
+                  :flat="true"
+                  :columMD="4"
+              ></datos-afiliado>
             </v-col>
-          </template>
-        </v-row>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <div class="text-center font-weight-bold">
+                <p>{{ contacto.covid_contacto === 2 ? 'Datos del Contacto' : 'Datos del Confirmado'}}</p>
+              </div>
+            </v-col>
+            <template v-for="(item, indexItem) in datos">
+              <v-col cols="12" :md="item.colmd" :lg="item.collg" xl="3" :key="`col${indexItem}`">
+                <v-list two-line class="notification-wrap">
+                  <v-list-item>
+                    <v-list-item-avatar class="my-1">
+                      <v-icon :color="item.iconColor">{{item.icon}}</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content class="pa-0">
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{item.label}}</v-list-item-subtitle>
+                      <v-list-item-title><h6 class="mb-0">{{item.body}}</h6></v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action v-if="item.action">
+                      <v-list-item-action-text>{{item.action}}</v-list-item-action-text>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-col>
+            </template>
+          </v-row>
+        </div>
       </v-card-text>
       <v-divider class="pa-0 ma-0"></v-divider>
       <v-card-actions class="justify-center">

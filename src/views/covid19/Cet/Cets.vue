@@ -25,17 +25,17 @@
         ref="addContactos"
         @reloadTable="reloadTable"
     ></cet-view>
-    <informacion-contacto
+    <informacion-persona
         ref="infoContacto"
-    ></informacion-contacto>
+    ></informacion-persona>
   </v-container>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
-  import PersonaItemTabla from "Components/Tamizaje/PersonaItemTabla";
+  import PersonaItemTabla from "Views/covid19/Cet/Componentes/PersonaItemTabla";
   import CetView from "./CetView";
-  import InformacionContacto from "./InformacionContacto";
+  import InformacionPersona from "./InformacionPersona";
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
   export default {
@@ -97,8 +97,11 @@
                               nombre: context.props.value.nombre,
                               tipoIdentificacion: context.props.value.tipoid,
                               identificacion: context.props.value.identificacion,
-                              celular: context.props.value.celular
-                            }
+                              celular: context.props.value.celular,
+                              fecha_expedicion: context.props.value.fecha_expedicion,
+                              codigo_departamento: context.props.value.codigo_departamento,
+                              codigo_municipio: context.props.value.codigo_municipio
+                            },
                           }
                         }
                     )
@@ -184,7 +187,7 @@
       Filtros,
       CetView,
       CargarRegistros,
-      InformacionContacto
+      InformacionPersona
     },
     methods: {
       resetOptions(item) {
@@ -193,10 +196,10 @@
           icon: 'fas fa-user-plus',
           tooltip: 'Añadir Contactos'
         })
-        if (item.fallecido || item.id_bdua_af_confirmado) item.options.push({
+        item.options.push({
           event: 'infoContacto',
           icon: 'fas fa-info-circle',
-          tooltip: 'Información de Contacto'
+          tooltip: item.covid_contacto === 1 ? 'Información del Confirmado' : 'Información del Contacto'
         })
         return item
       },
@@ -210,6 +213,7 @@
         this.dataTable.route = ruta
       },
       reloadTable(){
+        this.$refs.filtrosCets.getCets()
         this.$store.commit('reloadTable', 'tablaCets')
       }
     },

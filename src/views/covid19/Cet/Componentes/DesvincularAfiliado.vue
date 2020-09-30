@@ -12,7 +12,7 @@
     </template>
     <v-card>
       <v-card-title>
-        Desvinculacion de Contacto
+        Desvinculación de Contacto
       </v-card-title>
       <v-card-text>
         ¿Esta seguro de desvincular al contacto del afiliado?

@@ -18,10 +18,12 @@
       </v-toolbar>
       <v-container fluid>
         <v-row no-gutters>
+          <!--
           <datos-afiliado
               :afiliado="data.confirmado"
               :abierto="true"
           ></datos-afiliado>
+          -->
           <contactos-tables
               :abierto="true"
               :afiliado="data"
@@ -39,12 +41,12 @@
 </template>
 
 <script>
-  const DatosAfiliado = () => import('./Componentes/DatosAfiliado')
+  //const DatosAfiliado = () => import('./Componentes/DatosAfiliado')
   const ContactosTables = () => import('./Componentes/ContactosTables')
   export default {
     name: "AñadirContactos",
     components: {
-      DatosAfiliado,
+      //DatosAfiliado,
       ContactosTables
     },
     data: () => ({

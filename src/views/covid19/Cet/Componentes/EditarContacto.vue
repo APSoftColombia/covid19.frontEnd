@@ -13,7 +13,7 @@
     <v-card>
       <v-toolbar dark color='indigo'>
           <v-icon left>fas fa-edit</v-icon>
-          <v-toolbar-title>Editar Contacto</v-toolbar-title>
+          <v-toolbar-title>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
               <v-icon>mdi-close</v-icon>
@@ -36,7 +36,6 @@
                 <c-texto
                     label="Telefono Fijo"
                     name="telefono fijo"
-                    rules="required"
                     v-model="dataContacto.telefono_fijo"
                 ></c-texto>
               </v-col>
@@ -53,7 +52,6 @@
                     v-model="dataContacto.entidad_financiera_id"
                     label="Entidad Financiera"
                     name="entidad financiera"
-                    rules="required"
                     :items="entidadesFinancieras"
                     item-text="razon_social"
                     item-value="id"
@@ -73,7 +71,7 @@
                 <c-texto
                     label="Email"
                     name="email"
-                    rules="required"
+                    rules="email"
                     v-model="dataContacto.email"
                 ></c-texto>
               </v-col>
@@ -110,10 +108,10 @@
                 >
                 </c-select-complete>
               </v-col>
-              <v-col class="pb-0" cols="12" sm="12">
+              <v-col class="pb-0" cols="12" sm="12" v-if="!afiliado">
                 <c-select-complete
                     v-model="dataContacto.parentesco_id"
-                    label="Parentesco"
+                    label="Parentesco con el caso confirmado"
                     name="parentesco"
                     rules="required"
                     :items="parentescos"
@@ -136,7 +134,7 @@
               <v-col cols="12" sm="12" md="4" lg="4">
                 <c-select-complete
                     v-model="dataContacto.producto_financiero"
-                    label="Producto Financiero"
+                    label="Tiene Producto Financiero"
                     name="producto financiero"
                     rules="required"
                     :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
@@ -144,7 +142,7 @@
                     item-value="value"
                 ></c-select-complete>
               </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
+              <v-col cols="12" sm="12" md="4" lg="4" v-if="afiliado && afiliado.id">
                 <c-select-complete
                     v-model="dataContacto.giro_a_familiar"
                     label="Autoriza Giro Familiar"
@@ -168,6 +166,7 @@
               </v-col>
               <v-col cols="12" sm="12" md="4" lg="4">
                 <c-select-complete
+                    :disabled="disabledAutorizaEPS && dataContacto.id !== disabledAutorizaEPS.id"
                     v-model="dataContacto.autoriza_eps"
                     label="Autoriza EPS"
                     name="autoriza eps"
@@ -193,12 +192,12 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="dialog = false">
+        <v-btn @click="dialog = false" :loading="loading" :disabled="loading">
           <v-icon>mdi-close</v-icon>
           <span>Cerrar</span>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn class="white--text" color="indigo">
+        <v-btn @click.stop="actualizarContacto" class="white--text" color="indigo" :loading="loading" :disabled="loading">
           <v-icon left>fas fa-save</v-icon>
           <span>Guardar</span>
         </v-btn>
@@ -221,6 +220,10 @@
       afiliado: {
         type: Object,
         default: null
+      },
+      disabledAutorizaEPS: {
+        type: Object,
+        default: null
       }
     },
     components: {
@@ -229,6 +232,7 @@
     data: () => ({
       dialog: false,
       dataContacto: {},
+      loading: false
     }),
     computed: {
       ...mapGetters([
@@ -255,22 +259,26 @@
     },
     methods: {
       setData(){
-        if(this.contacto.fallecido || this.contacto.producto_financiero || this.contacto.entidad_financiera_id){
-          this.dataContacto = {...this.contacto}
-        }else{
-          this.dataContacto = {}
-        }
+        this.dataContacto = {...this.contacto}
       },
       actualizarContacto(){
-        /*this.$refs.formContacto.validated().then(result => {
-
-          this.axios.put(`infocets/${this.contacto.id}`, this.dataContacto).then(response => {
-
-          }).catch(error => {
-
-          })
-
-        })*/
+        this.$refs.formContacto.validate().then(result => {
+          if(result) {
+            this.loading = true
+            this.dataContacto.id = this.contacto.id
+            this.dataContacto.covid_contacto = this.contacto.covid_contacto
+            this.axios.put(`infocets/${this.contacto.id}`, this.dataContacto).then(response => {
+              this.dataContacto = response.data
+              this.$store.commit('snackbar', {color: 'success', message: 'contacto editado con exito'})
+              this.$emit('editado')
+              this.loading = false
+              this.dialog = false
+            }).catch(error => {
+              this.$store.commit('snackbar', {color: 'error', message: 'contacto editado con exito', error: error})
+              this.loading = false
+            })
+          }
+        })
       }
     },
     created() {
@@ -282,21 +290,3 @@
 <style scoped>
 
 </style>
-
-<!--
-  'fallecido',
-  'producto_financiero',
-  'entidad_financiera_id',
-  'giro_a_familiar',
-  'telefono_fijo',
-  'celular',
-  'fecha_expedicion',
-  'email',
-  'direccion',
-  'codigo_departamento',
-  'codigo_municipio',
-  'cumple_aislamiento',
-  'autoriza_eps',
-  'parentesco_id',
-  'comparten_gastos',
--->

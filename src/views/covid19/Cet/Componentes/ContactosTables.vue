@@ -9,7 +9,7 @@
           <v-list-item-content class="pa-0">
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
-                Contactos
+                Nucleo Familiar
               </h4>
             </v-list-item-title>
           </v-list-item-content>
@@ -19,7 +19,7 @@
         <v-row>
           <v-col cols="12">
             <div class="grey--text text-center">
-              <h5>Contactos del Afiliado</h5>
+              <h5>Contactos del caso confirmado</h5>
             </div>
             <v-simple-table dense class="text-capitalize">
               <template v-slot:default>
@@ -44,6 +44,9 @@
                     </td>
                     <td>
                       <v-list-item>
+                        <icon-tooltip v-if="[contacto.fecha_expedicion, contacto.codigo_departamento, contacto.codigo_municipio, contacto.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
+                        <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
+                        <v-icon class="mr-2" v-if="contacto.autoriza_eps">fas fa-dollar-sign</v-icon>
                         <v-list-item-content style="display: grid !important;">
                           <v-list-item-title class="body-2">{{ contacto.nombre }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">{{contacto.tipoid}} {{contacto.identificacion}}</v-list-item-subtitle>
@@ -57,13 +60,15 @@
                             <v-btn v-on="on" icon>
                               <editar-contacto
                                   :contacto="contacto"
-                                  :afiliado="afiliado.confirmado"
+                                  :afiliado="contacto.covid_contacto === 1 ? afiliado.confirmado : null"
+                                  :disabledAutorizaEPS="disabledAuthEPS"
+                                  @editado="refreshAfiliado"
                               ></editar-contacto>
                             </v-btn>
                         </template>
-                        <span>Editar Contacto</span>
+                        <span>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</span>
                       </v-tooltip>
-                      <v-tooltip top>
+                      <v-tooltip top v-if="contacto.covid_contacto === 2">
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on" icon>
                             <desvincular-afiliado
@@ -91,7 +96,10 @@
           </v-col>
           <v-col cols="12">
             <div class="grey--text text-center">
-              <h5>Contactos</h5>
+              <h5>Contactos sin vincular</h5>
+              <v-btn icon x-small @click="openInfo = true">
+                <v-icon>fas fa-question-circle</v-icon>
+              </v-btn>
             </div>
             <v-row>
               <v-spacer></v-spacer>
@@ -145,6 +153,23 @@
         </v-row>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-dialog v-model="openInfo" width="600px">
+      <v-card>
+        <v-card-text class="subtitle-1">
+          <p class="pt-8">
+            Presione click sobre el boton 'Vincular Contacto' que se encuentra en la columna de 'Opciones'
+            en la siguiente tabla para vincular contactos al confirmado
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="openInfo=false">
+            <v-icon>mdi-close</v-icon>
+            <span>Cerrar</span>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-expansion-panels>
 </template>
 
@@ -157,35 +182,31 @@
       datos: [],
       panel: [],
       search: '',
+      openInfo: false,
       headers: [
         {
           text: 'ID',
           align: 'start',
-          filterable: false,
           value: 'id',
         },
         {
           text: 'Fecha Diagnostico',
           align: 'start',
-          filterable: false,
           value: 'fecha_diagnostico',
         },
         {
           text: 'Persona',
           align: 'start',
-          filterable: false,
           value: 'persona',
         },
         {
           text: 'Fecha Nacimiento',
           align: 'start',
-          filterable: false,
           value: 'fecha_nacimiento',
         },
         {
           text: 'Opciones',
           align: 'center',
-          filterable: false,
           value: 'opciones',
         },
       ],
@@ -199,6 +220,11 @@
         type: [Array, Object],
         default: null
       },
+    },
+    computed: {
+      disabledAuthEPS() {
+        return this.afiliado.confirmado.contactos.find(contacto => contacto.autoriza_eps === 1)
+      }
     },
     components: {
       DesvincularAfiliado,
