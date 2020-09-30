@@ -51,7 +51,7 @@
     </v-card>
     <v-card class="mt-5">
       <v-card-text>
-        <v-row>
+        <v-row justify="center">
           <v-col cols="12" sm="12" md="12" lg="12">
             <v-card>
               <v-card-text>
@@ -106,6 +106,19 @@
               </v-card-text>
             </v-card>
           </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Encuestas por Grupos Etarios y Decenios</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.etario_genero"
+                    :headers="['Edades', 'Mujer','Hombre']"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
           <v-col cols="12">
             <v-card>
               <v-card-text>
@@ -131,6 +144,16 @@
                 </v-row>
               </v-card-text>
             </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6" xl="4">
+            <div class="font-weight-bold text-center">
+              <p>Por Efectividad de la Encuesta</p>
+            </div>
+            <simple-table
+                :data="dataInforme.no_efectivas"
+                :headers="['Tipo','Cantidad']"
+                :alignNumbersRight="true"
+            ></simple-table>
           </v-col>
         </v-row>
       </v-card-text>
