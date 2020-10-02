@@ -212,6 +212,7 @@
                       let request = tamizajeCopia.id
                           ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
                           : this.axios.post(`tamizajes`, tamizajeCopia)
+                      !tamizajeCopia.id ? tamizajeCopia.created_at = this.moment().format('YYYY-MM-DD hh:mm:ss') : ''
                       request
                           .then(response => {
                               this.$emit('guardado', response.data)

@@ -36,6 +36,7 @@
                 <c-texto
                     label="Telefono Fijo"
                     name="telefono fijo"
+                    rules="numeric|minlength:7"
                     v-model="dataContacto.telefono_fijo"
                 ></c-texto>
               </v-col>
@@ -43,7 +44,7 @@
                 <c-texto
                     label="Celular"
                     name="celular"
-                    rules="required"
+                    rules="required|numeric|minlength:10"
                     v-model="dataContacto.celular"
                 ></c-texto>
               </v-col>
