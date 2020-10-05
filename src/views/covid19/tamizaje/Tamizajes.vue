@@ -185,7 +185,7 @@ export default {
                       : context.props.value.localiza_persona === 0
                       ? `Fallida - Persona No Localizada${context.props.value.no_efectividad ? ` - ${context.props.value.no_efectividad}` : ''}`
                       : context.props.value.contesta_encuesta === 0
-                          ? 'Fallida - Persona Indispuesta para Responder'
+                          ? 'Fallida - Persona No Desea Responder'
                           : ''
               )
             },

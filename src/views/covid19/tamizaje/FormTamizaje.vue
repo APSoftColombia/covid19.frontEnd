@@ -397,7 +397,7 @@
                       <v-list-item class="pa-0">
                         <v-list-item-content class="pa-0">
                           <v-list-item-title>
-                            {{ item.localiza_persona === 1 && item.contesta_encuesta === 1 ? 'Encuesta Realizada' : item.localiza_persona === 0 ? 'Fallida - Persona No Localizado' : item.contesta_encuesta === 0 ? 'Fallida - Persona Indispuesta para Contestar' : '' }}
+                            {{ item.localiza_persona === 1 && item.contesta_encuesta === 1 ? 'Encuesta Realizada' : item.localiza_persona === 0 ? 'Fallida - Persona No Localizado' : item.contesta_encuesta === 0 ? 'Fallida - Persona No Desea Responder' : '' }}
                           </v-list-item-title>
                           <v-list-item-subtitle v-if="item.no_efectividad">
                             {{ item.no_efectividad }}
