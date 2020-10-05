@@ -257,6 +257,7 @@ const state = {
         duracion: null,
         tipo_reporte: null,
         llamada_entrante: null,
+        eps_id: null,
         created_at: null,
         updated_at: null
     },

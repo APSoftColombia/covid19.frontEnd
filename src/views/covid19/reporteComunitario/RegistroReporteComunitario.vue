@@ -191,6 +191,34 @@
                   </c-select-complete>
                 </v-col>
                 <v-col class="pb-0" cols="12">
+                  <v-autocomplete
+                      label="EPS"
+                      v-model="reporte.eps_id"
+                      :items="epss"
+                      outlined
+                      dense
+                      :filter="filterEpsReporte"
+                      item-value="id"
+                      persistent-hint
+                      clearable
+                      :hint="reporte.eps_id && epss && epss.length && epss.find(x => x.id === reporte.eps_id) ? `Código: ${epss.find(x => x.id === reporte.eps_id).codigo}` : '' "
+                  >
+                    <template v-slot:selection="{ item, index }">
+                      <div class="pa-0 text-truncate" style="width: 100% !important;">
+                        {{item.nombre}}
+                      </div>
+                    </template>
+                    <template v-slot:item="{ item, index }">
+                      <template>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-title>{{item.nombre}}</v-list-item-title>
+                          <v-list-item-subtitle>{{item.codigo ? `Código: ${item.codigo}` : ''}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </template>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+                <v-col class="pb-0" cols="12">
                   <c-text-area
                       v-model="reporte.observaciones"
                       label="Observaciones"
@@ -244,7 +272,13 @@ export default {
     reporte: null,
     tamizaje: null,
     llamada: null,
-    interval: null
+    interval: null,
+    filterEpsReporte (item, queryText) {
+      const hasValue = val => val != null ? val : ''
+      const text = hasValue(item.codigo + ' ' + item.nombre)
+      const query = hasValue(queryText)
+      return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+    }
   }),
   computed: {
     ...mapGetters([
@@ -253,7 +287,8 @@ export default {
       'departamentos',
       'sexosCovid',
       'datosEmpresa',
-      'parentescos'
+      'parentescos',
+      'epss'
     ]),
     time() {
       let h = 0
