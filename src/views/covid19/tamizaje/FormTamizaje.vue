@@ -247,7 +247,7 @@
           <v-col cols="12 pb-0">
             <c-select-complete
                 v-model="tamizaje.no_efectividad"
-                placeholder="Motivo de no localización"
+                label="Motivo de no localización"
                 rules="required"
                 name="motivo de no localización"
                 :items="tiposNoEfectiva || []"
@@ -312,7 +312,7 @@
                       </v-tooltip>
                     </th>
                     <th class="text-left">Estado Proceso</th>
-                    <th class="text-left">Estado Registro</th>
+                    <th class="text-left">Estado Encuesta</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -396,7 +396,9 @@
                     <td>
                       <v-list-item class="pa-0">
                         <v-list-item-content class="pa-0">
-                          <v-list-item-title>{{ item.localiza_persona === 1 && item.contesta_encuesta === 1 ? 'Encuesta Realizada' : 'Encuesta Fallida' }}</v-list-item-title>
+                          <v-list-item-title>
+                            {{ item.localiza_persona === 1 && item.contesta_encuesta === 1 ? 'Encuesta Realizada' : item.localiza_persona === 0 ? 'Fallida - Persona No Localizado' : item.contesta_encuesta === 0 ? 'Fallida - Persona Indispuesta para Contestar' : '' }}
+                          </v-list-item-title>
                           <v-list-item-subtitle v-if="item.no_efectividad">
                             {{ item.no_efectividad }}
                           </v-list-item-subtitle>

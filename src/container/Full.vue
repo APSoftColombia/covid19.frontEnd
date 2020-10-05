@@ -85,10 +85,8 @@ export default {
     }
   },
   beforeCreate() {
-    console.log('es 111111')
     store.dispatch('getDatosEmpresa').then(response => {
       if (response) {
-        console.log('es 222222')
         store.dispatch('getReloadFirebase')
         store.dispatch('reloadOnline')
         store.dispatch('getAjustesGenerales')
@@ -115,8 +113,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .app-default-layout {
   height: 100vh
+}
+.white-space-normal {
+  white-space: normal !important;
 }
 </style>
