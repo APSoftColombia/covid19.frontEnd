@@ -190,7 +190,7 @@
                   >
                   </c-select-complete>
                 </v-col>
-                <v-col class="pb-0" cols="12">
+                <v-col class="pb-0" cols="12" v-if="tamizaje">
                   <v-autocomplete
                       label="EPS"
                       v-model="reporte.eps_id"
