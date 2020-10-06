@@ -51,6 +51,15 @@
           >
           </c-select-complete>
         </v-col>
+        <v-col cols="12" class="pb-0" v-if="tamizaje.tamizador_id === 897">
+          <buscador-ips
+              ref="buscadorips"
+              label="IPS Busqueda Activa Institucional"
+              v-model="tamizaje.codIpsBai"
+              rules="required"
+              name="IPS Busqueda Activa Institucional"
+          ></buscador-ips>
+        </v-col>
         <v-col class="pb-0" cols="12" v-if="tamizaje.tamizador_id === 890">
           <c-texto
               v-model="tamizaje.entidad_reporta_sivigila"
@@ -485,6 +494,9 @@ export default {
           this.tamizaje.entidad_reporta_sivigila = null
           this.tamizaje.hospitalizado = null
         }
+        if (val !== 897) {
+          this.tamizaje.codIpsBai = null
+        }
       },
       immediate: false
     },
@@ -536,6 +548,11 @@ export default {
       },
       immediate: false
     }
+  },
+  created() {
+    setTimeout(() => {
+      if (this.$refs.buscadorips) this.$refs.buscadorips.assign(this.tamizaje.ips_bai)
+    }, 600)
   },
   methods: {
     verSeguimiento(id) {

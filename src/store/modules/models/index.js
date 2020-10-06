@@ -64,6 +64,7 @@ const state = {
         saturacion_oxigeno: null,
         temperatura: null,
         no_efectividad: null,
+        codIpsBai: null,
         ////
         user_id: null,
         created_at: null,
@@ -107,7 +108,10 @@ const state = {
         user_id: null,
         created_at: null,
         updated_at: null,
-        seguimientos: []
+        seguimientos: [],
+        CompromisoPersonaAislada: null,
+        ReportaContactos: null,
+        IDCausalNoReporteContactos: null
     },
     modelSeguimientoAislamiento: {
         id: null,
@@ -230,7 +234,9 @@ const state = {
         saturacion_oxigeno: null,
         temperatura: null,
         duracion: 0,
-        no_efectividad: null
+        no_efectividad: null,
+        linfocitos: null,
+        ldh: null
 
     },
     modelReporteComunitario: {
@@ -259,7 +265,8 @@ const state = {
         llamada_entrante: null,
         eps_id: null,
         created_at: null,
-        updated_at: null
+        updated_at: null,
+        PresupuestoComun: null
     },
     modelViajero: {
         id: null,

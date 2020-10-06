@@ -59,11 +59,11 @@
               </template>
               <v-row>
                 <v-col class="pb-0" cols="12" md="6">
-                  <c-identificacion
+                  <c-texto
                       v-model="reporte.identificacion"
                       label="Identificación"
                   >
-                  </c-identificacion>
+                  </c-texto>
                 </v-col>
                 <v-col class="pb-0" cols="12" md="6">
                   <c-select-complete
@@ -115,7 +115,7 @@
                   <c-texto
                       v-model="reporte.celular"
                       label="Celular"
-                      :rules="!tamizaje ? 'numeric' : 'required|numeric'"
+                      :rules="!tamizaje ? 'numeric|minlength:10' : 'required|numeric|minlength:10'"
                       name="celular posible caso"
                   >
                   </c-texto>
@@ -217,6 +217,22 @@
                       </template>
                     </template>
                   </v-autocomplete>
+                </v-col>
+                <v-col cols="12" v-if="tamizaje">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                          v-model="reporte.PresupuestoComun"
+                          label="¿Presupuesto Común?"
+                          rules="required"
+                          name="presupuesto común"
+                          :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-text="text"
+                          item-value="value"
+                      >
+                      </c-radio>
+                    </v-card-text>
+                  </v-card>
                 </v-col>
                 <v-col class="pb-0" cols="12">
                   <c-text-area

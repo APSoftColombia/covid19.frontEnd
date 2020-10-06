@@ -173,7 +173,7 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12">
+                      <v-col cols="12" class="pb-0">
                         <v-checkbox
                             class="shrink mt-0 mb-1"
                             v-model="activaTemperatura"
@@ -190,6 +190,40 @@
                             suffix="°C"
                             rules="required|min:0"
                             min="0"
+                        >
+                        </c-number>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" sm="6" class="pb-0">
+                        <ValidationProvider name="linfocitos" rules="min:0|max:5" v-slot="{ errors }">
+                          <v-text-field
+                              class="labelforce"
+                              v-model.number="evolucion.linfocitos"
+                              type="number"
+                              min="0"
+                              max="5"
+                              step="0.1"
+                              outlined
+                              dense
+                              :error-messages="errors"
+                              clearable
+                          >
+                            <template slot="label">
+                              Linfocitos (*10<sup style="top: -0.5em; !important;">9</sup>/L)
+                            </template>
+                          </v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" sm="6" class="pb-0">
+                        <c-number
+                            label="LDH (U/L)"
+                            v-model="evolucion.ldh"
+                            name="LDH"
+                            rules="min:0|max:1000"
+                            min="0"
+                            max="1000"
+                            step="1"
                         >
                         </c-number>
                       </v-col>
@@ -923,6 +957,8 @@ export default {
       newEvolution.tratamiento = evolucionCopiada.tratamiento
       newEvolution.evolucion_diaria_hospitalaria = evolucionCopiada.evolucion_diaria_hospitalaria
       newEvolution.orden_medica_id = evolucionCopiada.orden_medica_id
+      newEvolution.linfocitos = evolucionCopiada.linfocitos
+      newEvolution.ldh = evolucionCopiada.ldh
       // newEvolution.clasificacion = evolucionCopiada.clasificacion
       // newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
       newEvolution.duracion = evolucionActual.duracion
@@ -949,6 +985,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.labelforce div div div label{
+  padding-top: 6px !important;
+  height: 26px !important;
+  top: 5px !important;
+}
 </style>

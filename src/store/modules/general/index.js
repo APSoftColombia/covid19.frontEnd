@@ -245,7 +245,12 @@ const state = {
     parentescos: [],
     tiposNoEfectiva: [],
     tiposOrdenador: [],
-    entidadesFinancieras: []
+    entidadesFinancieras: [],
+    causalesNoReportaContactos: [
+        {value: 1, text: 'No los conoce'},
+        {value: 2, text: 'Los conoce pero no tiene los datos de contacto'},
+        {value: 3, text: 'No quiso relacionar contactos'}
+    ]
 }
 
 // getters
@@ -412,6 +417,9 @@ const getters = {
     },
     entidadesFinancieras: state => {
         return state.entidadesFinancieras
+    },
+    causalesNoReportaContactos: state => {
+        return state.causalesNoReportaContactos
     }
 }
 // actions

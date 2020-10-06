@@ -57,6 +57,50 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col cols="12">
+        <v-card outlined tile>
+          <v-card-text>
+            <c-radio
+                v-model="aislamiento.CompromisoPersonaAislada"
+                label="¿La persona aislada y el grupo familiar se comprometió a cumplir con el aislamiento?"
+                rules="required"
+                name="aislada en habitación individual"
+                :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                item-text="text"
+                item-value="value"
+            >
+            </c-radio>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card outlined tile>
+          <v-card-text>
+            <c-radio
+                v-model="aislamiento.ReportaContactos"
+                label="¿Va a reportar contactos?"
+                rules="required"
+                name="aislada en habitación individual"
+                :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                item-text="text"
+                item-value="value"
+            >
+            </c-radio>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col class="pb-0" cols="12" v-if="aislamiento.ReportaContactos === 0">
+        <c-select-complete
+            v-model="aislamiento.IDCausalNoReporteContactos"
+            label="Causal por la cual no reporta contactos"
+            :items="causalesNoReportaContactos"
+            item-value="value"
+            item-text="text"
+            rules="required"
+            name="Causal por la cual no reporta contactos"
+        >
+        </c-select-complete>
+      </v-col>
       <v-col class="pb-0" cols="12">
         <c-select-complete
             v-model="aislamiento.ambito"
@@ -114,7 +158,8 @@ export default {
     ...mapGetters([
       'tiposAislamiento',
       'ambitosAtencion',
-      'tiposOrdenador'
+      'tiposOrdenador',
+      'causalesNoReportaContactos'
     ]),
     fechaMinimaAislamiento() {
       return this && this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length ? this.tamizaje.aislamientos[0].fecha_egreso ? this.tamizaje.aislamientos[0].fecha_egreso : this.tamizaje.aislamientos[0].fecha_ingreso : null
@@ -125,6 +170,14 @@ export default {
       handler(val) {
         if (val !== 'IPS') {
           this.aislamiento.codigo_habilitacion = null
+        }
+      },
+      immediate: false
+    },
+    'aislamiento.ReportaContactos': {
+      handler(val) {
+        if (val !== 0) {
+          this.aislamiento.IDCausalNoReporteContactos = null
         }
       },
       immediate: false
