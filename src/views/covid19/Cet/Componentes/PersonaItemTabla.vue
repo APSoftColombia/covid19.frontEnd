@@ -2,6 +2,7 @@
   <v-list-item class="pa-0">
     <div class="mr-2">
       <icon-tooltip v-if="[this.value.fecha_expedicion, this.value.codigo_departamento, this.value.codigo_municipio, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
+      <v-icon v-if="this.value.autoriza_eps">fas fa-dollar-sign</v-icon>
     </div>
     <v-icon large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
     <v-list-item-content class="pa-0">

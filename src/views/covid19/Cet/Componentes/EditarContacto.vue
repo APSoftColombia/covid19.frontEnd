@@ -143,13 +143,13 @@
                     item-value="value"
                 ></c-select-complete>
               </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4" v-if="afiliado && afiliado.id">
+              <v-col cols="12" sm="12" md="4" lg="4">
                 <c-select-complete
                     v-model="dataContacto.giro_a_familiar"
                     label="Autoriza Giro Familiar"
                     name="autoriza giro familiar"
                     rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                    :items="autorizaGiroFam"
                     item-text="text"
                     item-value="value"
                 ></c-select-complete>
@@ -167,12 +167,11 @@
               </v-col>
               <v-col cols="12" sm="12" md="4" lg="4">
                 <c-select-complete
-                    :disabled="disabledAutorizaEPS && dataContacto.id !== disabledAutorizaEPS.id"
                     v-model="dataContacto.autoriza_eps"
                     label="Autoriza EPS"
                     name="autoriza eps"
                     rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                    :items="autorizaEPSValues"
                     item-text="text"
                     item-value="value"
                 ></c-select-complete>
@@ -222,7 +221,7 @@
         type: Object,
         default: null
       },
-      disabledAutorizaEPS: {
+      setNoToAuthEPS: {
         type: Object,
         default: null
       }
@@ -233,7 +232,9 @@
     data: () => ({
       dialog: false,
       dataContacto: {},
-      loading: false
+      loading: false,
+      autorizaEPSValues: [],
+      autorizaGiroFam: []
     }),
     computed: {
       ...mapGetters([
@@ -261,6 +262,28 @@
     methods: {
       setData(){
         this.dataContacto = {...this.contacto}
+        if(this.setNoToAuthEPS && this.dataContacto.id !== this.setNoToAuthEPS.id) {
+          this.dataContacto.autoriza_eps = 0;
+          this.autorizaEPSValues = [
+            {text: 'No', value: 0},
+          ]
+        }else{
+          this.autorizaEPSValues = [
+            {text: 'No', value: 0},
+            {text: 'Si', value: 1}
+          ]
+        }
+        if(this.dataContacto.covid_contacto === 1){
+          this.autorizaGiroFam = [
+              {text: 'No', value: 0},
+              {text: 'Si', value: 1}
+          ]
+        }else{
+          this.dataContacto.giro_a_familiar = 0
+          this.autorizaGiroFam = [
+            {text: 'No', value: 0},
+          ]
+        }
       },
       actualizarContacto(){
         this.$refs.formContacto.validate().then(result => {

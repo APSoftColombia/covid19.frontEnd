@@ -65,6 +65,66 @@
               </v-card-text>
             </v-card>
           </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>ESTADISTICAS POR PERSONAS (AGRUPADO POR IDENTIFICACION)</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.reporte_persona"
+                    :headers="['Regional', 'Cargados Sivigila','Probables', 'Sospechosos', 'Positivo Covid', 'Negativo Covid']"
+                    :lastRowBold="true"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>ESTADISTICAS ESTADOS DE AFECTACION POR PERSONAS</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.reporte_estado_afectacion_persona"
+                    :headers="['Regional', 'Leve','Moderado', 'Grave', 'Critico', 'Fallecido', 'Recuperado', 'Reinfectado', 'Ninguno']"
+                    :lastRowBold="true"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>ESTADISTICA PERSONAS CARGADAS EN ARCHIVO SIVIGILA SEGUN NIVEL DE RIESGO</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.reporte_cargue_archivo_segun_riesgo"
+                    :headers="['Regional', 'Sin Seguimientos','Riesgo Bajo', 'Riesgo Medio', 'Riesgo Alto']"
+                    :lastRowBold="true"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>ESTADISTICA DE LLAMADAS EFECTIVAS</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.reporte_efectividad_llamada"
+                    :headers="['Regional', 'Llamada Efectiva','No Contesta', 'Fuera de Servicio', 'Apagado','No Acepta Encuesta', 'Equivocado','Llamar Luego', 'No se Encuentra en Ciudad', 'Falla de la Plataforma']"
+                    :lastRowBold="true"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
           <v-col cols="12">
             <v-card>
               <v-card-text>
@@ -103,6 +163,17 @@
                     <simple-table
                         :data="dataInforme.reporte_regimen_regional"
                         :headers="['Regional', 'ERP Por Régimen', 'Cantidad']"
+                    ></simple-table>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="5" lg="5">
+                    <div class="font-weight-bold text-center">
+                      <p>ESTADISTICAS POR PERSONAS Y NUMERO DE SEGUIMIENTOS</p>
+                    </div>
+                    <simple-table
+                        :data="dataInforme.reporte_persona_seguimientos"
+                        :headers="['Regional', 'Numero Seguimientos', 'Casos']"
+                        :lastRowBold="true"
+                        :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
                 </v-row>
@@ -161,6 +232,7 @@
         return this.defaultDepartamentos
       },
       descargarPDF(){
+
         this.loadingPDF = true
         this.axios( {
           url: `generar-pdf-informe-ejecutivo_tamizajes?fecha_inicio=${this.data.fecha_inicio ? this.data.fecha_inicio : ''}&fecha_final=${this.data.fecha_fin ? this.data.fecha_fin : ''}&departamentos=${this.data.departamentos ? this.data.departamentos : []}`, //your url,

@@ -16,7 +16,7 @@
       <v-card-text>
         <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row>
-            <v-col cols="12" sm="12" md="5" lg="5" class="ml-md-8 ml-lg-8">
+            <v-col cols="12" sm="12" md="8" lg="8" class="ml-md-8 ml-lg-8">
               <c-date
                     v-model="data.fecha_proceso"
                     label="Fecha del Proceso"
@@ -26,14 +26,14 @@
                 >
                 </c-date>
             </v-col>
-            <v-col cols="12" sm="12" md="5" lg="5" class="ml-md-8 ml-lg-8">
+            <!--<v-col cols="12" sm="12" md="5" lg="5" class="ml-md-8 ml-lg-8">
               <c-texto
                     v-model="data.nombre_archivo"
                     label="Nombre del archivo"
                     :rules="'required'"
                     name="nombre del archivo"
                 ></c-texto>
-            </v-col>
+            </v-col>-->
             <v-col cols="12" sm="12" md="12" lg="12">
               <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
                 <v-file-input

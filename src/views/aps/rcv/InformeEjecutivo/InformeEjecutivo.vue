@@ -59,7 +59,6 @@
                   <p>Distribución Por Riesgo General</p>
                 </div>
                 <simple-table
-                    :titulo="'Por Riesgo OMS'"
                     :data="dataInforme.resumen_operativo"
                     :lastRowBold="true"
                     :alignNumbersRight="true"
@@ -128,7 +127,6 @@
                 <v-row class="justify-center">
                   <v-col cols="12" sm="12" md="5" lg="5">
                     <simple-table
-                        :titulo="'Encuestas de Riesgo Cardiovascular por Departamento'"
                         :data="dataInforme.por_departamento"
                         :headers="['Departamento','Cantidad']"
                         :alignNumbersRight="true"
@@ -188,6 +186,10 @@ export default {
       this.loading = true
       this.axios.post('informe-ejecutivo_rcv', this.data).then(response => {
         this.dataInforme = response.data
+        let por_edad = response.data.etario_genero.find(x => x.Hombre > 0 || x.Mujer > 0)
+        if(!por_edad) {
+          this.dataInforme.etario_genero = []
+        }
         this.loading = false
       }).catch(error => {
         this.loading = false

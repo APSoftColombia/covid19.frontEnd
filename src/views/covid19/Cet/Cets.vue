@@ -10,6 +10,8 @@
         @apply-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.aplicaFiltros()"
     >
       <template slot="top-actions-right">
+        <descargar-reporte
+        ></descargar-reporte>
         <cargar-registros
             @reloadTable="reloadTable"
         ></cargar-registros>
@@ -38,6 +40,7 @@
   import InformacionPersona from "./InformacionPersona";
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
+  const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   export default {
     name: "Cets",
     data: (vm) => ({
@@ -94,13 +97,14 @@
                           props: {
                             value: {
                               sexo : context.props.value.sexo,
-                              nombre: context.props.value.nombre,
+                              nombre: [context.props.value.nombre1, context.props.value.nombre2, context.props.value.apellido1, context.props.value.apellido2].filter(x => x).join(' '),
                               tipoIdentificacion: context.props.value.tipoid,
                               identificacion: context.props.value.identificacion,
                               celular: context.props.value.celular,
                               fecha_expedicion: context.props.value.fecha_expedicion,
                               codigo_departamento: context.props.value.codigo_departamento,
-                              codigo_municipio: context.props.value.codigo_municipio
+                              codigo_municipio: context.props.value.codigo_municipio,
+                              autoriza_eps: context.props.value.autoriza_eps
                             },
                           }
                         }
@@ -187,7 +191,8 @@
       Filtros,
       CetView,
       CargarRegistros,
-      InformacionPersona
+      InformacionPersona,
+      DescargarReporte
     },
     methods: {
       resetOptions(item) {

@@ -48,7 +48,7 @@
                         <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.autoriza_eps">fas fa-dollar-sign</v-icon>
                         <v-list-item-content style="display: grid !important;">
-                          <v-list-item-title class="body-2">{{ contacto.nombre }}</v-list-item-title>
+                          <v-list-item-title class="body-2">{{ [contacto.nombre1, contacto.nombre2, contacto.apellido1, contacto.apellido2].filter(x => x).join(' ') }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">{{contacto.tipoid}} {{contacto.identificacion}}</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -61,7 +61,7 @@
                               <editar-contacto
                                   :contacto="contacto"
                                   :afiliado="contacto.covid_contacto === 1 ? afiliado.confirmado : null"
-                                  :disabledAutorizaEPS="disabledAuthEPS"
+                                  :setNoToAuthEPS="setNoToAuthEPS"
                                   @editado="refreshAfiliado"
                               ></editar-contacto>
                             </v-btn>
@@ -122,7 +122,7 @@
                 <template v-slot:item.persona="{ item }">
                   <v-list-item>
                     <v-list-item-content style="display: grid !important;">
-                      <v-list-item-title class="body-2">{{ item.nombre }}</v-list-item-title>
+                      <v-list-item-title class="body-2">{{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}</v-list-item-title>
                       <v-list-item-subtitle class="text-truncate">{{item.tipoid}} {{item.identificacion}}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -222,7 +222,7 @@
       },
     },
     computed: {
-      disabledAuthEPS() {
+      setNoToAuthEPS() {
         return this.afiliado.confirmado.contactos.find(contacto => contacto.autoriza_eps === 1)
       }
     },
