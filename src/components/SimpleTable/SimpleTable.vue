@@ -2,7 +2,7 @@
   <v-simple-table dense class="text-capitalize">
     <template v-slot:default>
       <thead>
-        <tr><th v-for="(header, index) in headers" :key="index" class="text-left">{{ header }}</th></tr>
+        <tr><th v-for="(header, index) in headers" :key="index" :class="`text-${header.align ? header.align : 'left'}`">{{ header.text }}</th></tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">

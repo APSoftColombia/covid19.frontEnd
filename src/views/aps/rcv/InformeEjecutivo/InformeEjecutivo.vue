@@ -62,7 +62,12 @@
                     :data="dataInforme.resumen_operativo"
                     :lastRowBold="true"
                     :alignNumbersRight="true"
-                    :headers="['Usuario','Regional', 'Cantidad', 'Duración Promedio', 'Bajo', 'Medio', 'Alto', 'Indeterminado']"
+                    :headers="[
+                        {text:'Usuario'},{text:'Regional'},
+                        {text:'Cantidad',align:'right'},{text:'Duración Promedio',align:'right'},
+                        {text:'Bajo',align:'right'},{text:'Medio',align:'right'},
+                        {text:'Alto',align:'right'},{text:'Indeterminado',align:'right'}
+                     ]"
                 ></simple-table>
               </v-card-text>
             </v-card>
@@ -77,7 +82,7 @@
                     </div>
                     <simple-table
                         :data="dataInforme.riesgo_oms"
-                        :headers="['Riesgo','Cantidad']"
+                        :headers="[{text:'Riesgo'},{text:'Cantidad',align:'right'}]"
                         :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
@@ -87,7 +92,7 @@
                     </div>
                     <simple-table
                         :data="dataInforme.riesgo_findrisc"
-                        :headers="['Riesgo','Cantidad']"
+                        :headers="[{text:'Riesgo'},{text:'Cantidad',align:'right'}]"
                         :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
@@ -97,7 +102,7 @@
                     </div>
                     <simple-table
                         :data="dataInforme.riesgo_morisky"
-                        :headers="['Riesgo','Cantidad']"
+                        :headers="[{text:'Riesgo'},{text:'Cantidad',align:'right'}]"
                         :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
@@ -113,7 +118,8 @@
                 </div>
                 <simple-table
                     :data="dataInforme.etario_genero"
-                    :headers="['Edades', 'Mujer','Hombre']"
+                    :headers="[{text:'Edades'},{text:'Mujer',align:'right'},{text:'Hombre',align:'right'}]"
+                    :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
             </v-card>
@@ -128,14 +134,14 @@
                   <v-col cols="12" sm="12" md="5" lg="5">
                     <simple-table
                         :data="dataInforme.por_departamento"
-                        :headers="['Departamento','Cantidad']"
+                        :headers="[{text:'Departamento'},{text:'Cantidad',align:'right'}]"
                         :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
                   <v-col cols="12" sm="12" md="5" lg="5">
                     <simple-table
                         :data="dataInforme.por_departamento_regimen"
-                        :headers="['Departamento', 'Régimen','Cantidad']"
+                        :headers="[{text:'Departamento'},{text:'Régimen'},{text:'Cantidad',align:'right'}]"
                         :alignNumbersRight="true"
                     ></simple-table>
                   </v-col>
@@ -149,7 +155,7 @@
             </div>
             <simple-table
                 :data="dataInforme.no_efectivas"
-                :headers="['Tipo','Cantidad']"
+                :headers="[{text:'Tipo'},{text:'Cantidad',align:'right'}]"
                 :alignNumbersRight="true"
             ></simple-table>
           </v-col>

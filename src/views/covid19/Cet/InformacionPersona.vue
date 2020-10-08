@@ -102,7 +102,7 @@
           this.loading = false
         }).catch(error => {
           this.loading = false
-          this.$store.commit('snackbar', {color: 'success', message: ` al conseguir informacion del contacto`, error:error})
+          this.$store.commit('snackbar', {color: 'color', message: ` al conseguir informacion del contacto`, error:error})
         })
       },
       assign () {
@@ -110,7 +110,7 @@
         this.datos.push(
             {
               label: 'Nombre',
-              body: this.contacto.nombre,
+              body: [this.contacto.nombre1, this.contacto.nombre2, this.contacto.apellido1, this.contacto.apellido2].filter(x => x).join(' '),
               icon: this.contacto.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman',
               iconColor: 'primary',
               colmd: '4',

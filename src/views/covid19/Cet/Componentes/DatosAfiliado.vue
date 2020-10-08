@@ -9,7 +9,7 @@
           <v-list-item-content class="pa-0">
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
-                {{afiliado.nombre}}
+                {{ [this.afiliado.nombre1, this.afiliado.nombre2, this.afiliado.apellido1, this.afiliado.apellido2].filter(x => x).join(' ') }}
               </h4>
             </v-list-item-title>
             <v-list-item-title>

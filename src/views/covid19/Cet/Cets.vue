@@ -7,6 +7,7 @@
         @resetOption="item => resetOptions(item)"
         @addContacto="item => addContactos(item)"
         @infoContacto="item => infoContacto(item)"
+        @editContacto="item => editarContacto(item)"
         @apply-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.aplicaFiltros()"
     >
       <template slot="top-actions-right">
@@ -30,6 +31,10 @@
     <informacion-persona
         ref="infoContacto"
     ></informacion-persona>
+    <editar-contacto
+        ref="editarContacto"
+        @editado="reloadTable"
+    ></editar-contacto>
   </v-container>
 </template>
 
@@ -41,6 +46,7 @@
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
+  const EditarContacto = () => import('./Componentes/EditarContacto')
   export default {
     name: "Cets",
     data: (vm) => ({
@@ -192,7 +198,8 @@
       CetView,
       CargarRegistros,
       InformacionPersona,
-      DescargarReporte
+      DescargarReporte,
+      EditarContacto
     },
     methods: {
       resetOptions(item) {
@@ -200,6 +207,11 @@
           event: 'addContacto',
           icon: 'fas fa-user-plus',
           tooltip: 'Añadir Contactos'
+        })
+        if (item.covid_contacto === 1) item.options.push({
+          event: 'editContacto',
+          icon: 'fas fa-edit',
+          tooltip: 'Editar Confirmado'
         })
         item.options.push({
           event: 'infoContacto',
@@ -220,6 +232,10 @@
       reloadTable(){
         this.$refs.filtrosCets.getCets()
         this.$store.commit('reloadTable', 'tablaCets')
+      },
+      editarContacto(contacto){
+        let setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
+        this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
       }
     },
     created() {

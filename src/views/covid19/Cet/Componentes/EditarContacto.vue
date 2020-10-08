@@ -1,21 +1,11 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800">
-    <template v-slot:activator="{on}">
-      <v-btn
-          color="blue"
-          icon
-          v-on="on"
-          @click.stop="dialog = true"
-      >
-        <v-icon>far fa-edit</v-icon>
-      </v-btn>
-    </template>
-    <v-card>
+    <v-card v-if="contacto">
       <v-toolbar dark color='indigo'>
           <v-icon left>fas fa-edit</v-icon>
           <v-toolbar-title>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click="close">
               <v-icon>mdi-close</v-icon>
           </v-btn>
       </v-toolbar>
@@ -109,7 +99,7 @@
                 >
                 </c-select-complete>
               </v-col>
-              <v-col class="pb-0" cols="12" sm="12" v-if="!afiliado">
+              <v-col class="pb-0" cols="12" sm="12" v-if="dataContacto.covid_contacto === 2">
                 <c-select-complete
                     v-model="dataContacto.parentesco_id"
                     label="Parentesco con el caso confirmado"
@@ -192,7 +182,7 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="dialog = false" :loading="loading" :disabled="loading">
+        <v-btn @click="close" :loading="loading" :disabled="loading">
           <v-icon>mdi-close</v-icon>
           <span>Cerrar</span>
         </v-btn>
@@ -212,20 +202,6 @@
 
   export default {
     name: "EditarContacto",
-    props: {
-      contacto: {
-        type: Object,
-        default: null
-      },
-      afiliado: {
-        type: Object,
-        default: null
-      },
-      setNoToAuthEPS: {
-        type: Object,
-        default: null
-      }
-    },
     components: {
       DatosAfiliado
     },
@@ -234,7 +210,9 @@
       dataContacto: {},
       loading: false,
       autorizaEPSValues: [],
-      autorizaGiroFam: []
+      autorizaGiroFam: [],
+      contacto: null,
+      setNoToAuthEPS: null,
     }),
     computed: {
       ...mapGetters([
@@ -243,26 +221,12 @@
         'departamentos'
       ]),
     },
-    watch: {
-      contacto: {
-        handler(val){
-          val && this.setData()
-        },
-        inmediate: true
-      },
-      'contacto.codigo_departamento': {
-        handler (val) {
-          if (!val) {
-            this.contacto.codigo_municipio = null
-          }
-        },
-        immediate: false
-      },
-    },
     methods: {
-      setData(){
-        this.dataContacto = {...this.contacto}
-        if(this.setNoToAuthEPS && this.dataContacto.id !== this.setNoToAuthEPS.id) {
+      open(contacto, setNoToAuthEPS){
+        this.dialog = true
+        this.contacto = {...contacto}
+        this.dataContacto = {...contacto}
+        if(setNoToAuthEPS && this.dataContacto.id !== setNoToAuthEPS.id) {
           this.dataContacto.autoriza_eps = 0;
           this.autorizaEPSValues = [
             {text: 'No', value: 0},
@@ -285,6 +249,13 @@
           ]
         }
       },
+      close(){
+        this.dialog = false
+        this.contacto = null
+        this.dataContacto = null
+        this.autorizaEPSValues = []
+        this.autorizaGiroFam = []
+      },
       actualizarContacto(){
         this.$refs.formContacto.validate().then(result => {
           if(result) {
@@ -305,9 +276,6 @@
         })
       }
     },
-    created() {
-      this.setData()
-    }
   }
 </script>
 

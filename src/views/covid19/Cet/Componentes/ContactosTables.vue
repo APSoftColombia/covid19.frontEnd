@@ -57,14 +57,13 @@
                     <td>
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" icon>
-                              <editar-contacto
-                                  :contacto="contacto"
-                                  :afiliado="contacto.covid_contacto === 1 ? afiliado.confirmado : null"
-                                  :setNoToAuthEPS="setNoToAuthEPS"
-                                  @editado="refreshAfiliado"
-                              ></editar-contacto>
-                            </v-btn>
+                          <v-btn v-on="on"
+                                 color="blue"
+                                 icon
+                                 @click="editarContacto(contacto, setNoToAuthEPS)"
+                          >
+                            <v-icon>far fa-edit</v-icon>
+                          </v-btn>
                         </template>
                         <span>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</span>
                       </v-tooltip>
@@ -170,6 +169,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <editar-contacto
+        ref="editarContacto"
+        @editado="refreshAfiliado"
+    ></editar-contacto>
   </v-expansion-panels>
 </template>
 
@@ -243,6 +246,9 @@
     methods: {
       refreshAfiliado() {
         this.$emit('refreshAfiliado', this.afiliado.confirmado.id)
+      },
+      editarContacto(contacto, setNoToAuthEPS){
+        this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
       },
       desvincular(contacto){
         contacto.loading = true
