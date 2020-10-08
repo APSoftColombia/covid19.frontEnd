@@ -2,6 +2,31 @@
 	<v-container fluid>
 		<page-title-bar title="Complementos"></page-title-bar>
 		<v-row>
+      <v-col cols="12" v-if="esSuperAdmin">
+        <v-card>
+          <v-list two-line>
+            <v-list-item @click="flag = false">
+              <v-list-item-avatar color="red">
+                <v-icon color="white">mdi-alert-plus</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-bold">Alerta de Actualizaciones</v-list-item-title>
+                <v-list-item-subtitle>Lanzamiento de alerta de actualización de datos y/o desarrollo, para todos los usuarios del proyecto.</v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon x-large color="primary" @click.stop="setAlerta" v-on="on" :loading="loadingAlerta">
+                      <v-icon x-large>mdi-reload-alert</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Lanzar Alerta</span>
+                </v-tooltip>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
 			<v-col cols="12">
 				<v-card>
 					<v-list two-line>
@@ -80,12 +105,19 @@
       CargadorSeguimientosSivigila
 		},
 		data: () => ({
+      loadingAlerta: false,
 			loadingGenerales: false
 		}),
 		methods: {
 			getAjustesGenerales () {
 				this.loadingGenerales = true
 				this.$store.dispatch('reloadStorage')
+			},
+      setAlerta () {
+				this.loadingAlerta = true
+				this.$store.dispatch('setVersionFirebase').then(() => {
+          this.loadingAlerta = false
+        })
 			}
 		}
 	}

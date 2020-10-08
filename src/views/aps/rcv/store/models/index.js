@@ -33,8 +33,6 @@ const state = {
         suspende_adverso_tto: null,
         observaciones: null,
         user_id: null,
-        created_at: null,
-        updated_at: null,
         duracion: 0,
         sintomas: [],
         responde_paciente: 1,

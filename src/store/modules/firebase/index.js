@@ -1,4 +1,4 @@
-import {db} from '../../../plugins/firebase'
+import {db, fire} from '../../../plugins/firebase'
 // state
 const state = {
     versionFirebase: localStorage.getItem('version_firebase'),
@@ -20,12 +20,35 @@ const getters = {
 const actions = {
     async getReloadFirebase (context) {
         // db.collection('versiones').doc('4aUoNgJxWiPvy7SEusZX').onSnapshot(convo => {
-        console.log('context.getters.datosEmpresa', context.getters.datosEmpresa)
+        // console.log('context.getters.datosEmpresa', context.getters.datosEmpresa)
         db.collection('versiones').doc(context.getters.datosEmpresa.datos_firebase).onSnapshot(convo => {
             console.log('seaaaaa')
             let source = convo && convo.data() ? convo.data() : null
             context.commit('onReload', source ? source.version : null)
         })
+    },
+    async setVersionFirebase (context) {
+        return await new Promise(resolve => {
+            db.collection('versiones').doc(context.getters.datosEmpresa.datos_firebase).update({
+                version: fire.firestore.FieldValue.increment(1)
+            })
+                .then(() => {
+                    resolve(false)
+                    context.commit('snackbar', {
+                        color: 'success',
+                        message: 'Alerta de cambios lanzada correctamente.'
+                    })
+                })
+                .catch(error => {
+                    resolve(false)
+                    context.commit('snackbar', {
+                        color: 'error',
+                        message: 'al lanzar la alerta de cambios.',
+                        error: error
+                    })
+                });
+        })
+
     }
 }
 
