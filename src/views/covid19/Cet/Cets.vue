@@ -12,6 +12,7 @@
     >
       <template slot="top-actions-right">
         <descargar-reporte
+            v-if="permisos.cetsCrearReporte"
         ></descargar-reporte>
         <cargar-registros
             @reloadTable="reloadTable"
