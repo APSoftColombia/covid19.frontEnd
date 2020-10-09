@@ -224,7 +224,8 @@ const state = {
         duracion: 0,
         no_efectividad: null,
         linfocitos: null,
-        ldh: null
+        ldh: null,
+        fecha_seguimiento: null
 
     },
     modelReporteComunitario: {

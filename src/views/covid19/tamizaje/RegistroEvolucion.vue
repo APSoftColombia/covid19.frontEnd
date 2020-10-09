@@ -53,6 +53,18 @@
                       :false-value="0"
                   ></v-switch>
                 </v-col>
+                <v-col cols="12" class="pb-0">
+                  <v-col class="pb-0" cols="12">
+                    <c-date
+                        v-model="evolucion.fecha_seguimiento"
+                        rules="required"
+                        label="Fecha del Seguimiento"
+                        name="fecha del seguimiento"
+                        :max="moment().format('YYYY-MM-DD')"
+                    >
+                    </c-date>
+                  </v-col>
+                </v-col>
                 <v-col cols="12">
                   <v-card outlined tile>
                     <v-card-text>
@@ -817,6 +829,7 @@ export default {
   },
   created() {
     this.evolucion = this.clone(this.modelEvolucion)
+    this.evolucion.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
   },
   methods: {
     async guardarSeguimiento() {
@@ -831,6 +844,7 @@ export default {
           let copia = this.clone(this.evolucion)
           this.evolucion = this.clone(this.modelEvolucion)
           this.evolucion.tamizaje_id = copia.tamizaje_id
+          this.evolucion.fecha_seguimiento = copia.fecha_seguimiento
           this.evolucion.lugar_atencion = copia.lugar_atencion
           this.evolucion.seguimiento_telefonico = copia.seguimiento_telefonico
           this.evolucion.orden_medica_id = copia.orden_medica_id
@@ -897,6 +911,7 @@ export default {
       this.loading = false
       clearInterval(intervalo)
       this.evolucion = this.clone(this.modelEvolucion)
+      this.evolucion.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
       this.comorbilidades = []
       this.verFormularioAislamiento = 0
       this.solicitaUltimo = false
@@ -933,6 +948,7 @@ export default {
       this.activaTemperatura = true
       let newEvolution = this.clone(this.modelEvolucion)
       newEvolution.tamizaje_id = this.tamizaje.id
+      newEvolution.fecha_seguimiento = this.evolucion.fecha_seguimiento
       newEvolution.lugar_atencion = this.tamizaje.orden_medica_id
       newEvolution.orden_medica_id = this.tamizaje.orden_medica_id
       newEvolution.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
