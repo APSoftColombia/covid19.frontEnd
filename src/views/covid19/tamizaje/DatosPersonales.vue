@@ -93,7 +93,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'tiposDocumentoIdentidad'
+      'tiposDocumentoIdentidad',
     ])
   },
   methods: {
@@ -142,7 +142,7 @@ export default {
           },
           {
             label: 'Dirección',
-            body: this.tamizaje.direccion,
+            body: `${this.tamizaje.direccion}${this.tamizaje.barrio_id && this.tamizaje.barrio ? ` - ${this.tamizaje.barrio.tipo === 'Barrio' ? 'Barrio' : 'Vereda'} ` + this.tamizaje.barrio.nombre : ''}`,
             icon: 'fas fa-map-signs',
             iconColor: 'purple',
             colmd: '6',
@@ -171,7 +171,15 @@ export default {
             iconColor: 'indigo',
             colmd: '6',
             collg: '4'
-          }
+          },
+          {
+            label: 'IPS que Realiza',
+            body: this.tamizaje.codIpsBai && this.tamizaje.ips_bai ? this.tamizaje.ips_bai.nombre : '',
+            icon: 'fas fa-hospital',
+            iconColor: 'indigo',
+            colmd: '6',
+            collg: '4'
+          },
       )
     }
   }

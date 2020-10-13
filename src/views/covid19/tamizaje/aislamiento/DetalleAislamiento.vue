@@ -147,6 +147,7 @@
 
 <script>
     import RegistroSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/RegistroSeguimientoAislamiento'
+    import {mapGetters} from "vuex";
 
     export default {
         name: 'DetalleAislamiento',
@@ -164,6 +165,11 @@
             loading: false,
             dialog: false
         }),
+      computed: {
+        ...mapGetters([
+          'causalesNoReportaContactos'
+        ]),
+      },
         watch: {
             aislamiento: {
                 handler () {
@@ -231,8 +237,36 @@
                             iconColor: 'pink',
                             colmd: '6',
                             collg: '4'
+                        },
+                        {
+                          label: '¿La persona aislada y el grupo familiar se comprometió a cumplir con el aislamiento?',
+                          body: this.aislamiento.CompromisoPersonaAislada !== null ? this.aislamiento.CompromisoPersonaAislada ?  'Si' : 'No' : '',
+                          icon: 'fas fa-handshake-alt-slash',
+                          iconColor: 'green',
+                          colmd: '6',
+                          collg: '4'
+                        },
+                        {
+                          label: '¿Reporta contactos?',
+                          body: this.aislamiento.ReportaContactos !== null ? this.aislamiento.ReportaContactos ?  'Si' : 'No' : '',
+                          icon: 'fas fa-file-signature',
+                          iconColor: 'purple',
+                          colmd: '6',
+                          collg: '4'
                         }
                     )
+                  if(!this.aislamiento.ReportaContactos){
+                    this.datos.push(
+                        {
+                          label: 'Causa por la cual no reporta contactos',
+                          body: this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos).text,
+                          icon: 'fas fa-question',
+                          iconColor: 'blue',
+                          colmd: '6',
+                          collg: '4'
+                        }
+                    )
+                  }
                 }
             },
             open () {

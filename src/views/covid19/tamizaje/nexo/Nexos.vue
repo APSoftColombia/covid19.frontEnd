@@ -24,6 +24,7 @@
                           <th class="text-left">Persona</th>
                           <th class="text-left">Ubicación</th>
                           <th class="text-left">Parentesco</th>
+                          <th class="text-left">EPS</th>
                           <th class="text-left">Observaciones</th>
                           <th class="text-center"></th>
                         </tr>
@@ -74,6 +75,11 @@
                               {{ parentescos && parentescos.length && parentescos.find(x => x.id === item.parentesco_id) ? parentescos.find(x => x.id === item.parentesco_id).descripcion : '' }}
                             </div>
                           </td>
+                          <td>
+                            <div style="max-width: 150px; white-space: normal">
+                              {{ epss && epss.length && epss.find(x => x.id === item.eps_id) ? epss.find(x => x.id === item.eps_id).nombre : '' }}
+                            </div>
+                          </td>
                             <td>
                               <div style="white-space: initial !important;">
                                 {{item.observaciones}}
@@ -106,6 +112,14 @@
                                   <span>{{ item.tamizaje.medico_id ? 'Caso de Estudio' : 'Detalle ERP' }}</span>
                                 </v-tooltip>
                               </template>
+                              <v-tooltip top>
+                                <template v-slot:activator="{on}">
+                                  <v-btn icon color="info" v-on="on" @click="verDetalle(item)">
+                                    <v-icon>fas fa-info</v-icon>
+                                  </v-btn>
+                                </template>
+                                <span>Ver Detalle</span>
+                              </v-tooltip>
                             </td>
                         </tr>
                         </tbody>
@@ -126,12 +140,16 @@
       <seguimiento
           ref="seguimiento"
       ></seguimiento>
+      <detalle-nexo
+          ref="detalleNexo"
+      ></detalle-nexo>
     </v-card>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+    const DetalleNexo = () => import('Views/covid19/tamizaje/nexo/DetalleNexo.vue')
     const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const RegistroReporteComunitario = () => import('Views/covid19/reporteComunitario/RegistroReporteComunitario')
     export default {
@@ -139,7 +157,8 @@
         components: {
             Seguimiento,
             RegistroTamizaje,
-            RegistroReporteComunitario
+            RegistroReporteComunitario,
+            DetalleNexo
         },
         props: {
             tamizaje: {
@@ -159,7 +178,8 @@
             ...mapGetters([
                 'municipiosTotal',
                 'tiposDocumentoIdentidad',
-                'parentescos'
+                'parentescos',
+                'epss'
             ]),
             permisos () {
                 return this.$store.getters.getPermissionModule('covid')
@@ -180,7 +200,10 @@
             },
             verSeguimiento (item) {
               if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
-            }
+            },
+          verDetalle(item) {
+              this.$refs.detalleNexo.open(item)
+          }
         }
     }
 </script>

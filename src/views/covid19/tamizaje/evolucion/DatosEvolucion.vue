@@ -34,6 +34,25 @@
                             <v-list-item-title><h6 class="mb-0 text-justify">{{evolucion.lugar_evolucion.id === 3 ? 'Atención en ' : ''}}{{evolucion.lugar_evolucion.orden}}</h6></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
+                  <v-list-item flat style="border-bottom: none !important;" @click="click = null">
+                    <v-list-item-avatar class="my-1">
+                      <v-icon color="indigo">mdi-calendar-month</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content class="pa-0">
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal">Fecha del Seguimiento</v-list-item-subtitle>
+                      <v-list-item-title><h6 class="mb-0 text-justify">{{ evolucion.fecha_seguimiento }}</h6></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item flat style="border-bottom: none !important;" @click="click = null">
+                    <v-list-item-avatar class="my-1">
+                      <v-icon color="red">fas fa-user-tag</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content class="pa-0">
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal">¿Se Localiza Paciente?</v-list-item-subtitle>
+                      <v-list-item-title><h6 class="mb-0 text-justify">{{ evolucion.fallida ? 'No' : 'Si' }}</h6></v-list-item-title>
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal" v-if="evolucion.fallida">Motivo de no localización: {{ evolucion.no_efectividad }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list>
               <list-item-clasificacion
                   v-if="evolucion.clasificacion"
@@ -184,6 +203,36 @@
                           <v-list-item-subtitle class="grey--text fs-12 fw-normal">Frecuencia de Pulso</v-list-item-subtitle>
                           <v-list-item-title><h4 class="mb-0">
                             {{evolucion.frecuencia_pulso}}
+                          </h4></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-list two-line class="notification-wrap">
+                      <v-list-item style="border-bottom: none !important;" v-if="evolucion.linfocitos !== null">
+                        <v-list-item-avatar class="my-1 align-self-center">
+                          <v-icon color="indigo">fab fa-galactic-republic</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">Linfocitos</v-list-item-subtitle>
+                          <v-list-item-title><h4 class="mb-0">
+                            {{ evolucion.linfocitos }}
+                          </h4></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="4">
+                    <v-list two-line class="notification-wrap">
+                      <v-list-item style="border-bottom: none !important;" v-if="evolucion.ldh !== null">
+                        <v-list-item-avatar class="my-1 align-self-center">
+                          <v-icon color="orange">mdi-blood-bag</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">LDH</v-list-item-subtitle>
+                          <v-list-item-title><h4 class="mb-0">
+                            {{ evolucion.ldh }}
                           </h4></v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>

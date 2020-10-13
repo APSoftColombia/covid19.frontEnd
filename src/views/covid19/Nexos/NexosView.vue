@@ -11,6 +11,7 @@
               @seguimiento="item => verSeguimiento(item)"
               @crearERP="item => crearTamizaje(item)"
               @Editar="item => editarNexo(item)"
+              @detalleNexo="item => detalleNexo(item)"
               @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
           >
             <filtros
@@ -35,6 +36,9 @@
         ref="registroNexo"
         @editado="val => nexoEditado(val)"
     ></registro-reporte-comunitario>
+    <detalle-nexo
+          ref="detalleNexo"
+    ></detalle-nexo>
     <app-section-loader :status="loading"></app-section-loader>
   </v-container>
 </template>
@@ -45,6 +49,7 @@ import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla"
 import Filtros from './Filtros/Filtros'
 
 const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
+const DetalleNexo = () => import('Views/covid19/tamizaje/nexo/DetalleNexo.vue')
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const RegistroReporteComunitario = () => import('Views/covid19/Nexos/EditarNexo')
 export default {
@@ -211,6 +216,12 @@ export default {
         tooltip: 'Editar',
         color: 'warning'
       })
+      item.options.push({
+        event: 'detalleNexo',
+        icon: 'fas fa-info',
+        tooltip: 'Ver Detalle',
+        color: 'info'
+      })
     },
     verSeguimiento(item) {
       this.$refs.seguimiento.open(item.erp_generado_id)
@@ -227,12 +238,16 @@ export default {
     nexoEditado() {
       this.reloadTable()
     },
+    detalleNexo(item){
+      this.$refs.detalleNexo.open(item, true)
+    }
   },
   components: {
     Seguimiento,
     RegistroTamizaje,
     Filtros,
-    RegistroReporteComunitario
+    RegistroReporteComunitario,
+    DetalleNexo
   },
   computed: {
     permisos() {

@@ -161,6 +161,22 @@
                   >
                   </c-select-complete>
                 </v-col>
+                <v-col cols="12">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                          v-model="reporte.PresupuestoComun"
+                          label="¿Presupuesto Común?"
+                          rules="required"
+                          name="presupuesto común"
+                          :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-text="text"
+                          item-value="value"
+                      >
+                      </c-radio>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
                 <v-col class="pb-0" cols="12">
                   <c-text-area
                       v-model="reporte.observaciones"
@@ -278,8 +294,7 @@ export default {
                   message: `Información del nexo actualizada con exito.`
                 })
                 this.close()
-              })
-              .catch(error => {
+              }).catch(error => {
                 this.loading = false
                 this.$store.commit('snackbar', {
                   color: 'error',
