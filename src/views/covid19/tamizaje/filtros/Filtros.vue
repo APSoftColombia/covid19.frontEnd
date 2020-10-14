@@ -113,6 +113,15 @@
             >
             </c-select-complete>
         </v-col>
+      <v-col class="pb-0" cols="12" sm="6" md="4">
+        <v-checkbox
+            label="Sin Seguimientos"
+            v-model="filters.models.seguimientos"
+            :true-value="0"
+            :false-value="null"
+            @change="aplicaFiltros"
+        ></v-checkbox>
+      </v-col>
         <v-col class="pb-0" cols="12" md="4">
             <v-autocomplete
                     label="Médico"
@@ -173,7 +182,7 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'Filtros',
@@ -213,7 +222,8 @@
                     tamizador_id: null,
                     eps_id: null,
                     estado_afectacion: null,
-                    estado_prueba: null
+                    estado_prueba: null,
+                    seguimientos: null,
                 },
                 data: {
                     opcionesCaso: [
@@ -304,6 +314,9 @@
                 if (this.filters.models.eps_id) {
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
                 }
+              if (this.filters.models.seguimientos !== null) {
+                rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[seguimientos]=' + this.filters.models.seguimientos
+              }
                 this.$emit('filtra', rutaTemp)
             },
             getComplementos () {

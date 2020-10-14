@@ -7,7 +7,7 @@
       <v-toolbar dark color="primary">
         <v-icon left>fas fa-file-prescription</v-icon>
         <v-list-item-content class="pa-0">
-          <v-list-item-title class="mb-0"><h6 class="mb-0 title">{{reporteComunitario && reporteComunitario.id ? `Reporte No. ${reporteComunitario.id}` : `Reporte Comunitario`}}</h6></v-list-item-title>
+          <v-list-item-title class="mb-0"><h6 class="mb-0 title">{{reporteComunitario && reporteComunitario.id ? `${sonNexos || sonNexos === null ? 'Nexo' : 'Conviviente'} No. ${reporteComunitario.id}` : ''}}</h6></v-list-item-title>
           <v-list-item-subtitle class="grey--text fs-12 fw-normal">
             {{reporteComunitario.created_at ? moment(reporteComunitario.created_at).format('DD/MM/YYYY HH:mm') : ''}}
           </v-list-item-subtitle>
@@ -34,25 +34,22 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
+              <v-divider class="pa-0 ma-0"></v-divider>
+              <v-subheader>Posible Caso</v-subheader>
               <v-list-item @click="click = null" style="border-bottom: none !important;">
                 <v-list-item-avatar class="my-1 align-self-center">
                   <v-icon color="teal" large>{{reporteComunitario.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face'}}</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content class="pa-0">
-                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">Posible Caso</v-list-item-subtitle>
                   <v-list-item-title><h6 class="mb-0">{{reporteComunitario.nombres}}</h6></v-list-item-title>
+                  <v-list-item-title v-if="reporteComunitario.tipo_identificacion && reporteComunitario.identificacion">
+                    <h6 class="mb-0">
+                      {{ tiposDocumentoIdentidad && reporteComunitario.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === reporteComunitario.tipo_identificacion).tipo : '' }}  {{ reporteComunitario.identificacion ? reporteComunitario.identificacion : '' }}
+                    </h6>
+                  </v-list-item-title>
                   <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                     {{[reporteComunitario.edad ? `${reporteComunitario.edad} Años` : null, reporteComunitario.celular ? `Celular: ${reporteComunitario.celular}` : null].filter(x => x).join(', ')}}
                   </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item @click="click = null" style="border-bottom: none !important;">
-                <v-list-item-avatar class="my-1 align-self-center">
-                  <v-icon color="cyan">fas fa-id-card</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content class="pa-0">
-                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">Número de Documento</v-list-item-subtitle>
-                  <v-list-item-title><h6 class="mb-0">{{ tiposDocumentoIdentidad && reporteComunitario.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === reporteComunitario.tipo_identificacion).tipo : '' }}  {{ reporteComunitario.identificacion ? reporteComunitario.identificacion : '' }}</h6></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item @click="click = null" style="border-bottom: none !important;">
@@ -71,6 +68,18 @@
               </v-list-item>
               <v-list-item @click="click = null" style="border-bottom: none !important;">
                 <v-list-item-avatar class="my-1 align-self-center">
+                  <v-icon color="purple">fas fa-map-signs</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">Ubicación</v-list-item-subtitle>
+                  <v-list-item-title><h6 class="mb-0">{{ reporteComunitario.direccion }}</h6></v-list-item-title>
+                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                    {{ reporteComunitario.municipio_id && divipol && divipol.find(x => x.id === reporteComunitario.municipio_id) ? divipol.find(x => x.id === reporteComunitario.municipio_id).nombre : '' }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="click = null" style="border-bottom: none !important;">
+                <v-list-item-avatar class="my-1 align-self-center">
                   <v-icon color="orange">fas fa-file-invoice-dollar</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content class="pa-0">
@@ -80,18 +89,6 @@
                       {{ reporteComunitario.PresupuestoComun ? reporteComunitario.PresupuestoComun === 1 ? 'Si' : 'No' : '' }}
                     </h6>
                   </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item @click="click = null" style="border-bottom: none !important;">
-                <v-list-item-avatar class="my-1 align-self-center">
-                  <v-icon color="purple">fas fa-map-signs</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content class="pa-0">
-                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">Ubicación Posible Caso</v-list-item-subtitle>
-                  <v-list-item-title><h6 class="mb-0">{{ reporteComunitario.direccion }}</h6></v-list-item-title>
-                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">
-                    {{ reporteComunitario.municipio_id && divipol && divipol.find(x => x.id === reporteComunitario.municipio_id) ? divipol.find(x => x.id === reporteComunitario.municipio_id).nombre : '' }}
-                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item @click="click = null" style="border-bottom: none !important;">
@@ -138,10 +135,16 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
+  import {mapGetters} from 'vuex'
 
   export default {
-    name: "DetalleNexo",
+    name: 'DetalleNexo',
+    props: {
+      sonNexos: {
+        type: Boolean,
+        default: null
+      }
+    },
     data: () => ({
       dialog: false,
       loading: false,

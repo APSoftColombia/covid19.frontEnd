@@ -23,26 +23,24 @@
               :key="`muestra${muestraIndex}`"
               class="mb-4"
           >
-            <v-card-title>
+            <v-toolbar dense elevation="0" color="blue-grey lighten-4">
+              <v-toolbar-title>Muestra No. {{ tamizaje.muestras.length - muestraIndex }}</v-toolbar-title>
               <v-spacer></v-spacer>
               <template v-if="permisos.muestraCrear && (muestraIndex === 0)">
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                   <template v-slot:activator="{ on }">
-                    <v-btn small icon color="orange" v-on="on" @click.stop="editarMuestra(muestra)">
+                    <v-btn icon color="orange" v-on="on" @click.stop="editarMuestra(muestra)">
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </template>
                   <span>Editar</span>
                 </v-tooltip>
               </template>
-            </v-card-title>
+            </v-toolbar>
             <v-card-text>
               <v-row>
                 <v-col cols="12" class="pt-0">
-                  <template v-slot:icon>
-                    <span class="white--text">{{ tamizaje.muestras.length - muestraIndex }}</span>
-                  </template>
                   <div class="pb-4">
                     <v-alert v-if="datosPendientes && (muestraIndex === 0)" dense outlined color="orange" type="error" class="mb-0">
                       Hay datos por diligenciar en la muestra

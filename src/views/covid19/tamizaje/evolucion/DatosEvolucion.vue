@@ -50,7 +50,7 @@
                     <v-list-item-content class="pa-0">
                       <v-list-item-subtitle class="grey--text fs-12 fw-normal">¿Se Localiza Paciente?</v-list-item-subtitle>
                       <v-list-item-title><h6 class="mb-0 text-justify">{{ evolucion.fallida ? 'No' : 'Si' }}</h6></v-list-item-title>
-                      <v-list-item-subtitle class="grey--text fs-12 fw-normal" v-if="evolucion.fallida">Motivo de no localización: {{ evolucion.no_efectividad }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal" v-if="evolucion.fallida">Motivo: {{ evolucion.no_efectividad }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>

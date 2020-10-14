@@ -171,15 +171,7 @@ export default {
             iconColor: 'indigo',
             colmd: '6',
             collg: '4'
-          },
-          {
-            label: 'IPS que Realiza',
-            body: this.tamizaje.codIpsBai && this.tamizaje.ips_bai ? this.tamizaje.ips_bai.nombre : '',
-            icon: 'fas fa-hospital',
-            iconColor: 'indigo',
-            colmd: '6',
-            collg: '4'
-          },
+          }
       )
     }
   }

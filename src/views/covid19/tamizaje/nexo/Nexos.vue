@@ -141,6 +141,7 @@
           ref="seguimiento"
       ></seguimiento>
       <detalle-nexo
+          :sonNexos="sonNexos"
           ref="detalleNexo"
       ></detalle-nexo>
     </v-card>

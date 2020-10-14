@@ -276,7 +276,7 @@ Vue.mixin({
 					tamizaje.prueba_rapida = null
 					tamizaje.resultado_prueba_rapida = null
 					tamizaje.estado_prueba = null
-					tamizaje.entidad_reporta_sivigila = null
+					// tamizaje.entidad_reporta_sivigila = null
 					tamizaje.hospitalizado = null
 					tamizaje.grupo_atencion_especial_id = null
 					tamizaje.grupo_atencion_especial = null
