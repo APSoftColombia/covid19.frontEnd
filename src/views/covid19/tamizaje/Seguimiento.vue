@@ -32,127 +32,131 @@
         </div>
         <datos-personales :tamizaje="tamizaje"></datos-personales>
         <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
-        <v-alert
-            v-if="tamizaje.medico"
-            class="mt-3"
-            v-model="alertPurebas"
-            dismissible
-            close-icon="mdi-delete"
-            color="orange"
-            border="left"
-            elevation="2"
-            colored-border
-            icon="mdi-alert"
-        >
-          Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se
-          relacionen correctamente.
-        </v-alert>
-        <template v-if="tamizaje && tamizaje.id">
-          <template v-if="tamizaje.medico">
-            <v-tabs
-                class="mt-3"
-                id="tabsSeguimiento"
-                v-model="tab"
-                fixed-tabs
-                right
-                icons-and-text
-                show-arrows
-                :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : 'deep-purple'"
-            >
-              <v-tabs-slider></v-tabs-slider>
-              <v-tab
-                  href="#tab-1"
+        <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
+          <v-alert
+              v-if="tamizaje.medico"
+              class="mt-3"
+              v-model="alertPurebas"
+              dismissible
+              close-icon="mdi-delete"
+              color="orange"
+              border="left"
+              elevation="2"
+              colored-border
+              icon="mdi-alert"
+          >
+            Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se
+            relacionen correctamente.
+          </v-alert>
+          <template v-if="tamizaje && tamizaje.id">
+            <template v-if="tamizaje.medico">
+              <v-tabs
+                  class="mt-3"
+                  id="tabsSeguimiento"
+                  v-model="tab"
+                  fixed-tabs
+                  right
+                  icons-and-text
+                  show-arrows
+                  :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : 'deep-purple'"
               >
-                Seguimientos
-                <v-icon>fas fa-chart-line</v-icon>
-              </v-tab>
-              <v-tab
-                  href="#tab-4"
-              >
-                Ordenes de Aislamiento
-                <v-icon>mdi-door-closed-lock</v-icon>
-              </v-tab>
-              <v-tab
-                  href="#tab-2"
-              >
-                {{ sonNexos ? 'Nexos' : 'Convivientes' }}
-                <v-icon>fas fa-people-arrows</v-icon>
-              </v-tab>
-              <v-tab
-                  href="#tab-3"
-              >
-                Muestras
-                <v-icon>fas fa-vials</v-icon>
-              </v-tab>
-            </v-tabs>
-            <v-tabs-items v-model="tab" class="mt-2" touchless>
-              <v-tab-item
-                  value="tab-1"
-              >
-                <evoluciones
-                    v-if="permisos.seguimientoVer"
-                    :tamizaje="tamizaje"
-                    :editable="editable"
-                    @change="changeTamizaje(tamizaje.id)"
-                ></evoluciones>
-                <div v-if="!permisos.seguimientoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                  <v-icon color="primary" large left>mdi-alert-outline</v-icon>
-                  No tiene permisos para ver ésta sección.
-                </div>
-              </v-tab-item>
-              <v-tab-item
-                  value="tab-4"
-              >
-                <aislamientos
-                    v-if="permisos.aislamientoVer"
-                    :tamizaje="tamizaje"
-                    :editable="editable"
-                    @change="changeTamizaje(tamizaje.id)"
-                ></aislamientos>
-                <div v-if="!permisos.aislamientoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                  <v-icon color="deep-purple" large left>mdi-alert-outline</v-icon>
-                  No tiene permisos para ver ésta sección.
-                </div>
-              </v-tab-item>
-              <v-tab-item
-                  value="tab-2"
-              >
-                <nexos
-                    v-if="permisos.nexoVer"
-                    :tamizaje="tamizaje"
-                    :editable="editableNexos"
-                    @change="changeTamizaje(tamizaje.id)"
-                    :sonNexos="sonNexos"
-                ></nexos>
-                <!--                        <div v-if="!permisos.nexoVer" class="font-weight-bold grey&#45;&#45;text text&#45;&#45;lighten-1 text-center mt-10">-->
-                <!--                            <v-icon color="warning" large left>mdi-alert-outline</v-icon>-->
-                <!--                            No tiene permisos para ver ésta sección.-->
-                <!--                        </div>-->
-              </v-tab-item>
-              <v-tab-item
-                  value="tab-3"
-              >
-                <muestras
-                    v-if="permisos.muestraVer"
-                    :tamizaje="tamizaje"
-                    :editable="editable"
-                    @change="changeTamizaje(tamizaje.id)"
-                ></muestras>
-                <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                  <v-icon color="error" large left>mdi-alert-outline</v-icon>
-                  No tiene permisos para ver ésta sección.
-                </div>
-              </v-tab-item>
-            </v-tabs-items>
-          </template>
-          <template v-else>
-            <nexos
-                class="mt-3"
-                :tamizaje="tamizaje"
-                :editable="editableNexos"
-                @change="changeTamizaje(tamizaje.id)"
-                :sonNexos="sonNexos"
-            ></nexos>
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab
+                    href="#tab-1"
+                >
+                  Seguimientos
+                  <v-icon>fas fa-chart-line</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-4"
+                >
+                  Ordenes de Aislamiento
+                  <v-icon>mdi-door-closed-lock</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-2"
+                >
+                  {{ sonNexos ? 'Nexos' : 'Convivientes' }}
+                  <v-icon>fas fa-people-arrows</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-3"
+                >
+                  Muestras
+                  <v-icon>fas fa-vials</v-icon>
+                </v-tab>
+              </v-tabs>
+              <v-tabs-items v-model="tab" class="mt-2" touchless>
+                <v-tab-item
+                    value="tab-1"
+                >
+                  <evoluciones
+                      v-if="permisos.seguimientoVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></evoluciones>
+                  <div v-if="!permisos.seguimientoVer"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="primary" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-4"
+                >
+                  <aislamientos
+                      v-if="permisos.aislamientoVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></aislamientos>
+                  <div v-if="!permisos.aislamientoVer"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="deep-purple" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-2"
+                >
+                  <nexos
+                      v-if="permisos.nexoVer"
+                      :tamizaje="tamizaje"
+                      :editable="editableNexos"
+                      @change="changeTamizaje(tamizaje.id)"
+                      :sonNexos="sonNexos"
+                  ></nexos>
+                  <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="warning" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-3"
+                >
+                  <muestras
+                      v-if="permisos.muestraVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></muestras>
+                  <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="error" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+              </v-tabs-items>
+            </template>
+            <template v-else>
+              <nexos
+                  class="mt-3"
+                  :tamizaje="tamizaje"
+                  :editable="editableNexos"
+                  @change="changeTamizaje(tamizaje.id)"
+                  :sonNexos="sonNexos"
+              ></nexos>
+            </template>
           </template>
         </template>
       </v-container>
