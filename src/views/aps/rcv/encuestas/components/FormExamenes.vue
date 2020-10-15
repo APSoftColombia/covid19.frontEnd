@@ -4,21 +4,30 @@
             <v-card outlined tile>
                 <v-card-text>
                     <c-check
-                            label="17. ¿Que examenes le tomaron?"
-                            v-model="losExamenes"
-                            :rules="sinExamenes ? '' : 'required'"
-                            name="examenes"
-                            :items="examenes"
-                            :disabled="sinExamenes"
+                      label="17. ¿Que examenes le tomaron?"
+                      v-model="losExamenes"
+                      :rules="sinExamenes ? '' : 'required'"
+                      name="examenes"
+                      :items="examenes"
+                      :disabled="sinExamenes"
                     >
                     </c-check>
                     <v-checkbox
-                            class="mt-1 ml-2"
-                            v-model="sinExamenes"
-                            label="No sabe"
-                            hide-details
+                      class="mt-1 ml-2"
+                      v-model="sinExamenes"
+                      label="No sabe o no recuerda"
+                      hide-details
                     ></v-checkbox>
                 </v-card-text>
+              <v-col cols="12">
+                <c-texto
+                  v-model="otro_examen"
+                  label="¿Que otro examen?"
+                  name="otro examen"
+                  :rules="sinExamenes ? '' : 'required'"
+                  v-if="otroExamenF()"
+                ></c-texto>
+              </v-col>
             </v-card>
         </v-col>
     </v-row>
@@ -35,11 +44,16 @@
           examenes: {
             type: Array,
             default: () => []
+          },
+          otroExamen: {
+              type: String,
+              default: null
           }
         },
         data: () => ({
             sinExamenes: false,
-            losExamenes: []
+            losExamenes: [],
+            otro_examen: null
         }),
         watch: {
             'arrayExamenes': {
@@ -48,10 +62,18 @@
                 },
                 immediate: true
             },
+            'otroExamen': {
+              handler (val) {
+                this.otro_examen = val
+              },
+              immediate: true
+            },
             'sinExamenes': {
                 handler (val) {
                     if (val) {
-                        this.$emit('changeExamenes', [])
+                      this.$emit('changeExamenes', ['No sabe o no recuerda'])
+                    }else{
+                      this.$emit('changeExamenes', [])
                     }
                 },
                 immediate: false
@@ -61,11 +83,23 @@
                     this.$emit('changeExamenes', val)
                 },
                 immediate: false
+            },
+            'otro_examen': {
+              handler (val) {
+                this.$emit('changeOtroExamen', val)
+              },
+              immediate: false
             }
         },
       methods: {
         noSaber() {
           this.sinExamenes = true
+        },
+        otroExamenF(){
+          if(this.losExamenes.find(examen => examen === 'Otro')){
+            return true
+          }
+          return false
         }
       }
     }

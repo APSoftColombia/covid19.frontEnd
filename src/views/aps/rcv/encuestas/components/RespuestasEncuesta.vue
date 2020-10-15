@@ -30,7 +30,14 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item :class="`${encuesta.paciente_hospitalizado ? 'v-list-item--two-line' : ''}`" @click="click = null">
+              <v-list-item @click="click = null">
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                    <p>¿Ha consultado por urgencias debido a su enfermedad? <span :style="`color: ${encuesta.consulta_por_urgencias ? 'green' : 'red'}`">{{ encuesta.consulta_por_urgencias ? 'Si' : 'No' }}</span></p>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item :class="`'v-list-item--three-line'`" @click="click = null">
                 <v-list-item-content class="pa-0">
                   <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                     <p>¿El paciente se encuentra hospitalizado? <span :style="`color: ${ encuesta.paciente_hospitalizado ? 'green' : 'red'}`">{{ encuesta.paciente_hospitalizado ? 'Si' : 'No' }}</span></p>
@@ -38,6 +45,9 @@
                   <template v-if="encuesta.paciente_hospitalizado">
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                       IPS: {{ encuesta.prestador.nombre + ' - ' + encuesta.prestador.codigohabilitacion }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                      Motivo Hospitalización: {{ encuesta.motivo_hospitalizacion }}
                     </v-list-item-subtitle>
                   </template>
                 </v-list-item-content>
@@ -158,6 +168,14 @@
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                       <p class="mb-0">12. ¿Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL)? <span :style="`color: ${color(encuesta.diagnosticado_rcv)}`">{{ encuesta.diagnosticado_rcv }}</span></p>
                     </v-list-item-subtitle>
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal pt-2" v-if="encuesta.diagnosticado_rcv && encuesta.enfermedad_cv.length">
+                      <p class="mb-0">¿Cuales?</p>
+                    </v-list-item-subtitle>
+                    <v-list-item-title v-if="encuesta.diagnosticado_rcv && encuesta.enfermedad_cv.length">
+                      <v-chip outlined label class="white text--black ma-1 mt-0" v-for="(enfermedad, index) in encuesta.enfermedad_cv" :key="index">
+                        {{ enfermedad !== 'Otro' ? enfermedad : encuesta.otra_enfermedad_cv }}
+                      </v-chip>
+                    </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item two-line @click="click = null">
@@ -182,7 +200,7 @@
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">15. ¿Qué especialidades?</v-list-item-subtitle>
                     <v-list-item-title class="pl-2" v-if="encuesta.especialidad && encuesta.especialidad.length">
                       <span style="font-size: 16px" v-for="(especialdad, index) in encuesta.especialidad" :key="index">
-                        {{ (index + 1) + '.' + especialdad + ' '}}
+                        {{ especialdad !== 'Otra especialidad' ? especialdad + ', ' : encuesta.otra_especialidad }}
                       </span>
                     </v-list-item-title>
                     <v-list-item-title v-else>
@@ -204,7 +222,7 @@
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">17. ¿Que examenes le tomaron?</v-list-item-subtitle>
                     <v-list-item-title class="pl-2" v-if="encuesta.laboratorio && encuesta.laboratorio.length">
                       <span style="font-size: 16px" v-for="(laboratorio, index) in encuesta.laboratorio" :key="index">
-                        {{ (index + 1) + '.' + laboratorio + ' ' }}
+                        {{ laboratorio !== 'Otro' ? laboratorio + ', ' : encuesta.otro_examen }}
                       </span>
                     </v-list-item-title>
                     <v-list-item-title v-else>

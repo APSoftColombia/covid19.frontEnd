@@ -149,6 +149,22 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <c-radio
+                            v-model="encuesta.consulta_por_urgencias"
+                            label="¿Ha consultado por urgencias debido a su enfermedad?"
+                            rules="required"
+                            name="consulta por urgencias"
+                            :items="[{value: 1, text: 'Si'}, {value: 0, text: 'No'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
                             v-model="encuesta.paciente_hospitalizado"
                             label="¿El paciente se encuentra hospitalizado?"
                             rules="required"
@@ -166,6 +182,12 @@
                               name="ips de hospitalización"
                               rules="required"
                           ></buscador-ips>
+                          <c-text-area
+                              label="Motivo de la hospitalización"
+                              rules="required"
+                              v-model="encuesta.motivo_hospitalizacion"
+                              name="motivo de hospitalización"
+                          ></c-text-area>
                         </div>
                       </v-card-text>
                     </v-card>
@@ -573,6 +595,18 @@
                         </v-card-text>
                       </v-card>
                     </v-col>
+                    <v-expand-transition>
+                      <v-col cols="12" v-if="encuesta.diagnosticado_rcv === 'Si'">
+                        <form-enfermedades-c-v
+                            ref="formEnfermedadesCv"
+                            :array-enfermedades="encuesta.enfermedad_cv"
+                            :otra-enfermedad="encuesta.otra_enfermedad_cv"
+                            @changueEnfermedades="val => encuesta.enfermedad_cv = val"
+                            @changeOtraEnfermedad="val => encuesta.otra_enfermedad_cv = val"
+                            :enfermedades="complementosRCV && complementosRCV.enfermedad_cv ? complementosRCV.enfermedad_cv : []"
+                        ></form-enfermedades-c-v>
+                      </v-col>
+                    </v-expand-transition>
                   </v-row>
                   <v-row>
                     <v-col cols="12" class="px-0 pb-0">
@@ -619,12 +653,14 @@
                       </v-card>
                     </v-col>
                     <v-expand-transition>
-                      <v-col cols="12" v-if="encuesta.consulta_medicina_i && encuesta.consulta_medicina_i !== 'No sabe'">
+                      <v-col cols="12" v-if="encuesta.consulta_medicina_i && (encuesta.consulta_medicina_i !== 'No sabe' && encuesta.consulta_medicina_i !== 'Nunca')">
                         <form-especialidades
                             ref="formEspecialidades"
                             :array-especialidades="encuesta.especialidad"
+                            :otra-especialidad="encuesta.otra_especialidad"
                             @changeEspecialidades="val => encuesta.especialidad = val"
-                            :especialidades="complementosRCV && complementosRCV.especialidad ? complementosRCV.especialidad : []"
+                            @changeOtraEspecialidad="val => encuesta.otra_especialidad = val"
+                            :especialidades="complementosRCV && complementosRCV.especialidad ? complementosRCV.especialidad.filter(x => x !== 'No sabe o no recuerda') : []"
                         ></form-especialidades>
                       </v-col>
                     </v-expand-transition>
@@ -648,8 +684,10 @@
                       <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
                         <form-examenes
                             :array-examenes="encuesta.laboratorio"
+                            :otro-examen="encuesta.otro_examen"
                             @changeExamenes="val => encuesta.laboratorio = val"
-                            :examenes="complementosRCV && complementosRCV.laboratorio ? complementosRCV.laboratorio : []"
+                            @changeOtroExamen="val => encuesta.otro_examen = val"
+                            :examenes="complementosRCV && complementosRCV.laboratorio ? complementosRCV.laboratorio.filter(x => x !== 'No sabe o no recuerda') : []"
                             ref="formExamenes"
                         ></form-examenes>
                       </v-col>
@@ -889,6 +927,7 @@ import FormSintomas from 'Views/aps/rcv/encuestas/components/FormSIntomas'
 const FormExamenes = () => import('Views/aps/rcv/encuestas/components/FormExamenes')
 const FormEspecialidades = () => import('Views/aps/rcv/encuestas/components/FormEspecialidades')
 const FormMedicamentos = () => import('Views/aps/rcv/encuestas/components/FormMedicamentos')
+const FormEnfermedadesCV = () => import('Views/aps/rcv/encuestas/components/FormEnfermedadesCV.vue')
 import DatosAfiliado from 'Views/aps/rcv/encuestas/components/DatosAfiliado'
 
 var intervalo
@@ -900,6 +939,7 @@ export default {
     FormExamenes,
     FormMedicamentos,
     DatosAfiliado,
+    FormEnfermedadesCV
   },
   data: () => ({
     loading: false,
@@ -997,7 +1037,7 @@ export default {
     },
     'encuesta.consulta_medicina_i': {
       handler(val) {
-        if (!val || val === 'No sabe') {
+        if (!val || val === 'No sabe' || val === 'Nunca') {
           this.encuesta.especialidad = []
         }
       },
@@ -1056,8 +1096,24 @@ export default {
           } else if(this.encuesta.dispuesto) {
             encuestaData = this.clone(this.encuesta)
             encuestaData.no_efectividad = null
+            if(encuestaData.especialidad.find(x => x === 'No sabe o no recuerda') && encuestaData.especialidad.length > 1){
+              encuestaData.especialidad = encuestaData.especialidad.filter(x => x !== 'No sabe o no recuerda')
+            }
+            if(!encuestaData.especialidad.find(x => x === 'Otra especialidad')){
+              encuestaData.otra_especialidad = null
+            }
             encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
+            if(encuestaData.laboratorio.find(x => x === 'No sabe o no recuerda') && encuestaData.laboratorio.length > 1){
+              encuestaData.laboratorio = encuestaData.laboratorio.filter(x => x !== 'No sabe o no recuerda')
+            }
+            if(!encuestaData.laboratorio.find(x => x === 'Otro')){
+              encuestaData.otro_examen = null
+            }
             encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
+            if(!encuestaData.enfermedad_cv.find(x => x === 'Otro')){
+              encuestaData.otra_enfermedad_cv = null
+            }
+            encuestaData.enfermedad_cv = encuestaData.enfermedad_cv && encuestaData.enfermedad_cv.length ? encuestaData.enfermedad_cv.join(',') : null
           } else {
             encuestaData = {
               id: this.encuesta.id,
@@ -1167,8 +1223,8 @@ export default {
             this.encuesta = response.data
             setTimeout(() => {
               if (!response.data.medicamentos.length && !response.data.otros_medicamentos && this.$refs.formMedicamentos) this.$refs.formMedicamentos.noSaber()
-              if (!response.data.laboratorio.length && this.$refs.formExamenes) this.$refs.formExamenes.noSaber()
-              if (!response.data.especialidad.length && this.$refs.formEspecialidades) this.$refs.formEspecialidades.noSaber()
+              if ((!response.data.laboratorio.length || response.data.laboratorio.find(x => x === 'No sabe o no recuerda')) && this.$refs.formExamenes) this.$refs.formExamenes.noSaber()
+              if ((!response.data.especialidad.length || response.data.especialidad.find(x => x === 'No sabe o no recuerda')) && this.$refs.formEspecialidades) this.$refs.formEspecialidades.noSaber()
             }, 1000)
             this.loading = false
           })
