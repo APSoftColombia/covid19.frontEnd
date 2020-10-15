@@ -248,7 +248,7 @@
                           <c-check
                               v-model="evolucion.signos_alarma"
                               label="Signos de Alarma"
-                              :items="signosAlarma"
+                              :items="signosAlarma ? signosAlarma.filter(x => x.aplica_covid) : []"
                               item-text="descripcion"
                               item-value="id"
                           >

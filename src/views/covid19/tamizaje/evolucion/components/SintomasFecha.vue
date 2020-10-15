@@ -103,7 +103,7 @@
         methods: {
             reloadSintomas () {
                 this.evolucion.sintomas = []
-                this.sintomas = this.clone(this.sintomasFecha).map(x => { return {
+                this.sintomas = this.clone(this.sintomasFecha.filter(x => x.aplica_covid)).map(x => { return {
                     id: null,
                     valueid: x.id,
                     descripcion: x.descripcion,

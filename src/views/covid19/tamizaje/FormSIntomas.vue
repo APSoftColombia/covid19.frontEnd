@@ -8,7 +8,7 @@
                             label="SÍNTOMAS: Preguntar al paciente sobre los siguientes síntomas, es caso de estudio al presentar más de dos a la vez en los últimos 14 dias."
                             :rules="sinSintomas ? '' : 'required'"
                             name="riesgo por síntomas"
-                            :items="sintomas"
+                            :items="sintomas ? sintomas.filter(x => x.aplica_covid && x.solicita_fecha) : []"
                             item-text="descripcion"
                             item-value="id"
                             :disabled="sinSintomas"
