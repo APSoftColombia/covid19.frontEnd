@@ -116,8 +116,8 @@
       <v-col class="pb-0" cols="12" sm="6" md="4">
         <v-checkbox
             label="Sin Seguimientos"
-            v-model="filters.models.seguimientos"
-            :true-value="0"
+            v-model="filters.models.sin_seguimientos"
+            :true-value="1"
             :false-value="null"
             @change="aplicaFiltros"
         ></v-checkbox>
@@ -223,7 +223,7 @@
                     eps_id: null,
                     estado_afectacion: null,
                     estado_prueba: null,
-                    seguimientos: null,
+                    sin_seguimientos: null,
                 },
                 data: {
                     opcionesCaso: [
@@ -314,8 +314,8 @@
                 if (this.filters.models.eps_id) {
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
                 }
-              if (this.filters.models.seguimientos !== null) {
-                rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[seguimientos]=' + this.filters.models.seguimientos
+              if (this.filters.models.sin_seguimientos !== null) {
+                rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[sin_seguimientos]=' + this.filters.models.sin_seguimientos
               }
                 this.$emit('filtra', rutaTemp)
             },
