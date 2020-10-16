@@ -62,7 +62,14 @@ const state = {
         /////
         especialidad: [],
         laboratorio: [],
-        medicamentos: []
+        medicamentos: [],
+        /////
+        consulta_por_urgencias: null,
+        motivo_hospitalizacion: null,
+        enfermedad_cv: [],
+        otra_enfermedad_cv: null,
+        otro_examen: null,
+        otra_especialidad: null,
     }
 }
 

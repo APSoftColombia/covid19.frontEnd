@@ -973,10 +973,19 @@ export default {
     }
   },
   watch: {
+    'encuesta.fallida': {
+      handler(val) {
+        if (val) {
+          this.encuesta.paciente_hospitalizado = null
+        }
+      },
+      immediate: false
+    },
     'encuesta.paciente_hospitalizado': {
       handler(val) {
         if (!val) {
           this.encuesta.codigo_ips_hospitalizacion = null
+          this.encuesta.motivo_hospitalizacion = null
         }
       },
       immediate: false
@@ -1096,6 +1105,7 @@ export default {
           } else if(this.encuesta.dispuesto) {
             encuestaData = this.clone(this.encuesta)
             encuestaData.no_efectividad = null
+
             if(encuestaData.especialidad.find(x => x === 'No sabe o no recuerda') && encuestaData.especialidad.length > 1){
               encuestaData.especialidad = encuestaData.especialidad.filter(x => x !== 'No sabe o no recuerda')
             }
@@ -1103,6 +1113,7 @@ export default {
               encuestaData.otra_especialidad = null
             }
             encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
+
             if(encuestaData.laboratorio.find(x => x === 'No sabe o no recuerda') && encuestaData.laboratorio.length > 1){
               encuestaData.laboratorio = encuestaData.laboratorio.filter(x => x !== 'No sabe o no recuerda')
             }
@@ -1110,6 +1121,7 @@ export default {
               encuestaData.otro_examen = null
             }
             encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
+
             if(!encuestaData.enfermedad_cv.find(x => x === 'Otro')){
               encuestaData.otra_enfermedad_cv = null
             }
@@ -1124,8 +1136,10 @@ export default {
               afiliado_actualizado: this.encuesta.afiliado_actualizado,
               duracion: this.encuesta.duracion,
               sintomas: this.encuesta.sintomas,
+              consulta_por_urgencias: this.encuesta.consulta_por_urgencias,
               paciente_hospitalizado: this.encuesta.paciente_hospitalizado,
               codigo_ips_hospitalizacion: this.encuesta.codigo_ips_hospitalizacion,
+              motivo_hospitalizacion: this.encuesta.motivo_hospitalizacion,
               dispuesto: this.encuesta.dispuesto,
               observaciones: this.encuesta.observaciones,
               fallida: this.encuesta.fallida,
