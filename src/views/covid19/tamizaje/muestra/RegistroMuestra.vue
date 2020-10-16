@@ -28,15 +28,25 @@
               >
               </c-date>
             </v-col>
+<!--            <v-col class="pb-0" cols="12">-->
+<!--              <c-texto-->
+<!--                  v-model="muestra.lugar_toma"-->
+<!--                  label="Lugar"-->
+<!--                  rules="required"-->
+<!--                  name="lugar de la toma"-->
+<!--                  upper-case-->
+<!--              >-->
+<!--              </c-texto>-->
+<!--            </v-col>-->
             <v-col class="pb-0" cols="12">
-              <c-texto
-                  v-model="muestra.lugar_toma"
-                  label="Lugar"
+              <c-select-complete
+                  v-model="muestra.lugar_toma_muestra"
+                  label="Lugar de la Toma"
+                  :items="lugaresTomaMuestra"
                   rules="required"
                   name="lugar de la toma"
-                  upper-case
               >
-              </c-texto>
+              </c-select-complete>
             </v-col>
             <v-col class="pb-0" cols="12">
               <c-select-complete
@@ -80,7 +90,7 @@
               >
               </c-texto>
             </v-col>
-            <template v-if="muestra.fecha_toma && muestra.lugar_toma && muestra.tipo && muestra.tomador_muestra_id !== null && (muestra.tomador_muestra_id === 0 ? muestra.tomado_por : true) && muestra.nombre_tomador">
+            <template v-if="muestra.fecha_toma && muestra.lugar_toma_muestra && muestra.tipo && muestra.tomador_muestra_id !== null && (muestra.tomador_muestra_id === 0 ? muestra.tomado_por : true) && muestra.nombre_tomador">
               <v-col class="pb-0" cols="12">
                 <span class="title">Procesamiento de la muestra</span>
               </v-col>
@@ -232,6 +242,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      'lugaresTomaMuestra',
       'modelMuestra',
       'tiposMuestra',
       'tiposResultadosCovid',

@@ -69,7 +69,7 @@ const state = {
         enfermedad_cv: [],
         otra_enfermedad_cv: null,
         otro_examen: null,
-        otra_especialidad: null,
+        otra_especialidad: null
     }
 }
 

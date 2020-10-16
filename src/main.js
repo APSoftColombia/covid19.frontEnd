@@ -282,6 +282,7 @@ Vue.mixin({
 					tamizaje.grupo_atencion_especial = null
 					tamizaje.solicitud_prueba = null
 					tamizaje.clasificacion = null
+					tamizaje.signos_alarma = []
 					///
 					if (!tamizaje.localiza_persona) tamizaje.contesta_encuesta = null
 					tamizaje.frecuencia_pulso = null

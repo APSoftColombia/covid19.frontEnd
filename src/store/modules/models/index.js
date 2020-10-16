@@ -67,6 +67,7 @@ const state = {
         codIpsBai: null,
         ////
         user_id: null,
+        signos_alarma: []
     },
     modelPersona: {
         id: null,
@@ -225,7 +226,8 @@ const state = {
         no_efectividad: null,
         linfocitos: null,
         ldh: null,
-        fecha_seguimiento: null
+        fecha_seguimiento: null,
+        lugar_toma_muestra: null
 
     },
     modelReporteComunitario: {

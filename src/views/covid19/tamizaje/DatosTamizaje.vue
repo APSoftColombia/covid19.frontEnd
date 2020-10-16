@@ -131,27 +131,46 @@
                   </template>
                 </v-list>
               </v-col>
-              <v-col cols="12">
-                <v-card flat>
-                  <v-card-title>
-                    <span class="title">Síntomas</span>
-                  </v-card-title>
-                  <v-card-text class="text-center" v-if="!tamizaje.sintomas.length">
-                    No registra síntomas
-                  </v-card-text>
-                  <v-card-text v-else>
-                    <template v-for="(chip, indexChip) in tamizaje.sintomas">
-                      <v-chip label class="mr-2 mb-2 white--text" color="indigo" :key="`chip${indexChip}`">
-                        {{ chip.descripcion }}
+              <template v-if="tamizaje.sintomas">
+                <v-col cols="12">
+                  <v-card flat>
+                    <v-card-title>
+                      <span class="title">Síntomas</span>
+                    </v-card-title>
+                    <v-card-text class="text-center" v-if="!tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha).length">
+                      No registra síntomas
+                    </v-card-text>
+                    <v-card-text v-else>
+                      <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha)">
+                        <v-chip label class="mr-2 mb-2 white--text" color="indigo" :key="`chip${indexChip}`">
+                          {{ chip.descripcion }}
+                        </v-chip>
+                      </template>
+                      <v-chip label class="white--text mr-2 mb-2" color="orange" v-if="tamizaje.fecha_sintomas">
+                        <v-icon small left>mdi-calendar-month</v-icon>
+                        {{ tamizaje.fecha_sintomas ? moment(tamizaje.fecha_sintomas).format('DD/MM/YYYY') : '' }}
                       </v-chip>
-                    </template>
-                    <v-chip label class="white--text mr-2 mb-2" color="orange" v-if="tamizaje.fecha_sintomas">
-                      <v-icon small left>mdi-calendar-month</v-icon>
-                      {{ tamizaje.fecha_sintomas ? moment(tamizaje.fecha_sintomas).format('DD/MM/YYYY') : '' }}
-                    </v-chip>
-                  </v-card-text>
-                </v-card>
-              </v-col>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" v-if="tamizaje.sintomas.filter(x => x.aplica_covid && !x.solicita_fecha).length">
+                  <v-card flat>
+                    <v-card-title>
+                      <span class="title">Signos de Alarma</span>
+                    </v-card-title>
+                    <v-card-text class="text-center" v-if="!tamizaje.sintomas.length">
+                      No registra síntomas
+                    </v-card-text>
+                    <v-card-text v-else>
+                      <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && !x.solicita_fecha)">
+                        <v-chip label class="mr-2 mb-2 white--text" color="cyan darken-4" :key="`chipSigno${indexChip}`">
+                          {{ chip.descripcion }}
+                        </v-chip>
+                      </template>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </template>
               <v-col cols="12">
                 <v-row no-gutters>
                   <v-col cols="12" sm="12" md="4">

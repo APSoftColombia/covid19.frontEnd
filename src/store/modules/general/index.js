@@ -246,6 +246,7 @@ const state = {
     tiposNoEfectiva: [],
     tiposOrdenador: [],
     entidadesFinancieras: [],
+    lugaresTomaMuestra: [],
     causalesNoReportaContactos: [
         {value: 1, text: 'No los conoce'},
         {value: 2, text: 'Los conoce pero no tiene los datos de contacto'},
@@ -420,6 +421,9 @@ const getters = {
     },
     causalesNoReportaContactos: state => {
         return state.causalesNoReportaContactos
+    },
+    lugaresTomaMuestra: state => {
+        return state.lugaresTomaMuestra
     }
 }
 // actions
@@ -521,6 +525,7 @@ const actions = {
                             context.commit('assignTiposNoEfectiva', response.data.parametros.no_efectividad)
                             context.commit('assignTiposOrdenador', response.data.parametros.ordenadores)
                             context.commit('assignEntidadesFinancieras', response.data.parametros.entidadesFinancieras)
+                            context.commit('assignLugaresTomaMuestra', response.data.parametros.lugares_toma_muestra)
                             resolve(true)
                         })
                         .catch(error => {
@@ -672,6 +677,9 @@ const mutations = {
     },
     assignEntidadesFinancieras(state, entidadesFinancieras) {
         state.entidadesFinancieras = entidadesFinancieras
+    },
+    assignLugaresTomaMuestra(state, lugaresTomaMuestra) {
+        state.lugaresTomaMuestra = lugaresTomaMuestra
     },
     snackbar(state, data) {
         let timeout = 8000

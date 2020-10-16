@@ -58,7 +58,7 @@
                       <v-list-item-content class="pa-0">
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">Toma de la muestra</v-list-item-subtitle>
                         <v-list-item-title>
-                          <h6 class="mb-0">{{ muestra.lugar_toma }}</h6>
+                          <h6 class="mb-0">{{ [muestra.lugar_toma, muestra.lugar_toma_muestra].filter(x => x).join(' - ') }}</h6>
                         </v-list-item-title>
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                           Fecha: {{ muestra.fecha_toma ? moment(muestra.fecha_toma).format('DD/MM/YYYY') : '-'}}
