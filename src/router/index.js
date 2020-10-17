@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 //routes
 import defaultRoutes from './default'
-
+import rutasDemandaInducida from 'Views/demandaInducida/router/index'
 // session components
 const SignUpOne = () => import('Views/session/SignUpOne')
 const LoginOne = () => import('Views/session/LoginOne')
@@ -17,6 +17,7 @@ export default new Router({
 	mode: 'history',
 	routes: [
 		defaultRoutes,
+		rutasDemandaInducida,
 		{
 			path: '/session/sign-up',
 			component: SignUpOne,

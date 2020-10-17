@@ -252,4 +252,12 @@ export const itemsMenu = [
         routeName: 'InformeEjecutivoRcv',
         typeRoute: 'aps'
     },
+    {
+        id: 30,
+        title: 'Demanda Inducida',
+        icon: 'mdi-file-table',
+        color: 'blue',
+        routeName: 'DemandaInducida',
+        typeRoute: 'demandaInducida'
+    }
 ]

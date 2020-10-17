@@ -13,6 +13,9 @@ const getters = {
         let menuPrincipal = []
         // if (getters.getPermission('inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
+        //Demanda Inducida
+        if (getters.getPermission('demandaInducida-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 30))
+
         if (getters.getPermission('formulario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
         if (getters.getPermission('encuesta-index')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 5))
         if (getters.getPermission('fuenteDatos-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))

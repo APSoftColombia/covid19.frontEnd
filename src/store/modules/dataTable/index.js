@@ -26,7 +26,9 @@ const state = {
         tablaUsers: 0,
         tablaUsersVersion: 0,
         tablaCets: 0,
-        tablaCetsVersion: 0
+        tablaCetsVersion: 0,
+        tablaDemandaInducida: 0,
+        tablaDemandaInducidaVersion: 3
     }
 }
 

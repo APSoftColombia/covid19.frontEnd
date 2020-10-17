@@ -16,22 +16,30 @@
 					</v-btn>
 				</v-toolbar>
         <template v-if="itemsMenu && itemsMenu.length">
-          <template v-if="datosEmpresa && datosEmpresa.covid_activo === '1' && datosEmpresa.aps_activo === '1'">
-            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'covid').length">
+          <template v-if="datosEmpresa && [datosEmpresa.covid_activo === '1', datosEmpresa.aps_activo === '1', datosEmpresa.demanda_inducida_activo === '1'].filter(x => x).length > 1">
+            <v-card-text v-if="datosEmpresa.covid_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'covid').length">
               <v-subheader class="font-weight-bold">COVID-19</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'covid')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
-            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'aps').length">
-              <v-subheader class="font-weight-bold">APS</v-subheader>
+            <v-card-text v-if="datosEmpresa.aps_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'aps').length">
+              <v-subheader class="font-weight-bold">RIESGO CARDIOVASCULAR</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'aps')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
-            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'general').length">
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'demandaInducida').length">
+              <v-subheader class="font-weight-bold">DEMANDA INDUCIDA</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'demandaInducida')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="datosEmpresa.demanda_inducida_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'general').length">
               <v-subheader class="font-weight-bold">GENERAL</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'general')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
           </template>
           <template v-else>
-            <cards :items-menu="itemsMenu.filter(x => x.typeRoute === (datosEmpresa.covid_activo === '1' ? 'covid' : 'aps') || x.typeRoute === 'general')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards>
+            <cards
+                :items-menu="itemsMenu.filter(x => x.typeRoute === (datosEmpresa.covid_activo === '1' ? 'covid' : datosEmpresa.aps_activo === '1' ? 'aps' : 'demandaInducida') || x.typeRoute === 'general')"
+                @clickitem="dialogMenu = false"
+                @goruta="val => goRuta(val)"
+            />
           </template>
         </template>
 			</v-card>
