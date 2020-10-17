@@ -139,6 +139,20 @@
                           :evolucion="evolucion"
                       ></sintomas-fecha>
                     </v-col>
+                    <v-col cols="12" class="pb-0">
+                      <v-card outlined tile>
+                        <v-card-text>
+                          <c-check
+                              v-model="evolucion.signos_alarma"
+                              label="Signos de Alarma"
+                              :items="signosAlarma ? signosAlarma.filter(x => x.aplica_covid) : []"
+                              item-text="descripcion"
+                              item-value="id"
+                          >
+                          </c-check>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
                   </v-row>
                   <template>
                     <v-row>
@@ -242,20 +256,6 @@
                     </v-row>
                   </template>
                   <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-check
-                              v-model="evolucion.signos_alarma"
-                              label="Signos de Alarma"
-                              :items="signosAlarma ? signosAlarma.filter(x => x.aplica_covid) : []"
-                              item-text="descripcion"
-                              item-value="id"
-                          >
-                          </c-check>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
                     <v-col cols="12">
                       <v-card outlined tile>
                         <v-card-text>

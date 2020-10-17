@@ -128,15 +128,6 @@
       </c-select-complete>
     </v-col>
     <v-col class="pb-0" cols="12" sm="6" md="4">
-      <v-checkbox
-          label="Sin Seguimientos"
-          v-model="filters.models.sin_seguimientos"
-          :true-value="1"
-          :false-value="null"
-          @change="aplicaFiltros"
-      ></v-checkbox>
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.localiza_persona"
           label="Localiza paciente"
@@ -156,7 +147,7 @@
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="4">
       <v-autocomplete
           label="Usuario"
           v-model="filters.models.user_id"
@@ -184,7 +175,7 @@
         </template>
       </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="4">
       <v-autocomplete
           label="Médico"
           v-model="filters.models.medico_id"
@@ -212,7 +203,7 @@
         </template>
       </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="4">
       <v-autocomplete
           label="EPS"
           v-model="filters.models.eps_id"
@@ -239,6 +230,16 @@
           </template>
         </template>
       </v-autocomplete>
+    </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="4">
+      <v-checkbox
+          class="mt-0"
+          label="Sin Seguimientos"
+          v-model="filters.models.sin_seguimientos"
+          :true-value="1"
+          :false-value="null"
+          @change="aplicaFiltros"
+      ></v-checkbox>
     </v-col>
   </v-row>
 </template>
