@@ -1,61 +1,66 @@
 <template>
   <v-row align="center" justify="end" fill-height>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.caso_estudio"
           label="Tipo"
           :items="filters.data.opcionesCaso"
           item-text="text"
           item-value="value"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4" v-if="verDiagnosticados">
+    <v-col cols="12" sm="6" md="4" v-if="verDiagnosticados">
       <c-select-complete
           v-model="filters.models.diagnostico"
           label="Diagnóstico"
           :items="tiposResultadosCovid"
           item-text="text"
           item-value="value"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-date-range
           v-model="filters.models.rango_created_at"
           label="Rango Fecha de Creación"
           :max="moment().format('YYYY-MM-DD')"
+          hide-details
       >
       </c-date-range>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-date-range
-          v-model="filters.models.rango_updated_at"
-          label="Rango Fecha de Actualización"
-          :max="moment().format('YYYY-MM-DD')"
-      >
-      </c-date-range>
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+<!--    <v-col class="pb-0" cols="12" sm="6" md="4">-->
+<!--      <c-date-range-->
+<!--          v-model="filters.models.rango_updated_at"-->
+<!--          label="Rango Fecha de Actualización"-->
+<!--          :max="moment().format('YYYY-MM-DD')"-->
+<!--      >-->
+<!--      </c-date-range>-->
+<!--    </v-col>-->
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.riesgo"
           label="Riesgo"
           :items="filters.data.opcionesRiesgo"
           item-text="text"
           item-value="value"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.evolucion"
           label="Evolución"
           :items="tiposEvolucionFiltro"
           multiple
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.clasificacion"
           label="Clasificación"
@@ -64,36 +69,40 @@
           item-text="nombre"
           multiple
           :return-object="true"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.estado_afectacion"
           label="Estado de Afectación"
           :items="estadosAfectacion"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.estado_prueba"
           label="Estado de la Prueba"
           :items="filters.data.estadoPrueba"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.orden_medica_id"
           label="Orden Médica"
           :items="ordenesMedicas"
           item-text="orden"
           item-value="id"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4"
+    <v-col cols="12" sm="6" md="4"
            v-if="complementos.departamentos && complementos.departamentos.length > 1">
       <c-select-complete
           v-model="filters.models.departamentos"
@@ -103,10 +112,11 @@
           item-text="nombre"
           multiple
           @change="filters.models.municipios = []"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.municipios"
           label="Municipio"
@@ -114,40 +124,44 @@
           item-value="id"
           item-text="nombre"
           multiple
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.tamizador_id"
           label="Punto de ERP"
           :items="tamizadores"
           item-text="nombre"
           item-value="id"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.localiza_persona"
           label="Localiza paciente"
           :items="filters.data.opcionesLocaliza"
           item-text="text"
           item-value="value"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.contesta_encuesta"
           label="Contesta encuesta"
           :items="filters.data.opcionesContestaEncuesta"
           item-text="text"
           item-value="value"
+          hide-details
       >
       </c-select-complete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <v-autocomplete
           label="Usuario"
           v-model="filters.models.user_id"
@@ -159,6 +173,7 @@
           persistent-hint
           clearable
           :hint="filters.models.user_id && complementos.usuarios.find(x => x.id === filters.models.user_id).telefono ? `Teléfono: ${complementos.usuarios.find(x => x.id === filters.models.user_id).telefono}` : '' "
+          hide-details
       >
         <template v-slot:selection="{ item, index }">
           <div class="pa-0 text-truncate" style="width: 100% !important;">
@@ -175,7 +190,7 @@
         </template>
       </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <v-autocomplete
           label="Médico"
           v-model="filters.models.medico_id"
@@ -187,6 +202,7 @@
           persistent-hint
           clearable
           :hint="filters.models.medico_id && complementos.medicos.find(x => x.id === filters.models.medico_id).telefono ? `Teléfono: ${complementos.medicos.find(x => x.id === filters.models.medico_id).telefono}` : '' "
+          hide-details
       >
         <template v-slot:selection="{ item, index }">
           <div class="pa-0 text-truncate" style="width: 100% !important;">
@@ -203,7 +219,7 @@
         </template>
       </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <v-autocomplete
           label="EPS"
           v-model="filters.models.eps_id"
@@ -215,6 +231,7 @@
           persistent-hint
           clearable
           :hint="filters.models.eps_id && complementos.eps.find(x => x.id === filters.models.eps_id).codigo ? `Código: ${complementos.eps.find(x => x.id === filters.models.eps_id).codigo}` : '' "
+          hide-details
       >
         <template v-slot:selection="{ item, index }">
           <div class="pa-0 text-truncate" style="width: 100% !important;">
@@ -231,15 +248,29 @@
         </template>
       </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <v-checkbox
-          class="mt-0"
-          label="Sin Seguimientos"
-          v-model="filters.models.sin_seguimientos"
-          :true-value="1"
-          :false-value="null"
-          @change="aplicaFiltros"
-      ></v-checkbox>
+    <v-col cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.seguimientos"
+          label="Cantidad seguimientos"
+          :items="complementos.seguimientos"
+          hide-details
+      >
+      </c-select-complete>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <v-card outlined tile class="rounded" style="border: thin solid rgba(0, 0, 0, 0.4) !important;">
+        <v-card-text class="py-2">
+          <v-checkbox
+              class="mt-0 pt-0"
+              label="ERP sin Asignar"
+              v-model="filters.models.erp_sin_asignar"
+              :true-value="1"
+              :false-value="null"
+              @change="aplicaFiltros"
+              hide-details
+          ></v-checkbox>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -288,9 +319,10 @@ export default {
         eps_id: null,
         estado_afectacion: null,
         estado_prueba: null,
-        sin_seguimientos: null,
         localiza_persona: null,
-        contesta_encuesta: null
+        contesta_encuesta: null,
+        seguimientos: null,
+        erp_sin_asignar: null
       },
       data: {
         opcionesLocaliza: [
@@ -394,14 +426,17 @@ export default {
       if (this.filters.models.eps_id) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
       }
-      if (this.filters.models.sin_seguimientos !== null) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[sin_seguimientos]=' + this.filters.models.sin_seguimientos
-      }
       if (this.filters.models.localiza_persona !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[localiza_persona]=' + this.filters.models.localiza_persona
       }
       if (this.filters.models.contesta_encuesta !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[contesta_encuesta]=' + this.filters.models.contesta_encuesta
+      }
+      if (this.filters.models.seguimientos !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[seguimientos]=' + this.filters.models.seguimientos
+      }
+      if (this.filters.models.erp_sin_asignar !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp_sin_asignar]=' + this.filters.models.erp_sin_asignar
       }
       this.$emit('filtra', rutaTemp)
     },

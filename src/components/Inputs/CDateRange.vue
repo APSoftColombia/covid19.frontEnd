@@ -25,6 +25,7 @@
                         :clearable="clearable"
                         :hint="hint"
                         persistent-hint
+                        :hide-details="hideDetails"
                 ></v-text-field>
             </ValidationProvider>
         </template>
@@ -94,6 +95,10 @@
       dense: {
         type: Boolean,
         default: true
+      },
+      hideDetails: {
+        type: Boolean,
+        default: false
       }
     },
     data: () => ({
