@@ -279,6 +279,7 @@ export default {
       this.llamada = null
       this.verificado = 0
       clearInterval(intervalo)
+      this.$emit('close')
       this.tamizaje = null
       // setTimeout(() => {
       //     // this.tamizaje = this.clone(this.modelTamizaje)

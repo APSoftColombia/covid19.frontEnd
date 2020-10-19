@@ -559,6 +559,7 @@
                 this.loading = false
                 this.tamizaje = null
                 this.verificado = 0
+                this.$emit('close')
             },
             getViajero (idViajero) {
                 this.loading = true

@@ -53,11 +53,13 @@
         v-if="permisos.tamizajeViajeroCrear"
         ref="registroViajero"
         @guardado="val => tamizajeGuardado(val)"
+        @close="loading = false"
     ></registro-viajero>
     <registro-tamizaje
         v-if="permisos.tamizajeCrear"
         ref="registroTamizaje"
         @guardado="item => tamizajeGuardado(item)"
+        @close="loading = false"
     ></registro-tamizaje>
     <seguimiento
         ref="seguimiento"
@@ -73,6 +75,7 @@
         @guardado="item => tamizajeGuardado(item)"
     ></asignar-georreferenciacion>
     <help-modal ref="helpModal"></help-modal>
+    <app-section-loader :status="loading"></app-section-loader>
   </div>
 </template>
 
@@ -120,6 +123,7 @@ export default {
     }
   },
   data: (vm) => ({
+    loading: false,
     medicos: [],
     rutaBase: 'tamizajes',
     dataTable: {
@@ -556,13 +560,14 @@ export default {
       this.dataTable.route = ruta
     },
     verModalClasificacion(modal) {
-      console.log('modal', modal)
       this.$refs.helpModal.open(modal)
     },
     crearTamizaje() {
+      this.loading = true
       this.$refs.registroTamizaje.open()
     },
     crearViajero() {
+      this.loading = true
       this.$refs.registroViajero.open()
     },
     asignarMedico(item) {
@@ -572,6 +577,7 @@ export default {
       this.$refs.asignaGeorreferenciacion.open(item)
     },
     actualizarTamizaje(item) {
+      this.loading = true
       if (!item.infoviajero) {
         this.$refs.registroTamizaje.open(item.id)
       } else {

@@ -910,6 +910,7 @@ export default {
       this.dialog = false
       this.loading = false
       clearInterval(intervalo)
+      this.$emit('close')
       this.evolucion = this.clone(this.modelEvolucion)
       this.evolucion.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
       this.comorbilidades = []
