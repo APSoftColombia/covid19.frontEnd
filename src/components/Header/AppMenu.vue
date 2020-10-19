@@ -25,11 +25,11 @@
               <v-subheader class="font-weight-bold">RIESGO CARDIOVASCULAR</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'aps')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
-            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'demandaInducida').length">
+            <v-card-text v-if="datosEmpresa.demanda_inducida_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'demandaInducida').length">
               <v-subheader class="font-weight-bold">DEMANDA INDUCIDA</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'demandaInducida')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
-            <v-card-text v-if="datosEmpresa.demanda_inducida_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'general').length">
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'general').length">
               <v-subheader class="font-weight-bold">GENERAL</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'general')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
