@@ -125,6 +125,7 @@
                       :tamizaje="tamizaje"
                       :editable="editableNexos"
                       @change="changeTamizaje(tamizaje.id)"
+                      @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
                   ></nexos>
                   <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">

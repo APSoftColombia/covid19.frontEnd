@@ -12,6 +12,7 @@
               @crearERP="item => crearTamizaje(item)"
               @Editar="item => editarNexo(item)"
               @detalleNexo="item => detalleNexo(item)"
+              @eliminarNexo="item => eliminarNexo(item)"
               @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
           >
             <filtros
@@ -39,6 +40,11 @@
     <detalle-nexo
           ref="detalleNexo"
     ></detalle-nexo>
+    <eliminar-nexos-o-convivientes
+        ref="eliminarNexoConviviente"
+        :sonNexos="true"
+        @nexoOConvivienteEliminado="reloadTable"
+    ></eliminar-nexos-o-convivientes>
     <app-section-loader :status="loading"></app-section-loader>
   </v-container>
 </template>
@@ -48,6 +54,7 @@ import {mapGetters} from 'vuex'
 import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla"
 import Filtros from './Filtros/Filtros'
 
+const EliminarNexosOConvivientes = () => import('Views/covid19/tamizaje/nexo/EliminarNexosOConvivientes.vue')
 const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
 const DetalleNexo = () => import('Views/covid19/tamizaje/nexo/DetalleNexo.vue')
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
@@ -222,6 +229,14 @@ export default {
         tooltip: 'Ver Detalle',
         color: 'info'
       })
+      if(this.permisos.eliminarNexo){
+        item.options.push({
+          event: 'eliminarNexo',
+          icon: 'fas fa-trash-alt',
+          tooltip: 'Eliminar Nexo',
+          color: 'error'
+        })
+      }
     },
     verSeguimiento(item) {
       this.$refs.seguimiento.open(item.erp_generado_id)
@@ -240,6 +255,9 @@ export default {
     },
     detalleNexo(item){
       this.$refs.detalleNexo.open(item, true)
+    },
+    eliminarNexo(item){
+      this.$refs.eliminarNexoConviviente.open(item)
     }
   },
   components: {
@@ -247,7 +265,8 @@ export default {
     RegistroTamizaje,
     Filtros,
     RegistroReporteComunitario,
-    DetalleNexo
+    DetalleNexo,
+    EliminarNexosOConvivientes
   },
   computed: {
     permisos() {

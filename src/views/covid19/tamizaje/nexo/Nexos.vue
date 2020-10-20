@@ -20,7 +20,7 @@
                     <template v-slot:default>
                         <thead>
                         <tr>
-                            <th class="text-left">{{ sonNexos ? 'Nexo' : 'Conviviente' }}</th>
+                          <th class="text-left">{{ sonNexos ? 'Nexo' : 'Conviviente' }}</th>
                           <th class="text-left">Persona</th>
                           <th class="text-left">Ubicación</th>
                           <th class="text-left">Parentesco</th>
@@ -120,6 +120,16 @@
                                 </template>
                                 <span>Ver Detalle</span>
                               </v-tooltip>
+                              <template v-if="permisos.eliminarNexo">
+                                <v-tooltip top>
+                                  <template v-slot:activator="{on}">
+                                    <v-btn icon color="error" v-on="on" @click="eliminarNexoConviviente(item)">
+                                      <v-icon>fas fa-trash-alt</v-icon>
+                                    </v-btn>
+                                  </template>
+                                  <span>Eliminar {{ sonNexos ? 'Nexo' : 'Conviviente' }}</span>
+                                </v-tooltip>
+                              </template>
                             </td>
                         </tr>
                         </tbody>
@@ -144,12 +154,19 @@
           :sonNexos="sonNexos"
           ref="detalleNexo"
       ></detalle-nexo>
+      <eliminar-nexos-o-convivientes
+          v-if="permisos.eliminarNexo"
+          ref="eliminarNexoConviviente"
+          :sonNexos="sonNexos"
+          @nexoOConvivienteEliminado="val => nexoEliminado(val)"
+      ></eliminar-nexos-o-convivientes>
     </v-card>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+    const EliminarNexosOConvivientes = () => import('Views/covid19/tamizaje/nexo/EliminarNexosOConvivientes.vue')
     const DetalleNexo = () => import('Views/covid19/tamizaje/nexo/DetalleNexo.vue')
     const RegistroTamizaje = () => import('Views/covid19/tamizaje/RegistroTamizaje')
     const RegistroReporteComunitario = () => import('Views/covid19/reporteComunitario/RegistroReporteComunitario')
@@ -159,7 +176,8 @@
             Seguimiento,
             RegistroTamizaje,
             RegistroReporteComunitario,
-            DetalleNexo
+            DetalleNexo,
+            EliminarNexosOConvivientes
         },
         props: {
             tamizaje: {
@@ -190,11 +208,14 @@
             agregarNexo () {
                 this.$refs.registroNexo.open(null, this.tamizaje)
             },
-          editarNexo (nexo) {
-            this.$refs.registroNexo.open(nexo, this.tamizaje)
-          },
+            editarNexo (nexo) {
+              this.$refs.registroNexo.open(nexo, this.tamizaje)
+            },
             nexoGuardado (item) {
                 this.$emit('change', item)
+            },
+            nexoEliminado (item) {
+              this.$emit('nexoEliminado', item)
             },
             crearTamizaje (item) {
               this.$refs.registroTamizaje.open(null, item.id)
@@ -202,15 +223,18 @@
             verSeguimiento (item) {
               if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
             },
-          verDetalle(item) {
-              this.$refs.detalleNexo.open(item)
-          }
+            verDetalle(item) {
+                this.$refs.detalleNexo.open(item)
+            },
+            eliminarNexoConviviente(item){
+              this.$refs.eliminarNexoConviviente.open(item, item.tamizaje_id)
+            }
         }
     }
 </script>
 
 <style scoped>
-.v-sheet {
-    border-radius: 0 !important;
-}
+  .v-sheet {
+      border-radius: 0 !important;
+  }
 </style>

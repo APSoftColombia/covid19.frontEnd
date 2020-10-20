@@ -8,6 +8,7 @@
                 @verReporte="item => verReporte(item)"
                 @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
                 @seguimiento="item => verSeguimiento(item)"
+                @eliminarReporte="item => eliminarReporteComunitario(item)"
         >
             <template slot="top-actions-right" v-if="permisos.reporteComunitarioCrear">
                 <v-btn
@@ -39,6 +40,10 @@
                 ref="seguimiento"
         ></seguimiento>
         <detalle-reporte-comunitario ref="detalleReporteComunitario"></detalle-reporte-comunitario>
+      <eliminar-reporte-comunitario
+          ref="eliminarReporteComunitario"
+          @reporteEliminado="reloadTable()"
+      ></eliminar-reporte-comunitario>
     </div>
 </template>
 
@@ -50,6 +55,7 @@
     const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
     const Filtros = () => import('Views/covid19/reporteComunitario/filtros/Filtros')
     const DetalleReporteComunitario = () => import('Views/covid19/reporteComunitario/DetalleReporteComunitario')
+    const EliminarReporteComunitario = () => import('Views/covid19/reporteComunitario/EliminarReporteComunitario.vue')
     export default {
         name: 'ReportesComunitarios',
         components: {
@@ -57,7 +63,8 @@
             RegistroTamizaje,
             Seguimiento,
             Filtros,
-            DetalleReporteComunitario
+            DetalleReporteComunitario,
+            EliminarReporteComunitario
         },
         computed: {
             permisos () {
@@ -319,8 +326,22 @@
                   if (item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
                   if (!item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Detalle ERP', color: 'success'})
                 }
+              if(this.permisos.eliminarReporte){
+                item.options.push({
+                  event: 'eliminarReporte',
+                  icon: 'fas fa-trash-alt',
+                  tooltip: 'Eliminar Reporte Comunitario',
+                  color: 'error'
+                })
+              }
                 return item
-            }
+            },
+            eliminarReporteComunitario(item){
+                this.$refs.eliminarReporteComunitario.open(item)
+            },
+            reloadTable() {
+              this.$store.commit('reloadTable', 'tablaReportesComunitarios')
+            },
         }
     }
 </script>
