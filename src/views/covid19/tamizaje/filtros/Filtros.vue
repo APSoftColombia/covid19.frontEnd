@@ -433,7 +433,7 @@ export default {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[contesta_encuesta]=' + this.filters.models.contesta_encuesta
       }
       if (this.filters.models.seguimientos !== null) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[seguimientos]=' + this.filters.models.seguimientos
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[cant_seguimientos]=' + this.filters.models.seguimientos
       }
       if (this.filters.models.erp_sin_asignar !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp_sin_asignar]=' + this.filters.models.erp_sin_asignar
