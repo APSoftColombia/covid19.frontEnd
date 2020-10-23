@@ -29,6 +29,12 @@
         @guardado="val => encuestaGuardada(val)"
         @close="loading = false"
     ></registro-encuesta>
+    <seguimiento ref="detalleerp" />
+    <registro-tamizaje
+        ref="registroTamizaje"
+        @guardado="item => tamizajeGuardado(item)"
+        @close="loading = false"
+    />
     <!-- <detalle-encuesta
         ref="detalleEncuesta"
     ></detalle-encuesta> -->
@@ -43,6 +49,8 @@ import ItemListDataAfiliado from '../components/ItemListDataAfiliado'
 
 const RegistroEncuesta = () => import('../components/CrearEncuestaDemanda')
 const Filtros = () => import('../components/FiltrosDemandaInducida')
+const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
 // const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
 // import IconTooltip from '../../../components/Inputs/IconTooltip'
 
@@ -51,12 +59,15 @@ export default {
   components: {
     RegistroEncuesta,
     Filtros,
+    Seguimiento,
+    RegistroTamizaje
   },
   computed: {
     permisos() {
       return this.$store.getters.getPermissionModule('demandaInducida')
     },
     ...mapGetters([
+      'modelTamizaje',
       'municipiosTotal',
       'tiposDocumentoIdentidad'
     ]),
@@ -64,7 +75,7 @@ export default {
       return this.dataTable
     }
   },
-  data: () => ({
+  data: (vm) => ({
     rutaBase: 'demanda-inducida',
     lengthData: null,
     loading: false,
@@ -157,16 +168,21 @@ export default {
           component: {
             functional: true,
             render: function (createElement, context) {
-              return context.props.value.erp_required
-                  ? createElement(
+              return createElement(
                       AlertErpRequired,
                       {
                         props: {
                           value: context.props.value
+                        },
+                        on: {
+                          detalleTamizaje: () => {
+                            vm.verDetalleTamizaje(context.props.value)
+                          },
+                          crearTamizaje: () => {
+                            vm.crearTamizaje(context.props.value)
+                          }
                         }
-                      }
-                  )
-                  : context.props.value.erp_id ? '' : createElement('span', '')
+                      })
             }
           }
         },
@@ -298,6 +314,19 @@ export default {
     },
     verEncuesta(item) {
       this.$refs.detalleEncuesta.open(item, true, false)
+    },
+    verDetalleTamizaje(item) {
+      this.$refs.detalleerp.open(item.erp_id)
+    },
+    crearTamizaje(item) {
+      console.log('item', item)
+      this.loading = true
+      let data = this.clone(this.modelTamizaje)
+      this.$refs.registroTamizaje.openData(data)
+    },
+    tamizajeGuardado(tamizaje) {
+      console.log('tamizaje', tamizaje)
+      this.$store.commit('reloadTable', 'tablaDemandaInducida')
     },
     resetOptions(item) {
       item.erp_id = null

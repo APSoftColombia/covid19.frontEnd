@@ -272,6 +272,16 @@ export default {
         }, 1000)
       }
     },
+    openData(data) {
+      this.dialog = true
+      this.tamizaje = this.clone(data)
+      this.activaPR = true
+      this.activaSPO2 = true
+      this.activaTemperatura = true
+      intervalo = setInterval(() => {
+        this.tamizaje.duracion++
+      }, 1000)
+    },
     close() {
       this.$refs.formTamizaje.reset()
       this.dialog = false
