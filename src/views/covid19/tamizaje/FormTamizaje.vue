@@ -72,8 +72,12 @@
         </v-col>
       </template>
     </v-row>
-    <form-persona v-model="tamizaje" @verificado="val => verificar(val)"
-                  @responsetamizaje="val => respuestaPersona = val" :tipo="tipo"></form-persona>
+    <form-persona
+        v-model="tamizaje"
+        @verificado="val => verificar(val)"
+        @responsetamizaje="val => respuestaPersona = val"
+        :tipo="tipo"
+    />
     <v-row>
       <template v-if="verificado === 1">
         <v-col cols="12" v-if="esTamizaje">

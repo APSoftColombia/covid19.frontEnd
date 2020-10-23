@@ -301,7 +301,7 @@ export default {
     },
     resetOptions(item) {
       item.erp_id = null
-      item.erp_required = 1
+      item.erp_required = null
       item.options = []
       if (this.permisos.crear && item.id) item.options.push({
         event: 'crearEncuesta',

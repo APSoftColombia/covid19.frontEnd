@@ -277,7 +277,7 @@ export default {
   watch: {
     'value': {
       handler(val) {
-        if (val && val.id) {
+        if (val && val.identificacion) {
           this.identificacionVerificada = 1
           this.$emit('verificado', 1)
         }
