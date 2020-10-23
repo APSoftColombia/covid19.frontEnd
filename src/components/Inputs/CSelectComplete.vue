@@ -18,7 +18,7 @@
                 :hide-details="hideDetails"
                 :multiple="multiple"
                 :loading="loading"
-                @change="$emit('change')"
+                @change="val => $emit('change', val)"
                 :return-object="returnObject"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
@@ -44,7 +44,7 @@
                 :multiple="multiple"
                 :loading="loading"
                 :return-object="returnObject"
-                @change="$emit('change')"
+                @change="val => $emit('change', val)"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRefS && itemText ? $refs.theRefS.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>

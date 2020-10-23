@@ -29,7 +29,7 @@ extend('minlength', {
 
 extend('numeric', {
     ...numeric,
-    message: 'El campo {_field_} debe ser un número'
+    message: 'El campo {_field_} debe ser de tipo número únicamente'
 })
 
 extend('email', {
