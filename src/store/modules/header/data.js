@@ -255,7 +255,7 @@ export const itemsMenu = [
     {
         id: 30,
         title: 'Demanda Inducida',
-        icon: 'mdi-file-table',
+        icon: 'fas fa-hand-holding-medical',
         color: 'blue',
         routeName: 'DemandaInducida',
         typeRoute: 'demandaInducida'

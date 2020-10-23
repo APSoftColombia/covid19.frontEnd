@@ -131,8 +131,10 @@
         )
       },
       fixFecha(fecha){
-        let splitFecha = fecha.split('/')
-        return new Date(+splitFecha[2], splitFecha[1] - 1, +splitFecha[0])
+        if(fecha) {
+          let splitFecha = fecha.split('/')
+          return new Date(+splitFecha[2], splitFecha[1] - 1, +splitFecha[0])
+        }
       }
     }
   }

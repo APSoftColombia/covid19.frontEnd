@@ -1,66 +1,60 @@
 <template>
-  <div>
-    <data-table
-        ref="tablaDemandaInducida"
-        v-model="dataTable"
-        @resetOption="item => resetOptions(item)"
-        @crearEncuesta="item => crearEncuesta(item)"
-        @verEncuesta="item => verEncuesta(item)"
-        @editarEncuesta="item => editarEncuesta(item)"
-        @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
-    >
-      <template slot="top-actions-right">
-        <v-btn
-            color="green"
-            class="white--text mr-2"
-            v-if="returnDataTableTotal && returnDataTableTotal.total > 0 && returnDataTableTotal.total < 50000 && permisos.encuestasRCVDownloadExcel"
-            @click.stop="descargarExcel"
-            :disabled="loadingButton"
-            :loading="loadingButton"
+  <v-container fluid>
+		<page-title-bar title="Encuestas Demanda Inducida"></page-title-bar>
+		<v-row>
+			<v-col cols="12">
+				<v-card>
+          <data-table
+            ref="tablaDemandaInducida"
+            v-model="dataTable"
+            @resetOption="item => resetOptions(item)"
+            @crearEncuesta="item => crearEncuesta(item)"
+            @verEncuesta="item => verEncuesta(item)"
+            @editarEncuesta="item => editarEncuesta(item)"
+            @apply-filters="$refs && $refs.filtrosDemandaInducida && $refs.filtrosDemandaInducida.aplicaFiltros()"
         >
-          <v-icon left>far fa-file-excel</v-icon>
-          Generar Excel
-        </v-btn>
-      </template>
-      <filtros
-          slot="filters"
-          ref="filtrosReportesCovid"
-          :ruta-base="rutaBase"
-          @filtra="val => goDatos(val)"
-      ></filtros>
-    </data-table>
+          <filtros
+              slot="filters"
+              ref="filtrosDemandaInducida"
+              :ruta-base="rutaBase"
+              @filtra="val => goDatos(val)"
+          ></filtros>
+        </data-table>
+				</v-card>
+			</v-col>
+		</v-row>
     <registro-encuesta
-        v-if="permisos.encuestasRCVCrear"
+        v-if="permisos.crear"
         ref="registroEncuesta"
         @guardado="val => encuestaGuardada(val)"
         @close="loading = false"
     ></registro-encuesta>
-    <detalle-encuesta
+    <!-- <detalle-encuesta
         ref="detalleEncuesta"
-    ></detalle-encuesta>
+    ></detalle-encuesta> -->
     <app-section-loader :status="loading"></app-section-loader>
-  </div>
+	</v-container>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-import ItemListDataPaciente from 'Views/aps/rcv/componentes/ItemListDataPaciente'
+import AlertErpRequired from '../components/AlertErpRequired.vue'
+import ItemListDataAfiliado from '../components/ItemListDataAfiliado'
 
-const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
-const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
-const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
-import IconTooltip from '../../../components/Inputs/IconTooltip'
+const RegistroEncuesta = () => import('../components/CrearEncuestaDemanda')
+const Filtros = () => import('../components/FiltrosDemandaInducida')
+// const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
+// import IconTooltip from '../../../components/Inputs/IconTooltip'
 
 export default {
   name: 'Encuestas',
   components: {
     RegistroEncuesta,
     Filtros,
-    DetalleEncuesta,
   },
   computed: {
     permisos() {
-      return this.$store.getters.getPermissionModule('aps')
+      return this.$store.getters.getPermissionModule('demandaInducida')
     },
     ...mapGetters([
       'municipiosTotal',
@@ -70,8 +64,8 @@ export default {
       return this.dataTable
     }
   },
-  data: (vm) => ({
-    rutaBase: 'rcvs',
+  data: () => ({
+    rutaBase: 'demanda-inducida',
     lengthData: null,
     loading: false,
     loadingButton: false,
@@ -79,11 +73,11 @@ export default {
       buttonZone: true,
       advanceFilters: true,
       nameItemState: 'tablaDemandaInducida',
-      route: 'rcvs',
+      route: 'demanda-inducida',
       total: null,
       makeHeaders: [
         {
-          text: 'Encuesta',
+          text: 'Identificador',
           align: 'left',
           sortable: false,
           visibleColumn: true,
@@ -109,13 +103,6 @@ export default {
           }
         },
         {
-          text: 'Encuesta xxxx',
-          align: 'left',
-          sortable: false,
-          visibleColumn: true,
-          value: 'id_afiliado'
-        },
-        {
           text: 'Afiliado',
           align: 'left',
           sortable: false,
@@ -124,10 +111,13 @@ export default {
             render: function (createElement, context) {
               return context.props.value
                   ? createElement(
-                      ItemListDataPaciente,
+                      ItemListDataAfiliado,
                       {
                         props: {
-                          value: context.props.value
+                          sexo: context.props.value.genero,
+                          nombre: `${context.props.value.primer_nombre} ${context.props.value.segundo_nombre} ${context.props.value.primer_apellido} ${context.props.value.segundo_apellido}`,
+                          tipo_identificacion: context.props.value.tipo_identificacion,
+                          numero_identificacion: context.props.value.numero_identificacion
                         }
                       }
                   )
@@ -148,8 +138,7 @@ export default {
                       innerHTML: `
 												<v-list-item style="white-space: initial !important;">
 													<v-list-item-content style="display: grid !important; min-width: 220px !important;">
-														<v-list-item-title class="body-2">${vm.municipiosTotal && this.value.centro_poblado_id && vm.municipiosTotal.find(x => x.id === this.value.centro_poblado_id) ? vm.municipiosTotal.find(x => x.id === this.value.centro_poblado_id).nombre + ', ' + vm.municipiosTotal.find(x => x.id === this.value.centro_poblado_id).departamento.nombre : ''}</v-list-item-title>
-														<v-list-item-subtitle class="body-2">${this.value.direccion}</v-list-item-subtitle>
+														<v-list-item-title class="body-2">${this.value.municipio || ''}</v-list-item-title>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -161,27 +150,28 @@ export default {
           }
         },
         {
-          text: '',
+          text: 'ERP',
           align: 'left',
-          sortable: true,
+          sortable: false,
+          visibleColumn: true,
           component: {
             functional: true,
             render: function (createElement, context) {
-              return (!context.props.value.diastolica && !context.props.value.sistolica) && context.props.value.riesgo_general
+              return context.props.value.erp_required
                   ? createElement(
-                      IconTooltip,
+                      AlertErpRequired,
                       {
                         props: {
-                          tooltip: 'No registra datos de Tensión Arterial'
+                          value: context.props.value
                         }
                       }
                   )
-                  : createElement('div', '')
+                  : context.props.value.erp_id ? '' : createElement('span', '')
             }
           }
         },
         {
-          text: 'Usuario Registra',
+          text: 'Diagnostico',
           align: 'left',
           sortable: false,
           visibleColumn: true,
@@ -194,8 +184,82 @@ export default {
                       innerHTML: `
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.nombre_usuario || ''}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">${this.value.email_usuario || ''}</v-list-item-subtitle>
+														<v-list-item-title class="body-2">${this.value.diagnostico_febrero || '-'}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Cronico',
+          align: 'left',
+          sortable: false,
+          visibleColumn: true,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.cronico || '-'}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Maternoperinatal',
+          align: 'left',
+          sortable: false,
+          visibleColumn: true,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.maternoperinatal || '-'}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Alto costo',
+          align: 'left',
+          sortable: false,
+          visibleColumn: true,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.alto_costo || '-'}</v-list-item-title>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -220,9 +284,9 @@ export default {
     goDatos(ruta) {
       this.dataTable.route = ruta
     },
-    encuestaGuardada(item) {
+    encuestaGuardada() {
       this.$store.commit('reloadTable', 'tablaDemandaInducida')
-      this.$refs.detalleEncuesta.open(item, false, true)
+      // this.$refs.detalleEncuesta.open(item, false, true)
     },
     crearEncuesta(item) {
       this.loading = true
@@ -235,57 +299,27 @@ export default {
     verEncuesta(item) {
       this.$refs.detalleEncuesta.open(item, true, false)
     },
-    descargarExcel(){
-      this.loadingButton = true
-      this.axios( {
-        url: `${this.dataTable.route}&excel=${true}`, //your url
-        method: 'GET',
-        responseType: 'blob', // important
-      }).then(response => {
-        if(response.status === 204){
-          this.$store.commit('snackbar', {color: 'info', message: `Los filtros aplicados no han generado registros para exportar`})
-          this.loadingButton = false
-        }else{
-          //Create a Blob from the PDF Stream
-          const file = new Blob(
-              [response.data],
-              {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-          const fileURL = URL.createObjectURL(file);
-          const a = document.createElement("a");
-          document.body.appendChild(a);
-          a.style = "display: none";
-          a.href = fileURL
-          a.download = 'Encuestas RCV.xlsx'
-          a.click();
-          this.loadingButton = false
-        }
-      }).catch(error => {
-        this.loadingButton = false
-        this.$store.commit('snackbar', {color: 'error', message: 'al descargar excel', error: error})
-      })
-    },
     resetOptions(item) {
+      item.erp_id = null
+      item.erp_required = 1
       item.options = []
-      item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_documento_identidad_id && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id).tipo : ''
-      item.celular = item.numero_celular
-      item.identificacion = item.numero_documento_identidad
-      if (this.permisos.encuestasRCVCrear && !item.id) item.options.push({
+      if (this.permisos.crear && item.id) item.options.push({
         event: 'crearEncuesta',
         icon: 'fas fa-file-medical',
         tooltip: 'Crear Encuesta'
       })
-      if (item.id) item.options.push({
+      if (this.permisos.verDetalle && item.id) item.options.push({
         event: 'verEncuesta',
         icon: 'mdi-file-find',
         tooltip: 'Detalle Encuesta',
         color: 'success'
       })
-      if (this.permisos.encuestasRCVEditar && item.id) item.options.push({
+      /* if (this.permisos.encuestasRCVEditar && item.id) item.options.push({
         event: 'editarEncuesta',
         icon: 'mdi-file-document-edit',
         tooltip: 'Editar Encuesta',
         color: 'orange'
-      })
+      }) */
       return item
     }
   },

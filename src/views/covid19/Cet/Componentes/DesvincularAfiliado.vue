@@ -7,7 +7,7 @@
           v-on="on"
           @click.stop="dialog = true"
       >
-        <v-icon>far fa-window-close</v-icon>
+        <v-icon>mdi-close-box-outline</v-icon>
       </v-btn>
     </template>
     <v-card>
