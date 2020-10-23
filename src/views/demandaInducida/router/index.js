@@ -14,8 +14,8 @@ export default {
                 requiresOnLine: true,
                 requiresPermission: 'demandaInducida-index',
                 avatar: {
-                    icon: 'fas fa-database',
-                    color: 'indigo',
+                    icon: 'fas fa-hand-holding-medical',
+                    color: 'blue',
                 }
             }
         }
