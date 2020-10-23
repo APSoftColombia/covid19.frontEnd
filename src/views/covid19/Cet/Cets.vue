@@ -107,7 +107,7 @@
                               nombre: [context.props.value.nombre1, context.props.value.nombre2, context.props.value.apellido1, context.props.value.apellido2].filter(x => x).join(' '),
                               tipoIdentificacion: context.props.value.tipoid,
                               identificacion: context.props.value.identificacion,
-                              celular: context.props.value.celular,
+                              celular: context.props.value.celular ? context.props.value.celular : context.props.value.telefono_fijo,
                               fecha_expedicion: context.props.value.fecha_expedicion,
                               codigo_departamento: context.props.value.codigo_departamento,
                               codigo_municipio: context.props.value.codigo_municipio,
@@ -200,23 +200,23 @@
       CargarRegistros,
       InformacionPersona,
       DescargarReporte,
-      EditarContacto
+      EditarContacto,
     },
     methods: {
       resetOptions(item) {
         if (item.covid_contacto === 1 && this.permisos.cetsCrear) item.options.push({
           event: 'addContacto',
-          icon: 'fas fa-user-plus',
+          icon: 'mdi-account-multiple-plus-outline',
           tooltip: 'Añadir Contactos'
         })
         if (item.covid_contacto === 1) item.options.push({
           event: 'editContacto',
-          icon: 'fas fa-edit',
+          icon: 'mdi-pencil-box-multiple-outline',
           tooltip: 'Editar Confirmado'
         })
         item.options.push({
           event: 'infoContacto',
-          icon: 'fas fa-info-circle',
+          icon: 'mdi-information-outline',
           tooltip: item.covid_contacto === 1 ? 'Información del Confirmado' : 'Información del Contacto'
         })
         return item
@@ -237,7 +237,7 @@
       editarContacto(contacto){
         let setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
         this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
-      }
+      },
     },
     created() {
       this.dataTable.route = this.rutaBase

@@ -9,189 +9,190 @@
               <v-icon>mdi-close</v-icon>
           </v-btn>
       </v-toolbar>
-      <v-card-text>
-        <v-container fluid>
-          <v-row>
-            <datos-afiliado
-                :afiliado="contacto"
-                :abierto="true"
-                :readOnly="true"
-                :flat="true"
-                :columMD="4"
-            ></datos-afiliado>
-          </v-row>
-          <ValidationObserver ref="formContacto" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+      <ValidationObserver ref="formContacto" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+        <v-card-text>
+          <v-container fluid>
             <v-row>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
-                    label="Telefono Fijo"
-                    name="telefono fijo"
-                    rules="numeric|minlength:7"
-                    v-model="dataContacto.telefono_fijo"
-                ></c-texto>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
-                    label="Celular"
-                    name="celular"
-                    rules="required|numeric|minlength:10"
-                    v-model="dataContacto.celular"
-                ></c-texto>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-select-complete
-                    v-model="dataContacto.entidad_financiera_id"
-                    label="Entidad Financiera"
-                    name="entidad financiera"
-                    :items="entidadesFinancieras"
-                    item-text="razon_social"
-                    item-value="id"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-date
-                    v-model="dataContacto.fecha_expedicion"
-                    label="Fecha de Expedicion de Documento"
-                    name="fecha de expedicion de documento"
-                    rules="required"
-                    :max="moment().format('YYYY-MM-DD')"
-                >
-                </c-date>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
-                    label="Email"
-                    name="email"
-                    rules="email"
-                    v-model="dataContacto.email"
-                ></c-texto>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
-                    label="Dirección"
-                    name="dirección"
-                    rules="required"
-                    v-model="dataContacto.direccion"
-                ></c-texto>
-              </v-col>
-              <v-col class="pb-0" cols="12" sm="12">
-                <c-select-complete
-                    v-model="dataContacto.codigo_departamento"
-                    label="Departamento"
-                    name="departamento"
-                    rules="required"
-                    :items="departamentos"
-                    item-text="nombre"
-                    item-value="codigo"
-                >
-                </c-select-complete>
-              </v-col>
-              <v-col class="pb-0" cols="12" sm="12">
-                <c-select-complete
-                    :disabled="!dataContacto.codigo_departamento"
-                    v-model="dataContacto.codigo_municipio"
-                    label="Municipio"
-                    name="municipio"
-                    rules="required"
-                    :items="departamentos.length && dataContacto.codigo_departamento ? departamentos.find(x => x.codigo === dataContacto.codigo_departamento).municipios : []"
-                    item-text="nombre"
-                    item-value="codigo"
-                >
-                </c-select-complete>
-              </v-col>
-              <v-col class="pb-0" cols="12" sm="12" v-if="dataContacto.covid_contacto === 2">
-                <c-select-complete
-                    v-model="dataContacto.parentesco_id"
-                    label="Parentesco con el caso confirmado"
-                    name="parentesco"
-                    rules="required"
-                    :items="parentescos"
-                    item-text="descripcion"
-                    item-value="id"
-                >
-                </c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.fallecido"
-                    label="Fallecido"
-                    name="fallecido"
-                    rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.producto_financiero"
-                    label="Tiene Producto Financiero"
-                    name="producto financiero"
-                    rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.giro_a_familiar"
-                    label="Autoriza Giro Familiar"
-                    name="autoriza giro familiar"
-                    rules="required"
-                    :items="autorizaGiroFam"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.cumple_aislamiento"
-                    label="Cumple Aislamiento"
-                    name="cumple aislamiento"
-                    rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.autoriza_eps"
-                    label="Autoriza EPS"
-                    name="autoriza eps"
-                    rules="required"
-                    :items="autorizaEPSValues"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
-              <v-col cols="12" sm="12" md="4" lg="4">
-                <c-select-complete
-                    v-model="dataContacto.comparten_gastos"
-                    label="Comparten Gastos"
-                    name="comparten gastos"
-                    rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
-                    item-text="text"
-                    item-value="value"
-                ></c-select-complete>
-              </v-col>
+              <datos-afiliado
+                  :afiliado="contacto"
+                  :abierto="true"
+                  :readOnly="true"
+                  :flat="true"
+                  :columMD="4"
+              ></datos-afiliado>
             </v-row>
-          </ValidationObserver>
-        </v-container>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn @click="close" :loading="loading" :disabled="loading">
-          <v-icon>mdi-close</v-icon>
-          <span>Cerrar</span>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn @click.stop="actualizarContacto" class="white--text" color="indigo" :loading="loading" :disabled="loading">
-          <v-icon left>fas fa-save</v-icon>
-          <span>Guardar</span>
-        </v-btn>
-      </v-card-actions>
+              <v-row>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-texto
+                      label="Telefono Fijo"
+                      name="telefono fijo"
+                      rules="numeric|minlength:7"
+                      v-model="dataContacto.telefono_fijo"
+                  ></c-texto>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-texto
+                      label="Celular"
+                      name="celular"
+                      rules="required|numeric|minlength:10"
+                      v-model="dataContacto.celular"
+                  ></c-texto>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-select-complete
+                      v-model="dataContacto.entidad_financiera_id"
+                      label="Entidad Financiera"
+                      name="entidad financiera"
+                      :items="entidadesFinancieras"
+                      item-text="razon_social"
+                      item-value="id"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-date
+                      v-model="dataContacto.fecha_expedicion"
+                      label="Fecha de Expedicion de Documento"
+                      name="fecha de expedicion de documento"
+                      rules="required"
+                      :max="moment().format('YYYY-MM-DD')"
+                  >
+                  </c-date>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-texto
+                      label="Email"
+                      name="email"
+                      rules="email"
+                      v-model="dataContacto.email"
+                  ></c-texto>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                  <c-texto
+                      label="Dirección"
+                      name="dirección"
+                      rules="required"
+                      v-model="dataContacto.direccion"
+                  ></c-texto>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="12">
+                  <c-select-complete
+                      v-model="dataContacto.codigo_departamento"
+                      label="Departamento"
+                      name="departamento"
+                      rules="required"
+                      :items="departamentos"
+                      item-text="nombre"
+                      item-value="codigo"
+                  >
+                  </c-select-complete>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="12">
+                  <c-select-complete
+                      :disabled="!dataContacto.codigo_departamento"
+                      v-model="dataContacto.codigo_municipio"
+                      label="Municipio"
+                      name="municipio"
+                      rules="required"
+                      :items="departamentos.length && dataContacto.codigo_departamento ? departamentos.find(x => x.codigo === dataContacto.codigo_departamento).municipios : []"
+                      item-text="nombre"
+                      item-value="codigo"
+                  >
+                  </c-select-complete>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="12" v-if="dataContacto.covid_contacto === 2">
+                  <c-select-complete
+                      v-model="dataContacto.parentesco_id"
+                      label="Parentesco con el caso confirmado"
+                      name="parentesco"
+                      rules="required"
+                      :items="parentescosData"
+                      item-text="descripcion"
+                      item-value="id"
+                  >
+                  </c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.fallecido"
+                      label="Fallecido"
+                      name="fallecido"
+                      rules="required"
+                      :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.producto_financiero"
+                      label="Tiene Producto Financiero"
+                      name="producto financiero"
+                      rules="required"
+                      :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.giro_a_familiar"
+                      label="Autoriza Giro Familiar"
+                      name="autoriza giro familiar"
+                      rules="required"
+                      :items="autorizaGiroFam"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.cumple_aislamiento"
+                      label="Cumple Aislamiento"
+                      name="cumple aislamiento"
+                      rules="required"
+                      :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.autoriza_eps"
+                      label="Autoriza EPS"
+                      name="autoriza eps"
+                      rules="required"
+                      :items="autorizaEPSValues"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" lg="4">
+                  <c-select-complete
+                      v-model="dataContacto.comparten_gastos"
+                      label="Comparten Gastos"
+                      name="comparten gastos"
+                      rules="required"
+                      :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                      item-text="text"
+                      item-value="value"
+                  ></c-select-complete>
+                </v-col>
+              </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="close" :loading="loading" :disabled="loading">
+            <v-icon>mdi-close</v-icon>
+            <span>Cerrar</span>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
+          <v-btn @click.stop="actualizarContacto" class="white--text" color="indigo" :loading="loading" :disabled="loading">
+            <v-icon left>fas fa-save</v-icon>
+            <span>Guardar</span>
+          </v-btn>
+        </v-card-actions>
+      </ValidationObserver>
     </v-card>
   </v-dialog>
 </template>
@@ -213,6 +214,7 @@
       autorizaGiroFam: [],
       contacto: null,
       setNoToAuthEPS: null,
+      parentescosData: null
     }),
     computed: {
       ...mapGetters([
@@ -223,6 +225,7 @@
     },
     methods: {
       open(contacto, setNoToAuthEPS){
+        this.parentescosData = this.parentescos.filter(x => x.id <= 8)
         this.dialog = true
         this.contacto = {...contacto}
         this.dataContacto = {...contacto}

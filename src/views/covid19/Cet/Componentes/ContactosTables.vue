@@ -21,15 +21,24 @@
             <div class="grey--text text-center">
               <h5>Contactos del caso confirmado</h5>
             </div>
+            <template>
+              <div class="text-right">
+                <v-btn @click.stop="crearContacto()" class="white--text" color="teal">
+                  <v-icon left>fas fa-plus</v-icon>
+                  <span>Crear Contacto</span>
+                </v-btn>
+              </div>
+            </template>
             <v-simple-table dense class="text-capitalize">
               <template v-slot:default>
                 <thead>
-                <tr>
-                  <th class="text-left">ID</th>
-                  <th class="text-left">Persona</th>
-                  <th class="text-left">Fecha Nacimiento</th>
-                  <th class="text-left">Opciones</th>
-                </tr>
+                  <tr>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Persona</th>
+                    <th class="text-left">Fecha Nacimiento</th>
+                    <th class="text-left">Número Contacto</th>
+                    <th class="text-left">Opciones</th>
+                  </tr>
                 </thead>
                 <tbody>
                 <template v-if="afiliado && afiliado.confirmado && afiliado.confirmado.contactos && afiliado.confirmado.contactos.length">
@@ -55,6 +64,14 @@
                     </td>
                     <td>{{ contacto.fecha_nacimiento }}</td>
                     <td>
+                      <v-list-item>
+                        <v-list-item-content style="display: grid !important;">
+                          <v-list-item-title class="body-2">Celular: {{ contacto.celular }}</v-list-item-title>
+                          <v-list-item-subtitle class="text-truncate">Fijo: {{ contacto.telefono_fijo }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </td>
+                    <td>
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on"
@@ -62,7 +79,7 @@
                                  icon
                                  @click="editarContacto(contacto, setNoToAuthEPS)"
                           >
-                            <v-icon>far fa-edit</v-icon>
+                            <v-icon>mdi-pencil-box-multiple-outline</v-icon>
                           </v-btn>
                         </template>
                         <span>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</span>
@@ -126,6 +143,14 @@
                     </v-list-item-content>
                   </v-list-item>
                 </template>
+                <template v-slot:item.celular="{ item }">
+                  <v-list-item>
+                    <v-list-item-content style="display: grid !important;">
+                      <v-list-item-title class="body-2">Celular: {{ item.celular }}</v-list-item-title>
+                      <v-list-item-subtitle class="text-truncate">Fijo: {{ item.telefono_fijo }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
                 <template v-slot:item.opciones="{ item }">
                   <v-tooltip top>
                     <template v-slot:activator="{ on }">
@@ -157,7 +182,7 @@
         <v-card-text class="subtitle-1">
           <p class="pt-8">
             Presione click sobre el boton 'Vincular Contacto' que se encuentra en la columna de 'Opciones'
-            en la siguiente tabla para vincular contactos al confirmado
+            en la siguiente tabla para vincular contactos al confirmado.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -173,12 +198,17 @@
         ref="editarContacto"
         @editado="refreshAfiliado"
     ></editar-contacto>
+    <registrar-afiliado
+        ref="registrarAfiliado"
+        @contactoCreado="refreshAfiliado"
+    ></registrar-afiliado>
   </v-expansion-panels>
 </template>
 
 <script>
   const DesvincularAfiliado = () => import('./DesvincularAfiliado')
   const EditarContacto = () => import('./EditarContacto')
+  const RegistrarAfiliado = () => import('./RegistrarAfiliado')
   export default {
     name: "ContactosTables",
     data: () => ({
@@ -191,26 +221,37 @@
           text: 'ID',
           align: 'start',
           value: 'id',
+          sortable: false,
         },
         {
           text: 'Fecha Diagnostico',
           align: 'start',
           value: 'fecha_diagnostico',
+          sortable: false,
         },
         {
           text: 'Persona',
           align: 'start',
           value: 'persona',
+          sortable: false,
         },
         {
           text: 'Fecha Nacimiento',
           align: 'start',
           value: 'fecha_nacimiento',
+          sortable: false,
+        },
+        {
+          text: 'Número Contacto',
+          align: 'start',
+          value: 'celular',
+          sortable: false,
         },
         {
           text: 'Opciones',
           align: 'center',
           value: 'opciones',
+          sortable: false,
         },
       ],
     }),
@@ -231,7 +272,8 @@
     },
     components: {
       DesvincularAfiliado,
-      EditarContacto
+      EditarContacto,
+      RegistrarAfiliado
     },
     watch: {
       abierto: {
@@ -244,8 +286,12 @@
       },
     },
     methods: {
-      refreshAfiliado() {
-        this.$emit('refreshAfiliado', this.afiliado.confirmado.id)
+      crearContacto(){
+        this.$refs.registrarAfiliado.open(this.afiliado.confirmado, this.setNoToAuthEPS)
+      },
+      refreshAfiliado(afiliado = null) {
+        let id = this.afiliado.confirmado.id ? this.afiliado.confirmado.id : afiliado
+        this.$emit('refreshAfiliado', id)
       },
       editarContacto(contacto, setNoToAuthEPS){
         this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
