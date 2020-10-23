@@ -162,7 +162,6 @@
                     v-model="afiliado.fecha_expedicion"
                     label="Fecha de Expedicion de Documento"
                     name="fecha de expedicion de documento"
-                    rules="required"
                     :max="moment().format('YYYY-MM-DD')"
                 >
                 </c-date>
@@ -237,7 +236,7 @@
                     label="Tiene Producto Financiero"
                     name="producto financiero"
                     rules="required"
-                    :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                    :items="productoFinancieroData"
                     item-text="text"
                     item-value="value"
                 ></c-select-complete>
@@ -321,7 +320,8 @@
       loading: false,
       autorizaEPSValues: [],
       afiliadoConfirmadoID: null,
-      parentescosData: null
+      parentescosData: null,
+      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}]
     }),
     computed: {
       ...mapGetters([
@@ -351,8 +351,6 @@
             this.afiliado.direccion = val.direccion
             if(val.eps_id && this.epss && this.epss.length && this.epss.find(eps => eps.id === val.eps_id)){
               this.afiliado.codeps = this.epss.find(eps => eps.id === val.eps_id).codigo
-            }else{
-              this.afiliado.codeps = null
             }
             if(val.centro_poblado_id && this.municipiosTotal && this.municipiosTotal.length && this.municipiosTotal.find(x => x.id === val.centro_poblado_id)){
               let datosMunicipio = this.municipiosTotal.find(x => x.id === val.centro_poblado_id)
@@ -383,6 +381,24 @@
         },
         inmediate: true
       },
+      'afiliado.entidad_financiera_id': {
+        handler(val){
+          if(val){
+            this.productoFinancieroData = [{text: 'Si', value: 1}]
+            this.afiliado.producto_financiero = 1
+          }else{
+            this.productoFinancieroData = [{text: 'No', value: 0}]
+            this.afiliado.producto_financiero = 0
+          }
+        }
+      },
+      'afiliado.afiliado.eps_id': {
+        handler(val) {
+          if(!val) {
+            this.afiliado.codeps = null
+          }
+        }
+      }
     },
     methods: {
       open(afiliadoConfirmado = null, setNoToAuthEPS = null){

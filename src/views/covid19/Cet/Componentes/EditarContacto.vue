@@ -53,7 +53,6 @@
                       v-model="dataContacto.fecha_expedicion"
                       label="Fecha de Expedicion de Documento"
                       name="fecha de expedicion de documento"
-                      rules="required"
                       :max="moment().format('YYYY-MM-DD')"
                   >
                   </c-date>
@@ -128,7 +127,7 @@
                       label="Tiene Producto Financiero"
                       name="producto financiero"
                       rules="required"
-                      :items="[{text: 'No', value: 0},{text: 'Si', value: 1}]"
+                      :items="productoFinancieroData"
                       item-text="text"
                       item-value="value"
                   ></c-select-complete>
@@ -212,9 +211,10 @@
       loading: false,
       autorizaEPSValues: [],
       autorizaGiroFam: [],
-      contacto: null,
+      contacto: {},
       setNoToAuthEPS: null,
-      parentescosData: null
+      parentescosData: [],
+      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}]
     }),
     computed: {
       ...mapGetters([
@@ -223,12 +223,26 @@
         'departamentos'
       ]),
     },
+    watch: {
+      'dataContacto.entidad_financiera_id': {
+        handler(val){
+          if(this.dialog && this.dataContacto && val){
+            this.productoFinancieroData = [{text: 'Si', value: 1}]
+            this.dataContacto.producto_financiero = 1
+          }else{
+            this.productoFinancieroData = [{text: 'No', value: 0}]
+            this.dataContacto.producto_financiero = 0
+          }
+        },
+        immediate: false
+      }
+    },
     methods: {
       open(contacto, setNoToAuthEPS){
+        this.dataContacto = {...contacto}
         this.parentescosData = this.parentescos.filter(x => x.id <= 8)
         this.dialog = true
         this.contacto = {...contacto}
-        this.dataContacto = {...contacto}
         if(setNoToAuthEPS && this.dataContacto.id !== setNoToAuthEPS.id) {
           this.dataContacto.autoriza_eps = 0;
           this.autorizaEPSValues = [
@@ -254,8 +268,9 @@
       },
       close(){
         this.dialog = false
-        this.contacto = null
-        this.dataContacto = null
+        this.contacto = {}
+        this.dataContacto = {}
+        this.parentescosData = {}
         this.autorizaEPSValues = []
         this.autorizaGiroFam = []
       },
