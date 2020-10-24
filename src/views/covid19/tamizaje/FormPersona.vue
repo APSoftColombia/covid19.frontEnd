@@ -316,7 +316,10 @@ export default {
     },
     'persona.si_eps': {
       handler(val) {
-        !val && (this.persona.eps_id = null)
+        if(!val) {
+          this.persona.eps_id = null
+          this.persona.tipo_afiliacion = null
+        }
       },
       immediate: false
     },
