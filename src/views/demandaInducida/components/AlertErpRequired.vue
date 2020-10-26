@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="value.erp_required && !value.erp_id">
+    <template v-if="(value.sintomas_covid || value.paciente_estudio_covid || value.contacto_covid) && !value.erp_id">
       <v-icon color="red" class="mr-1">mdi-alert</v-icon>
       <span class="mr-1">Se requiere ERP</span>
       <v-tooltip top v-if="permisos.tamizajeCrear">

@@ -7,6 +7,14 @@
     transition="dialog-bottom-transition"
   >
     <v-card>
+        <!-- <v-chip
+            :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"
+            color="primary darken-3"
+            label
+        >
+        <v-icon left>mdi-timer</v-icon>
+        {{ time }}
+        </v-chip> -->
         <v-toolbar dark color="primary">
             <v-icon left>fas fa-edit</v-icon>
             <v-toolbar-title id="inicio">{{ encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Nueva encuesta` }}
@@ -146,9 +154,11 @@
                                     <c-select-complete
                                         v-model="encuesta.departamento_id"
                                         label="Departamento"
+                                        name="departamento"
                                         :items="departamentos"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                     >
                                     </c-select-complete>
                                 </v-col>
@@ -173,6 +183,7 @@
                                         :items="zona ? zona: []"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                     >
                                     </c-select-complete>
                                 </v-col>
@@ -182,6 +193,7 @@
                                         label="Nombre del centro poblado"
                                         name="centro poblado"
                                         upper-case
+                                        rules="required"
                                     >
                                     </c-texto>
                                 </v-col>
@@ -216,6 +228,7 @@
                                         :items="riamp ? riamp : []"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                     >
                                     </c-select-complete>
                                 </v-col>
@@ -225,6 +238,7 @@
                                             v-model="encuesta.fecha_atencion_riamp"
                                             placeholder="Fecha de atencion de Salida RIAMP"
                                             :max="moment().format('YYYY-MM-DD')"
+                                            rules="required"
                                         >
                                         </c-date>
                                     </v-col>
@@ -233,6 +247,7 @@
                                             v-model="encuesta.ips_atencion"
                                             label="IPS de atencion Posparto, legrado, aborto"
                                             name="ips atencion estado riamp"
+                                            rules="required"
                                             upper-case
                                         >
                                         </c-texto>
@@ -257,6 +272,7 @@
                                                 :items="riesgoEmbarazo"
                                                 item-text="nombre"
                                                 item-value="id"
+                                                rules="required"
                                                 :column="!$vuetify.breakpoint.smAndUp"
                                             >
                                             </c-radio>
@@ -317,6 +333,7 @@
                                             :items="single"
                                             item-text="nombre"
                                             item-value="id"
+                                            rules="required"
                                             :column="!$vuetify.breakpoint.smAndUp"
                                         >
                                         </c-radio>
@@ -329,6 +346,7 @@
                                             :items="single"
                                             item-text="nombre"
                                             item-value="id"
+                                            rules="required"
                                             :column="!$vuetify.breakpoint.smAndUp"
                                         >
                                         </c-radio>
@@ -341,6 +359,7 @@
                                             :items="single"
                                             item-text="nombre"
                                             item-value="id"
+                                            rules="required"
                                             :column="!$vuetify.breakpoint.smAndUp"
                                         >
                                         </c-radio>
@@ -379,6 +398,7 @@
                                             :items="single"
                                             item-text="nombre"
                                             item-value="id"
+                                            rules="required"
                                             :column="!$vuetify.breakpoint.smAndUp"
                                         >
                                         </c-radio>
@@ -392,6 +412,7 @@
                                             :items="opciones ? opciones.selec_inasistencia_control: []"
                                             item-text="opcion"
                                             item-value="codigo"
+                                            rules="required"
                                         >
                                         </c-select-complete>
                                     </v-col>
@@ -405,6 +426,7 @@
                                             :items="single"
                                             item-text="nombre"
                                             item-value="id"
+                                            rules="required"
                                             :column="!$vuetify.breakpoint.smAndUp"
                                         >
                                         </c-radio>
@@ -418,6 +440,7 @@
                                             :items="opciones ? opciones.selec_motivo_noplan: []"
                                             item-text="opcion"
                                             item-value="codigo"
+                                            rules="required"
                                         >
                                         </c-select-complete>
                                     </v-col>
@@ -430,6 +453,7 @@
                                             :items="opciones ? opciones.selec_metodo_plan: []"
                                             item-text="opcion"
                                             item-value="codigo"
+                                            rules="required"
                                         >
                                         </c-select-complete>
                                     </v-col>
@@ -447,6 +471,7 @@
                                         :items="single"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                         :column="!$vuetify.breakpoint.smAndUp"
                                     >
                                     </c-radio>
@@ -471,6 +496,7 @@
                                         :items="single"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                         :column="!$vuetify.breakpoint.smAndUp"
                                     >
                                     </c-radio>
@@ -483,6 +509,7 @@
                                         :items="single"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                         :column="!$vuetify.breakpoint.smAndUp"
                                     >
                                     </c-radio>
@@ -495,6 +522,7 @@
                                         :items="single"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
                                         :column="!$vuetify.breakpoint.smAndUp"
                                     >
                                     </c-radio>
@@ -507,6 +535,33 @@
                                         :items="single"
                                         item-text="nombre"
                                         item-value="id"
+                                        rules="required"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                </v-col>
+                                <v-col class="pb-0" cols="6">
+                                    <c-radio
+                                        v-model="encuesta.tbc"
+                                        label="¿Presenta lesiones o manchas en la piel sin dolor o rasquiña?"
+                                        name="paciente covid"
+                                        :items="single"
+                                        item-text="nombre"
+                                        item-value="id"
+                                        rules="required"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                    >
+                                    </c-radio>
+                                </v-col>
+                                <v-col class="pb-0" cols="6">
+                                    <c-radio
+                                        v-model="encuesta.hansen"
+                                        label="¿Ha presentado tos con expectoración igual o mayor a 15 dias?"
+                                        name="paciente covid"
+                                        :items="single"
+                                        item-text="nombre"
+                                        item-value="id"
+                                        rules="required"
                                         :column="!$vuetify.breakpoint.smAndUp"
                                     >
                                     </c-radio>
@@ -523,6 +578,7 @@
                                         name="demanda covid"
                                         :items="demandaCovid"
                                         item-text="nombre"
+                                        rules="required"
                                         item-value="id"
                                     >
                                     </c-select-complete>
@@ -632,6 +688,34 @@
                                                             </c-check-component>
                                                         </v-col>
                                                     </template>
+                                                    <template v-if="encuesta.tbc">
+                                                        <v-col class="pb-0" cols="12">
+                                                            <c-check-component
+                                                                v-model="induccion_tbc"
+                                                                name="Inducciones sin curso de vida"
+                                                                :items="inducciones && inducciones.inducciones_generales ? inducciones.inducciones_generales['Sin curso vida'].filter(x => x.tipo_atencion == 'Consulta medica TBC') : []"
+                                                                itemText="tipo_atencion"
+                                                                itemText1="grupo_etario"
+                                                                itemText2="frecuencia"
+                                                                itemValue="id"
+                                                            >
+                                                            </c-check-component>
+                                                        </v-col>
+                                                    </template>
+                                                    <template v-if="encuesta.hansen">
+                                                        <v-col class="pb-0" cols="12">
+                                                            <c-check-component
+                                                                v-model="induccion_hansen"
+                                                                name="Inducciones sin curso de vida"
+                                                                :items="inducciones && inducciones.inducciones_generales ? inducciones.inducciones_generales['Sin curso vida'].filter(x => x.tipo_atencion != 'Consulta medica TBC') : []"
+                                                                itemText="tipo_atencion"
+                                                                itemText1="grupo_etario"
+                                                                itemText2="frecuencia"
+                                                                itemValue="id"
+                                                            >
+                                                            </c-check-component>
+                                                        </v-col>
+                                                    </template>
                                                 </v-row>
                                             </v-expansion-panel-content>
                                         </v-expansion-panel>
@@ -726,8 +810,8 @@
                 </v-card>
             </ValidationObserver>
         </v-container>
+        <app-section-loader :status="loading"></app-section-loader>
     </v-card>
-    <app-section-loader :status="loading"></app-section-loader>
   </v-dialog>
 </template>
 <script>
@@ -735,6 +819,8 @@ import {mapGetters} from 'vuex'
 const DatosPersonales = () => import('../components/DatosPersonalesAfiliado')
 const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
 const CCheckComponent = () => import('../components/CheckComponent')
+
+var intervalo
 export default {
     name: 'CrearEncuestaDemanda',
     components: {
@@ -751,6 +837,8 @@ export default {
         inducciones_aplica: [],
         inducciones_preconcepcional: [],
         inducciones_maternoperinatal: [],
+        induccion_tbc: [],
+        induccion_hansen: [],
         inducciones: null,
         opciones: null,
         complementos: [],
@@ -799,7 +887,10 @@ export default {
             selec_metodo_plan: null,
             selec_inasistencia_vacuna_niño: null,
             selec_obs_importante_2: null,
-            obs_final: null
+            obs_final: null,
+            duracion: 0,
+            tbc: null,
+            hansen: null
         },
         medioEncuesta: [
             {'id': 'Telefonico', 'nombre': 'Telefonico'},
@@ -877,9 +968,33 @@ export default {
                     `
             }
             return text
+        },
+        time() {
+            let h = 0
+            let m = 0
+            let s = 0
+            if (this && this.encuesta) {
+                let initime = this.clone(this.encuesta.duracion)
+                h = Math.trunc(initime / 3600)
+                initime = initime - (h * 3600)
+                m = Math.trunc(initime / 60)
+                initime = initime - (m * 60)
+                s = initime
+            }
+            return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
         }
     },
     watch: {
+        'encuesta.tbc': {
+            handler(value){
+                if(!value) this.induccion_tbc = []
+            }
+        },
+        'encuesta.hansen': {
+            handler(value){
+                if(!value) this.induccion_hansen = []
+            }
+        },
         'encuesta.contacto_covid': {
             handler(value){
                 if(!value) this.encuesta.demanda_covid = null
@@ -1016,6 +1131,9 @@ export default {
             this.getOpcionesSelectores()
             this.getInducciones()
             this.dialog = true
+            intervalo = setInterval(() => {
+            this.encuesta.duracion++
+            }, 1000)
         },
         close() {
             this.dialog = false
@@ -1023,6 +1141,7 @@ export default {
             this.inducciones_aplica = []
             this.$refs.formDemandaInducida.reset()
             this.encuesta = this.clone(this.encuestaModel)
+            clearInterval(intervalo)
             this.$emit('close')
         },
         guardarEncuesta(){
@@ -1038,7 +1157,8 @@ export default {
                             razon_no_tel: this.encuesta.razon_no_tel,
                             razon_no_presencial: this.encuesta.razon_no_presencial,
                             fecha_fallecimiento: this.encuesta.fecha_fallecimiento,
-                            obs_final: this.encuesta.obs_final
+                            obs_final: this.encuesta.obs_final,
+                            duracion: this.encuesta.duracion
                         }
                     }else {
                         data = this.clone(this.encuesta)
@@ -1047,7 +1167,7 @@ export default {
                         delete data.fecha_fallecimiento
                         delete data.encuesta_efectiva
                         data.observacion_2 = this.encuesta.observacion_2.length ? this.encuesta.observacion_2.join(',') : ''
-                        data.inducciones = this.inducciones_aplica.concat(this.inducciones_preconcepcional, this.inducciones_maternoperinatal)
+                        data.inducciones = this.inducciones_aplica.concat(this.inducciones_preconcepcional, this.inducciones_maternoperinatal, this.induccion_hansen, this.induccion_tbc)
                         data.di_precargados_id = this.infoGeneral.id
                     }
                     this.axios.post(`demanda-inducida`, data).then(response => {
@@ -1107,21 +1227,30 @@ export default {
         * *ToAsk: edad minima para habilitar la ruta maternoperinatal y desea embarazo,
         * *teniendo en cuenta que la opcion Nueva gestante de observacion_2 RTA. 18 años
 
-        * !ToAsk: si a un afiliado se le puede realizar muchas encuestas de induccion o
-        *! se le hacen mas encuestas pero de seguimiento
-
         *! ToAsk: planifica se pregunta a que edad?
 
         **falta input de demanda inducida COVID -> done
         **si es materno o nueva gestante no pregunte planifica
         **el deseo embarazo solo 18 años
         **planifica para masculinos
-        -arreglar el rango de inducciones a las que aplica un usuario
-        -no efectivo, preguntar el telefono al que marco (?)
-        -filtro por grupos de edad
+        **arreglar el rango de inducciones a las que aplica un usuario
+        **hacer un alerta de ERP en la tabla (id erp)
+        **asignacion de afiliados a encuestadores/gestores
+
+        **validaciones(required) para campos de unica respuesta SI/NO
+        **validaciones(required) para departamento, municipio, zona y nombre del centro poblado,
+        **tambien para asiste_control y las razones por las que NO asiste
+        **al guardar demandaI redirigir a ERP
+        **agregar las preguntas e inducciones para tuberculosis aplica todos los rangos de edades
+        **filtro por grupos de edad
+        **filtro por fecha de creacion
+        **filtro por Encuestas efectivas y No efectivas
+        **filtro por Require ERP
+
+
+        -Agregar color rojo a no efectivas o que no tienen encuesta y color verde a las efectivas
+        -vista de detalle de encuesta cuando es efectiva
+        -filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
         -reporte excel por rango de fechas
-        -al guardar demandaI redirigir a ERP
-        -hacer un alerta de ERP en la tabla (id erp)
         -al guardar actualizar maestroafiliados
-        -asignacion de afiliados a encuestadores/gestores
  */

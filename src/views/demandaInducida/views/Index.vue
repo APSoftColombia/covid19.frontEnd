@@ -167,7 +167,7 @@ export default {
           visibleColumn: true,
           component: {
             functional: true,
-            render: function (createElement, context) {
+            render: (createElement, context) => {
               return createElement(
                       AlertErpRequired,
                       {
@@ -301,7 +301,8 @@ export default {
       this.dataTable.route = ruta
     },
     encuestaGuardada() {
-      this.$store.commit('reloadTable', 'tablaDemandaInducida')
+      this.$store.commit('reloadTable', 'tablaDemandaInducida');
+      // (item.sintomas_covid || item.paciente_estudio_covid || item.contacto_covid) && !item.erp_id ? this.crearTamizaje(item) : null
       // this.$refs.detalleEncuesta.open(item, false, true)
     },
     crearEncuesta(item) {
@@ -322,6 +323,27 @@ export default {
       console.log('item', item)
       this.loading = true
       let data = this.clone(this.modelTamizaje)
+      data.afiliado_id= null
+      data.tipo_identificacion= item.tipo_identificacion_id
+      data.identificacion= item.numero_identificacion
+      data.nombre1= item.primer_nombre
+      data.nombre2= item.segundo_nombre
+      data.apellido1= item.primer_apellido
+      data.apellido2= item.segundo_apellido
+      data.fecha_nacimiento= item.fecha_nacimiento
+      data.acudiente= null
+      data.sexo= item.genero
+      data.celular= item.tel_efectivo
+      data.celular2= item.tel_alterno
+      data.email= item.email
+      data.eps_id= null
+      data.tipo_afiliacion = item.regimen == 'SUBSIDIADO' ? 'Régimen Subsidiado' : item.regimen == 'CONTRIBUTIVO' ? 'Régimen Contributivo' : null
+      data.direccion= null
+      data.departamento_id= item.departamento_id
+      data.municipio_id= item.municipio_id
+      data.regimen_especial= null
+      data.si_eps= 1
+      data.barrio_id= null
       this.$refs.registroTamizaje.openData(data)
     },
     tamizajeGuardado(tamizaje) {
@@ -329,15 +351,13 @@ export default {
       this.$store.commit('reloadTable', 'tablaDemandaInducida')
     },
     resetOptions(item) {
-      item.erp_id = null
-      item.erp_required = null
       item.options = []
-      if (this.permisos.crear && item.id) item.options.push({
+      if (this.permisos.crear && !item.encuesta_efectiva_id) item.options.push({
         event: 'crearEncuesta',
         icon: 'fas fa-file-medical',
         tooltip: 'Crear Encuesta'
       })
-      if (this.permisos.verDetalle && item.id) item.options.push({
+      if (this.permisos.verDetalle && item.encuesta_efectiva_id) item.options.push({
         event: 'verEncuesta',
         icon: 'mdi-file-find',
         tooltip: 'Detalle Encuesta',
