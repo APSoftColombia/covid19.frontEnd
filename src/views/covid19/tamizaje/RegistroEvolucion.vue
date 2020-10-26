@@ -733,7 +733,7 @@ export default {
             else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
             else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
           }
-          if(this.tamizaje && this.tamizaje.muestras && this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) listado = listado.filter(x => x !== 'Recuperado')
+          if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
         }
       }
       return listado
