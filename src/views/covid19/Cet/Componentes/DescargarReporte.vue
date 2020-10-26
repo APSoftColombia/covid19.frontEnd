@@ -121,7 +121,7 @@
                 document.body.appendChild(a);
                 a.style = "display: none";
                 a.href = fileURL
-                a.download = 'Reporte Cet.xlsx'
+                a.download = 'REPORTE CET.xlsx'
                 a.click();
                 this.dialog = false
               }
