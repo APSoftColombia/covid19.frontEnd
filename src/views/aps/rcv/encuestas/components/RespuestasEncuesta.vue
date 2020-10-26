@@ -30,6 +30,21 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
+              <v-list-item :class="`'v-list-item--three-line'`" @click="click = null">
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                    <p>¿Cual es su IPS de atención?</p>
+                  </v-list-item-subtitle>
+                  <template v-if="encuesta.ips_atencion">
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal pt-0">
+                      <span class="font-weight-bold">IPS:</span> {{ encuesta.ips_atencion.nombre + ' - ' + encuesta.ips_atencion.codigohabilitacion }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal pt-0">
+                      <span class="font-weight-bold">Sede:</span> {{ encuesta.sede }}
+                    </v-list-item-subtitle>
+                  </template>
+                </v-list-item-content>
+              </v-list-item>
               <v-list-item @click="click = null">
                 <v-list-item-content class="pa-0">
                   <v-list-item-subtitle class="grey--text fs-12 fw-normal">
