@@ -21,16 +21,16 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <div
-          :style="`right: ${$vuetify.breakpoint.xsOnly ? '84' : '104' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '4' : '14' }px !important; position: fixed !important; z-index: 2 !important;`">
-        <v-chip
-            color="darken-2 primary"
-            label
-        >
-          <v-icon left>mdi-timer</v-icon>
-          {{ time }}
-        </v-chip>
-      </div>
+<!--      <div-->
+<!--          :style="`right: ${$vuetify.breakpoint.xsOnly ? '84' : '104' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '4' : '14' }px !important; position: fixed !important; z-index: 2 !important;`">-->
+<!--        <v-chip-->
+<!--            color="darken-2 primary"-->
+<!--            label-->
+<!--        >-->
+<!--          <v-icon left>mdi-timer</v-icon>-->
+<!--          {{ time }}-->
+<!--        </v-chip>-->
+<!--      </div>-->
       <v-container fluid>
         <v-row no-gutters>
           <jitsi-meet ref="jitsimeet" v-if="enlinea && videollamar" :enlinea="enlinea"
