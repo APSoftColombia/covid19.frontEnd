@@ -148,6 +148,27 @@
                   <v-col cols="12">
                     <v-card outlined tile>
                       <v-card-text>
+                        <buscador-ips
+                            ref="buscadorips"
+                            label="¿Cual es su IPS de atención?"
+                            v-model="encuesta.reps"
+                            name="ips de atención"
+                            rules="required"
+                        ></buscador-ips>
+                        <div class="mt-4" v-if="encuesta.reps">
+                          <c-texto
+                              v-model="encuesta.sede"
+                              label="Sede"
+                              name="sede"
+                              upper-case
+                          ></c-texto>
+                        </div>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
                         <c-radio
                             v-model="encuesta.consulta_por_urgencias"
                             label="¿Ha consultado por urgencias debido a su enfermedad?"
@@ -582,9 +603,10 @@
                     <v-col cols="12">
                       <v-card outlined tile>
                         <v-card-text>
+                          <!-- Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL) -->
                           <c-radio
                               v-model="encuesta.diagnosticado_rcv"
-                              label="12. Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL)"
+                              label="12. ¿Alguna vez ha sido diagnosticado con algunos eventos asociados a su enfermedad?"
                               rules="required"
                               name="diagnosticado RCV"
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"

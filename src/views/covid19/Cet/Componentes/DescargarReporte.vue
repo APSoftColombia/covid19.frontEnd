@@ -51,6 +51,20 @@
                 <v-icon>fas fa-download</v-icon>
               </v-btn>
             </v-col>
+            <v-col class="pb-0" cols="12" sm="10" md="10">
+              <c-select-complete
+                  label="Tipo de descarga"
+                  v-model="tipoDescargaSelected"
+                  outlined
+                  dense
+                  :items="tiposDescarga"
+                  item-value="value"
+                  item-text="text"
+                  clearable
+                  name="tipo descarga"
+                  rules="required"
+              ></c-select-complete>
+            </v-col>
           </v-row>
         </ValidationObserver>
       </v-card-text>
@@ -68,7 +82,13 @@
       cets: [],
       cet_id: null,
       dialog: false,
-      loadingButton: false
+      loadingButton: false,
+      tiposDescarga: [
+        {text: 'Descargar Registros Completados', value: '!='},
+        {text: 'Descargar Registros sin Completar', value: '='},
+        {text: 'Todos', value: 'todos'}
+      ],
+      tipoDescargaSelected: null
     }),
     methods: {
       getCets(){
@@ -86,22 +106,26 @@
           if(result) {
             this.loadingButton = true
             this.axios( {
-              url: `download-reporte/${this.cet_id}`, //your url
+              url: `download-reporte/${this.cet_id}?operator=${this.tipoDescargaSelected}`, //your url
               method: 'GET',
               responseType: 'blob', // important
             }).then(response => {
-              const file = new Blob(
-                  [response.data],
-                  {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-              const fileURL = URL.createObjectURL(file);
-              const a = document.createElement("a");
-              document.body.appendChild(a);
-              a.style = "display: none";
-              a.href = fileURL
-              a.download = 'Reporte Cet.xlsx'
-              a.click();
+              if(response.status === 204){
+                this.$store.commit('snackbar', {color: 'info', message: "no hay registros para descargar"})
+              }else{
+                const file = new Blob(
+                    [response.data],
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                const fileURL = URL.createObjectURL(file);
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                a.href = fileURL
+                a.download = 'Reporte Cet.xlsx'
+                a.click();
+                this.dialog = false
+              }
               this.loadingButton = false
-              this.dialog = false
             }).catch(error => {
               this.loadingButton = false
               this.$store.commit('snackbar', {color: 'error', message: 'al descargar excel', error: error})
