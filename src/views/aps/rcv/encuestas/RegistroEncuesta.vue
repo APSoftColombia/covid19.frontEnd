@@ -1165,6 +1165,8 @@ export default {
               dispuesto: this.encuesta.dispuesto,
               observaciones: this.encuesta.observaciones,
               fallida: this.encuesta.fallida,
+              reps: this.encuesta.reps,
+              sede: this.encuesta.sede,
               no_efectividad: null
             }
           }
