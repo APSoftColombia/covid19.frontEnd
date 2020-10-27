@@ -175,7 +175,7 @@
                 handler () {
                     this.assign()
                 },
-                immediate: false
+                immediate: true
             }
         },
         methods: {
@@ -259,7 +259,7 @@
                     this.datos.push(
                         {
                           label: 'Causa por la cual no reporta contactos',
-                          body: this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos).text,
+                          body: this.aislamiento.IDCausalNoReporteContactos ? this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos).text : '',
                           icon: 'fas fa-question',
                           iconColor: 'blue',
                           colmd: '6',

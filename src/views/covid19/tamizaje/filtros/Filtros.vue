@@ -272,6 +272,19 @@
         </v-card-text>
       </v-card>
     </v-col>
+    <!--
+    <v-col cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.aislamientos"
+          label="Aislamientos"
+          :items="filters.data.aislamientosOptions"
+          item-text="text"
+          item-value="value"
+          hide-details
+      >
+      </c-select-complete>
+    </v-col>
+    -->
   </v-row>
 </template>
 
@@ -322,7 +335,8 @@ export default {
         localiza_persona: null,
         contesta_encuesta: null,
         seguimientos: null,
-        erp_sin_asignar: null
+        erp_sin_asignar: null,
+        aislamientos: null
       },
       data: {
         opcionesLocaliza: [
@@ -348,6 +362,11 @@ export default {
           'Requiere Muestra',
           'Con Resultado',
           'Sin Resultado'
+        ],
+        aislamientosOptions: [
+          {text: 'Con Aislamientos Activos', value: 1},
+          {text: 'Con Aislamientos', value: 2},
+          {text: 'Sin Aislamientos', value: 3}
         ]
       }
     }
@@ -437,6 +456,9 @@ export default {
       }
       if (this.filters.models.erp_sin_asignar !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp_sin_asignar]=' + this.filters.models.erp_sin_asignar
+      }
+      if (this.filters.models.aislamientos !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[aislamientos]=' + this.filters.models.aislamientos
       }
       this.$emit('filtra', rutaTemp)
     },

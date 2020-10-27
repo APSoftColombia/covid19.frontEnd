@@ -88,6 +88,7 @@ import axios from 'axios'
 
 const RegistroViajero = () => import('Views/covid19/viajero/RegistroViajero')
 import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
+import BotonTieneAislamientos from "../../../components/Tamizaje/BotonTieneAislamientos";
 
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
@@ -506,7 +507,26 @@ export default {
                   : createElement('span', '')
             }
           }
-
+        },
+        {
+          text: 'Aislamiento',
+          sortable: false,
+          value: 'aislamiento',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value.ultimo_aislamiento_activo
+                  ? createElement(
+                      BotonTieneAislamientos,
+                      {
+                        props: {
+                          aislamiento: context.props.value.ultimo_aislamiento_activo
+                        }
+                      }
+                  )
+                  : createElement('span', '')
+            }
+          }
         },
         {
           text: 'Muestra',
