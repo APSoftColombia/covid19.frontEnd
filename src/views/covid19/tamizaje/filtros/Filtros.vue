@@ -272,7 +272,6 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <!--
     <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.aislamientos"
@@ -284,7 +283,6 @@
       >
       </c-select-complete>
     </v-col>
-    -->
   </v-row>
 </template>
 
@@ -365,7 +363,7 @@ export default {
         ],
         aislamientosOptions: [
           {text: 'Con Aislamientos Activos', value: 1},
-          {text: 'Con Aislamientos', value: 2},
+          {text: 'Con Aislamiento Cumplido', value: 2},
           {text: 'Sin Aislamientos', value: 3}
         ]
       }
