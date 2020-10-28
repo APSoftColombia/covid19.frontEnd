@@ -48,7 +48,10 @@
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[municipio_id]=' + this.filters.models.municipio_id
                 }
                 this.$emit('filtra', rutaTemp)
-            }
+            },
+          limpiarFiltros(){
+              this.filters.models.municipio_id = null
+          }
         }
     }
 </script>

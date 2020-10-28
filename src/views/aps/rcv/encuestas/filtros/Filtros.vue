@@ -220,6 +220,19 @@
                 }
                 this.$emit('filtra', rutaTemp)
             },
+          limpiarFiltros(){
+            this.filters.models.municipio_id = null
+            this.filters.models.encuesta = null
+            this.filters.models.fecha_creacion = null
+            this.filters.models.riesgo_general = null
+            this.filters.models.riesgo_findrisc = null
+            this.filters.models.riesgo_oms = null
+            this.filters.models.riesgo_morisky = null
+            this.filters.models.hasRcv = null
+            this.filters.models.departamento_id = null
+            this.filters.models.user = null
+            this.filters.models.tension_arterial = null
+          },
           getUsers(){
               this.axios.get('user').then(response => {
                 this.users = response.data

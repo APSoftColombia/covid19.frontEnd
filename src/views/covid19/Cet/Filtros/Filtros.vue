@@ -77,6 +77,10 @@
         this.axios.get('cets').then(response => {
           this.cets = response.data
         })
+      },
+      limpiarFiltros(){
+        this.filters.models.covid_contacto = null
+        this.filters.models.cet_id = null
       }
     },
     created() {

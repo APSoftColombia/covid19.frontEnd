@@ -6,9 +6,10 @@
                 @resetOption="item => resetOptions(item)"
                 @crearTamizaje="item => crearTamizaje(item)"
                 @verReporte="item => verReporte(item)"
-                @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
                 @seguimiento="item => verSeguimiento(item)"
                 @eliminarReporte="item => eliminarReporteComunitario(item)"
+                @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
+                @clear-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.limpiarFiltros()"
         >
             <template slot="top-actions-right" v-if="permisos.reporteComunitarioCrear">
                 <v-btn

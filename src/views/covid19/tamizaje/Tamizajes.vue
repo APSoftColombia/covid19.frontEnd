@@ -10,6 +10,7 @@
         @georeferenciar="item => asignarGeorreferenciacion(item)"
         @verpdf="item => descargarPDF(item)"
         @apply-filters="$refs && $refs.filtrosTamizaje && $refs.filtrosTamizaje.aplicaFiltros()"
+        @clear-filters="$refs && $refs.filtrosTamizaje && $refs.filtrosTamizaje.limpiarFiltros()"
     >
       <template slot="top-actions-right" v-if="permisos.tamizajeCrear || permisos.tamizajeViajeroCrear">
         <v-tooltip top v-if="permisos.tamizajeViajeroCrear" :disabled="$vuetify.breakpoint.smAndUp">

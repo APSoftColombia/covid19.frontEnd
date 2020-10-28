@@ -43,6 +43,9 @@
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filtros.models.estadoPruebaD
                 }
                 this.$emit('filtra', rutaTemp)
+            },
+            limpiarFiltros(){
+              this.filtros.models.estadoPruebaD = null
             }
         }
     }

@@ -9,6 +9,7 @@
         @infoContacto="item => infoContacto(item)"
         @editContacto="item => editarContacto(item)"
         @apply-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.aplicaFiltros()"
+        @clear-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.limpiarFiltros()"
     >
       <template slot="top-actions-right">
         <descargar-reporte

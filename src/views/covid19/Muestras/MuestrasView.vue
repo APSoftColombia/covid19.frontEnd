@@ -7,6 +7,7 @@
             @resetOption="item => resetOptions(item)"
             @seguimiento="item => verSeguimiento(item)"
             @apply-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.aplicaFiltros()"
+            @clear-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.limpiarFiltros()"
         >
             <filtros
                 slot="filters"

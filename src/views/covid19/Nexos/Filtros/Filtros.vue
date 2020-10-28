@@ -53,15 +53,19 @@
         }),
         methods: {
             aplicaFiltros(){
-                let rutaTemp = this.rutaBase
+              let rutaTemp = this.rutaBase
 
-                if(this.filtros.models.estadoPruebaD !== null) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filtros.models.estadoPruebaD
-                }
-                if(this.filtros.models.erpD !== null) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp]=' + this.filtros.models.erpD
-                }
-                this.$emit('filtra', rutaTemp)
+              if(this.filtros.models.estadoPruebaD !== null) {
+                rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filtros.models.estadoPruebaD
+              }
+              if(this.filtros.models.erpD !== null) {
+                rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp]=' + this.filtros.models.erpD
+              }
+              this.$emit('filtra', rutaTemp)
+            },
+            limpiarFiltros(){
+              this.filtros.models.estadoPruebaD = null
+              this.filtros.models.erpD = null
             }
         }
     }

@@ -35,6 +35,7 @@
                             <v-divider class="ma-0 pa-0"></v-divider>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
+                                <v-btn small @click.stop="$emit('clear-filters')">Limpiar Filtros</v-btn>
                                 <v-btn small color="primary" @click.stop="$emit('apply-filters')">Aplicar filtros
                                 </v-btn>
                             </v-card-actions>

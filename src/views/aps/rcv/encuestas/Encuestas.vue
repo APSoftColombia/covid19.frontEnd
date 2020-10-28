@@ -8,6 +8,7 @@
         @verEncuesta="item => verEncuesta(item)"
         @editarEncuesta="item => editarEncuesta(item)"
         @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
+        @clear-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.limpiarFiltros()"
     >
       <template slot="top-actions-right">
         <v-btn

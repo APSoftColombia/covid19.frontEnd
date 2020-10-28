@@ -460,6 +460,30 @@ export default {
       }
       this.$emit('filtra', rutaTemp)
     },
+    limpiarFiltros(){
+          this.filters.models.caso_estudio = null
+          this.filters.models.diagnostico = null
+          this.filters.models.rango_created_at = []
+          this.filters.models.rango_updated_at = []
+          this.filters.models.fecha_nacimiento = null
+          this.filters.models.riesgo = null
+          this.filters.models.departamentos = []
+          this.filters.models.municipios = []
+          this.filters.models.medico_id = null
+          this.filters.models.user_id = null
+          this.filters.models.evolucion = []
+          this.filters.models.clasificacion = []
+          this.filters.models.orden_medica_id = null
+          this.filters.models.tamizador_id = null
+          this.filters.models.eps_id = null
+          this.filters.models.estado_afectacion = null
+          this.filters.models.estado_prueba = null
+          this.filters.models.localiza_persona = null
+          this.filters.models.contesta_encuesta = null
+          this.filters.models.seguimientos = null
+          this.filters.models.erp_sin_asignar = null
+          this.filters.models.aislamientos = null
+    },
     getComplementos() {
       this.axios.get(`complementos-tamizajes`)
           .then(response => {

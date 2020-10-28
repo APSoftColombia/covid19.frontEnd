@@ -14,6 +14,7 @@
               @detalleNexo="item => detalleNexo(item)"
               @eliminarNexo="item => eliminarNexo(item)"
               @apply-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.aplicaFiltros()"
+              @clear-filters="$refs && $refs.filtrosNexos && $refs.filtrosNexos.limpiarFiltros()"
           >
             <filtros
                 slot="filters"
