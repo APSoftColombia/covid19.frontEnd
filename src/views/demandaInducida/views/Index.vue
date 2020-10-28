@@ -35,9 +35,9 @@
         @guardado="item => tamizajeGuardado(item)"
         @close="loading = false"
     />
-    <!-- <detalle-encuesta
+    <detalle-encuesta
         ref="detalleEncuesta"
-    ></detalle-encuesta> -->
+    ></detalle-encuesta>
     <app-section-loader :status="loading"></app-section-loader>
 	</v-container>
 </template>
@@ -51,7 +51,7 @@ const RegistroEncuesta = () => import('../components/CrearEncuestaDemanda')
 const Filtros = () => import('../components/FiltrosDemandaInducida')
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
-// const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
+const DetalleEncuesta = () => import('../components/DetalleEncuesta')
 // import IconTooltip from '../../../components/Inputs/IconTooltip'
 
 export default {
@@ -60,7 +60,8 @@ export default {
     RegistroEncuesta,
     Filtros,
     Seguimiento,
-    RegistroTamizaje
+    RegistroTamizaje,
+    DetalleEncuesta
   },
   computed: {
     permisos() {
@@ -300,10 +301,10 @@ export default {
     goDatos(ruta) {
       this.dataTable.route = ruta
     },
-    encuestaGuardada() {
+    encuestaGuardada(item) {
       this.$store.commit('reloadTable', 'tablaDemandaInducida');
       // (item.sintomas_covid || item.paciente_estudio_covid || item.contacto_covid) && !item.erp_id ? this.crearTamizaje(item) : null
-      // this.$refs.detalleEncuesta.open(item, false, true)
+      this.$refs.detalleEncuesta.open(item, false, true)
     },
     crearEncuesta(item) {
       this.loading = true
@@ -314,7 +315,7 @@ export default {
       this.$refs.registroEncuesta.open(item)
     },
     verEncuesta(item) {
-      this.$refs.detalleEncuesta.open(item, true, false)
+      this.$refs.detalleEncuesta.open(item)
     },
     verDetalleTamizaje(item) {
       this.$refs.detalleerp.open(item.erp_id)

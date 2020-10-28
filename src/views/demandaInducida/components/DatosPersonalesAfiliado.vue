@@ -4,18 +4,18 @@
       <v-expansion-panel-header class="py-1 pl-0">
         <v-list-item>
           <v-list-item-avatar>
-            <v-icon color="teal" large>{{ afiliado.genero === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
+            <v-icon color="teal" large>{{ afiliado && afiliado.genero ? afiliado.genero  === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face': null }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content class="pa-0">
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
-                {{ [afiliado.primer_nombre, afiliado.segundo_nombre, afiliado.primer_apellido, afiliado.segundo_apellido].filter(x => x).join(' ') }}
+                {{ afiliado ? [afiliado.primer_nombre, afiliado.segundo_nombre, afiliado.primer_apellido, afiliado.segundo_apellido].filter(x => x).join(' ') : null}}
               </h4>
             </v-list-item-title>
             <v-list-item-title>
               <h6 class="mb-0">
-              {{ afiliado.tipo_identificacion }}
-              {{ afiliado.numero_identificacion }}
+              {{ afiliado ? afiliado.tipo_identificacion : null }}
+              {{ afiliado ? afiliado.numero_identificacion : null }}
               </h6>
             </v-list-item-title>
             <v-list-item-subtitle>

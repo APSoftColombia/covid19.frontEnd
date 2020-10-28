@@ -460,7 +460,7 @@
                                 </template>
                                 <v-col class="pb-0" cols="6" 
                                     v-if="
-                                        (infoGeneral.maternoperinatal != 'X' && !encuesta.observacion_2.includes('Nueva gestante') && infoGeneral.genero == 'F') || 
+                                        (infoGeneral.maternoperinatal != 'X' && !encuesta.observacion_2.includes('Nueva gestante') && infoGeneral.genero == 'F' && ageIsBetweenRange(edadMeses, 216, 588)) || 
                                         encuesta.observacion_2.includes('Embarazo terminado') && ageIsBetweenRange(edadMeses, 216, 588)
                                     "
                                 >
@@ -542,7 +542,7 @@
                                 </v-col>
                                 <v-col class="pb-0" cols="6">
                                     <c-radio
-                                        v-model="encuesta.tbc"
+                                        v-model="encuesta.riesgo_tbc"
                                         label="¿Presenta lesiones o manchas en la piel sin dolor o rasquiña?"
                                         name="paciente covid"
                                         :items="single"
@@ -555,7 +555,7 @@
                                 </v-col>
                                 <v-col class="pb-0" cols="6">
                                     <c-radio
-                                        v-model="encuesta.hansen"
+                                        v-model="encuesta.riesgo_hansen"
                                         label="¿Ha presentado tos con expectoración igual o mayor a 15 dias?"
                                         name="paciente covid"
                                         :items="single"
@@ -688,7 +688,7 @@
                                                             </c-check-component>
                                                         </v-col>
                                                     </template>
-                                                    <template v-if="encuesta.tbc">
+                                                    <template v-if="encuesta.riesgo_tbc">
                                                         <v-col class="pb-0" cols="12">
                                                             <c-check-component
                                                                 v-model="induccion_tbc"
@@ -702,7 +702,7 @@
                                                             </c-check-component>
                                                         </v-col>
                                                     </template>
-                                                    <template v-if="encuesta.hansen">
+                                                    <template v-if="encuesta.riesgo_hansen">
                                                         <v-col class="pb-0" cols="12">
                                                             <c-check-component
                                                                 v-model="induccion_hansen"
@@ -985,12 +985,12 @@ export default {
         }
     },
     watch: {
-        'encuesta.tbc': {
+        'encuesta.riesgo_tbc': {
             handler(value){
                 if(!value) this.induccion_tbc = []
             }
         },
-        'encuesta.hansen': {
+        'encuesta.riesgo_hansen': {
             handler(value){
                 if(!value) this.induccion_hansen = []
             }
