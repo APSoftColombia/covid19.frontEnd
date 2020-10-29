@@ -647,9 +647,9 @@
                                                             <v-icon left>
                                                                 mdi-label
                                                             </v-icon>
-                                                            {{ `${induccion.di_edades.tipo_atencion ? induccion.di_edades.tipo_atencion : ''} 
-                                                                ${induccion.di_edades.grupo_etario ? induccion.di_edades.grupo_etario : ''} 
-                                                                ${induccion.di_edades.frecuencua ? induccion.di_edades.frecuencua : ''}` }}
+                                                            {{ `${induccion.di_edades ? induccion.di_edades.tipo_atencion : ''} 
+                                                                ${induccion.di_edades ? induccion.di_edades.grupo_etario : ''} 
+                                                                ${induccion.di_edades ? induccion.di_edades.frecuencia : ''}` }}
                                                         </v-chip>
                                                         <!-- <v-col class="pb-0" cols="12">
                                                             <c-check-component
