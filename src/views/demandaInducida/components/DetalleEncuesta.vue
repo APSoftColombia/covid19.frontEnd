@@ -199,9 +199,9 @@
                                     </c-texto>
                                 </v-col>
                             
-                                <v-col class="pb-0" cols="12">
+                                <v-col class="pb-0" cols="12" v-if="encuesta.di_encuestas.observacion_2">
                                     <v-label>Observacion 2:</v-label>
-                                    <template v-for="(obs, index) in encuesta.di_encuestas.observacion_2.split(',')">
+                                    <template v-for="(obs, index) in encuesta.di_encuestas.observacion_2">
                                         <v-chip class="ma-2" :key="index">
                                             {{ obs }}
                                         </v-chip>
@@ -774,9 +774,11 @@ const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
             open(item = null) {
                 if (item && item.id) {
                     this.getOpcionesSelectores()
+                    console.log("afterCallMethod");
                     this.getencuesta(item.id)
                 }
                 this.dialog = true
+                console.log("beforeCallMethod");
             },
             close() {
                 this.dialog = false
@@ -787,6 +789,8 @@ const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
                 this.axios.get(`demanda-inducida/${di_precargados_id}`)
                     .then(response => {
                     this.encuesta = this.clone(response.data)
+                    console.log("getEncuesta");
+                    this.encuesta.di_encuestas.observacion_2 = this.encuesta.di_encuestas.observacion_2 != null ? this.encuesta.di_encuestas.observacion_2.split(',') : []
                     this.loading = false
                     })
                     .catch(error => {
