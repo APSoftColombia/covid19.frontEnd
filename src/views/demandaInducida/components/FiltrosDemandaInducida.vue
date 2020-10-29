@@ -109,7 +109,7 @@
                 if(this.filters.models.grupo_etario != null){
                     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + `filter[edad]=${this.filters.models.grupo_etario}`
                 }
-                if (this.filters.models.erp_required !== null) {
+                if (this.filters.models.erp_required) {
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp_required]=' + this.filters.models.erp_required
                 }
                 this.$emit('filtra', rutaTemp)

@@ -542,7 +542,7 @@
                                 </v-col>
                                 <v-col class="pb-0" cols="6">
                                     <c-radio
-                                        v-model="encuesta.riesgo_tbc"
+                                        v-model="encuesta.riesgo_hansen"
                                         label="¿Presenta lesiones o manchas en la piel sin dolor o rasquiña?"
                                         name="paciente covid"
                                         :items="single"
@@ -555,7 +555,7 @@
                                 </v-col>
                                 <v-col class="pb-0" cols="6">
                                     <c-radio
-                                        v-model="encuesta.riesgo_hansen"
+                                        v-model="encuesta.riesgo_tbc"
                                         label="¿Ha presentado tos con expectoración igual o mayor a 15 dias?"
                                         name="paciente covid"
                                         :items="single"
