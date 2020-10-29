@@ -259,5 +259,13 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'DemandaInducida',
         typeRoute: 'demandaInducida'
+    },
+    {
+        id: 33,
+        title: 'Power bi',
+        icon: 'fas fa-chart-bar',
+        color: 'blue',
+        routeName: 'Powerbi',
+        typeRoute: 'powerbi'
     }
 ]

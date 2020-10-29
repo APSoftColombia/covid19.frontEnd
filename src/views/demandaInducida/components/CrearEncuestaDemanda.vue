@@ -1246,11 +1246,11 @@ export default {
         **filtro por fecha de creacion
         **filtro por Encuestas efectivas y No efectivas
         **filtro por Require ERP
+        **vista de detalle de encuesta cuando es efectiva
 
 
-        -Agregar color rojo a no efectivas o que no tienen encuesta y color verde a las efectivas
-        -vista de detalle de encuesta cuando es efectiva
+        
         -filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
-        -reporte excel por rango de fechas
+        
         -al guardar actualizar maestroafiliados
  */
