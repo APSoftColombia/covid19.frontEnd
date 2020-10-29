@@ -358,12 +358,12 @@ export default {
         icon: 'fas fa-file-medical',
         tooltip: 'Crear Encuesta'
       })
-      if (this.permisos.verDetalle && item.encuesta_efectiva_id) item.options.push({
-        event: 'verEncuesta',
-        icon: 'mdi-file-find',
-        tooltip: 'Detalle Encuesta',
-        color: 'success'
-      })
+      // if (this.permisos.verDetalle && item.encuesta_efectiva_id) item.options.push({
+      //   event: 'verEncuesta',
+      //   icon: 'mdi-file-find',
+      //   tooltip: 'Detalle Encuesta',
+      //   color: 'success'
+      // })
       /* if (this.permisos.encuestasRCVEditar && item.id) item.options.push({
         event: 'editarEncuesta',
         icon: 'mdi-file-document-edit',
