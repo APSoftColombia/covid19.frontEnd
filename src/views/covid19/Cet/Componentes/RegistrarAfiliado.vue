@@ -63,21 +63,6 @@
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">
                 <c-texto
-                    label="Primer Nombre"
-                    name="primer nombre"
-                    rules="required"
-                    v-model="afiliado.nombre1"
-                ></c-texto>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
-                    label="Segundo Nombre"
-                    name="segundo nombre"
-                    v-model="afiliado.nombre2"
-                ></c-texto>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-texto
                     label="Primer Apellido"
                     name="primer apellido"
                     rules="required"
@@ -89,6 +74,21 @@
                     label="Segundo Apellido"
                     name="segundo apellido"
                     v-model="afiliado.apellido2"
+                ></c-texto>
+              </v-col>
+              <v-col cols="12" sm="12" md="6" lg="6">
+                <c-texto
+                    label="Primer Nombre"
+                    name="primer nombre"
+                    rules="required"
+                    v-model="afiliado.nombre1"
+                ></c-texto>
+              </v-col>
+              <v-col cols="12" sm="12" md="6" lg="6">
+                <c-texto
+                    label="Segundo Nombre"
+                    name="segundo nombre"
+                    v-model="afiliado.nombre2"
                 ></c-texto>
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">

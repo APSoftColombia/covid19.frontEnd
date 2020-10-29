@@ -1,11 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px">
+  <v-dialog v-model="dialog" max-width="600px" persistent>
     <template v-slot:activator="{ on }">
       <v-btn
           color="green"
           class="white--text mr-2"
           v-on="on"
-          @click.stop="dialog = true"
+          @click.stop="close"
       >
         <v-icon left>fas fa-file-download</v-icon>
         Descargar Reporte
@@ -90,6 +90,15 @@
       ],
       tipoDescargaSelected: null
     }),
+    watch: {
+      'dialog': {
+        handler(val) {
+          if(val) {
+            this.getCets()
+          }
+        }
+      }
+    },
     methods: {
       getCets(){
         this.axios.get('cets').then(response => {
@@ -100,6 +109,7 @@
       },
       close(){
         this.dialog = false
+        this.cets = []
       },
       descargarReporte(){
         this.$refs.formDescargaReporte.validate().then(result => {
