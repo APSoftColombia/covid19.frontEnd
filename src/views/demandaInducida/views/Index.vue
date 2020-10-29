@@ -301,10 +301,10 @@ export default {
     goDatos(ruta) {
       this.dataTable.route = ruta
     },
-    encuestaGuardada() {
+    encuestaGuardada(item) {
       this.$store.commit('reloadTable', 'tablaDemandaInducida');
       // (item.sintomas_covid || item.paciente_estudio_covid || item.contacto_covid) && !item.erp_id ? this.crearTamizaje(item) : null
-      // !item.hasOwnProperty('razon_no_tel') ? this.$refs.detalleEncuesta.open(item, false, true): null
+      !item.hasOwnProperty('razon_no_tel') ? this.$refs.detalleEncuesta.open(item, true): null
     },
     crearEncuesta(item) {
       this.loading = true
@@ -316,7 +316,7 @@ export default {
     },
     verEncuesta(item) {
       console.log(item)
-      this.$refs.detalleEncuesta.open(item)
+      this.$refs.detalleEncuesta.open(item, false)
     },
     verDetalleTamizaje(item) {
       this.$refs.detalleerp.open(item.erp_id)
