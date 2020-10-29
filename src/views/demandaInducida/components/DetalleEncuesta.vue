@@ -773,8 +773,8 @@ const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
         methods: {
             open(item = null) {
                 if (item && item.id) {
-                    this.getencuesta(item.id)
                     this.getOpcionesSelectores()
+                    this.getencuesta(item.id)
                 }
                 this.dialog = true
             },
@@ -786,7 +786,7 @@ const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
                 this.loading = true
                 this.axios.get(`demanda-inducida/${di_precargados_id}`)
                     .then(response => {
-                    this.encuesta = response.data
+                    this.encuesta = this.clone(response.data)
                     this.loading = false
                     })
                     .catch(error => {

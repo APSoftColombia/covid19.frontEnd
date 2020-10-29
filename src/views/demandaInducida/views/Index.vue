@@ -301,10 +301,10 @@ export default {
     goDatos(ruta) {
       this.dataTable.route = ruta
     },
-    encuestaGuardada(item) {
+    encuestaGuardada() {
       this.$store.commit('reloadTable', 'tablaDemandaInducida');
       // (item.sintomas_covid || item.paciente_estudio_covid || item.contacto_covid) && !item.erp_id ? this.crearTamizaje(item) : null
-      this.$refs.detalleEncuesta.open(item, false, true)
+      // !item.hasOwnProperty('razon_no_tel') ? this.$refs.detalleEncuesta.open(item, false, true): null
     },
     crearEncuesta(item) {
       this.loading = true
