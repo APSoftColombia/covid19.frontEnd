@@ -315,7 +315,8 @@ export default {
       this.$refs.registroEncuesta.open(item)
     },
     verEncuesta(item) {
-      this.$refs.detalleEncuesta.open(item)
+      console.log(item)
+      // this.$refs.detalleEncuesta.open(item)
     },
     verDetalleTamizaje(item) {
       this.$refs.detalleerp.open(item.erp_id)
