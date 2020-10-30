@@ -22,7 +22,7 @@ const state = {
         tablaMuestras: 0,
         tablaMuestrasVersion: 1,
         tablaEncuestasRCV: 0,
-        tablaEncuestasRCVVersion: 5,
+        tablaEncuestasRCVVersion: 6,
         tablaUsers: 0,
         tablaUsersVersion: 0,
         tablaCets: 0,
