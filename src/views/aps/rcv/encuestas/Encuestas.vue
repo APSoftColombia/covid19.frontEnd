@@ -123,7 +123,7 @@ export default {
                       innerHTML: `
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">Usuario: ${this.value.nombre_usuario || ''}</v-list-item-title>
+														<v-list-item-title class="body-2">${this.value.nombre_usuario || ''}</v-list-item-title>
 														<v-list-item-subtitle class="body-2 text-truncate text-center">${this.value.id && this.value.created_at ? this.moment(this.value.created_at).format('DD/MM/YYYY HH:mm') : ''}</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
