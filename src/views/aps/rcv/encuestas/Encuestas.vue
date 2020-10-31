@@ -99,7 +99,58 @@ export default {
 												<v-list-item>
 													<v-list-item-content style="display: grid !important;">
 														<v-list-item-title class="body-2">${this.value.id ? `ID: ${this.value.id}` : ''}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">${this.value.id && this.value.updated_at ? this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Creación',
+          align: 'left',
+          sortable: false,
+          visibleColumn: false,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.nombre_usuario || ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate text-center">${this.value.id && this.value.created_at ? this.moment(this.value.created_at).format('DD/MM/YYYY HH:mm') : ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Actualización',
+          align: 'left',
+          sortable: false,
+          visibleColumn: false,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.id && this.value.created_at ? this.moment(this.value.created_at).format('DD/MM/YYYY HH:mm') : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate text-center"></v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -204,32 +255,6 @@ export default {
                   )
                   : createElement('div', '')
             }
-          }
-        },
-        {
-          text: 'Usuario Registra',
-          align: 'left',
-          sortable: false,
-          visibleColumn: true,
-          component: {
-            render: function (createElement) {
-              return createElement(
-                  `div`,
-                  {
-                    domProps: {
-                      innerHTML: `
-												<v-list-item>
-													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.nombre_usuario || ''}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">${this.value.email_usuario || ''}</v-list-item-subtitle>
-													</v-list-item-content>
-												</v-list-item>
-											`
-                    }
-                  }
-              )
-            },
-            props: ['value']
           }
         },
         {
