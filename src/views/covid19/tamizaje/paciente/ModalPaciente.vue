@@ -21,18 +21,18 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-            color="warning darken-1"
+            color="primary darken-1"
             text
             @click="close"
         >
-          Omitir
+          Cerrar
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-            color="warning darken-1"
+            color="primary darken-1"
             @click="guardar"
         >
-          Verificar Datos
+          Guardar
         </v-btn>
       </v-card-actions>
       <app-section-loader :status="loading"></app-section-loader>
