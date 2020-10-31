@@ -775,7 +775,7 @@ const DatosPrecargados = () => import('../components/DatosPrecargadosAfiliado')
                 if (item && item.id) {
                     this.getOpcionesSelectores()
                     console.log("afterCallMethod");
-                    autoDetalle ? this.getencuesta(item.di_precargado.id) : this.getencuesta(item.id)
+                    autoDetalle ? this.getencuesta(item.di_precargados_id) : this.getencuesta(item.id)
                 }
                 this.dialog = true
                 console.log("beforeCallMethod");

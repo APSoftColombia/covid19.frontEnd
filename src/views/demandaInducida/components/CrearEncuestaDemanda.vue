@@ -889,8 +889,8 @@ export default {
             selec_obs_importante_2: null,
             obs_final: null,
             duracion: 0,
-            tbc: null,
-            hansen: null
+            riesgo_tbc: null,
+            riesgo_hansen: null
         },
         medioEncuesta: [
             {'id': 'Telefonico', 'nombre': 'Telefonico'},
@@ -926,7 +926,7 @@ export default {
         ],
         demandaCovid: [
             {'id': 1, 'nombre': 'Canalizacion al Call Center - probable caso COVID 19 '},
-            {'id': 2, 'nombre': 'Se orienta al Usuario en cuidado generados prevencion COVID 19'}
+            {'id': 2, 'nombre': 'Se orienta al Usuario en cuidados generados prevencion COVID 19'}
         ]
     }),
     computed: {
@@ -1127,6 +1127,8 @@ export default {
             this.inducciones_aplica = []
             this.inducciones_preconcepcional = []
             this.inducciones_maternoperinatal = []
+            this.induccion_tbc = []
+            this.induccion_hansen = []
             this.infoGeneral = encuesta
             this.getOpcionesSelectores()
             this.getInducciones()
@@ -1251,6 +1253,7 @@ export default {
 
         
         -filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
+        -demanda inducida covid, si las preguntas covid son No, inducir al cuidado y si alguna es si, inducir al call center
         
         -al guardar actualizar maestroafiliados
  */

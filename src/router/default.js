@@ -19,6 +19,7 @@ const Mapa = () => import('Views/mapa/Mapa')
 const MapaCovid19 = () => import('Views/covid19/mapaCovid/MapaCovid')
 // const Covid19 = () => import('Views/covid19/Covid19')
 const ReportesCovid19 = () => import('Views/covid19/reportesCovid19/ReportesCovid19')
+const ReportesDeLey = () => import('Views/covid19/ReportesDeLey/ReportesDeLey')
 
 const TamizajeView = () => import('Views/covid19/tamizaje/TamizajeView')
 const ReporteComunitarioView = () => import('Views/covid19/reporteComunitario/ReporteComunitarioView')
@@ -506,6 +507,20 @@ export default {
             avatar: {
                icon: 'mdi-file-table',
                color: 'blue',
+            }
+         }
+      },
+      {
+         path: 'reportes-de-ley',
+         name: 'ReportesDeLey',
+         component: ReportesDeLey,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'covid-reportesDeLeyVer',
+            avatar: {
+               icon: 'mdi-file-table',
+               color: 'deep-purple',
             }
          }
       }

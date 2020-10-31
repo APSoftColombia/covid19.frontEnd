@@ -227,6 +227,15 @@ export const itemsMenu = [
         routeName: 'Cets',
         typeRoute: 'covid'
     },
+    {
+        id: 34,
+        title: 'Reportes de Ley',
+        subtitle: '',
+        icon: 'mdi-file-table',
+        color: 'deep-purple',
+        routeName: 'ReportesDeLey',
+        typeRoute: 'covid'
+    },
     // RCV
     {
         id: 27,
