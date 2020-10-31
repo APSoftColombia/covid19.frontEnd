@@ -95,6 +95,7 @@
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
+                      @actualizarTamizaje="val => changeTamizaje(val.id)"
                   ></evoluciones>
                   <div v-if="!permisos.seguimientoVer"
                        class="font-weight-bold grey--text text--lighten-1 text-center mt-10">

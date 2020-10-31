@@ -646,6 +646,41 @@
         </v-row>
       </v-container>
       <help-modal ref="helpModal"></help-modal>
+      <v-dialog
+          v-model="dialogConfirmFormPaciente"
+          persistent
+          max-width="520"
+      >
+        <v-card>
+          <v-toolbar color="warning" dark>
+            <v-toolbar-title>
+              <v-icon large color="white">mdi-alert</v-icon>
+              Información del paciente
+            </v-toolbar-title>
+          </v-toolbar>
+          <v-card-text class="pt-3 body-1 text-center">El correcto diligenciamiento de la información de los pacientes, garantiza la eficiencia en los procesos de seguimiento de la pandemia y reportes de datos ante las entidades pertinentes.</v-card-text>
+          <v-card-actions>
+            <v-btn
+                color="warning darken-1"
+                text
+                @click="dialogConfirmFormPaciente = false"
+            >
+              Omitir
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="warning darken-1"
+                @click="() => {
+                  $refs.modalPaciente.open(tamizaje)
+                  dialogConfirmFormPaciente = false
+                }"
+            >
+              Verificar Datos
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <modal-paciente ref="modalPaciente" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
   </v-dialog>
@@ -660,6 +695,7 @@ const HelpModal = () => import('../../../components/HelpModal/HelpModal')
 const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
 import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
 import FormSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/FormSeguimientoAislamiento'
+import ModalPaciente from 'Views/covid19/tamizaje/paciente/ModalPaciente'
 
 var intervalo
 export default {
@@ -670,7 +706,14 @@ export default {
     HelpModal,
     FormAislamiento,
     FormSeguimientoAislamiento,
-    SintomasFecha
+    SintomasFecha,
+    ModalPaciente
+  },
+  props: {
+    tamizaje: {
+      type: Object,
+      default: null
+    }
   },
   data: () => ({
     solicitaUltimo: false,
@@ -683,8 +726,8 @@ export default {
     activaSPO2: true,
     activaTemperatura: true,
     evolucion: null,
-    tamizaje: null,
-    comorbilidades: []
+    comorbilidades: [],
+    dialogConfirmFormPaciente: false
   }),
   computed: {
     time() {
@@ -886,24 +929,42 @@ export default {
             })
       }
     },
-    open(idEvolucion = null, tamizaje = null) {
+    open(idEvolucion = null) {
       if (idEvolucion) this.getEvolucion(idEvolucion)
-      else if (tamizaje) {
+      else if (this.tamizaje) {
         this.activaPR = true
         this.activaSPO2 = true
         this.activaTemperatura = true
-        this.tamizaje = tamizaje
+        // this.tamizaje = tamizaje
         this.evolucion.tamizaje_id = this.tamizaje.id
         this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
         this.evolucion.orden_medica_id = this.tamizaje.orden_medica_id
         this.evolucion.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
         this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
         this.evolucion.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
+        this.verificaInfoPaciente()
       }
       this.dialog = true
       intervalo = setInterval(() => {
         this.evolucion.duracion++
       }, 1000)
+    },
+    verificaInfoPaciente() {
+      if(
+          !this.tamizaje.tipo_identificacion
+          || !this.tamizaje.identificacion
+          || !this.tamizaje.nombre1
+          || !this.tamizaje.apellido1
+          || !this.tamizaje.sexo
+          || !this.tamizaje.celular
+          || !this.tamizaje.departamento_id
+          || !this.tamizaje.municipio_id
+          || !this.tamizaje.direccion
+      ) {
+        setTimeout(() => {
+          this.dialogConfirmFormPaciente = true
+        }, 500)
+      }
     },
     close() {
       this.$refs.formEvolucion.reset()
