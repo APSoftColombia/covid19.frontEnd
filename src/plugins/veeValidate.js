@@ -94,6 +94,12 @@ extend('maxlength', {
   message: 'El campo {_field_} debe tener como maximo {length} caracteres'
 })
 
+extend('direccion', {
+    validate(value) {
+        return (isNaN(value) && value.trim().length > 5) || value > 0
+    },
+    message: 'El campo {_field_} no es un dato válido'
+})
 
 
 /// Validaciones de preguntas

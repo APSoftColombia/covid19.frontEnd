@@ -40,7 +40,7 @@
           <v-col md="6" :offset-md="enlinea ? '0' : '3'">
             <jitsi-meet-button v-if="videollamar" :show="showbuttonmeet" block :tamizaje="tamizaje"
                                @enlinea="val => enlinea = val"></jitsi-meet-button>
-            <datos-personales :abierto="false" :tamizaje="tamizaje"></datos-personales>
+            <datos-personales :abierto="false" :tamizaje="tamizaje" @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"></datos-personales>
             <ValidationObserver ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }"
                                 autocomplete="off">
               <v-row>
@@ -956,10 +956,12 @@ export default {
           || !this.tamizaje.nombre1
           || !this.tamizaje.apellido1
           || !this.tamizaje.sexo
-          || !this.tamizaje.celular
+          || !this.tamizaje.fecha_nacimiento || (this.tamizaje.fecha_nacimiento && !this.moment(this.tamizaje.fecha_nacimiento, 'YYYY-MM-DD').isValid())
+          || (!this.tamizaje.celular || (this.tamizaje.celular.length && (String(parseInt(this.tamizaje.celular)).length > 10 || String(parseInt(this.tamizaje.celular)).length < 10)))
+          || this.tamizaje.celular2 && this.tamizaje.celular2.length && (String(parseInt(this.tamizaje.celular2)).length > 10 || String(parseInt(this.tamizaje.celular2)).length < 10)
           || !this.tamizaje.departamento_id
           || !this.tamizaje.municipio_id
-          || !this.tamizaje.direccion
+          || (!this.tamizaje.direccion || this.tamizaje.direccion.trim().length < 6 || (!isNaN(this.tamizaje.direccion) && this.tamizaje.direccion <= 0))
       ) {
         setTimeout(() => {
           this.dialogConfirmFormPaciente = true

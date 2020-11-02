@@ -23,6 +23,9 @@
               {{calculaEdad(tamizaje && tamizaje.fecha_nacimiento).stringDate}}
             </v-list-item-subtitle>
           </v-list-item-content>
+          <v-list-item-action>
+            <modal-paciente btn-visible ref="modalPaciente" :tamizaje-origen="tamizaje" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
+          </v-list-item-action>
         </v-list-item>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
@@ -53,6 +56,7 @@
 </template>
 
 <script>
+import ModalPaciente from 'Views/covid19/tamizaje/paciente/ModalPaciente'
 import {mapGetters} from 'vuex'
 export default {
   name: 'DatosPersonales',
@@ -69,6 +73,9 @@ export default {
       type: String,
       default: null
     }
+  },
+  components: {
+    ModalPaciente
   },
   data: () => ({
     datos: [],
@@ -173,6 +180,7 @@ export default {
             collg: '4'
           }
       )
+      // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)
     }
   }
 }

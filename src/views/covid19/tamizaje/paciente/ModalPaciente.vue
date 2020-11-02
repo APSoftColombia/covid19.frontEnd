@@ -4,6 +4,20 @@
       persistent
       max-width="720"
   >
+    <template v-slot:activator="{ on, attrs }" v-if="btnVisible">
+      <v-btn
+          color="warning"
+          dark
+          :fab="$vuetify.breakpoint.smAndDown"
+          small
+          v-bind="attrs"
+          v-on="on"
+          @click.stop="assign(tamizajeOrigen)"
+      >
+        <v-icon>mdi-account-edit</v-icon>
+        {{ $vuetify.breakpoint.smAndDown ? '' : 'Editar paciente' }}
+      </v-btn>
+    </template>
     <v-card>
       <v-toolbar color="primary" dark>
         <v-toolbar-title>
@@ -51,6 +65,14 @@ export default {
     value: {
       type: Object,
       default: null
+    },
+    tamizajeOrigen: {
+      type: Object,
+      default: null
+    },
+    btnVisible: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -83,7 +105,7 @@ export default {
         this.tamizaje = null
       }, 400)
     },
-    open(tamizaje) {
+    assign(tamizaje) {
       let elTamizaje = this.clone(tamizaje)
       if (elTamizaje && elTamizaje.sintomas && elTamizaje.sintomas.length) {
         let copySintomas = this.clone(elTamizaje.sintomas)
@@ -92,6 +114,13 @@ export default {
       }
       elTamizaje.si_eps = elTamizaje.eps_id ? 1 : 0
       this.tamizaje = elTamizaje
+      setTimeout(() => {
+        this.$refs.formPaciente.validate()
+      }, 600)
+    },
+    open(tamizaje) {
+      this.tamizaje = null
+      this.assign(tamizaje)
       this.dialog = true
     }
   }

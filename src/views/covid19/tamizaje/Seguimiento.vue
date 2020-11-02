@@ -30,7 +30,7 @@
             <span class="font-weight-bold white--text">Descargar PDF</span>
           </v-btn>
         </div>
-        <datos-personales :tamizaje="tamizaje"></datos-personales>
+        <datos-personales :tamizaje="tamizaje" @actualizarTamizaje="val => changeTamizaje(val.id)"></datos-personales>
         <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
           <v-alert

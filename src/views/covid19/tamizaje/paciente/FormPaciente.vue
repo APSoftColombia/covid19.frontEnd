@@ -133,7 +133,7 @@
       <c-texto
           v-model="persona.direccion"
           label="Dirección"
-          rules="required"
+          rules="required|minlength:6|direccion"
           name="dirección"
           upper-case
           :disabled="identificacionVerificada < 1"
