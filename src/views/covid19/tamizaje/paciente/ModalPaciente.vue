@@ -24,6 +24,13 @@
           <v-icon large color="white">mdi-badge-account-horizontal</v-icon>
           Información del paciente
         </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+            icon
+            @click="close"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-toolbar>
       <v-card-text class="pt-3">
         <ValidationObserver ref="formPaciente">
