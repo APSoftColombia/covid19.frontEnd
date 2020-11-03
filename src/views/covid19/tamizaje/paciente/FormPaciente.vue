@@ -1,15 +1,13 @@
 <template>
   <v-row>
     <v-col class="pb-0" cols="12" sm="6" md="6">
-      <c-identificacion
+      <c-texto
           v-model="persona.identificacion"
           label="Identificación"
           rules="required|numeric"
           name="identificación"
-          @responsepersona="val => resultAfiliado(val)"
-          @keyup="identificacionVerificada = 0"
       >
-      </c-identificacion>
+      </c-texto>
     </v-col>
     <v-col class="pb-0" cols="12" sm="6" md="6">
       <c-select-complete

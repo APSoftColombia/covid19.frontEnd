@@ -108,7 +108,9 @@
         v-if="permisos.seguimientoCrear"
         ref="registroEvolucion"
         @guardado="item => evolucionGuardada(item)"
+        @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"
         @close="loading = false"
+        :tamizaje="this.tamizaje"
     >
     </registro-evolucion>
     <app-section-loader :status="loading"></app-section-loader>
@@ -179,8 +181,7 @@ export default {
     agregarEvolucion() {
       this.loading = true
       this.$refs.registroEvolucion.open(
-          null,
-          this.tamizaje
+          null
       )
     },
     evolucionGuardada(item) {
