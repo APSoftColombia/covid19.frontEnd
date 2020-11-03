@@ -287,26 +287,26 @@ export default {
             props: ['value']
           }
         },
-        {
-          text: '# No efect',
-          align: 'left',
-          sortable: false,
-          visibleColumn: true,
-          component: {
-            functional: true,
-            render: function (createElement, context) {
-              return createElement('c-chip', {
-                props: {
-                  text: context.props.value.di_encuestas_no_efectivas.length || 0,
-                  color: 'deep-purple',
-                  tooltip: `# Encuestas no efectivas`,
-                  textColor: 'white',
-                  label: true
-                }
-              })
-            }
-          }
-        },
+        // {
+        //   text: '# No efect',
+        //   align: 'left',
+        //   sortable: false,
+        //   visibleColumn: true,
+        //   component: {
+        //     functional: true,
+        //     render: function (createElement, context) {
+        //       return createElement('c-chip', {
+        //         props: {
+        //           text: context.props.value.di_encuestas_no_efectivas.length || 0,
+        //           color: 'deep-purple',
+        //           tooltip: `# Encuestas no efectivas`,
+        //           textColor: 'white',
+        //           label: true
+        //         }
+        //       })
+        //     }
+        //   }
+        // },
         {
           text: 'Opciones',
           align: 'center',
@@ -375,24 +375,22 @@ export default {
     resetOptions(item) {
       item.options = []
       if (
-        this.permisos.crear && !item.encuesta_efectiva_id && item.di_encuestas_no_efectivas.length && item.di_encuestas_no_efectivas[item.di_encuestas_no_efectivas.length - 1].razon_no_tel != 5 || 
-        !item.encuesta_efectiva_id && item.di_encuestas_no_efectivas.length && item.di_encuestas_no_efectivas[item.di_encuestas_no_efectivas.length - 1].razon_no_tel != 5 ||
-        this.permisos.crear && !item.encuesta_efectiva_id && !item.di_encuestas_no_efectivas.length) {
+        this.permisos.crear && !item.encuesta_efectiva_id) {
         item.options.push({
           event: 'crearEncuesta',
           icon: 'fas fa-file-medical',
           tooltip: 'Crear Encuesta'
         })
       }
-      if(item.di_encuestas_no_efectivas.length && item.di_encuestas_no_efectivas[item.di_encuestas_no_efectivas.length - 1].razon_no_tel == 5){
-        item.options.push({
-          event: '',
-          icon: 'mdi-lock',
-          tooltip: `Usuario fallecio`,
-          color: "error",
-          disabled: true
-        })
-      }
+      // if(item.di_encuestas_no_efectivas.length && item.di_encuestas_no_efectivas[item.di_encuestas_no_efectivas.length - 1].razon_no_tel == 5){
+      //   item.options.push({
+      //     event: '',
+      //     icon: 'mdi-lock',
+      //     tooltip: `Usuario fallecio`,
+      //     color: "error",
+      //     disabled: true
+      //   })
+      // }
       if (this.permisos.verDetalle && item.encuesta_efectiva_id) item.options.push({
         event: 'verEncuesta',
         icon: 'mdi-file-find',
