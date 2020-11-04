@@ -566,12 +566,7 @@
                                     >
                                     </c-radio>
                                 </v-col>
-                                <v-col class="pb-0" cols="12" 
-                                v-if="
-                                    encuesta.sintomas_covid ||
-                                    encuesta.contacto_covid ||
-                                    encuesta.paciente_estudio_covid"
-                                    >
+                                <v-col class="pb-0" cols="12">
                                     <c-select-complete
                                         v-model="encuesta.demanda_covid"
                                         placeholder="Seleccione la demanda inducida COVID 19"
@@ -778,6 +773,13 @@
                                     </v-expansion-panels>
                                     
                                 </v-col>
+                                <v-col class="pb-0" cols="12" v-if="!verifyInducciones">
+                                    <c-text-area
+                                        label="Describa la razon por la cual no selecciono ninguna induccion a la demanda"
+                                        v-model="encuesta.obs_no_induccion"
+                                        name="observaciones no selecciono inducciones"
+                                    ></c-text-area>
+                                </v-col>
                             </template>
                             <v-col class="pb-0" cols="12">
                                 <c-text-area
@@ -878,7 +880,7 @@ export default {
             sintomas_covid: null,
             contacto_covid: null,
             paciente_estudio_covid: null,
-            demanda_covid: null,
+            demanda_covid: 2,
             selec_obs_vacunacion: null,
             selec_inasistencia_prenatal: null,
             selec_obs_importante_1: null,
@@ -888,6 +890,7 @@ export default {
             selec_inasistencia_vacuna_niño: null,
             selec_obs_importante_2: null,
             obs_final: null,
+            obs_no_induccion: null,
             duracion: 0,
             riesgo_tbc: null,
             riesgo_hansen: null
@@ -982,38 +985,69 @@ export default {
                 s = initime
             }
             return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
+        },
+        verifyInducciones(){
+            let longitud = this.inducciones_aplica.concat(
+                this.inducciones_preconcepcional, 
+                this.inducciones_maternoperinatal, 
+                this.induccion_hansen, this.induccion_tbc).length
+            return longitud;
         }
     },
     watch: {
+        'verifyInducciones': {
+            handler(value){
+                if(value) this.encuesta.obs_no_induccion = null
+            },
+            inmediate: false
+        },
         'encuesta.riesgo_tbc': {
             handler(value){
                 if(!value) this.induccion_tbc = []
-            }
+            },
+            inmediate: false
         },
         'encuesta.riesgo_hansen': {
             handler(value){
                 if(!value) this.induccion_hansen = []
-            }
+            },
+            inmediate: false
         },
         'encuesta.contacto_covid': {
             handler(value){
-                if(!value) this.encuesta.demanda_covid = null
-            }
+                if(!value) {
+                    this.encuesta.demanda_covid = 2
+                }else{
+                    this.encuesta.demanda_covid = 1
+                }
+            },
+            inmediate: false
         },
         'encuesta.paciente_estudio_covid': {
             handler(value){
-                if(!value) this.encuesta.demanda_covid = null
-            }
+                if(!value) {
+                    this.encuesta.demanda_covid = 2
+                }else{
+                    this.encuesta.demanda_covid = 1
+                }
+            },
+            inmediate: false
         },
         'encuesta.sintomas_covid': {
             handler(value){
-                if(!value) this.encuesta.demanda_covid = null
-            }
+                if(!value) {
+                    this.encuesta.demanda_covid = 2
+                }else{
+                    this.encuesta.demanda_covid = 1
+                }
+            },
+            inmediate: false
         },
         'encuesta.desea_embarazo': {
             handler(value){
                 if(!value) this.inducciones_preconcepcional = []
-            }
+            },
+            inmediate: false
         },
         'encuesta.fecha_ultima_menst':{
             handler(value){

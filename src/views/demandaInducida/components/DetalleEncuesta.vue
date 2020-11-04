@@ -587,12 +587,7 @@
                                     >
                                     </c-radio>
                                 </v-col>
-                                <v-col class="pb-0" cols="12" 
-                                v-if="
-                                    encuesta.di_encuestas.sintomas_covid ||
-                                    encuesta.di_encuestas.contacto_covid ||
-                                    encuesta.di_encuestas.paciente_estudio_covid"
-                                    >
+                                <v-col class="pb-0" cols="12">
                                     <c-select-complete
                                         v-model="encuesta.di_encuestas.demanda_covid"
                                         placeholder="Seleccione la demanda inducida COVID 19"
@@ -618,15 +613,6 @@
                                         disabled
                                     >
                                     </c-select-complete>
-                                </v-col>
-                            
-                                <v-col class="pb-0" cols="12">
-                                    <c-text-area
-                                        label="Observaciones finales"
-                                        v-model="encuesta.di_encuestas.obs_final"
-                                        name="observaciones finales"
-                                        disabled
-                                    ></c-text-area>
                                 </v-col>
 
                                 <v-col class="pb-0" cols="12">
@@ -670,6 +656,24 @@
                                         </v-expansion-panel>
                                     </v-expansion-panels>
                                     
+                                </v-col>
+
+                                <v-col class="pb-0" cols="12">
+                                    <c-text-area
+                                        label="Describa la razon por la cual no selecciono ninguna induccion a la demanda"
+                                        v-model="encuesta.di_encuestas.obs_no_induccion"
+                                        name="observaciones no selecciono inducciones"
+                                        disabled
+                                    ></c-text-area>
+                                </v-col>
+
+                                <v-col class="pb-0" cols="12">
+                                    <c-text-area
+                                        label="Observaciones finales"
+                                        v-model="encuesta.di_encuestas.obs_final"
+                                        name="observaciones finales"
+                                        disabled
+                                    ></c-text-area>
                                 </v-col>
                             </template>
                         </v-row>
