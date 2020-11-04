@@ -238,11 +238,14 @@
       }
     },
     methods: {
-      open(contacto, setNoToAuthEPS){
+      open(contacto, setNoToAuthEPS, hasContactos){
         this.dataContacto = {...contacto}
-        this.parentescosData = this.parentescos.filter(x => x.id <= 8)
+        this.parentescosData = this.parentescos.filter(x => x.id <= 7)
         this.dialog = true
         this.contacto = {...contacto}
+         if(hasContactos && hasContactos.length && hasContactos.length > 1 && this.dataContacto.comparten_gastos == null){
+          this.dataContacto.comparten_gastos = 1
+        }
         if(setNoToAuthEPS && this.dataContacto.id !== setNoToAuthEPS.id) {
           this.dataContacto.autoriza_eps = 0;
           this.autorizaEPSValues = [

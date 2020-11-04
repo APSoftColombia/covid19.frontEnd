@@ -237,7 +237,8 @@
       },
       editarContacto(contacto){
         let setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
-        this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
+        let hasContactos = contacto.contactos
+        this.$refs.editarContacto.open(contacto, setNoToAuthEPS, hasContactos)
       },
     },
     created() {

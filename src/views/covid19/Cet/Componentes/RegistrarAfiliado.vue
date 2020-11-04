@@ -398,11 +398,14 @@
             this.afiliado.codeps = null
           }
         }
-      }
+      },
     },
     methods: {
-      open(afiliadoConfirmado = null, setNoToAuthEPS = null){
-        this.parentescosData = this.parentescos.filter(x => x.id <= 8)
+      open(afiliadoConfirmado = null, setNoToAuthEPS = null, hasContactos = null){
+        if(hasContactos && hasContactos.length && hasContactos.length > 1){
+          this.afiliado.comparten_gastos = 1
+        }
+        this.parentescosData = this.parentescos.filter(x => x.id <= 7)
         this.afiliado.numero_caso = afiliadoConfirmado.numero_caso
         this.afiliado.id_bdua_af_confirmado = afiliadoConfirmado.bdua_afl_id
         this.afiliado.tipoid_af_confirmado = afiliadoConfirmado.tipoid

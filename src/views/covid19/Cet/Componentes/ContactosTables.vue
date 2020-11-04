@@ -77,7 +77,7 @@
                           <v-btn v-on="on"
                                  color="blue"
                                  icon
-                                 @click="editarContacto(contacto, setNoToAuthEPS)"
+                                 @click="editarContacto(contacto)"
                           >
                             <v-icon>mdi-pencil-box-multiple-outline</v-icon>
                           </v-btn>
@@ -268,6 +268,9 @@
     computed: {
       setNoToAuthEPS() {
         return this.afiliado.confirmado.contactos.find(contacto => contacto.autoriza_eps === 1)
+      },
+      hasContactos(){
+        return this.afiliado.confirmado.contactos
       }
     },
     components: {
@@ -287,14 +290,14 @@
     },
     methods: {
       crearContacto(){
-        this.$refs.registrarAfiliado.open(this.afiliado.confirmado, this.setNoToAuthEPS)
+        this.$refs.registrarAfiliado.open(this.afiliado.confirmado, this.setNoToAuthEPS, this.hasContactos)
       },
       refreshAfiliado(afiliado = null) {
         let id = this.afiliado.confirmado.id ? this.afiliado.confirmado.id : afiliado
         this.$emit('refreshAfiliado', id)
       },
-      editarContacto(contacto, setNoToAuthEPS){
-        this.$refs.editarContacto.open(contacto, setNoToAuthEPS)
+      editarContacto(contacto){
+        this.$refs.editarContacto.open(contacto, this.setNoToAuthEPS, this.hasContactos)
       },
       desvincular(contacto){
         contacto.loading = true

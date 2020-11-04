@@ -24,6 +24,7 @@
               <datos-afiliado :afiliado="encuesta.afiliado" :abierto="datosAbierto"></datos-afiliado>
               <respuestas-encuesta class="mt-3" :encuesta="encuesta" :abierto="datosAbierto"></respuestas-encuesta>
               <resultados-encuesta class="mt-3" :encuesta="encuesta" :abierto="resultadosAbierto"></resultados-encuesta>
+              <historial-de-cambios class="mt-3" :audits="encuesta.audits" :abierto="false"></historial-de-cambios>
             </v-container>
           <v-divider class="pa-0 ma-0"></v-divider>
           <v-card-actions class="justify-center">
@@ -40,12 +41,14 @@
     const ResultadosEncuesta = () => import('Views/aps/rcv/encuestas/components/ResultadosEncuesta')
     const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
     const RespuestasEncuesta = () => import('Views/aps/rcv/encuestas/components/RespuestasEncuesta')
+    const HistorialDeCambios = () => import('Views/aps/rcv/encuestas/components/HistorialDeCambios')
     export default {
         name: 'DetalleEncuesta',
       components: {
         ResultadosEncuesta,
         DatosAfiliado,
-        RespuestasEncuesta
+        RespuestasEncuesta,
+        HistorialDeCambios
       },
         data: () => ({
             dialog: false,
