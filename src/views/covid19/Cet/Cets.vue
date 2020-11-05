@@ -205,6 +205,9 @@
     },
     methods: {
       resetOptions(item) {
+        if(item.covid_contacto == 1){
+          item.colortrrgba = `196, 255, 255, 0.5`
+        }
         if (item.covid_contacto === 1 && this.permisos.cetsCrear) item.options.push({
           event: 'addContacto',
           icon: 'mdi-account-multiple-plus-outline',
@@ -236,7 +239,10 @@
         this.$store.commit('reloadTable', 'tablaCets')
       },
       editarContacto(contacto){
-        let setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
+        let setNoToAuthEPS = null
+        if(contacto.contactos){
+          setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
+        }
         let hasContactos = contacto.contactos
         this.$refs.editarContacto.open(contacto, setNoToAuthEPS, hasContactos)
       },

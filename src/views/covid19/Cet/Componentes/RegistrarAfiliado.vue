@@ -35,18 +35,18 @@
                 <c-date
                     v-model="afiliado.fecha_diagnostico"
                     label="Fecha Diagnostico"
-                    rules="required"
                     name="fecha de diagnostico"
                     :max="moment().format('YYYY-MM-DD')"
                 ></c-date>
+                <!--rules="required"-->
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6" class="mx-auto mt-0">
                 <c-texto
                     label="Numero Unico BDUA"
                     name="numero unico bdua"
-                    rules="required|maxlength:11"
                     v-model="afiliado.bdua_afl_id"
                 ></c-texto>
+                <!--rules="required|maxlength:11"-->
               </v-col>
             </v-row>
             <v-row>
@@ -91,7 +91,7 @@
                     v-model="afiliado.nombre2"
                 ></c-texto>
               </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
+              <v-col cols="12" sm="12" md="12" lg="12">
                 <c-select-complete
                     label="Tipo identificación"
                     name="tipo de identificacion"
@@ -103,10 +103,19 @@
                 ></c-select-complete>
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">
+                <c-date
+                    v-model="afiliado.fecha_expedicion"
+                    label="Fecha de Expedicion de Documento"
+                    name="fecha de expedicion de documento"
+                    :max="moment().format('YYYY-MM-DD')"
+                >
+                </c-date>
+              </v-col>
+              <v-col cols="12" sm="12" md="6" lg="6">
                 <c-identificacion
                     label="Identificación"
                     name="identificacion"
-                    rules="required"
+                    rules="required|numeric"
                     v-model="afiliado.identificacion"
                 ></c-identificacion>
               </v-col>
@@ -158,15 +167,6 @@
                 ></c-select-complete>
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">
-                <c-date
-                    v-model="afiliado.fecha_expedicion"
-                    label="Fecha de Expedicion de Documento"
-                    name="fecha de expedicion de documento"
-                    :max="moment().format('YYYY-MM-DD')"
-                >
-                </c-date>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
                 <c-texto
                     label="Email"
                     name="email"
@@ -174,7 +174,7 @@
                     v-model="afiliado.email"
                 ></c-texto>
               </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
+              <v-col cols="12" sm="12" md="12" lg="12">
                 <c-texto
                     label="Dirección"
                     name="dirección"
@@ -399,6 +399,18 @@
           }
         }
       },
+      'afiliado.giro_a_familiar': {
+        handler(val){
+          if(val){
+            this.afiliado.autoriza_eps = 0
+            this.afiliado.comparten_gastos = 1
+          }else{
+            this.afiliado.autoriza_eps = null
+            this.afiliado.comparten_gastos = null
+          }
+        },
+        inmediate: true
+      }
     },
     methods: {
       open(afiliadoConfirmado = null, setNoToAuthEPS = null, hasContactos = null){

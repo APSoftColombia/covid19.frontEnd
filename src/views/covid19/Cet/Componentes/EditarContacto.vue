@@ -235,6 +235,19 @@
           }
         },
         immediate: false
+      },
+      'dataContacto.giro_a_familiar': {
+        handler(val){
+          if(this.dataContacto.covid_contacto == 1){
+            if(val){
+            this.dataContacto.autoriza_eps = 0
+            this.dataContacto.comparten_gastos = 1
+            }else{
+              this.dataContacto.autoriza_eps = ''
+              this.dataContacto.comparten_gastos = ''
+            }
+          }
+        }
       }
     },
     methods: {
