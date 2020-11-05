@@ -168,6 +168,9 @@ Vue.mixin({
 		esCovidAdmin () {
 			return this && this.roles && this.roles.length && this.roles.find(z => z.id === 4)
 		},
+		esDiCoordinador(){
+			return this && this.roles && this.roles.length && this.roles.find(z => z.nombre === 'Coordinador Demanda Inducida')
+		},
 		...mapGetters([
 			'roles'
 		]),

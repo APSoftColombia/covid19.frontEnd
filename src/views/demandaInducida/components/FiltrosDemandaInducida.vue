@@ -40,6 +40,35 @@
             >
             </c-select-complete>
         </v-col>
+        <v-col cols="12" sm="6" md="4" v-if="esDiCoordinador">
+            <v-autocomplete
+                label="Gestores demanda inducida"
+                v-model="filters.models.gestor_id"
+                :items="gestores"
+                outlined
+                dense
+                :filter="filterGestores"
+                item-value="id"
+                persistent-hint
+                clearable
+                :hint="filters.models.gestor_id && gestores.find(x => x.id === filters.models.gestor_id).name ? `Nombre: ${gestores.find(x => x.id === filters.models.gestor_id).name}` : '' "
+                hide-details
+            >
+                <template v-slot:selection="{ item, index }">
+                <div class="pa-0 text-truncate" style="width: 100% !important;">
+                    {{ item.name }}
+                </div>
+                </template>
+                <template v-slot:item="{ item, index }">
+                <template>
+                    <v-list-item-content class="pa-0">
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ item.email ? `Correo: ${item.email}` : '' }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </template>
+                </template>
+            </v-autocomplete>
+        </v-col>
         <v-col class="pb-0" cols="12" sm="12" md="12">
           <v-checkbox
               v-model="filters.models.erp_required"
@@ -62,8 +91,18 @@
                 type: String,
                 default: ''
             },
+            gestores: {
+                type: Array,
+                required: true
+            }
         },
         data: () => ({
+            filterGestores(item, queryText) {
+                const hasValue = val => val != null ? val : ''
+                const text = hasValue(item.numero_documento_identidad + ' ' + item.name)
+                const query = hasValue(queryText)
+                return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+            },
             filters: {
                 models: {
                     clasificacion: [],
@@ -71,6 +110,7 @@
                     rango_created_at: [],
                     grupo_etario: null,
                     erp_required: false,
+                    gestor_id: null
                 },
                 data: {
                     clasificacion: [
@@ -111,6 +151,9 @@
                 }
                 if (this.filters.models.erp_required) {
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[erp_required]=' + this.filters.models.erp_required
+                }
+                if (this.filters.models.gestor_id && this.esDiCoordinador) {
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[gestor_id]=' + this.filters.models.gestor_id
                 }
                 this.$emit('filtra', rutaTemp)
             }

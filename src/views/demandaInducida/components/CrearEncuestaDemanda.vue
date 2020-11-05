@@ -1283,11 +1283,7 @@ export default {
         **filtro por Encuestas efectivas y No efectivas
         **filtro por Require ERP
         **vista de detalle de encuesta cuando es efectiva
+        **demanda inducida covid, si las preguntas covid son No, inducir al cuidado y si alguna es si, inducir al call center
+        **filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
 
-
-        
-        -filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
-        -demanda inducida covid, si las preguntas covid son No, inducir al cuidado y si alguna es si, inducir al call center
-        
-        -al guardar actualizar maestroafiliados
  */

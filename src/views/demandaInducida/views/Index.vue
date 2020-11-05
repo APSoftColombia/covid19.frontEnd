@@ -17,6 +17,7 @@
               slot="filters"
               ref="filtrosDemandaInducida"
               :ruta-base="rutaBase"
+              :gestores="gestores"
               @filtra="val => goDatos(val)"
           ></filtros>
         </data-table>
@@ -77,6 +78,7 @@ export default {
     }
   },
   data: (vm) => ({
+    gestores: [],
     rutaBase: 'demanda-inducida',
     lengthData: null,
     loading: false,
@@ -317,6 +319,9 @@ export default {
       ]
     }
   }),
+  created(){
+    this.getGestores()
+  },
   methods: {
     goDatos(ruta) {
       this.dataTable.route = ruta
@@ -406,6 +411,13 @@ export default {
         color: 'orange'
       }) */
       return item
+    },
+    getGestores() {
+      this.axios.get(`users-role?role=Gestor Demanda Inducida`).then(response => {
+        this.gestores = response.data
+      }).catch(error => {
+        this.$store.commit('snackbar', {color: 'error', message: `al recuperar los registros de los gestores.`, error: error})
+      })
     }
   },
 }
