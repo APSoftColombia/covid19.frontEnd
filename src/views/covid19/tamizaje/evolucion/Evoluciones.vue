@@ -77,6 +77,7 @@
       <v-col cols="12" class="pt-0 ma-0">
         <template v-if="viewTable">
           <datos-evolucion-tabla
+              @editarEvolucion="val => editarEvolucion(val)"
               :evoluciones="evoluciones"
           ></datos-evolucion-tabla>
         </template>
@@ -183,6 +184,10 @@ export default {
       this.$refs.registroEvolucion.open(
           null
       )
+    },
+    editarEvolucion(evolucion_id) {
+      let evolucion = this.tamizaje.evoluciones.find(x => x.id === evolucion_id)
+      this.$refs.registroEvolucion.editar(evolucion)
     },
     evolucionGuardada(item) {
       this.$emit('change', item)

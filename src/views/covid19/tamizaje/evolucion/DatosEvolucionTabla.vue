@@ -88,11 +88,12 @@
               <span>Resumen Clínico</span>
             </v-tooltip>
           </th>
-          <th>Reportes</th>
+<!--          <th>Reportes</th>-->
+          <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="evolucion in evoluciones" :key="`evolución${evolucion.id}`">
+        <tr v-for="(evolucion, indexEvolucionTable) in evoluciones" :key="`evolución${evolucion.id}`">
           <td>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
@@ -288,33 +289,44 @@
                 <span>Ver resumen clínico</span>
               </v-tooltip>
             </td>
-            <td style="white-space: inherit !important;">
-              <v-tooltip top v-if="evolucion.sivigila !== null">
-                <template v-slot:activator="{on}">
-                  <v-chip small label class="white--text elevation-2 mb-1 mr-1"
-                          :color="evolucion.sivigila ? 'success' : 'error'" v-on="on">
-                    <span>SIVIGILA</span>
-                  </v-chip>
+<!--            <td style="white-space: inherit !important;">-->
+<!--              <v-tooltip top v-if="evolucion.sivigila !== null">-->
+<!--                <template v-slot:activator="{on}">-->
+<!--                  <v-chip small label class="white&#45;&#45;text elevation-2 mb-1 mr-1"-->
+<!--                          :color="evolucion.sivigila ? 'success' : 'error'" v-on="on">-->
+<!--                    <span>SIVIGILA</span>-->
+<!--                  </v-chip>-->
+<!--                </template>-->
+<!--                <span>{{ ['Reportado a SIVIGILA', evolucion.entidad_reporta_sivigila].filter(x => x).join(' por: ') }}</span>-->
+<!--              </v-tooltip>-->
+<!--              <v-tooltip top v-if="evolucion.ssc !== null">-->
+<!--                <template v-slot:activator="{on}">-->
+<!--                  <v-chip small label class="white&#45;&#45;text elevation-2 mb-1 mr-1"-->
+<!--                          :color="evolucion.ssc ? 'success' : 'error'" v-on="on">-->
+<!--                    <span>SSC</span>-->
+<!--                  </v-chip>-->
+<!--                </template>-->
+<!--                <span>Reportado a Secretaría de Salud de Casanare</span>-->
+<!--              </v-tooltip>-->
+<!--              <v-tooltip top v-if="evolucion.crue !== null">-->
+<!--                <template v-slot:activator="{on}">-->
+<!--                  <v-chip small label class="white&#45;&#45;text elevation-2 mb-1 mr-1"-->
+<!--                          :color="evolucion.crue ? 'success' : 'error'" v-on="on">-->
+<!--                    <span>CRUE</span>-->
+<!--                  </v-chip>-->
+<!--                </template>-->
+<!--                <span>Llamada a CRUE</span>-->
+<!--              </v-tooltip>-->
+<!--            </td>-->
+            <td class="text-center">
+              <v-tooltip top v-if="indexEvolucionTable === 0">
+                <template v-slot:activator="{ on }">
+                  <v-btn fab color="orange" small dark v-on="on"
+                         @click="$emit('editarEvolucion', evolucion.id)">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
                 </template>
-                <span>{{ ['Reportado a SIVIGILA', evolucion.entidad_reporta_sivigila].filter(x => x).join(' por: ') }}</span>
-              </v-tooltip>
-              <v-tooltip top v-if="evolucion.ssc !== null">
-                <template v-slot:activator="{on}">
-                  <v-chip small label class="white--text elevation-2 mb-1 mr-1"
-                          :color="evolucion.ssc ? 'success' : 'error'" v-on="on">
-                    <span>SSC</span>
-                  </v-chip>
-                </template>
-                <span>Reportado a Secretaría de Salud de Casanare</span>
-              </v-tooltip>
-              <v-tooltip top v-if="evolucion.crue !== null">
-                <template v-slot:activator="{on}">
-                  <v-chip small label class="white--text elevation-2 mb-1 mr-1"
-                          :color="evolucion.crue ? 'success' : 'error'" v-on="on">
-                    <span>CRUE</span>
-                  </v-chip>
-                </template>
-                <span>Llamada a CRUE</span>
+                <span>Editar Seguimiento</span>
               </v-tooltip>
             </td>
           </template>

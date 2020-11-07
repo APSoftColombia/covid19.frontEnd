@@ -716,6 +716,8 @@ export default {
     }
   },
   data: () => ({
+    enEdicion: false,
+    permiteWatch: true,
     solicitaUltimo: false,
     enlinea: null,
     showbuttonmeet: true,
@@ -770,13 +772,15 @@ export default {
       if (this) {
         if (this.estadosAfectacion) {
           listado = this.estadosAfectacion
-          if (this.evolucion) {
-            if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
-            else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido')
-            else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
-            else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
+          if(!this.enEdicion) {
+            if (this.evolucion) {
+              if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
+              else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido')
+              else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
+              else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
+            }
+            if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
           }
-          if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
         }
       }
       return listado
@@ -848,14 +852,16 @@ export default {
     },
     'evolucion.clasificacion': {
       handler(val) {
-        this.evolucion.estado_afectacion = null
-        if (val && val !== '6') {
-          this.evolucion.justificacion_no_clasificado = null
-          if (val === '4') {
-            this.evolucion.estado_afectacion = 'Fallecido'
+        if(this.permiteWatch) {
+          this.evolucion.estado_afectacion = null
+          if (val && val !== '6') {
+            this.evolucion.justificacion_no_clasificado = null
+            if (val === '4') {
+              this.evolucion.estado_afectacion = 'Fallecido'
+            }
+          } else {
+            this.evolucion.solicitud_prueba = 0
           }
-        } else {
-          this.evolucion.solicitud_prueba = 0
         }
       },
       immediate: false
@@ -872,6 +878,7 @@ export default {
     }
   },
   created() {
+    this.enEdicion = false
     this.evolucion = this.clone(this.modelEvolucion)
     this.evolucion.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
   },
@@ -1061,6 +1068,36 @@ export default {
         this.loading = false
       }, 500)
       this.solicitaUltimo = true
+    },
+    editar(evolucion) {
+      this.enEdicion = true
+      this.permiteWatch = false
+      this.loading = true
+      let evolucionCopiada = this.clone(evolucion)
+      /// Asignación
+      this.activaPR = evolucionCopiada.frecuencia_pulso !== null
+      this.activaSPO2 = evolucionCopiada.saturacion_oxigeno !== null
+      this.activaTemperatura = evolucionCopiada.temperatura !== null
+      this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      evolucionCopiada.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
+      if(!evolucionCopiada.aislamiento) evolucionCopiada.aislamiento = null
+      this.evolucion = evolucionCopiada
+      let sintomasAsignar = this.clone(evolucionCopiada.sintomas.filter(z => z.solicita_fecha)).map(x => {
+        return {
+          id: x.id,
+          valueid: x.id,
+          descripcion: x.descripcion,
+          fecha_inicio: x.pivot.fecha_inicio
+        }
+      })
+      setTimeout(() => {
+        this.$refs.sintomasFecha.assign(sintomasAsignar)
+        // this.verFormularioAislamiento = 0
+        this.permiteWatch = true
+        this.loading = false
+      }, 1000)
+      this.solicitaUltimo = true
+      this.dialog = true
     }
   }
 }
