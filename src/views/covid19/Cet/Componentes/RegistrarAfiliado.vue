@@ -219,6 +219,18 @@
                 >
                 </c-select-complete>
               </v-col>
+              <v-col class="pb-0" cols="12" sm="12">
+                <v-file-input
+                    v-model="afiliado.path_documento_parentesco"
+                    :hint="afiliado.path_resultado && !afiliado.path_documento_parentesco ? `Cargado actualmente: ${afiliado.path_resultado.split('/')[1]}` : ''"
+                    label="Archivo"
+                    prepend-icon="mdi-file-pdf"
+                    accept=".pdf"
+                    outlined
+                    dense
+                    persistent-hint
+                ></v-file-input>
+              </v-col>
               <v-col cols="12" sm="12" md="4" lg="4">
                 <c-select-complete
                     v-model="afiliado.fallecido"
@@ -450,7 +462,11 @@
           if(result) {
             this.loading = true
             this.afiliado.covid_contacto = 2
-            this.axios.post('infocets', this.afiliado).then(response => {
+            let data = new FormData()
+            for (const prop in this.afiliado) {
+              if (this.afiliado[prop] !== null && typeof this.afiliado[prop] !== 'undefined') data.append(`${prop}`, this.afiliado[prop])
+            }
+            this.axios.post('infocets', data).then(response => {
               response
               this.$emit('contactoCreado', this.afiliadoConfirmadoID)
               this.loading = false

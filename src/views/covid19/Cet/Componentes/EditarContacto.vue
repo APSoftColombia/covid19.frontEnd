@@ -110,6 +110,18 @@
                   >
                   </c-select-complete>
                 </v-col>
+                <v-col class="pb-0" cols="12" sm="12" v-if="dataContacto.covid_contacto === 2">
+                  <v-file-input
+                      v-model="dataContacto.path_documento_parentesco"
+                      :hint="dataContacto.path_resultado && !dataContacto.path_documento_parentesco ? `Cargado actualmente: ${dataContacto.path_resultado.split('/')[1]}` : ''"
+                      label="Archivo"
+                      prepend-icon="mdi-file-pdf"
+                      accept=".pdf"
+                      outlined
+                      dense
+                      persistent-hint
+                  ></v-file-input>
+              </v-col>
                 <v-col cols="12" sm="12" md="4" lg="4">
                   <c-select-complete
                       v-model="dataContacto.fallecido"
