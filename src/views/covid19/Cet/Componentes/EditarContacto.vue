@@ -110,18 +110,31 @@
                   >
                   </c-select-complete>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" v-if="dataContacto.covid_contacto === 2">
-                  <v-file-input
-                      v-model="dataContacto.path_documento_parentesco"
-                      :hint="dataContacto.path_resultado && !dataContacto.path_documento_parentesco ? `Cargado actualmente: ${dataContacto.path_resultado.split('/')[1]}` : ''"
-                      label="Archivo"
-                      prepend-icon="mdi-file-pdf"
-                      accept=".pdf"
-                      outlined
-                      dense
-                      persistent-hint
-                  ></v-file-input>
-              </v-col>
+                <v-col class="pb-0" :cols="`${dataContacto.path_documento_parentesco ? '10' : 12}`" :sm="`${dataContacto.path_documento_parentesco ? '10' : 12}`" v-if="dataContacto.covid_contacto === 2">
+                    <v-file-input
+                        v-model="dataContacto.archivo"
+                        :hint="dataContacto.path_documento_parentesco && !dataContacto.archivo ? `Cargado actualmente: ${dataContacto.path_documento_parentesco.split('/')[1]}` : ''"
+                        label="Documento que certifica parentesco"
+                        prepend-icon="mdi-file-pdf"
+                        accept=".pdf"
+                        outlined
+                        dense
+                        persistent-hint
+                    ></v-file-input>
+                </v-col>
+                <v-col cols="2" v-if="dataContacto.path_documento_parentesco">
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on }">
+                      <v-btn class="red" dark v-on="on" 
+                      :disabled="loadingButton" 
+                      :loading="loadingButton" @click="descargarDocumento"
+                      >
+                        <v-icon>fas fa-file-download</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Descargar Documento</span>
+                  </v-tooltip>
+                </v-col>
                 <v-col cols="12" sm="12" md="4" lg="4">
                   <c-select-complete
                       v-model="dataContacto.fallecido"
@@ -226,7 +239,8 @@
       contacto: {},
       setNoToAuthEPS: null,
       parentescosData: [],
-      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}]
+      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}],
+      loadingButton: false
     }),
     computed: {
       ...mapGetters([
@@ -308,7 +322,11 @@
             this.loading = true
             this.dataContacto.id = this.contacto.id
             this.dataContacto.covid_contacto = this.contacto.covid_contacto
-            this.axios.put(`infocets/${this.contacto.id}`, this.dataContacto).then(response => {
+            let data = new FormData()
+            for (const prop in this.dataContacto) {
+              if (this.dataContacto[prop] !== null && typeof this.dataContacto[prop] !== 'undefined') data.append(`${prop}`, this.dataContacto[prop])
+            }
+            this.axios.post(`infocets-actualizar/${this.contacto.id}`, data).then(response => {
               this.dataContacto = response.data
               this.$store.commit('snackbar', {color: 'success', message: 'contacto editado con exito'})
               this.$emit('editado')
@@ -320,6 +338,26 @@
             })
           }
         })
+      },
+      descargarDocumento() {
+        const apiAxios = this.axios.create()
+      apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
+      apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+        this.loadingButton = true
+          this.axios({
+            url: `download_documento_parentesco/${this.contacto.id}`,
+            method: 'GET',
+            responseType: 'blob'
+          })
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}))
+            window.open(url, '_blank')
+            this.loadingButton = false
+          })
+          .catch((error) => {
+            this.loadingButton = false
+            this.$store.commit('snackbar', {color: 'error', message: `al descargar el archivo.`, error: error})
+          })
       }
     },
   }

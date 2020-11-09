@@ -221,9 +221,8 @@
               </v-col>
               <v-col class="pb-0" cols="12" sm="12">
                 <v-file-input
-                    v-model="afiliado.path_documento_parentesco"
-                    :hint="afiliado.path_resultado && !afiliado.path_documento_parentesco ? `Cargado actualmente: ${afiliado.path_resultado.split('/')[1]}` : ''"
-                    label="Archivo"
+                    v-model="afiliado.archivo"
+                    label="Documento que certifica parentesco"
                     prepend-icon="mdi-file-pdf"
                     accept=".pdf"
                     outlined
