@@ -50,8 +50,8 @@
                             <v-checkbox
                                 v-model="bitacora.alerta_inmediata"
                                 label="Alerta inmediata"                                
-                                :true-value="true"
-                                :false-value="false"
+                                :true-value="1"
+                                :false-value="0"
                                 :error-messages="errors"                                
                             >
                             </v-checkbox>
@@ -62,8 +62,8 @@
                             <v-checkbox
                                 v-model="bitacora.paciente_no_rcv"
                                 label="Usuario que refiere no tener ninguna patologia"                                
-                                :true-value="true"
-                                :false-value="false"
+                                :true-value="1"
+                                :false-value="0"
                                 :error-messages="errors"                                
                             >
                             </v-checkbox>
@@ -147,6 +147,8 @@
             <v-btn
                 large
                 @click="close"
+                :disabled="loadingButtons"
+                :loading="loadingButtons"
             >
                 Cancelar
             </v-btn>
@@ -154,6 +156,8 @@
                 large
                 color="primary"
                 @click="save"
+                :disabled="loadingButtons"
+                :loading="loadingButtons"
             >
                 <v-icon left>fas fa-save</v-icon>
                 Guardar
@@ -162,7 +166,7 @@
         </v-card>
         </ValidationObserver>
         <crear-tipificacion 
-            ref="crearTipificacion" 
+            ref="crearTipificacion"
             :tipificaciones="bitacora.tipificaciones"
             :listTipificaciones="complementosRCV ? complementosRCV.ref_tipificaciones: []"
             ></crear-tipificacion>
@@ -179,6 +183,7 @@ export default {
     data: () => ({
         dialogNuevaBitacora: false,
         bitacora: null,
+        loadingButtons: false,
         bitacorasModel: {
             rcv_id: null,
             fecha: null,
@@ -208,9 +213,15 @@ export default {
         this.bitacora = this.clone(this.bitacorasModel)
     },
     methods: {
-        open(item){
+        open(item, bitacora = null){
+          if(!bitacora){
             this.getTipificacionesPendientes(item.id)
+            this.bitacora.alerta_inmediata = 0
+            this.bitacora.paciente_no_rcv = 0
             this.bitacora.afiliado_id = item.id
+          }else{
+            this.bitacora = {...bitacora}
+          }
             this.dialogNuevaBitacora = true
         },
         close(){
@@ -232,14 +243,14 @@ export default {
             this.$refs.formBitacora.validate().then(result => {
                 if (result) {
                     this.loading = true
-                    this.bitacora.alerta_inmediata = this.bitacora.alerta_inmediata ? 1 : 0
-                    this.bitacora.paciente_no_rcv = this.bitacora.paciente_no_rcv ? 1 : 0
-                    if(this.bitacora.bitacora_id) delete this.bitacora.bitacora_id
-                    this.axios.post(`bitacoras`, this.bitacora)
-                        .then(response => {
+                    this.loadingButtons = true
+                    let request = this.bitacora.id ? this.axios.put(`bitacoras/${this.bitacora.id}`, this.bitacora)
+                        : this.axios.post(`bitacoras`, this.bitacora)
+                        request.then(response => {
                             this.$emit('guardado', response.data)
                             this.$store.commit('snackbar', {color: 'success', message: `Bitacora creada correctamente.`})
                             this.close()
+                            this.loadingButtons = false
                         })
                         .catch(error => {
                             this.loading = false

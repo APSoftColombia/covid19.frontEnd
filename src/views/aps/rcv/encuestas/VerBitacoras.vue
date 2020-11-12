@@ -77,6 +77,9 @@
                 </template>
             </v-data-table>
             <crear-bitacora ref="crearNuevaBitacora" @guardado="getAfiliado(estadoAfiliado.id)"></crear-bitacora>
+          <eliminar-bitacora
+              ref="eliminarBitacora" @eliminada="getAfiliado(estadoAfiliado.id)"
+          ></eliminar-bitacora>
         </v-container>
     </v-card>
   </v-dialog>
@@ -85,11 +88,13 @@
 <script>
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
 const CrearBitacora = () => import('Views/aps/rcv/encuestas/components/CrearBitacora')
+const EliminarBitacora = () => import('Views/aps/rcv/encuestas/components/EliminarBitacora')
 export default {
     name: "verBitacoras",
     components: {
         DatosAfiliado,
-        CrearBitacora
+        CrearBitacora,
+        EliminarBitacora
     },
     data: () => ({
         loading: false,
@@ -124,7 +129,10 @@ export default {
             this.$refs.crearNuevaBitacora.open(this.estadoAfiliado)
         },
         editItem(item){
-            console.log(item);
+          this.$refs.crearNuevaBitacora.open(this.estadoAfiliado, item)
+        },
+        deleteItem(item){
+          this.$refs.eliminarBitacora.open(item)
         },
         getAfiliado(id_afiliado) {
             this.loadingTable = true
