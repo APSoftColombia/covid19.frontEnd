@@ -669,6 +669,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
+                v-if="permisos.datosPacienteEditar"
                 color="warning darken-1"
                 @click="() => {
                   $refs.modalPaciente.open(tamizaje)
@@ -677,10 +678,13 @@
             >
               Verificar Datos
             </v-btn>
+            <v-chip v-else label color="grey" dark>
+              Sin permisos para verificar
+            </v-chip>
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <modal-paciente ref="modalPaciente" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
+      <modal-paciente v-if="permisos.datosPacienteEditar" ref="modalPaciente" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
   </v-dialog>
@@ -732,6 +736,9 @@ export default {
     dialogConfirmFormPaciente: false
   }),
   computed: {
+    permisos() {
+      return this.$store.getters.getPermissionModule('covid')
+    },
     time() {
       let h = 0
       let m = 0
@@ -922,7 +929,7 @@ export default {
         let evolution = this.clone(this.evolucion)
         evolution.sintomas = coso
         let request = evolution.id
-            ? this.axios.put(`tamizajes/${evolution.tamizaje_id}/evoluciones/${evolution.id}`, evolution)
+            ? this.axios.put(`evoluciones/${evolution.id}`, evolution)
             : this.axios.post(`tamizajes/${evolution.tamizaje_id}/evoluciones`, evolution)
         request
             .then(response => {

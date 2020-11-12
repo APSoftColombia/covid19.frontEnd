@@ -14,6 +14,18 @@
                         {{moment(evolucion.created_at).format('DD/MM/YYYY HH:mm')}}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
+          <template v-if="index === 0 && permisos.seguimientoEditar">
+            <v-spacer/>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-btn fab color="orange" small dark v-on="on"
+                       @click="$emit('editarEvolucion', evolucion.id)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <span>Editar Seguimiento</span>
+            </v-tooltip>
+          </template>
         </v-toolbar>
         <v-row no-gutters class="py-3 px-4 white">
             <v-col cols="12">
@@ -424,18 +436,18 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapGetters} from 'vuex'
     import ListItemClasificacion from './components/ListItemClasificacion'
     const HelpModal = () => import('../../../../components/HelpModal/HelpModal')
     export default {
         name: 'DatosEvolucion',
         props: {
-          number: {
-              type: Number,
-              default: null
-          },
             evolucion: {
               type: Object,
+              default: null
+          },
+          index: {
+              type: Number,
               default: null
           }
         },
@@ -447,6 +459,9 @@
             click: null
         }),
         computed: {
+          permisos() {
+            return this.$store.getters.getPermissionModule('covid')
+          },
             ...mapGetters([
                 'clasificacionesCovid'
             ])

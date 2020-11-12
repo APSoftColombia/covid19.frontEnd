@@ -24,7 +24,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <modal-paciente btn-visible ref="modalPaciente" :tamizaje-origen="tamizaje" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
+            <modal-paciente v-if="permisos.datosPacienteEditar" btn-visible ref="modalPaciente" :tamizaje-origen="tamizaje" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
           </v-list-item-action>
         </v-list-item>
       </v-expansion-panel-header>
@@ -99,6 +99,9 @@ export default {
     }
   },
   computed: {
+    permisos() {
+      return this.$store.getters.getPermissionModule('covid')
+    },
     ...mapGetters([
       'tiposDocumentoIdentidad',
     ])

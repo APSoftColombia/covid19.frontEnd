@@ -319,7 +319,7 @@
 <!--              </v-tooltip>-->
 <!--            </td>-->
             <td class="text-center">
-              <v-tooltip top v-if="indexEvolucionTable === 0">
+              <v-tooltip top v-if="indexEvolucionTable === 0 && permisos.seguimientoEditar">
                 <template v-slot:activator="{ on }">
                   <v-btn fab color="orange" small dark v-on="on"
                          @click="$emit('editarEvolucion', evolucion.id)">
@@ -336,7 +336,7 @@
     </v-simple-table>
     <help-modal ref="helpModal"></help-modal>
     <r-h-c-modal ref="rhcModal"></r-h-c-modal>
-    <dialog-detalle-evolucion ref="dialogDetalle"></dialog-detalle-evolucion>
+    <dialog-detalle-evolucion ref="dialogDetalle" />
   </div>
 </template>
 
@@ -363,6 +363,9 @@ export default {
   },
   data: () => ({}),
   computed: {
+    permisos() {
+      return this.$store.getters.getPermissionModule('covid')
+    },
     ...mapGetters([
       'ordenesMedicas',
       'clasificacionesCovid'

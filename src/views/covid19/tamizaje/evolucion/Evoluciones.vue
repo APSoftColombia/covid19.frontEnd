@@ -94,12 +94,22 @@
                   {{ evolucion.numero }}
                 </v-avatar>
               </template>
-              <DatosEvolucion :evolucion="evolucion"></DatosEvolucion>
+              <datos-evolucion
+                  :evolucion="evolucion"
+                  :index="evoIndex"
+                  @editarEvolucion="val => editarEvolucion(val)"
+              />
             </v-timeline-item>
           </v-timeline>
           <div v-else>
             <template v-for="(evolucion, evoIndex) in evoluciones">
-              <DatosEvolucion class="mt-3" :key="`evolucion${evoIndex}`" :evolucion="evolucion"></DatosEvolucion>
+              <datos-evolucion
+                  class="mt-3"
+                  :key="`evolucion${evoIndex}`"
+                  :evolucion="evolucion"
+                  :index="evoIndex"
+                  @editarEvolucion="val => editarEvolucion(val)"
+              ></datos-evolucion>
             </template>
           </div>
         </template>

@@ -1,6 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="920">
-    <datos-evolucion v-if="evolucion" :evolucion="evolucion"></datos-evolucion>
+    <datos-evolucion
+        v-if="evolucion"
+        :evolucion="evolucion"
+    />
   </v-dialog>
 </template>
 
@@ -14,6 +17,7 @@ export default {
   },
   data: () => ({
     evolucion: null,
+    index: null,
     dialog: false
   }),
   methods: {
