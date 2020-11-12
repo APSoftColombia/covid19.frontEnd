@@ -7,6 +7,7 @@
         @crearEncuesta="item => crearEncuesta(item)"
         @verEncuesta="item => verEncuesta(item)"
         @editarEncuesta="item => editarEncuesta(item)"
+        @verBitacoras="item => verBitacoras(item)"
         @apply-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.aplicaFiltros()"
         @clear-filters="$refs && $refs.filtrosReportesCovid && $refs.filtrosReportesCovid.limpiarFiltros()"
     >
@@ -39,6 +40,7 @@
     <detalle-encuesta
         ref="detalleEncuesta"
     ></detalle-encuesta>
+    <ver-bitacoras ref="verBitacoras" @close="loading = false"></ver-bitacoras>
     <app-section-loader :status="loading"></app-section-loader>
   </div>
 </template>
@@ -50,6 +52,7 @@ import ItemListDataPaciente from 'Views/aps/rcv/componentes/ItemListDataPaciente
 const RegistroEncuesta = () => import('Views/aps/rcv/encuestas/RegistroEncuesta')
 const Filtros = () => import('Views/aps/rcv/encuestas/filtros/Filtros')
 const DetalleEncuesta = () => import('Views/aps/rcv/encuestas/components/DetalleEncuesta')
+const VerBitacoras = () => import('Views/aps/rcv/encuestas/VerBitacoras')
 import MenuItem from '../componentes/MenuItem'
 import IconTooltip from '../../../../components/Inputs/IconTooltip'
 
@@ -59,6 +62,7 @@ export default {
     RegistroEncuesta,
     Filtros,
     DetalleEncuesta,
+    VerBitacoras
   },
   computed: {
     permisos() {
@@ -286,6 +290,10 @@ export default {
     verEncuesta(item) {
       this.$refs.detalleEncuesta.open(item, true, false)
     },
+    verBitacoras(item){
+      this.loading = true
+      this.$refs.verBitacoras.open(item, true)
+    },
     descargarExcel(){
       this.loadingButton = true
       this.axios( {
@@ -336,6 +344,12 @@ export default {
         icon: 'mdi-file-document-edit',
         tooltip: 'Editar Encuesta',
         color: 'orange'
+      })
+      if(this.permisos.verBitacoras) item.options.push({
+        event: 'verBitacoras',
+        icon: 'mdi-content-paste',
+        tooltip: 'Ver bitacoras',
+        color: 'purple'
       })
       return item
     }
