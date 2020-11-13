@@ -7,7 +7,7 @@
     >
         <v-toolbar dark color="primary">
             <!-- <v-icon left>far fa-clipboard</v-icon> -->
-            <v-toolbar-title id="inicio">Nueva bitacora</v-toolbar-title>
+            <v-toolbar-title id="inicio">{{ bitacora.id ? 'Editar bitacora' : 'Crear bitacora' }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>
@@ -24,6 +24,7 @@
                                 placeholder="Fecha de bitacora"
                                 :max="moment().format('YYYY-MM-DD')"
                                 rules="required"
+                                name="fecha bitacora"
                             >
                             </c-date>
                         </v-col>
@@ -46,7 +47,7 @@
                             ></c-text-area>
                         </v-col>
                         <v-col class="pb-0" cols="6">
-                            <ValidationProvider name="alerta inmediata" rules="required" v-slot="{ errors, valid }">
+                            <ValidationProvider name="alerta inmediata" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="bitacora.alerta_inmediata"
                                 label="Alerta inmediata"                                
@@ -58,13 +59,13 @@
                             </ValidationProvider>
                         </v-col>
                         <v-col class="pb-0" cols="6">
-                            <ValidationProvider name="patologia" rules="required" v-slot="{ errors, valid }">
+                            <ValidationProvider name="patologia" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="bitacora.paciente_no_rcv"
                                 label="Usuario que refiere no tener ninguna patologia"                                
                                 :true-value="1"
                                 :false-value="0"
-                                :error-messages="errors"                                
+                                :error-messages="errors"                        
                             >
                             </v-checkbox>
                             </ValidationProvider>
@@ -90,16 +91,23 @@
                                     >
                                         <v-toolbar-title>Tipificaciones</v-toolbar-title>
                                         <v-spacer></v-spacer>
-                                        <v-btn
-                                        color="primary"
-                                        dark
-                                        class="mb-2"
-                                        @click="crearNuevaTipificacion"
-                                        >
-                                            <v-icon dark>
-                                                mdi-plus
-                                            </v-icon>
-                                        </v-btn>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn
+                                                color="primary"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                                dark
+                                                class="mb-2"
+                                                @click="crearNuevaTipificacion"
+                                                >
+                                                    <v-icon dark>
+                                                        mdi-plus
+                                                    </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>Agregar tipificacion</span>
+                                        </v-tooltip>
                                         <!-- <v-dialog v-model="dialogDelete" max-width="500px">
                                         <v-card>
                                             <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -121,14 +129,13 @@
                                 <v-icon
                                     small
                                     class="mr-2"
-                                    @click="editItem(item)"
+                                    @click="editTipificacion(item)"
                                 >
                                     mdi-pencil
                                 </v-icon>
                                 <v-icon
-                                    v-if="!item.bitacora_id"
                                     small
-                                    @click="deleteItem(item)"
+                                    @click="deleteTipificacion(item)"
                                 >
                                     mdi-delete
                                 </v-icon>
@@ -155,20 +162,21 @@
             <v-btn
                 large
                 color="primary"
-                @click="save"
+                @click="bitacora.id ? update() : save()"
                 :disabled="loadingButtons"
                 :loading="loadingButtons"
             >
                 <v-icon left>fas fa-save</v-icon>
-                Guardar
+                {{ bitacora.id ? 'Editar' : 'Crear' }}
             </v-btn>
             </v-card-actions>
         </v-card>
         </ValidationObserver>
         <crear-tipificacion 
             ref="crearTipificacion"
-            :tipificaciones="bitacora.tipificaciones"
             :listTipificaciones="complementosRCV ? complementosRCV.ref_tipificaciones: []"
+            @add-tipificacion="addTipificacion"
+            @update-tipificacion="updateTipificacion"
             ></crear-tipificacion>
     </v-dialog>
 </template>
@@ -221,6 +229,7 @@ export default {
             this.bitacora.afiliado_id = item.id
           }else{
             this.bitacora = {...bitacora}
+            console.log(this.bitacora);
           }
             this.dialogNuevaBitacora = true
         },
@@ -232,10 +241,18 @@ export default {
         crearNuevaTipificacion(){
             this.$refs.crearTipificacion.open()
         },
-        editItem(item){
-            console.log(item);
+        editTipificacion(item){
+            let editedIndex = this.bitacora.tipificaciones.indexOf(item)
+            item.index = editedIndex
+            this.$refs.crearTipificacion.open(this.clone(item))
         },
-        deleteItem(item){
+        addTipificacion(item){
+            this.bitacora.tipificaciones.push(item)
+        },
+        updateTipificacion(item){
+            Object.assign(this.bitacora.tipificaciones[item.index], item.tipificacion)
+        },
+        deleteTipificacion(item){
             let editedIndex = this.bitacora.tipificaciones.indexOf(item)
             this.bitacora.tipificaciones.splice(editedIndex, 1)
         },
@@ -244,20 +261,39 @@ export default {
                 if (result) {
                     this.loading = true
                     this.loadingButtons = true
-                    let request = this.bitacora.id ? this.axios.put(`bitacoras/${this.bitacora.id}`, this.bitacora)
-                        : this.axios.post(`bitacoras`, this.bitacora)
-                        request.then(response => {
-                            this.$emit('guardado', response.data)
-                            this.$store.commit('snackbar', {color: 'success', message: `Bitacora creada correctamente.`})
-                            this.close()
-                            this.loadingButtons = false
-                        })
-                        .catch(error => {
-                            this.loading = false
-                            this.$store.commit('snackbar', {color: 'error', message: `al recuperar la encuesta.`, error: error})
-                        })
+                    this.axios.post(`bitacoras`, this.bitacora).then(response => {
+                        this.$emit('guardado', response.data)
+                        this.$store.commit('snackbar', {color: 'success', message: `Bitacora creada correctamente.`})
+                        this.close()
+                        this.loadingButtons = false
+                    })
+                    .catch(error => {
+                        this.loading = false
+                        this.loadingButtons = false
+                        this.$store.commit('snackbar', {color: 'error', message: `al guardar la encuesta.`, error: error})
+                    })
                 }
             })
+        },
+        update(){
+            this.$refs.formBitacora.validate().then(result => {
+                if (result) {
+                    this.loading = true
+                    this.loadingButtons = true
+                    this.axios.put(`bitacoras/${this.bitacora.id}`, this.bitacora).then(response => {
+                        this.$emit('guardado', response.data)
+                        this.$store.commit('snackbar', {color: 'success', message: `Bitacora actualizada correctamente.`})
+                        this.close()
+                        this.loadingButtons = false
+                    })
+                    .catch(error => {
+                        this.loading = false
+                        this.loadingButtons = false
+                        this.$store.commit('snackbar', {color: 'error', message: `al actualizar la encuesta.`, error: error})
+                    })
+                }
+            })
+
         },
         getTipificacionesPendientes(afiliado_id){
             this.loading = true

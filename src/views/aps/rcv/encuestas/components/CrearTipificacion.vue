@@ -8,7 +8,7 @@
         <ValidationObserver ref="formTipificacion" v-slot="{ invalid, validated, passes, validate }">
         <v-card>
             <v-card-title>
-            <span class="headline">Nueva Tipificacion</span>
+            <span class="headline">{{ isEdit ? 'Editar tipificacion' : 'Nueva tipificacion' }}</span>
             </v-card-title>
             <v-card-text>
                 <v-container>
@@ -81,9 +81,9 @@
                 <v-btn
                     color="primary"
                     large
-                    @click="save"
+                    @click.stop="isEdit ? update() : save()"
                 >
-                    Guardar
+                    {{ isEdit ? 'Editar' : 'Agregar' }}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -97,10 +97,6 @@ const BuscadorCups = () => import('Views/aps/rcv/encuestas/components/BuscadorCu
 export default {
     name: "CrearTipificacion",
     props: {
-        tipificaciones: {
-            type: Array,
-            required: true
-        },
         listTipificaciones: {
             type: Array,
             required: true
@@ -110,6 +106,7 @@ export default {
         BuscadorCups
     },
     data: () => ({
+        isEdit: false,
         dialog: false,
         tipificacion: {},
         tipificacionModel: {
@@ -123,7 +120,8 @@ export default {
             motivo_anulacion: null,
             bitacora_id_origen: null,
             bitacora_id: null
-        }
+        },
+        tipificacionIndex: null
     }),
     watch: {
         'tipificacion.reftipificacion_id': {
@@ -134,19 +132,34 @@ export default {
         }
     },
     methods: {
-        open(){
-            this.tipificacion = this.clone(this.tipificacionModel)
+        open(item=null){
+            if (item) {
+                this.isEdit = true
+                this.tipificacionIndex = item.index
+                this.tipificacion = item
+            }else{
+                this.tipificacion = this.clone(this.tipificacionModel)
+            }
             this.dialog = true
         },
         close(){
             this.tipificacion = this.clone(this.tipificacionModel)
             this.$refs.formTipificacion.reset()
             this.dialog = false
+            this.isEdit = false
         },
         save(){
             this.$refs.formTipificacion.validate().then(result => {
                 if (result) {
-                    this.tipificaciones.push(this.tipificacion)
+                    this.$emit('add-tipificacion', this.tipificacion)
+                    this.close()
+                }
+            })
+        },
+        update(){
+            this.$refs.formTipificacion.validate().then(result => {
+                if (result) {
+                    this.$emit('update-tipificacion', {tipificacion: this.tipificacion, index: this.tipificacionIndex})
                     this.close()
                 }
             })

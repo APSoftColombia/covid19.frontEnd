@@ -39,7 +39,7 @@
           this.$emit('eliminada')
           this.dialog = false
           response
-          this.$store.commit('snackbar', {color: 'success', message: 'bitacora eliminada con exito'})
+          this.$store.commit('snackbar', {color: 'success', message: 'Bitacora eliminada correctamente'})
         }).catch(error => {
           this.loading = false
           this.$store.commit('snackbar', {

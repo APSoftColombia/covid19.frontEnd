@@ -78,6 +78,11 @@ name: 'BuscadorCups',
     cupsSearch: null,
     cupsLoading: false
   }),
+  created(){
+    if(this.value){
+      this.buscarCups(this.value)
+    }
+  },
   watch: {
     'cupsSearch': {
       handler(val) {
@@ -103,10 +108,10 @@ name: 'BuscadorCups',
     assign (item) {
       if (item) this.codigos.push(item)
     },
-    buscarCups: lodash.debounce(async function () {
-      if (this.cupsSearch) {
+    buscarCups: lodash.debounce(async function (value) {
+      if (value || this.cupsSearch) {
         this.cupsLoading = true
-        this.axios.get(`cups?filter[search]=${this.cupsSearch}`)
+        this.axios.get(`cups?filter[search]=${value || this.cupsSearch}`)
             .then(response => {
               this.codigos = response.data
               this.cupsLoading = false
