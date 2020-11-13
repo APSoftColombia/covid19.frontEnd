@@ -41,21 +41,32 @@
                     >
                         Nueva bitacora
                     </v-btn>
-                    <!-- <v-dialog v-model="dialogDelete" max-width="500px">
-                    <v-card>
-                        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                        <v-spacer></v-spacer>
-                        </v-card-actions>
-                    </v-card>
-                    </v-dialog> -->
                 </v-toolbar>
                 </template>
                 <template v-slot:item.alerta_inmediata="{ item }">
                     <span>{{ item ? item.alerta_inmediata ? 'Si' : 'No' : '-' }}</span>
+                </template>
+                <template v-slot:item.tipificaciones="{ item }">
+                    <template v-for="tipificacion in item.tipificaciones">
+                        <v-row
+                            :key="tipificacion.id"
+                            justify="center"
+                            align="center"
+                        >
+                            <v-chip
+                            v-if="!tipificacion.fecha_prestacion"
+                            class="pa-4"
+                            color="red"
+                            outlined
+                            >
+                            <template v-if="tipificacion.codigo_servicio">
+                                {{ `Cod: ${tipificacion.codigo_servicio}` }}
+                                <br>
+                            </template>
+                            {{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == tipificacion.reftipificacion_id).descripcion: '' }}
+                            </v-chip>
+                        </v-row>
+                    </template>
                 </template>
                 <template v-slot:item.actions="{ item }">
                 <v-icon
@@ -86,6 +97,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
 const CrearBitacora = () => import('Views/aps/rcv/encuestas/components/CrearBitacora')
 const EliminarBitacora = () => import('Views/aps/rcv/encuestas/components/EliminarBitacora')
@@ -108,11 +120,16 @@ export default {
             { text: 'Fecha Creacion', value: 'fecha' },
             { text: 'Periodicidad (meses)', value: 'periodicidad_seguimientos' },
             { text: 'Alerta inmediata', value: 'alerta_inmediata' },
-            { text: 'Bitacora', value: 'bitacora' },
+            { text: 'Tipifica. Pendientes', value: 'tipificaciones' },
             { text: 'Opciones', value: 'actions'}
         ],
         loadingTable: false
     }),
+    computed: {
+        ...mapGetters([
+            'complementosRCV'
+        ])
+    },
     methods: {
         open(item = null, abierto = false){
             this.dialog = true

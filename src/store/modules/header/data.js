@@ -262,6 +262,14 @@ export const itemsMenu = [
         typeRoute: 'aps'
     },
     {
+        id: 35,
+        title: 'Bitacoras RCV',
+        icon: 'mdi-content-paste',
+        color: 'purple',
+        routeName: 'BitacorasRcv',
+        typeRoute: 'aps'
+    },
+    {
         id: 30,
         title: 'Demanda Inducida',
         icon: 'fas fa-hand-holding-medical',

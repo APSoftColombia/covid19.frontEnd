@@ -37,6 +37,7 @@ const Cets = () => import('Views/covid19/Cet/Cets')
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
 const IndicadoresViewRCV = () => import('Views/aps/rcv/IndicadoresRCV/IndicadoresView')
 const InformeEjecutivo = () => import('Views/aps/rcv/InformeEjecutivo/InformeEjecutivo')
+const BitacorasRCV = () => import('Views/aps/rcv/bitacorasRcv/Index')
 
 export default {
    path: '/',
@@ -521,6 +522,20 @@ export default {
             avatar: {
                icon: 'mdi-file-table',
                color: 'deep-purple',
+            }
+         }
+      },
+      {
+         path: 'bitacoras-rcv',
+         name: 'BitacorasRcv',
+         component: BitacorasRCV,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'aps-bitacorasRcvIndex',
+            avatar: {
+               icon: 'mdi-content-paste',
+               color: 'purple',
             }
          }
       }

@@ -28,7 +28,9 @@ const state = {
         tablaCets: 0,
         tablaCetsVersion: 0,
         tablaDemandaInducida: 0,
-        tablaDemandaInducidaVersion: 9
+        tablaDemandaInducidaVersion: 9,
+        tablaBitacorasRcv: 0,
+        tablaBitacorasRcvVersion: 0
     }
 }
 
