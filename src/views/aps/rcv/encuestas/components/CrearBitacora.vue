@@ -80,70 +80,67 @@
                     </v-row>
                     <v-row>
                         <v-col class="pb-0" cols="12">
-                            <v-data-table
-                                :headers="headers"
-                                :items="bitacora.tipificaciones"
-                                class="elevation-1 mt-4"
-                            >
-                                <template v-slot:top>
-                                    <v-toolbar
-                                        flat
+                            <v-toolbar flat>
+                                <v-toolbar-title>Tipificaciones</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                        color="primary"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        dark
+                                        class="mb-2"
+                                        @click="crearNuevaTipificacion"
+                                        >
+                                            <v-icon dark>
+                                                mdi-plus
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Agregar tipificacion</span>
+                                </v-tooltip>
+                            </v-toolbar>
+                            <v-simple-table>
+                                <template v-slot:default>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" v-for="item in headers" :key="item.value">
+                                            {{ item.text }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                    v-for="(item, index) in bitacora.tipificaciones"
+                                    :key="index"
                                     >
-                                        <v-toolbar-title>Tipificaciones</v-toolbar-title>
-                                        <v-spacer></v-spacer>
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-btn
-                                                color="primary"
-                                                v-bind="attrs"
-                                                v-on="on"
-                                                dark
-                                                class="mb-2"
-                                                @click="crearNuevaTipificacion"
-                                                >
-                                                    <v-icon dark>
-                                                        mdi-plus
-                                                    </v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span>Agregar tipificacion</span>
-                                        </v-tooltip>
-                                        <!-- <v-dialog v-model="dialogDelete" max-width="500px">
-                                        <v-card>
-                                            <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-                                            <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                            <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                                            <v-spacer></v-spacer>
-                                            </v-card-actions>
-                                        </v-card>
-                                        </v-dialog> -->
-                                    </v-toolbar>
+                                    <td>{{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == item.reftipificacion_id).descripcion: '-' }}</td>
+                                    <td>{{ item.codigo_servicio }}</td>
+                                    <td>{{ item.fecha_solicitud }}</td>
+                                    <td>{{ item.fecha_programada }}</td>
+                                    <td>{{ item.fecha_prestacion }}</td>
+                                    <td>
+                                        <v-icon
+                                            small
+                                            class="mr-2"
+                                            @click="editTipificacion(item)"
+                                        >
+                                            mdi-pencil
+                                        </v-icon>
+                                        <v-icon
+                                            small
+                                            @click="deleteTipificacion(item)"
+                                        >
+                                            mdi-delete
+                                        </v-icon>
+                                    </td>
+                                    </tr>
+                                    <div v-if="!bitacora.tipificaciones.length" class="title grey--text text-center pa-4">Sin tipificaciones</div>
+                                    
+                                </tbody>
                                 </template>
-                                
-                                <template v-slot:item.reftipificacion_id="{ item }">
-                                    <span>{{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == item.reftipificacion_id).descripcion: '-' }}</span>
-                                </template>
-                                <template v-slot:item.actions="{ item }">                                    
-                                <v-icon
-                                    small
-                                    class="mr-2"
-                                    @click="editTipificacion(item)"
-                                >
-                                    mdi-pencil
-                                </v-icon>
-                                <v-icon
-                                    small
-                                    @click="deleteTipificacion(item)"
-                                >
-                                    mdi-delete
-                                </v-icon>
-                                </template>
-                                <template v-slot:no-data>
-                                    <div class="title grey--text text-center pa-4">No hay registros para mostrar</div>
-                                </template>
-                            </v-data-table>
+                            </v-simple-table>
                         </v-col>
                     </v-row>
                 </v-container>

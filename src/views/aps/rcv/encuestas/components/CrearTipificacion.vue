@@ -152,7 +152,9 @@ export default {
             this.$refs.formTipificacion.validate().then(result => {
                 if (result) {
                     this.$emit('add-tipificacion', this.tipificacion)
-                    this.close()
+                    this.$store.commit('snackbar', {color: 'success', message: `Tipificacion agregada exitosamente`})
+                    this.tipificacion = this.clone(this.tipificacionModel)
+                    this.$refs.formTipificacion.reset()
                 }
             })
         },
@@ -160,6 +162,7 @@ export default {
             this.$refs.formTipificacion.validate().then(result => {
                 if (result) {
                     this.$emit('update-tipificacion', {tipificacion: this.tipificacion, index: this.tipificacionIndex})
+                    this.$store.commit('snackbar', {color: 'success', message: `Tipificacion modificada exitosamente`})
                     this.close()
                 }
             })
