@@ -103,6 +103,14 @@
                 ></c-select-complete>
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">
+                <c-identificacion
+                    label="Número de Identificación"
+                    name="identificacion"
+                    rules="required|numeric"
+                    v-model="afiliado.identificacion"
+                ></c-identificacion>
+              </v-col>
+              <v-col cols="12" sm="12" md="6" lg="6">
                 <c-date
                     v-model="afiliado.fecha_expedicion"
                     label="Fecha de Expedicion de Documento"
@@ -110,14 +118,6 @@
                     :max="moment().format('YYYY-MM-DD')"
                 >
                 </c-date>
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6">
-                <c-identificacion
-                    label="Identificación"
-                    name="identificacion"
-                    rules="required|numeric"
-                    v-model="afiliado.identificacion"
-                ></c-identificacion>
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6">
                 <c-date
@@ -415,9 +415,6 @@
           if(val){
             this.afiliado.autoriza_eps = 0
             this.afiliado.comparten_gastos = 1
-          }else{
-            this.afiliado.autoriza_eps = null
-            this.afiliado.comparten_gastos = null
           }
         },
         inmediate: true
@@ -435,6 +432,7 @@
         this.afiliado.identificacion_af_confirmado = afiliadoConfirmado.identificacion
         this.afiliado.cet_id = afiliadoConfirmado.cet_id
         this.afiliado.giro_a_familiar = 0
+        this.afiliado.producto_financiero = 0
         this.afiliadoConfirmadoID = afiliadoConfirmado.id
         this.dialog = true
         if(setNoToAuthEPS) {

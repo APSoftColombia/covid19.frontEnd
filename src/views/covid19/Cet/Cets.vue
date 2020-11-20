@@ -112,7 +112,8 @@
                               fecha_expedicion: context.props.value.fecha_expedicion,
                               codigo_departamento: context.props.value.codigo_departamento,
                               codigo_municipio: context.props.value.codigo_municipio,
-                              autoriza_eps: context.props.value.autoriza_eps
+                              autoriza_eps: context.props.value.autoriza_eps,
+                              contactosPorDiligenciar: context.props.value.contactos_incompletos,
                             },
                           }
                         }

@@ -1,6 +1,14 @@
 <template>
   <v-list-item class="pa-0">
     <div class="mr-2">
+      <v-tooltip top v-if="this.value.contactosPorDiligenciar > 0">
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon >
+            <v-icon color="orange">fas fa-users-slash</v-icon>
+          </v-btn>
+        </template>
+        <span>Hay contactos vinculados con campos sin diligenciar</span>
+      </v-tooltip>
       <icon-tooltip v-if="[this.value.fecha_expedicion, this.value.codigo_departamento, this.value.codigo_municipio, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
       <v-icon v-if="this.value.autoriza_eps">fas fa-dollar-sign</v-icon>
     </div>
