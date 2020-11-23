@@ -24,7 +24,8 @@
             </v-list-item-title>
             <v-list-item-title v-if="tamizaje.tamizador">
               <h6 v-if="tamizaje.tipo_tamizaje === 'telefónico'" class="mb-0">
-                {{ `${tamizaje.llamada_entrante ? 'Llamada recibida en: ' : 'Llamada realizada desde: '}${tamizaje.tamizador.nombre}` }}</h6>
+                {{ `${tamizaje.llamada_entrante ? 'Llamada recibida en: ' : 'Llamada realizada desde: '}${tamizaje.tamizador.nombre}` }}
+              </h6>
               <h6 v-else class="mb-0">Realizado en: {{ tamizaje.tamizador.nombre }}</h6>
             </v-list-item-title>
           </v-list-item-content>
@@ -142,11 +143,11 @@
                     </v-card-text>
                     <v-card-text v-else>
                       <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha)">
-                        <v-chip label class="mr-2 mb-2 white--text" color="indigo" :key="`chip${indexChip}`">
+                        <v-chip label class="white--text" color="indigo" :key="`chip${indexChip}`">
                           {{ chip.descripcion }}
                         </v-chip>
                       </template>
-                      <v-chip label class="white--text mr-2 mb-2" color="orange" v-if="tamizaje.fecha_sintomas">
+                      <v-chip label class="white--text" color="orange" v-if="tamizaje.fecha_sintomas">
                         <v-icon small left>mdi-calendar-month</v-icon>
                         {{ tamizaje.fecha_sintomas ? moment(tamizaje.fecha_sintomas).format('DD/MM/YYYY') : '' }}
                       </v-chip>
@@ -159,7 +160,7 @@
                       <span class="title">Signos de Alarma</span>
                     </v-card-title>
                     <v-card-text class="text-center" v-if="!tamizaje.sintomas.length">
-                      No registra síntomas
+                      No registra signos de alarma
                     </v-card-text>
                     <v-card-text v-else>
                       <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && !x.solicita_fecha)">
