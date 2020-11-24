@@ -113,7 +113,9 @@
                               codigo_departamento: context.props.value.codigo_departamento,
                               codigo_municipio: context.props.value.codigo_municipio,
                               autoriza_eps: context.props.value.autoriza_eps,
-                              contactosPorDiligenciar: context.props.value.contactos_incompletos,
+                              contactosPorDiligenciar: context.props.value.covid_contacto === 1 ? context.props.value.contactos_incompletos : [],
+                              comparte_gastos: context.props.value.covid_contacto === 1 ? context.props.value.comparten_gastos : 0,
+                              sin_beneficiarios: context.props.value.sin_beneficiarios
                             },
                           }
                         }
@@ -245,7 +247,7 @@
           setNoToAuthEPS = contacto.contactos.find(contacto => contacto.autoriza_eps === 1)
         }
         let hasContactos = contacto.contactos
-        this.$refs.editarContacto.open(contacto, setNoToAuthEPS, hasContactos)
+        this.$refs.editarContacto.open(contacto, setNoToAuthEPS, hasContactos, true)
       },
     },
     created() {

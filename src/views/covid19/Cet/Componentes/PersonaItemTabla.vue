@@ -9,8 +9,16 @@
         </template>
         <span>Hay contactos vinculados con campos sin diligenciar</span>
       </v-tooltip>
+      <v-tooltip top v-if="this.value.sin_beneficiarios && this.value.comparte_gastos">
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon>
+            <v-icon size="32px">mdi mdi-currency-usd-off</v-icon>
+          </v-btn>
+        </template>
+        <span>Sin contactos beneficiarios</span>
+      </v-tooltip>
       <icon-tooltip v-if="[this.value.fecha_expedicion, this.value.codigo_departamento, this.value.codigo_municipio, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
-      <v-icon v-if="this.value.autoriza_eps">fas fa-dollar-sign</v-icon>
+      <v-icon v-if="this.value.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
     </div>
     <v-icon large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
     <v-list-item-content class="pa-0">
