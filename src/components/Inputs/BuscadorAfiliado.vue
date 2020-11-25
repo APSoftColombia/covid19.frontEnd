@@ -14,7 +14,7 @@
         :error-messages="errors"
         hide-selected
         persistent-hint
-        :hint="afiliado && afiliados.find(x => x[itemValue] === afiliado) ? [afiliados.find(x => x[itemValue] === afiliado).numero_celular ? `Tel.${afiliados.find(x => x[itemValue] === afiliado).numero_celular}`: null, `${afiliados.find(x => x[itemValue] === afiliado).direccion},`].filter(x => x).join(' | '): null"
+        :hint="afiliado && afiliados.find(x => x[itemValue] === afiliado) ? [afiliados.find(x => x[itemValue] === afiliado).numero_celular ? `Tel.${afiliados.find(x => x[itemValue] === afiliado).numero_celular}` : `Tel.${afiliados.find(x => x[itemValue] === afiliado).numero_celular}`, `${afiliados.find(x => x[itemValue] === afiliado).direccion},`].filter(x => x).join(' | '): null"
         @change="val => $emit('change', val)"
     >
       <template v-slot:selection="data">
@@ -76,6 +76,10 @@
       ruta: {
         type: String,
         default: null
+      },
+      cet_id: {
+        type: Number,
+        default: null
       }
     },
     data: () => ({
@@ -112,8 +116,13 @@
       buscarAfiliado: lodash.debounce(async function () {
         if (this.afiliadoSearch) {
           this.afiliadoLoading = true
-          this.axios.get(`${this.ruta}?filter[search]=${this.afiliadoSearch}`)
+          this.axios.get(`${this.ruta}?filter[search]=${this.afiliadoSearch}${this.cet_id ? ',' + this.cet_id : ''}`)
               .then(response => {
+                if(this.ruta === 'buscar-cets'){
+                  response.data.forEach((element) => {
+                    element.fecha_nacimiento = element.fecha_nacimiento ? this.moment(element.fecha_nacimiento, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
+                  })
+                }
                 this.afiliados = response.data
                 this.afiliadoLoading = false
               }).catch(e => {

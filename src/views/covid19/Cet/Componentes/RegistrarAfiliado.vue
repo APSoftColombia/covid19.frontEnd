@@ -25,8 +25,9 @@
                     ref="buscadorafiliado"
                     label="Busqueda de afiliado"
                     name="busqueda de afiliado"
-                    v-model="afiliado.afiliado"
+                    v-model="afiliadoOriginal"
                     :ruta="ruta"
+                    :cet_id="afiliado.cet_id"
                 ></buscador-afiliado>
               </v-col>
             </v-row>
@@ -335,14 +336,15 @@
     data: () => ({
       dialog: false,
       afiliado: {},
+      afiliadoOriginal: {},
       contacto: null,
       loading: false,
       autorizaEPSValues: [],
       afiliadoConfirmadoID: null,
       parentescosData: null,
       productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}],
-      tipoBusqueda: true,
-      ruta: 'buscar-afiliado'
+      tipoBusqueda: false,
+      ruta: 'buscar-cets'
     }),
     computed: {
       ...mapGetters([
@@ -363,10 +365,9 @@
           }else{
             this.ruta = 'buscar-cets'
           }
-          console.log(this.ruta)
         }
       },
-      'afiliado.afiliado': {
+      'afiliadoOriginal': {
         handler(val) {
           if(val) {
             this.afiliado.nombre1 = val.nombre1
@@ -375,7 +376,7 @@
             this.afiliado.apellido2 = val.apellido2
             this.afiliado.tipoid = val.tipo_doc ? val.tipo_doc : val.tipoid
             this.afiliado.identificacion = val.numero_documento_identidad ? val.numero_documento_identidad : val.identificacion
-            this.afiliado.fecha_nacimiento = this.moment(val.fecha_nacimiento).format('YYYY-MM-DD')
+            this.afiliado.fecha_nacimiento = val.fecha_nacimiento
             if(val.telefono_fijo){
               this.afiliado.telefono_fijo = val.telefono_fijo
             }
@@ -386,7 +387,6 @@
             this.afiliado.sexo = val.sexo
             this.afiliado.celular = val.numero_celular ? val.numero_celular : val.celular
             this.afiliado.email = val.email
-            this.afiliado.direccion = val.direccion
             if(val.eps_id){
               if(val.eps_id && this.epss && this.epss.length && this.epss.find(eps => eps.id === val.eps_id)){
                 this.afiliado.codeps = this.epss.find(eps => eps.id === val.eps_id).codigo
@@ -394,14 +394,12 @@
             }else{
               this.afiliado.codeps = val.codeps
             }
+            this.afiliado.direccion = val.direccion
             if(val.centro_poblado_id){
               if(val.centro_poblado_id && this.municipiosTotal && this.municipiosTotal.length && this.municipiosTotal.find(x => x.id === val.centro_poblado_id)){
                 let datosMunicipio = this.municipiosTotal.find(x => x.id === val.centro_poblado_id)
                 this.afiliado.codigo_municipio = datosMunicipio.codigo
                 this.afiliado.codigo_departamento = datosMunicipio.departamento.codigo
-              }else{
-                this.afiliado.codigo_municipio = null
-                this.afiliado.codigo_departamento = null
               }
             }else{
               this.afiliado.codigo_municipio = val.codigo_municipio
@@ -428,7 +426,8 @@
             this.afiliado.updateAfiliado = null
           }
         },
-        inmediate: true
+        //inmediate: true,
+        deep: false
       },
       'afiliado.entidad_financiera_id': {
         handler(val){
@@ -489,6 +488,7 @@
         this.dialog = false
         this.loading = false
         this.afiliado = {}
+        this.afiliadoOriginal = {}
         this.afiliadoConfirmadoID = null
         this.autorizaEPSValues = []
       },

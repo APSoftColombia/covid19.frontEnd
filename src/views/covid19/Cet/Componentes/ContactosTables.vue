@@ -55,6 +55,7 @@
                       <v-list-item>
                         <icon-tooltip v-if="[contacto.fecha_expedicion, contacto.codigo_departamento, contacto.codigo_municipio, contacto.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
                         <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
+                        <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
                         <v-list-item-content style="display: grid !important;">
                           <v-list-item-title class="body-2">{{ [contacto.nombre1, contacto.nombre2, contacto.apellido1, contacto.apellido2].filter(x => x).join(' ') }}</v-list-item-title>
