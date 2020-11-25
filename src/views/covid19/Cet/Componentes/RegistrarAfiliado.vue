@@ -375,11 +375,7 @@
             this.afiliado.apellido2 = val.apellido2
             this.afiliado.tipoid = val.tipo_doc ? val.tipo_doc : val.tipoid
             this.afiliado.identificacion = val.numero_documento_identidad ? val.numero_documento_identidad : val.identificacion
-            if(val.tipoid) {
-              this.afiliado.fecha_nacimiento = this.moment(val.fecha_nacimiento).format('YYYY-MM-DD')
-            }else{
-              this.afiliado.fecha_nacimiento = val.fecha_nacimiento
-            }
+            this.afiliado.fecha_nacimiento = this.moment(val.fecha_nacimiento).format('YYYY-MM-DD')
             if(val.telefono_fijo){
               this.afiliado.telefono_fijo = val.telefono_fijo
             }
