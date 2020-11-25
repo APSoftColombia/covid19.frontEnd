@@ -13,6 +13,10 @@
         <v-card-text>
           <v-container fluid>
             <v-row>
+              <v-spacer></v-spacer>
+              
+            </v-row>
+            <v-row>
               <datos-afiliado
                   :afiliado="contacto"
                   :abierto="true"
@@ -218,17 +222,21 @@
         </v-card-actions>
       </ValidationObserver>
     </v-card>
+    <cet-view
+        ref="addContactos"
+    ></cet-view>
   </v-dialog>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
   const DatosAfiliado = () => import('./DatosAfiliado')
-
+  import CetView from "../CetView";
   export default {
     name: "EditarContacto",
     components: {
-      DatosAfiliado
+      DatosAfiliado,
+      CetView
     },
     data: () => ({
       dialog: false,
@@ -240,7 +248,8 @@
       setNoToAuthEPS: null,
       parentescosData: [],
       productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}],
-      loadingButton: false
+      loadingButton: false,
+      fromMainForm: false,
     }),
     computed: {
       ...mapGetters([
@@ -265,7 +274,7 @@
       'dataContacto.giro_a_familiar': {
         handler(val){
           if(this.dataContacto.covid_contacto == 1){
-            if(val){
+            if(val && (this.dataContacto.autoriza_eps == null || !this.dataContacto.autoriza_eps)){
               this.dataContacto.autoriza_eps = 0
               this.dataContacto.comparten_gastos = 1
             }
@@ -274,7 +283,8 @@
       }
     },
     methods: {
-      open(contacto, setNoToAuthEPS, hasContactos){
+      open(contacto, setNoToAuthEPS, hasContactos, fromMainForm){
+        this.fromMainForm = fromMainForm
         this.dataContacto = {...contacto}
         this.parentescosData = this.parentescos.filter(x => x.id <= 7)
         this.dialog = true
@@ -325,6 +335,9 @@
             }
             this.axios.post(`infocets-actualizar/${this.contacto.id}`, data).then(response => {
               this.dataContacto = response.data
+              if(this.fromMainForm && response.data.comparten_gastos && this.contacto.covid_contacto === 1){
+                this.$refs.addContactos.open(response.data.id)
+              }
               this.$store.commit('snackbar', {color: 'success', message: 'contacto editado con exito'})
               this.$emit('editado')
               this.loading = false

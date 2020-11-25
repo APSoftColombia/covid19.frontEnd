@@ -13,12 +13,20 @@
         <v-card-text>
           <v-container fluid>
             <v-row>
+              <v-switch
+                  v-model="tipoBusqueda"
+                  color="indigo"
+                  :label="tipoBusqueda ? 'busqueda general' : 'busqueda en archivo'"
+                  dense
+                  class="mx-auto"
+              ></v-switch>
               <v-col cols="12" sm="12" md="12" lg="12">
                 <buscador-afiliado
                     ref="buscadorafiliado"
                     label="Busqueda de afiliado"
                     name="busqueda de afiliado"
                     v-model="afiliado.afiliado"
+                    :ruta="ruta"
                 ></buscador-afiliado>
               </v-col>
             </v-row>
@@ -332,7 +340,9 @@
       autorizaEPSValues: [],
       afiliadoConfirmadoID: null,
       parentescosData: null,
-      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}]
+      productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}],
+      tipoBusqueda: true,
+      ruta: 'buscar-afiliado'
     }),
     computed: {
       ...mapGetters([
@@ -346,6 +356,16 @@
       ])
     },
     watch: {
+      'tipoBusqueda': {
+        handler(val){
+          if(val){
+            this.ruta = 'buscar-afiliado'
+          }else{
+            this.ruta = 'buscar-cets'
+          }
+          console.log(this.ruta)
+        }
+      },
       'afiliado.afiliado': {
         handler(val) {
           if(val) {
@@ -353,23 +373,43 @@
             this.afiliado.nombre2 = val.nombre2
             this.afiliado.apellido1 = val.apellido1
             this.afiliado.apellido2 = val.apellido2
-            this.afiliado.tipoid = val.tipo
-            this.afiliado.identificacion = val.numero_documento_identidad
-            this.afiliado.fecha_nacimiento = val.fecha_nacimiento
+            this.afiliado.tipoid = val.tipo_doc ? val.tipo_doc : val.tipoid
+            this.afiliado.identificacion = val.numero_documento_identidad ? val.numero_documento_identidad : val.identificacion
+            if(val.tipoid) {
+              this.afiliado.fecha_nacimiento = this.moment(val.fecha_nacimiento).format('YYYY-MM-DD')
+            }else{
+              this.afiliado.fecha_nacimiento = val.fecha_nacimiento
+            }
+            if(val.telefono_fijo){
+              this.afiliado.telefono_fijo = val.telefono_fijo
+            }
+            if(val.bdua_afl_id){
+              this.afiliado.updateAfiliado = true;
+              this.afiliado.bdua_afl_id = val.bdua_afl_id
+            }
             this.afiliado.sexo = val.sexo
-            this.afiliado.celular = val.numero_celular
+            this.afiliado.celular = val.numero_celular ? val.numero_celular : val.celular
             this.afiliado.email = val.email
             this.afiliado.direccion = val.direccion
-            if(val.eps_id && this.epss && this.epss.length && this.epss.find(eps => eps.id === val.eps_id)){
-              this.afiliado.codeps = this.epss.find(eps => eps.id === val.eps_id).codigo
-            }
-            if(val.centro_poblado_id && this.municipiosTotal && this.municipiosTotal.length && this.municipiosTotal.find(x => x.id === val.centro_poblado_id)){
-              let datosMunicipio = this.municipiosTotal.find(x => x.id === val.centro_poblado_id)
-              this.afiliado.codigo_municipio = datosMunicipio.codigo
-              this.afiliado.codigo_departamento = datosMunicipio.departamento.codigo
+            if(val.eps_id){
+              if(val.eps_id && this.epss && this.epss.length && this.epss.find(eps => eps.id === val.eps_id)){
+                this.afiliado.codeps = this.epss.find(eps => eps.id === val.eps_id).codigo
+              }
             }else{
-              this.afiliado.codigo_municipio = null
-              this.afiliado.codigo_departamento = null
+              this.afiliado.codeps = val.codeps
+            }
+            if(val.centro_poblado_id){
+              if(val.centro_poblado_id && this.municipiosTotal && this.municipiosTotal.length && this.municipiosTotal.find(x => x.id === val.centro_poblado_id)){
+                let datosMunicipio = this.municipiosTotal.find(x => x.id === val.centro_poblado_id)
+                this.afiliado.codigo_municipio = datosMunicipio.codigo
+                this.afiliado.codigo_departamento = datosMunicipio.departamento.codigo
+              }else{
+                this.afiliado.codigo_municipio = null
+                this.afiliado.codigo_departamento = null
+              }
+            }else{
+              this.afiliado.codigo_municipio = val.codigo_municipio
+              this.afiliado.codigo_departamento = val.codigo_departamento
             }
           }else{
             this.afiliado.nombre1 = null
@@ -388,6 +428,8 @@
             this.afiliado.codigo_municipio = null
             this.afiliado.codigo_departamento = null
             this.afiliado.codeps = null
+            this.afiliado.bdua_afl_id = null
+            this.afiliado.updateAfiliado = null
           }
         },
         inmediate: true
@@ -414,7 +456,6 @@
         handler(val){
           if(val){
             this.afiliado.autoriza_eps = 0
-            this.afiliado.comparten_gastos = 1
           }
         },
         inmediate: true
@@ -435,6 +476,7 @@
         this.afiliado.producto_financiero = 0
         this.afiliadoConfirmadoID = afiliadoConfirmado.id
         this.dialog = true
+        this.afiliado.comparten_gastos = 1
         if(setNoToAuthEPS) {
           this.afiliado.autoriza_eps = 0;
           this.autorizaEPSValues = [

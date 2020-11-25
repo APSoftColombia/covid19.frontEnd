@@ -24,7 +24,7 @@
               {{ [data.item.nombre1, data.item.nombre2, data.item.apellido1, data.item.apellido2].filter(x => x).join(' ') }}
             </v-list-item-title>
             <v-list-item-subtitle class="caption text-truncate">Número
-              de Documento de Identidad:{{ data.item.numero_documento_identidad }}
+              de Documento de Identidad:{{ ruta === 'buscar-afiliado' ? data.item.numero_documento_identidad : data.item.identificacion }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -37,7 +37,7 @@
                 {{ [data.item.nombre1, data.item.nombre2, data.item.apellido1, data.item.apellido2].filter(x => x).join(' ') }}
               </v-list-item-title>
               <v-list-item-subtitle class="caption">Número
-                de Documento de Identidad:{{ data.item.numero_documento_identidad }}
+                de Documento de Identidad:{{ ruta === 'buscar-afiliado' ? data.item.numero_documento_identidad : data.item.identificacion }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -70,6 +70,10 @@
         default: 'afiliado'
       },
       rules: {
+        type: String,
+        default: null
+      },
+      ruta: {
         type: String,
         default: null
       }
@@ -108,7 +112,7 @@
       buscarAfiliado: lodash.debounce(async function () {
         if (this.afiliadoSearch) {
           this.afiliadoLoading = true
-          this.axios.get(`buscar-afiliado?filter[search]=${this.afiliadoSearch}`)
+          this.axios.get(`${this.ruta}?filter[search]=${this.afiliadoSearch}`)
               .then(response => {
                 this.afiliados = response.data
                 this.afiliadoLoading = false
