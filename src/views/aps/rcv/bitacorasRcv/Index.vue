@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-		<page-title-bar title="Bitacoras RCV"></page-title-bar>
+		<page-title-bar title="Seguimientos RCV"></page-title-bar>
 		<v-row>
 			<v-col cols="12">
 				<v-card>
@@ -162,7 +162,7 @@ export default {
                 item.options.push({
                     event: 'verBitacoras',
                     icon: 'mdi-content-paste',
-                    tooltip: 'Ver bitacoras'
+                    tooltip: 'Ver seguimientos'
                 })
             }
             return item

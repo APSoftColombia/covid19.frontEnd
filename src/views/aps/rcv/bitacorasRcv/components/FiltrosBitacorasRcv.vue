@@ -12,7 +12,7 @@
         <v-col class="pb-0" cols="12" sm="12" md="12">
           <v-checkbox
               v-model="filters.models.tipificacionesPendientes"
-              label="Bitacoras con Tipificaciones Pendientes"
+              label="Seguimientos con Tipificaciones Pendientes"
               :true-value="true"
               :false-value="false"
               @change="aplicaFiltros"

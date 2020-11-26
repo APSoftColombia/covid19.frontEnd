@@ -263,7 +263,7 @@ export const itemsMenu = [
     },
     {
         id: 35,
-        title: 'Bitacoras RCV',
+        title: 'Seguimientos RCV',
         icon: 'mdi-content-paste',
         color: 'purple',
         routeName: 'BitacorasRcv',
@@ -275,6 +275,14 @@ export const itemsMenu = [
         icon: 'fas fa-hand-holding-medical',
         color: 'blue',
         routeName: 'DemandaInducida',
+        typeRoute: 'demandaInducida'
+    },
+    {
+        id: 36,
+        title: 'Ajustes Demanda Inducida',
+        icon: 'fas fa-user-cog',
+        color: 'blue',
+        routeName: 'ConfiguracionDemanda',
         typeRoute: 'demandaInducida'
     },
     {

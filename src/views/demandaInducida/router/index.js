@@ -1,5 +1,7 @@
 import Full from 'Container/Full'
 const Index = () => import('Views/demandaInducida/views/Index')
+const Configuracion = () => import('Views/demandaInducida/views/ConfiguracionDemanda')
+
 export default {
     path: '/',
     component: Full,
@@ -15,6 +17,20 @@ export default {
                 requiresPermission: 'demandaInducida-index',
                 avatar: {
                     icon: 'fas fa-hand-holding-medical',
+                    color: 'blue',
+                }
+            }
+        },
+        {
+            name: 'ConfiguracionDemanda',
+            path: 'config-demanda',
+            component: Configuracion,
+            meta: {
+                requiresAuth: true,
+                requiresOnLine: true,
+                requiresPermission: 'demandaInducida-config',
+                avatar: {
+                    icon: 'fas fa-user-cog',
                     color: 'blue',
                 }
             }

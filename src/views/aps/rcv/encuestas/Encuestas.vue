@@ -348,7 +348,7 @@ export default {
       if(this.permisos.verBitacoras) item.options.push({
         event: 'verBitacoras',
         icon: 'mdi-content-paste',
-        tooltip: 'Ver bitacoras',
+        tooltip: 'Ver seguimientos',
         color: 'purple'
       })
       return item

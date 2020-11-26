@@ -9,7 +9,7 @@
     <v-card>
         <v-toolbar dark color="primary">
             <v-icon left>far fa-clipboard</v-icon>
-            <v-toolbar-title id="inicio">Bitacoras</v-toolbar-title>
+            <v-toolbar-title id="inicio">Seguimientos RCV</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>
@@ -39,7 +39,7 @@
                     class="mb-2"
                     @click="crearNuevaBitacora"
                     >
-                        Nueva bitacora
+                        Nuevo Seguimiento
                     </v-btn>
                 </v-toolbar>
                 </template>
