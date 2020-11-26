@@ -36,7 +36,7 @@
                     <th class="text-left">ID</th>
                     <th class="text-left">Persona</th>
                     <th class="text-left">Fecha Nacimiento</th>
-                    <th class="text-left">Número Contacto</th>
+                    <th class="text-left">Número</th>
                     <th class="text-left">Opciones</th>
                   </tr>
                 </thead>
@@ -113,7 +113,7 @@
           </v-col>
           <v-col cols="12">
             <div class="grey--text text-center">
-              <h5>Contactos sin vincular</h5>
+              <h5>Registros sin vincular</h5>
               <v-btn icon x-small @click="openInfo = true">
                 <v-icon>fas fa-question-circle</v-icon>
               </v-btn>
@@ -243,7 +243,7 @@
           sortable: false,
         },
         {
-          text: 'Número Contacto',
+          text: 'Número',
           align: 'start',
           value: 'celular',
           sortable: false,
