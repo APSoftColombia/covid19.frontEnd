@@ -476,6 +476,50 @@
                                     >
                                     </c-radio>
                                 </v-col>
+                                <template 
+                                    v-if="
+                                        infoGeneral.niño_inasistente_vacuna == 'X' ||
+                                        encuesta.asiste_control == 0 || 
+                                        infoGeneral.cronico_inasistente == 'X' ||
+                                        infoGeneral.gestante_inasistente_vacuna == 'X' ||
+                                        infoGeneral.gestante_inasistente_control == 'X'
+                                    "
+                                    >
+                                    <v-col class="pb-0" cols="6">
+                                        <c-radio
+                                            v-model="encuesta.agendo"
+                                            label="¿Agendo cita?"
+                                            name="agendo cita"
+                                            :items="single"
+                                            item-text="nombre"
+                                            item-value="id"
+                                            rules="required"
+                                            :column="!$vuetify.breakpoint.smAndUp"
+                                        >
+                                        </c-radio>
+                                    </v-col>
+                                    <v-col class="pb-0" cols="6" v-if="encuesta.agendo">
+                                        <c-date
+                                            v-model="encuesta.fecha_agendamiento"
+                                            placeholder="Fecha de agendamiento"
+                                            :max="moment().format('YYYY-MM-DD')"
+                                            rules="required"
+                                        >
+                                        </c-date>
+                                    </v-col>
+                                    <v-col class="pb-0" cols="6" v-if="encuesta.agendo == 0">
+                                        <v-label>Seleccione el motivo por que no agenda: </v-label>
+                                        <c-select-complete
+                                            v-model="encuesta.selec_no_agenda"
+                                            placeholder="Seleccione"
+                                            name="razon no agenda"
+                                            :items="opciones ? opciones.selec_no_agenda: []"
+                                            item-text="opcion"
+                                            item-value="codigo"
+                                        >
+                                        </c-select-complete>
+                                    </v-col>
+                                </template>
                                 <v-col class="pb-0" cols="12" v-if="infoGeneral.niño_inasistente_vacuna == 'X'">
                                     <v-label>Seleccione el motivo de Inasistencia a vacunación del menor: </v-label>
                                     <c-select-complete
@@ -580,11 +624,11 @@
                                     
                                 </v-col>
                                 <v-col class="pb-0" cols="12">
-                                    <v-label>Seleccione algunas de las observaciones importantes:</v-label>
+                                    <v-label>Selecciona posible barrera de acceso en la atención:</v-label>
                                     <c-select-complete
                                         v-model="encuesta.selec_obs_importante_2"
                                         placeholder="Seleccione"
-                                        name="razones importantes"
+                                        name="barrera de acceso"
                                         :items="opciones ? opciones.selec_obs_importante_2: []"
                                         item-text="opcion"
                                         item-value="codigo"
@@ -893,7 +937,10 @@ export default {
             obs_no_induccion: null,
             duracion: 0,
             riesgo_tbc: null,
-            riesgo_hansen: null
+            riesgo_hansen: null,
+            agendo: null,
+            fecha_agendamiento: null,
+            selec_no_agenda: null,
         },
         medioEncuesta: [
             {'id': 'Telefonico', 'nombre': 'Telefonico'},
@@ -995,6 +1042,12 @@ export default {
         }
     },
     watch: {
+        'encuesta.agendo': {
+            handler(value) {
+                value ? this.encuesta.selec_no_agenda = null : this.encuesta.fecha_agendamiento = null
+            },
+            inmediate: false
+        },
         'verifyInducciones': {
             handler(value){
                 if(value) this.encuesta.obs_no_induccion = null
@@ -1099,6 +1152,9 @@ export default {
             handler(value){
                 if(value != 0){
                     this.encuesta.selec_inasistencia_control = null
+                    this.encuesta.agendo = null
+                    this.encuesta.fecha_agendamiento = null
+                    this.encuesta.selec_no_agenda = null
                 }
             },
             inmediate: false
@@ -1285,5 +1341,14 @@ export default {
         **vista de detalle de encuesta cuando es efectiva
         **demanda inducida covid, si las preguntas covid son No, inducir al cuidado y si alguna es si, inducir al call center
         **filtro para rol Admin, SuperAdmin, Coordinador, por usuario encuestador
+        ** Inasistentes (cualquier inasistente) nuevas preguntas: agendo cito, fecha agendamiento, motivo no agendo
+        ** 4. Agregar campo DiEncuestas de numeroCamapaña y actualizar numeroCampaña para diEncuestas actuales = 1
+        ** 1. Cargador de excel .csv demanda inducida nueva (borrar di_asigna) - probar con excel que ya existe
+        ** 2. Cargador de excel .csv para marcar inasistentes gestante, vacunacion, control cronico 
+        ** 3. Asignacion de registros por usuario
+        ** Inconsistencia en info del paciente, ej: se filtra por alto costo, per en el detalle
+        ** del paciente, aparece que No es alto costo
+
+
 
  */

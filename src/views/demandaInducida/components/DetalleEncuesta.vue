@@ -490,6 +490,52 @@
                                     >
                                     </c-radio>
                                 </v-col>
+                                <template 
+                                    v-if="
+                                        encuesta.niño_inasistente_vacuna == 'X' ||
+                                        encuesta.cronico_inasistente == 'X' ||
+                                        encuesta.gestante_inasistente_vacuna == 'X' ||
+                                        encuesta.gestante_inasistente_control == 'X'
+                                    "
+                                    >
+                                    <v-col class="pb-0" cols="6">
+                                        <c-radio
+                                            v-model="encuesta.di_encuestas.agendo"
+                                            label="¿Agendo cita?"
+                                            name="agendo cita"
+                                            :items="single"
+                                            item-text="nombre"
+                                            item-value="id"
+                                            rules="required"
+                                            :column="!$vuetify.breakpoint.smAndUp"
+                                            disabled
+                                        >
+                                        </c-radio>
+                                    </v-col>
+                                    <v-col class="pb-0" cols="6" v-if="encuesta.di_encuestas.agendo">
+                                        <c-date
+                                            v-model="encuesta.di_encuestas.fecha_agendamiento"
+                                            placeholder="Fecha de agendamiento"
+                                            :max="moment().format('YYYY-MM-DD')"
+                                            rules="required"
+                                            disabled
+                                        >
+                                        </c-date>
+                                    </v-col>
+                                    <v-col class="pb-0" cols="6" v-if="encuesta.di_encuestas.agendo == 0">
+                                        <v-label>Seleccione el motivo por que no agenda: </v-label>
+                                        <c-select-complete
+                                            v-model="encuesta.di_encuestas.selec_no_agenda"
+                                            placeholder="Seleccione"
+                                            name="razon no agenda"
+                                            :items="opciones ? opciones.selec_no_agenda: []"
+                                            item-text="opcion"
+                                            item-value="codigo"
+                                            disabled
+                                        >
+                                        </c-select-complete>
+                                    </v-col>
+                                </template>
                                 <v-col class="pb-0" cols="12" v-if="encuesta.niño_inasistente_vacuna == 'X'">
                                     <v-label>Seleccione el motivo de Inasistencia a vacunación del menor: </v-label>
                                     <c-select-complete

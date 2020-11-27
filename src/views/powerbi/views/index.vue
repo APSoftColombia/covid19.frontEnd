@@ -2,7 +2,7 @@
     <v-container fluid>
 		<page-title-bar title="Analisis de Datos - beta"></page-title-bar>
 		<v-row>
-            <iframe width="1024" height="612" src="https://app.powerbi.com/view?r=eyJrIjoiYTk5M2VlNTUtMjIyNC00ZjdmLWExNjMtZjk1NTMzZGM3NDM0IiwidCI6ImM5NTFkY2VlLThlYTktNGMwNy05MzY3LTBhYTNiMTJmZDg0ZCJ9" frameborder="0" allowFullScreen="true"></iframe>
+            <iframe width="1024" height="612" src="https://app.powerbi.com/view?r=eyJrIjoiYTk5M2VlNTUtMjIyNC00ZjdmLWExNjMtZjk1NTMzZGM3NDM0IiwidCI6ImM5NTFkY2VlLThlYTktNGMwNy05MzY3LTBhYTNiMTJmZDg0ZCJ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
 		</v-row>
     </v-container>
 </template>

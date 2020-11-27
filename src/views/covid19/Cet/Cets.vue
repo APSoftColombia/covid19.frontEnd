@@ -105,7 +105,7 @@
                           props: {
                             value: {
                               sexo : context.props.value.sexo,
-                              nombre: [context.props.value.nombre1, context.props.value.nombre2, context.props.value.apellido1, context.props.value.apellido2].filter(x => x).join(' '),
+                              nombre: [context.props.value.apellido1, context.props.value.apellido2, context.props.value.nombre1, context.props.value.nombre2].filter(x => x).join(' '),
                               tipoIdentificacion: context.props.value.tipoid,
                               identificacion: context.props.value.identificacion,
                               celular: context.props.value.celular ? context.props.value.celular : context.props.value.telefono_fijo,
@@ -115,7 +115,9 @@
                               autoriza_eps: context.props.value.autoriza_eps,
                               contactosPorDiligenciar: context.props.value.covid_contacto === 1 ? context.props.value.contactos_incompletos : [],
                               comparte_gastos: context.props.value.covid_contacto === 1 ? context.props.value.comparten_gastos : 0,
-                              sin_beneficiarios: context.props.value.sin_beneficiarios
+                              sin_beneficiarios: context.props.value.sin_beneficiarios,
+                              fue_confirmado: context.props.value.fue_confirmado,
+                              covid_contacto: context.props.value.covid_contacto
                             },
                           }
                         }

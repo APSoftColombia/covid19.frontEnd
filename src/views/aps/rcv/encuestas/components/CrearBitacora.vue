@@ -7,7 +7,7 @@
     >
         <v-toolbar dark color="primary">
             <!-- <v-icon left>far fa-clipboard</v-icon> -->
-            <v-toolbar-title id="inicio">{{ bitacora.id ? 'Editar bitacora' : 'Crear bitacora' }}</v-toolbar-title>
+            <v-toolbar-title id="inicio">{{ bitacora.id ? 'Editar Seguimiento RCV' : 'Crear Seguimiento RCV' }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>
@@ -21,7 +21,7 @@
                         <v-col class="pb-0" cols="6">
                             <c-date
                                 v-model="bitacora.fecha"
-                                placeholder="Fecha de bitacora"
+                                placeholder="Fecha de seguimiento"
                                 :max="moment().format('YYYY-MM-DD')"
                                 rules="required"
                                 name="fecha bitacora"

@@ -1,6 +1,7 @@
 <template>
   <v-list-item class="pa-0">
     <div class="mr-2">
+      <v-icon class="mr-2" v-if="this.value.covid_contacto === 1">fas fa-virus</v-icon>
       <v-tooltip top v-if="this.value.contactosPorDiligenciar > 0">
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon >
@@ -19,6 +20,7 @@
       </v-tooltip>
       <icon-tooltip v-if="[this.value.fecha_expedicion, this.value.codigo_departamento, this.value.codigo_municipio, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
       <v-icon v-if="this.value.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
+      <v-icon class="mr-2" v-if="this.value.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
     </div>
     <v-icon large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
     <v-list-item-content class="pa-0">

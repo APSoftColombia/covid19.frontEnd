@@ -15,6 +15,7 @@ const getters = {
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         //Demanda Inducida
         if (getters.getPermission('demandaInducida-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 30))
+        if (getters.getPermission('demandaInducida-config') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 36))
         if (getters.getPermission('powerbi-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 33))
 
         if (getters.getPermission('formulario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
