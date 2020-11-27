@@ -11,6 +11,18 @@
                         @verBitacoras="item => verBitacoras(item)"
                         @apply-filters="$refs && $refs.filtrosBitacorasRcv && $refs.filtrosBitacorasRcv.aplicaFiltros()"
                     >
+                    <template slot="top-actions-right">
+                        <v-btn
+                            color="green"
+                            class="white--text mr-2"
+                            @click.stop="descargarExcel"
+                            :disabled="loadingButton"
+                            :loading="loadingButton"
+                        >
+                        <v-icon left>far fa-file-excel</v-icon>
+                        Reporte tipificaciones
+                        </v-btn>
+                    </template>
                     <filtros
                         slot="filters"
                         ref="filtrosBitacorasRcv"
@@ -155,6 +167,35 @@ export default {
         verBitacoras(item){
             this.loading = true
             this.$refs.verBitacoras.open(item, true)
+        },
+        descargarExcel(){
+            this.loadingButton = true
+            this.axios( {
+                url: 'descargar-reporte-tipificaciones', //your url
+                method: 'GET',
+                responseType: 'blob', // important
+            }).then(response => {
+                if(response.status === 204){
+                    this.$store.commit('snackbar', {color: 'info', message: `No se han generado registros para exportar`})
+                    this.loadingButton = false
+                }else{
+                //Create a Blob from the PDF Stream
+                    const file = new Blob(
+                        [response.data],
+                        {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                    const fileURL = URL.createObjectURL(file);
+                    const a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.style = "display: none";
+                    a.href = fileURL
+                    a.download = 'Reporte de Tipificaciones.xlsx'
+                    a.click();
+                    this.loadingButton = false
+                }
+            }).catch(error => {
+                this.loadingButton = false
+                this.$store.commit('snackbar', {color: 'error', message: 'al descargar excel', error: error})
+            })
         },
         resetOptions(item) {
             item.options = []

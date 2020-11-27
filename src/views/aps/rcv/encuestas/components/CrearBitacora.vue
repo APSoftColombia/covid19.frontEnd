@@ -70,6 +70,46 @@
                             </v-checkbox>
                             </ValidationProvider>
                         </v-col>
+                        <v-col class="pb-0" cols="12" v-if="bitacora.alerta_inmediata">
+                            <c-text-area
+                                label="Descripcion de la alerta"
+                                v-model="bitacora.descripcion_alerta_inmediata"
+                                name="descripcion de alerta inmediata"
+                                rules="required"
+                            ></c-text-area>
+                        </v-col>
+                        <v-col class="pb-0" cols="6">
+                            <ValidationProvider name="calidad" rules="required" v-slot="{ errors }">
+                            <v-checkbox
+                                v-model="bitacora.remision_por_calidad"
+                                label="Remision por Calidad"                                
+                                :true-value="1"
+                                :false-value="0"
+                                :error-messages="errors"                                
+                            >
+                            </v-checkbox>
+                            </ValidationProvider>
+                        </v-col>
+                        <v-col class="pb-0" cols="6">
+                            <ValidationProvider name="aseguramiento" rules="required" v-slot="{ errors }">
+                            <v-checkbox
+                                v-model="bitacora.remitir_a_aseguramiento"
+                                label="Remitir a aseguramiento"                                
+                                :true-value="1"
+                                :false-value="0"
+                                :error-messages="errors"                        
+                            >
+                            </v-checkbox>
+                            </ValidationProvider>
+                        </v-col>
+                        <v-col class="pb-0" cols="12" v-if="bitacora.remision_por_calidad">
+                            <c-text-area
+                                label="Razon de la remision por Calidad"
+                                v-model="bitacora.razon_remision_calidad"
+                                name="descripcion de alerta inmediata"
+                                rules="required"
+                            ></c-text-area>
+                        </v-col>
                         <v-col class="pb-0" cols="12">
                             <c-text-area
                                 label="Observaciones"
@@ -83,7 +123,7 @@
                             <v-toolbar flat>
                                 <v-toolbar-title>Tipificaciones</v-toolbar-title>
                                 <v-spacer></v-spacer>
-                                <v-tooltip top>
+                                <v-tooltip top v-if="!bitacora.paciente_no_rcv">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
                                         color="primary"
@@ -101,7 +141,7 @@
                                     <span>Agregar tipificacion</span>
                                 </v-tooltip>
                             </v-toolbar>
-                            <v-simple-table>
+                            <v-simple-table v-if="bitacora.tipificaciones && bitacora.tipificaciones.length">
                                 <template v-slot:default>
                                 <thead>
                                     <tr>
@@ -118,7 +158,6 @@
                                     <td>{{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == item.reftipificacion_id).descripcion: '-' }}</td>
                                     <td>{{ item.codigo_servicio }}</td>
                                     <td>{{ item.fecha_solicitud }}</td>
-                                    <td>{{ item.fecha_programada }}</td>
                                     <td>{{ item.fecha_prestacion }}</td>
                                     <td>
                                         <v-icon
@@ -136,11 +175,11 @@
                                         </v-icon>
                                     </td>
                                     </tr>
-                                    <div v-if="!bitacora.tipificaciones.length" class="title grey--text text-center pa-4">Sin tipificaciones</div>
                                     
                                 </tbody>
                                 </template>
                             </v-simple-table>
+                            <div v-else class="title grey--text text-center pa-4">Sin tipificaciones</div>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -195,20 +234,35 @@ export default {
             afiliado_id: null,
             periodicidad_seguimientos: null,
             bitacora: null,
-            alerta_inmediata: null,
-            paciente_no_rcv: null,
+            alerta_inmediata: 0,
+            paciente_no_rcv: 0,
             observaciones: null,
             tipificaciones: [],
+            descripcion_alerta_inmediata: null,
+            remision_por_calidad: 0,
+            remitir_a_aseguramiento: 0,
+            razon_remision_calidad: null
         },
         headers: [
             { text: 'Tipificacion', value: 'reftipificacion_id'},
             { text: 'Cod. Servicio', value: 'codigo_servicio' },
             { text: 'F. Solicitud', value: 'fecha_solicitud' },
-            { text: 'F. Programacion', value: 'fecha_programada' },
             { text: 'F. Prestacion', value: 'fecha_prestacion' },
             { text: 'Opciones', value: 'actions'}
         ],
     }),
+    watch: {
+        'bitacora.alerta_inmediata': {
+            handler(val){
+                if(!val) this.bitacora.descripcion_alerta_inmediata = null
+            }
+        },
+        'bitacora.remision_por_calidad': {
+            handler(val){
+                if(!val) this.bitacora.razon_remision_calidad = null
+            }
+        }
+    },
     computed: {
         ...mapGetters([
             'complementosRCV'
@@ -221,9 +275,10 @@ export default {
         open(item, bitacora = null){
           if(!bitacora){
             this.getTipificacionesPendientes(item.id)
-            this.bitacora.alerta_inmediata = 0
-            this.bitacora.paciente_no_rcv = 0
+            this.bitacora = this.clone(this.bitacorasModel)
+            
             this.bitacora.afiliado_id = item.id
+            this.bitacora.fecha = this.moment().format('YYYY-MM-DD')
           }else{
             this.bitacora = {...bitacora}
             console.log(this.bitacora);

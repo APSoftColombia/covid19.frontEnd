@@ -10,13 +10,14 @@
             </c-date-range>
         </v-col> -->
         <v-col class="pb-0" cols="12" sm="12" md="12">
-          <v-checkbox
-              v-model="filters.models.tipificacionesPendientes"
-              label="Seguimientos con Tipificaciones Pendientes"
-              :true-value="true"
-              :false-value="false"
-              @change="aplicaFiltros"
-          ></v-checkbox>
+            <c-select-complete
+                v-model="filters.models.tipoSeguimiento"
+                label="Tipo de seguimientos"
+                :items="items"
+                item-value="id"
+                item-text="text"
+            >
+            </c-select-complete>
       </v-col>
     </v-row>
 </template>
@@ -33,10 +34,14 @@
             }
         },
         data: () => ({
+            items: [
+                {id: 1, text: 'Con Tipificaciones pendientes' },
+                {id: 2, text: 'Con Tipificaciones Efectivas'}
+            ],
             filters: {
                 models: {
                     rango_created_at: [],
-                    tipificacionesPendientes: false,
+                    tipoSeguimiento: null,
                 },
                 data: {
                 }
@@ -49,8 +54,8 @@
                 // if (this.filters.models.rango_created_at.length) {
                 //     rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[created_between]=' + this.filters.models.rango_created_at.join(',')
                 // }
-                if (this.filters.models.tipificacionesPendientes) {
-                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipificacionesPendientes]=' + this.filters.models.tipificacionesPendientes
+                if (this.filters.models.tipoSeguimiento) {
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipoSeguimiento]=' + this.filters.models.tipoSeguimiento
                 }
                 this.$emit('filtra', rutaTemp)
             }

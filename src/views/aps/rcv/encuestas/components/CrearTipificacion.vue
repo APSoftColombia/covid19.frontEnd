@@ -43,15 +43,15 @@
                             >
                             </c-date>
                         </v-col>
-                        <v-col class="pb-0" cols="6">
+                        <!-- <v-col class="pb-0" cols="6">
                             <c-date
                                 v-model="tipificacion.fecha_programada"
                                 placeholder="Fecha de Programacion"
                                 :max="moment().format('YYYY-MM-DD')"
                             >
                             </c-date>
-                        </v-col>
-                        <v-col class="pb-0" cols="12">
+                        </v-col> -->
+                        <v-col class="pb-0" cols="6">
                             <c-date
                                 v-model="tipificacion.fecha_prestacion"
                                 placeholder="Fecha de Prestacion"
@@ -61,7 +61,7 @@
                         </v-col>
                         <v-col class="pb-0" cols="12">
                             <c-text-area
-                                label="Resultados"
+                                label="Observaciones"
                                 v-model="tipificacion.resultado"
                                 name="observaciones"
                             ></c-text-area>
