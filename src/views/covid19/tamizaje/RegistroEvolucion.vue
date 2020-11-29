@@ -1098,7 +1098,7 @@ export default {
         }
       })
       setTimeout(() => {
-        this.$refs.sintomasFecha.assign(sintomasAsignar)
+        this.$refs && this.$refs.sintomasFecha && this.$refs.sintomasFecha.assign(sintomasAsignar)
         // this.verFormularioAislamiento = 0
         this.permiteWatch = true
         this.loading = false
