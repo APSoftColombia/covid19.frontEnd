@@ -142,7 +142,7 @@
             </v-list-item>
           </td>
           <td :style="evolucion.fallida ? 'white-space: inherit !important;' : 'max-width: 200px !important;'"
-              :colspan="evolucion.fallida ? 11 : 1">
+              :colspan="evolucion.fallida ? 10 : 1">
             <p class="ma-0" v-if="evolucion.fallida">{{ evolucion.observaciones }}</p>
             <template v-else>
               <v-chip-group
@@ -244,13 +244,6 @@
             <td style="max-width: 200px !important;">
               <span v-if="!evolucion.hospitalizado">NO</span>
               <span v-else>Por {{ evolucion.causa_hospitalizacion }}</span>
-              <!--                            <v-list-item class="pa-0" v-else>-->
-              <!--                                <v-list-item-content class="pa-0">-->
-              <!--                                    <v-list-item-subtitle class="caption">Por {{evolucion.causa_hospitalizacion}}</v-list-item-subtitle>-->
-              <!--                                    <v-list-item-title>Ingreso: {{evolucion.fecha_ingreso ? moment(evolucion.fecha_ingreso).format('DD/MM/YYYY') : 'No registra'}}</v-list-item-title>-->
-              <!--                                    <v-list-item-subtitle>{{evolucion.lugar_hospitalizacion}}</v-list-item-subtitle>-->
-              <!--                                </v-list-item-content>-->
-              <!--                            </v-list-item>-->
             </td>
             <td>
               <v-list-item class="pa-0">
@@ -289,18 +282,18 @@
                 <span>Ver resumen clínico</span>
               </v-tooltip>
             </td>
-            <td class="text-center">
-              <v-tooltip top v-if="indexEvolucionTable === 0 && permisos.seguimientoEditar">
-                <template v-slot:activator="{ on }">
-                  <v-btn fab color="orange" small dark v-on="on"
-                         @click="$emit('editarEvolucion', evolucion.id)">
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <span>Editar Seguimiento</span>
-              </v-tooltip>
-            </td>
           </template>
+          <td class="text-center">
+            <v-tooltip top v-if="indexEvolucionTable === 0 && permisos.seguimientoEditar">
+              <template v-slot:activator="{ on }">
+                <v-btn fab color="orange" small dark v-on="on"
+                       @click="$emit('editarEvolucion', evolucion.id)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <span>Editar Seguimiento</span>
+            </v-tooltip>
+          </td>
         </tr>
         </tbody>
       </template>
