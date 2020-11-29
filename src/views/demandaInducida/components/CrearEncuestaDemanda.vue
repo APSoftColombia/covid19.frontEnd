@@ -587,7 +587,7 @@
                                 <v-col class="pb-0" cols="6">
                                     <c-radio
                                         v-model="encuesta.riesgo_hansen"
-                                        label="¿Presenta lesiones o manchas en la piel sin dolor o rasquiña?"
+                                        label="¿Presenta lesiones o manchas en la piel sin dolor o sin rasquiña?"
                                         name="paciente covid"
                                         :items="single"
                                         item-text="nombre"
@@ -624,7 +624,7 @@
                                     
                                 </v-col>
                                 <v-col class="pb-0" cols="12">
-                                    <v-label>Selecciona posible barrera de acceso en la atención:</v-label>
+                                    <v-label>Otras barreras de acceso para la atención:</v-label>
                                     <c-select-complete
                                         v-model="encuesta.selec_obs_importante_2"
                                         placeholder="Seleccione"
@@ -719,6 +719,20 @@
                                                                 v-model="inducciones_aplica"
                                                                 name="Inducciones de vejez"
                                                                 :items="inducciones && inducciones.inducciones_generales ? inducciones.inducciones_generales['Vejez'].filter(x => ageIsBetweenRange(edadMeses, x.edad_minima, x.edad_maxima) && (!x.genero || infoGeneral.genero == x.genero)) : []"
+                                                                itemText="tipo_atencion"
+                                                                itemText1="grupo_etario"
+                                                                itemText2="frecuencia"
+                                                                itemValue="id"
+                                                            >
+                                                            </c-check-component>
+                                                        </v-col>
+                                                    </template>
+                                                    <template>
+                                                        <v-col class="pb-0" cols="12">
+                                                            <c-check-component
+                                                                v-model="induccion_tbc"
+                                                                name="Inducciones sin curso de vida"
+                                                                :items="inducciones && inducciones.inducciones_generales ? inducciones.inducciones_generales['Sin curso vida'].filter(x => !['Consulta medica TBC', 'Consulta medica Enfermedad de Hansen'].includes(x.tipo_atencion)) : []"
                                                                 itemText="tipo_atencion"
                                                                 itemText1="grupo_etario"
                                                                 itemText2="frecuencia"

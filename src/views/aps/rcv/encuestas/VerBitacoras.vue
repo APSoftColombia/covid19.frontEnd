@@ -63,7 +63,7 @@
                                 {{ `Cod: ${tipificacion.codigo_servicio}` }}
                                 <br>
                             </template>
-                            {{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == tipificacion.reftipificacion_id).descripcion: '' }}
+                            {{ complementosRCV  ? complementosRCV.ref_tipificaciones.find(x => x.id == tipificacion.reftipificacion_id).descripcion: '' }}
                             </v-chip>
                         </v-row>
                     </template>
