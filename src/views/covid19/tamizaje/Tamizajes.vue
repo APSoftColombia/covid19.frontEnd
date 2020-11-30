@@ -514,20 +514,40 @@ export default {
           sortable: false,
           value: 'aislamiento',
           component: {
-            functional: true,
-            render: function (createElement, context) {
-              return context.props.value.ultimo_aislamiento_activo
-                  ? createElement(
-                      BotonTieneAislamientos,
-                      {
-                        props: {
-                          aislamiento: context.props.value.ultimo_aislamiento_activo
-                        }
-                      }
-                  )
-                  : createElement('span', '')
-            }
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.ultimo_aislamiento_activo && this.value.ultimo_aislamiento_activo.fecha_ingreso ? (`${this.moment().diff(this.moment(this.value.ultimo_seguimiento), 'days')} Día${this.moment().diff(this.moment(this.value.ultimo_seguimiento), 'days') === 1 ? '' : 's'} Activo`) : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2 text-truncate">${this.value.ultimo_aislamiento_activo && this.value.ultimo_aislamiento_activo.fecha_ingreso ? `Ingreso: ${this.moment(this.value.ultimo_aislamiento_activo.fecha_ingreso).format('DD/MM/YYYY')}` : ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
           }
+          // component: {
+          //   functional: true,
+          //   render: function (createElement, context) {
+          //     return context.props.value.ultimo_aislamiento_activo
+          //         ? createElement(
+          //             BotonTieneAislamientos,
+          //             {
+          //               props: {
+          //                 aislamiento: context.props.value.ultimo_aislamiento_activo
+          //               }
+          //             }
+          //         )
+          //         : createElement('span', '')
+          //   }
+          // }
         },
         {
           text: 'Muestra',
