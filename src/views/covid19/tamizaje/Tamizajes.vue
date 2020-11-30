@@ -89,7 +89,7 @@ import axios from 'axios'
 
 const RegistroViajero = () => import('Views/covid19/viajero/RegistroViajero')
 import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
-import BotonTieneAislamientos from "../../../components/Tamizaje/BotonTieneAislamientos";
+// import BotonTieneAislamientos from "../../../components/Tamizaje/BotonTieneAislamientos";
 
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
