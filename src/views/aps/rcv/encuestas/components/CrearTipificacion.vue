@@ -39,6 +39,7 @@
                                 v-model="tipificacion.fecha_solicitud"
                                 placeholder="Fecha de Solicitud"
                                 :max="moment().format('YYYY-MM-DD')"
+                                name="fecha solicitud"
                                 rules="required"
                             >
                             </c-date>
@@ -56,6 +57,7 @@
                                 v-model="tipificacion.fecha_prestacion"
                                 placeholder="Fecha de Prestacion"
                                 :max="moment().format('YYYY-MM-DD')"
+                                name="fecha prestacion"
                             >
                             </c-date>
                         </v-col>
