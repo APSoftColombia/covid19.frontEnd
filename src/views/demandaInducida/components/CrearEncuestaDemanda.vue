@@ -800,10 +800,48 @@
                                                 infoGeneral.gestante_inasistente_control == 'X' ||
                                                 encuesta.observacion_2.includes('Nueva gestante')
                                                 "
-                                        >
+                                        >                                    
                                             <v-expansion-panel-header>Inducciones Maternoperinatales</v-expansion-panel-header>
                                             <v-expansion-panel-content>
                                                 <v-row>
+                                                    <v-col class="pb-0" cols="12">
+                                                        <c-radio
+                                                            v-model="encuesta.has_sifilis"
+                                                            label="¿Ha sido diagnosticada con Sífilis durante la gestación?"
+                                                            name="diagnostico sifilis"
+                                                            :items="single"
+                                                            item-text="nombre"
+                                                            item-value="id"
+                                                            rules="required"
+                                                            :column="!$vuetify.breakpoint.smAndUp"
+                                                        >
+                                                        </c-radio>
+                                                    </v-col>
+                                                    <v-col class="pb-0" cols="12" v-if="encuesta.has_sifilis">
+                                                        <c-radio
+                                                            v-model="encuesta.tratamiento_sifilis"
+                                                            label="¿Se ha realizado tratamiento para la Sífilis gestacional?"
+                                                            name="tratamiento sifilis"
+                                                            :items="single"
+                                                            item-text="nombre"
+                                                            item-value="id"
+                                                            rules="required"
+                                                            :column="!$vuetify.breakpoint.smAndUp"
+                                                        >
+                                                        </c-radio>
+                                                    </v-col>
+                                                    <v-col class="pb-0" cols="12" v-if="encuesta.tratamiento_sifilis == 0">
+                                                        <c-check-component
+                                                            v-model="induccion_sifilis"
+                                                            name="Inducciones maternoperinatales"
+                                                            :items="inducciones && inducciones.maternoperinatal ? inducciones.maternoperinatal.filter(x => x.tipo_atencion == 'Consulta medica por Sifilis') : []"
+                                                            itemText="tipo_atencion"
+                                                            itemText1="grupo_etario"
+                                                            itemText2="frecuencia"
+                                                            itemValue="id"
+                                                        >
+                                                        </c-check-component>
+                                                    </v-col>
                                                     <v-col class="pb-0" cols="12">
                                                         <c-check-component
                                                             v-model="inducciones_maternoperinatal"
@@ -899,6 +937,7 @@ export default {
         inducciones_maternoperinatal: [],
         induccion_tbc: [],
         induccion_hansen: [],
+        induccion_sifilis: [],
         inducciones: null,
         opciones: null,
         complementos: [],
@@ -955,6 +994,8 @@ export default {
             agendo: null,
             fecha_agendamiento: null,
             selec_no_agenda: null,
+            has_sifilis: null,
+            tratamiento_sifilis: null
         },
         medioEncuesta: [
             {'id': 'Telefonico', 'nombre': 'Telefonico'},
@@ -1051,11 +1092,24 @@ export default {
             let longitud = this.inducciones_aplica.concat(
                 this.inducciones_preconcepcional, 
                 this.inducciones_maternoperinatal, 
-                this.induccion_hansen, this.induccion_tbc).length
+                this.induccion_hansen, this.induccion_tbc, this.induccion_sifilis).length
             return longitud;
         }
     },
     watch: {
+        'encuesta.has_sifilis': {
+            handler(value){
+                if(!value){
+                    this.encuesta.tratamiento_sifilis = null
+                    this.induccion_sifilis = []
+                }
+            }
+        },
+        'encuesta.tratamiento_sifilis': {
+            handler(value){
+                if(value) this.induccion_sifilis = []
+            }
+        },
         'encuesta.agendo': {
             handler(value) {
                 value ? this.encuesta.selec_no_agenda = null : this.encuesta.fecha_agendamiento = null
@@ -1273,7 +1327,12 @@ export default {
                         delete data.fecha_fallecimiento
                         delete data.encuesta_efectiva
                         data.observacion_2 = this.encuesta.observacion_2.length ? this.encuesta.observacion_2.join(',') : ''
-                        data.inducciones = this.inducciones_aplica.concat(this.inducciones_preconcepcional, this.inducciones_maternoperinatal, this.induccion_hansen, this.induccion_tbc)
+                        data.inducciones = this.inducciones_aplica.concat(
+                            this.inducciones_preconcepcional, 
+                            this.inducciones_maternoperinatal, 
+                            this.induccion_hansen, 
+                            this.induccion_tbc,
+                            this.induccion_sifilis)
                         data.di_precargados_id = this.infoGeneral.id
                     }
                     this.axios.post(`demanda-inducida`, data).then(response => {

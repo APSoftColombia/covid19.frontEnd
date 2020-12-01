@@ -660,6 +660,34 @@
                                     >
                                     </c-select-complete>
                                 </v-col>
+                                <v-col class="pb-0" cols="12" v-if="encuesta.di_encuestas.has_sifilis">
+                                    <c-radio
+                                        v-model="encuesta.di_encuestas.has_sifilis"
+                                        label="¿Ha sido diagnosticada con Sífilis durante la gestación?"
+                                        name="diagnostico sifilis"
+                                        :items="single"
+                                        item-text="nombre"
+                                        item-value="id"
+                                        rules="required"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                        disabled
+                                    >
+                                    </c-radio>
+                                </v-col>
+                                <v-col class="pb-0" cols="12" v-if="encuesta.di_encuestas.has_sifilis">
+                                    <c-radio
+                                        v-model="encuesta.di_encuestas.tratamiento_sifilis"
+                                        label="¿Se ha realizado tratamiento para la Sífilis gestacional?"
+                                        name="tratamiento sifilis"
+                                        :items="single"
+                                        item-text="nombre"
+                                        item-value="id"
+                                        rules="required"
+                                        :column="!$vuetify.breakpoint.smAndUp"
+                                        disabled
+                                    >
+                                    </c-radio>
+                                </v-col>
 
                                 <v-col class="pb-0" cols="12">
                                     <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">
@@ -704,7 +732,7 @@
                                     
                                 </v-col>
 
-                                <v-col class="pb-0" cols="12">
+                                <v-col class="pb-0" cols="12" v-if="!encuesta.di_inducciones_encuesta.length">
                                     <c-text-area
                                         label="Describa la razon por la cual no selecciono ninguna induccion a la demanda"
                                         v-model="encuesta.di_encuestas.obs_no_induccion"
