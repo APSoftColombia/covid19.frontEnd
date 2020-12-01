@@ -149,7 +149,7 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <buscador-ips
-                            ref="buscadorips"
+                            ref="buscadoripsreps"
                             label="¿Cual es su IPS de atención?"
                             v-model="encuesta.reps"
                             name="ips de atención"
@@ -1257,6 +1257,7 @@ export default {
             response.data.medicamentos = response.data.medicamentos.map(x => x.id)
             setTimeout(() => {
               if (this.$refs.buscadorips) this.$refs.buscadorips.assign(response.data.ips_hospitalizacion)
+              if (this.$refs.buscadoripsreps) this.$refs.buscadoripsreps.assign(response.data.ips_atencion)
             }, 400)
             this.encuesta = response.data
             setTimeout(() => {

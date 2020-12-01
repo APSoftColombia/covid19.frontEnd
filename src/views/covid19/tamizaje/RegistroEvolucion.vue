@@ -693,10 +693,10 @@
 <script>
 import {mapGetters} from 'vuex'
 
-const SintomasFecha = () => import('Views/covid19/tamizaje/evolucion/components/SintomasFecha')
-const FormComorbilidades = () => import('Views/covid19/tamizaje/FormComorbilidades')
-const HelpModal = () => import('../../../components/HelpModal/HelpModal')
-const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
+import SintomasFecha from 'Views/covid19/tamizaje/evolucion/components/SintomasFecha'
+import FormComorbilidades from 'Views/covid19/tamizaje/FormComorbilidades'
+import HelpModal from '../../../components/HelpModal/HelpModal'
+import DatosPersonales from 'Views/covid19/tamizaje/DatosPersonales'
 import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
 import FormSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/FormSeguimientoAislamiento'
 import ModalPaciente from 'Views/covid19/tamizaje/paciente/ModalPaciente'
@@ -1098,7 +1098,7 @@ export default {
         }
       })
       setTimeout(() => {
-        this.$refs.sintomasFecha.assign(sintomasAsignar)
+        this.$refs && this.$refs.sintomasFecha && this.$refs.sintomasFecha.assign(sintomasAsignar)
         // this.verFormularioAislamiento = 0
         this.permiteWatch = true
         this.loading = false

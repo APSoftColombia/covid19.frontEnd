@@ -89,7 +89,7 @@ import axios from 'axios'
 
 const RegistroViajero = () => import('Views/covid19/viajero/RegistroViajero')
 import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
-import BotonTieneAislamientos from "../../../components/Tamizaje/BotonTieneAislamientos";
+// import BotonTieneAislamientos from "../../../components/Tamizaje/BotonTieneAislamientos";
 
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
@@ -514,20 +514,40 @@ export default {
           sortable: false,
           value: 'aislamiento',
           component: {
-            functional: true,
-            render: function (createElement, context) {
-              return context.props.value.ultimo_aislamiento_activo
-                  ? createElement(
-                      BotonTieneAislamientos,
-                      {
-                        props: {
-                          aislamiento: context.props.value.ultimo_aislamiento_activo
-                        }
-                      }
-                  )
-                  : createElement('span', '')
-            }
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.ultimo_aislamiento_activo && this.value.ultimo_aislamiento_activo.fecha_ingreso ? (`${(this.moment().diff(this.moment(this.value.ultimo_aislamiento_activo.fecha_ingreso), 'days') + 1)} Día${(this.moment().diff(this.moment(this.value.ultimo_aislamiento_activo.fecha_ingreso), 'days') + 1) === 1 ? '' : 's'} Activo`) : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2">${this.value.ultimo_aislamiento_activo && this.value.ultimo_aislamiento_activo.fecha_ingreso ? `Desde: ${this.moment(this.value.ultimo_aislamiento_activo.fecha_ingreso).format('DD/MM/YYYY')}` : ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
           }
+          // component: {
+          //   functional: true,
+          //   render: function (createElement, context) {
+          //     return context.props.value.ultimo_aislamiento_activo
+          //         ? createElement(
+          //             BotonTieneAislamientos,
+          //             {
+          //               props: {
+          //                 aislamiento: context.props.value.ultimo_aislamiento_activo
+          //               }
+          //             }
+          //         )
+          //         : createElement('span', '')
+          //   }
+          // }
         },
         {
           text: 'Muestra',

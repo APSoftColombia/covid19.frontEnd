@@ -72,6 +72,7 @@ const state = {
         otra_especialidad: null,
         /////
         reps: null,
+        ips_atencion: null,
         sede: null
     }
 }
