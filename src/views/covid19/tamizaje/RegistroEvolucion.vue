@@ -290,7 +290,7 @@
                     </v-col>
                   </v-row>
                   <form-comorbilidades
-                      v-if="tamizaje && tamizaje.evoluciones && (!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida)))"
+                      v-if="tamizaje && tamizaje.evoluciones && ((!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida))) || (evolucion.id && tamizaje.evoluciones.length === 1))"
                       :array-comorbilidades="evolucion.comorbilidades"
                       @changeComorbilidades="val => evolucion.comorbilidades = val"
                   ></form-comorbilidades>
@@ -1085,7 +1085,11 @@ export default {
       this.activaPR = evolucionCopiada.frecuencia_pulso !== null
       this.activaSPO2 = evolucionCopiada.saturacion_oxigeno !== null
       this.activaTemperatura = evolucionCopiada.temperatura !== null
-      this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      if (evolucionCopiada.comorbilidades.length) {
+        evolucionCopiada.comorbilidades = evolucionCopiada.comorbilidades.map(x => x.codigo)
+      } else {
+        this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      }
       evolucionCopiada.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
       if(!evolucionCopiada.aislamiento) evolucionCopiada.aislamiento = null
       this.evolucion = evolucionCopiada
