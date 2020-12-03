@@ -34,6 +34,30 @@
             </v-row>
           </v-alert>
         </v-expand-transition>
+        <v-expand-transition>
+          <v-alert
+              v-if="moment().format('YYYY-MM-DD') === '2020-12-03'"
+              color="primary"
+              icon="mdi-medal"
+              border="bottom"
+              dark
+              prominent
+          >
+            <v-list-item>
+              <v-list-item-content>
+                Feliz día del Médico, por su dedicación, sacrificio y heroísmo, Gracias. Son los deseos de la familia Sosalud-Apsoft
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn
+                    icon
+                    @click="message = false"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-alert>
+        </v-expand-transition>
         <!-- App Router -->
         <transition name="router-anim" :enter-active-class="`animated ${selectedRouterAnimation}`">
           <router-view></router-view>
@@ -53,6 +77,7 @@ import {store} from '../store/store'
 export default {
   data() {
     return {
+      message: true,
       constF5: false,
       loading: true
     }
