@@ -43,9 +43,14 @@
               dark
               prominent
           >
-            <v-list-item>
-              <v-list-item-content>
-                Feliz día del Médico, por su dedicación, sacrificio y heroísmo, Gracias. Son los deseos de la familia Sosalud-Apsoft
+            <v-list-item class="pa-0">
+              <v-list-item-content class="pa-0">
+                <v-list-item-title class="title">
+                  Feliz día del Médico, por su dedicación, sacrificio y heroísmo, Gracias.
+                </v-list-item-title>
+                <v-list-item-subtitle class="title">
+                  Son los deseos de la familia Sosalud-Apsoft
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-btn
