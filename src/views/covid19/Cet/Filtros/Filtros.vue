@@ -76,6 +76,10 @@
       getCets(){
         this.axios.get('cets').then(response => {
           this.cets = response.data
+          if(this.cets && this.cets.length){
+            this.filters.models.cet_id = this.cets[this.cets.length - 1].id
+          }
+          this.aplicaFiltros()
         })
       },
       limpiarFiltros(){
