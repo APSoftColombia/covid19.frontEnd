@@ -36,7 +36,7 @@
         </v-expand-transition>
         <v-expand-transition>
           <v-alert
-              v-if="moment().format('YYYY-MM-DD') === '2020-12-03'"
+              v-if="message && moment().format('YYYY-MM-DD') === '2020-12-03'"
               color="primary"
               icon="mdi-medal"
               border="bottom"
