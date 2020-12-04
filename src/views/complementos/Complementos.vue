@@ -5,7 +5,7 @@
       <v-col cols="12" v-if="esSuperAdmin">
         <v-card>
           <v-list two-line>
-            <v-list-item @click="flag = false">
+            <v-list-item>
               <v-list-item-avatar color="red">
                 <v-icon color="white">mdi-alert-plus</v-icon>
               </v-list-item-avatar>
@@ -30,7 +30,7 @@
 			<v-col cols="12">
 				<v-card>
 					<v-list two-line>
-						<v-list-item @click="flag = false">
+						<v-list-item>
 							<v-list-item-avatar color="warning">
 								<v-icon color="white">mdi-format-list-bulleted-square</v-icon>
 							</v-list-item-avatar>
@@ -55,7 +55,7 @@
 			<v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
 				<v-card>
 					<v-list two-line>
-						<v-list-item @click="flag = false">
+						<v-list-item>
 							<v-list-item-avatar color="green">
 								<v-icon color="white">fas fa-file-csv</v-icon>
 							</v-list-item-avatar>
@@ -79,7 +79,7 @@
       <v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
         <v-card>
           <v-list two-line>
-            <v-list-item @click="flag = false">
+            <v-list-item>
               <v-list-item-avatar color="green">
                 <v-icon color="white">fas fa-file-csv</v-icon>
               </v-list-item-avatar>
@@ -92,12 +92,54 @@
           </v-list>
         </v-card>
       </v-col>
+      <v-col cols="12" v-if="datosEmpresa && datosEmpresa.url_pwa">
+        <v-card>
+          <v-list two-line>
+            <v-list-item>
+              <v-list-item-avatar color="warning">
+                <v-icon color="white">mdi-application</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-bold">APSOFT PWA</v-list-item-title>
+                <v-list-item-subtitle>Aplicación PWA para Trabajo OffLine</v-list-item-subtitle>
+              </v-list-item-content>
+              <p id="linkpwa" v-show="false">{{ datosEmpresa.url_pwa }}</p>
+              <v-tooltip left>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon x-large color="primary" v-on="on" @click.stop="copiarEnlace">
+                    <v-icon>mdi-content-copy</v-icon>
+                  </v-btn>
+                </template>
+                <span>Copiar Enlace</span>
+              </v-tooltip>
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon x-large color="primary" v-on="on" :href="datosEmpresa.url_pwa" target="_blank">
+                    <v-icon>mdi-application-import</v-icon>
+                  </v-btn>
+                </template>
+                <span>Ingresar</span>
+              </v-tooltip>
+            </v-list-item>
+          </v-list>
+          <v-snackbar
+              :timeout="700"
+              v-model="enlaceCopiado"
+              absolute
+              rounded="pill"
+              bottom
+          >
+            <span class="text-center">Enlace Copiado</span>
+          </v-snackbar>
+        </v-card>
+      </v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
-	const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
+	import { mapGetters } from 'vuex'
+  const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
   const CargadorSeguimientosSivigila = () => import('Views/complementos/CargadorRegistrosSIVIGILA')
 	export default {
 		components: {
@@ -105,10 +147,25 @@
       CargadorSeguimientosSivigila
 		},
 		data: () => ({
+      enlaceCopiado: false,
       loadingAlerta: false,
 			loadingGenerales: false
 		}),
-		methods: {
+    computed: {
+      ...mapGetters([
+        'datosEmpresa'
+      ])
+    },
+    methods: {
+      copiarEnlace () {
+        const aux = document.createElement('input')
+        aux.setAttribute("value", document.getElementById('linkpwa').innerHTML);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand('copy')
+        document.body.removeChild(aux)
+        this.enlaceCopiado = true
+      },
 			getAjustesGenerales () {
 				this.loadingGenerales = true
 				this.$store.dispatch('reloadStorage')
