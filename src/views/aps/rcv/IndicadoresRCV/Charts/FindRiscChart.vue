@@ -35,9 +35,9 @@
         },
         data: () => ({
             dialog: false,
-            risk: ''
+            risk: '',
         }),
-        mounted() {
+      mounted() {
             am4core.useTheme(am4themes_animated);
             let chart = am4core.create("chartdiv2", am4charts.PieChart);
             chart.data = this.data;
