@@ -31,6 +31,7 @@ const Parametros = () => import('Views/covid19/Parametros/ParametrosView')
 const Muestras = () => import('Views/covid19/Muestras/MuestrasView')
 const HogarView = () => import('Views/covid19/hogar/HogarView')
 const InformeEjecutivoERP = () => import('Views/covid19/InformeEjecutivo/InformeEjecutivo')
+const InformeDePrensa = () => import('Views/covid19/InformeDePrensa/InformeDePrensa.vue')
 const Cets = () => import('Views/covid19/Cet/Cets')
 
 //RCV
@@ -466,6 +467,20 @@ export default {
             avatar: {
                icon: 'mdi-file-table',
                color: 'blue darken-3',
+            }
+         }
+      },
+      {
+         path: 'informe-de-prensa',
+         name: 'InformeDePrensa',
+         component: InformeDePrensa,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'covid-informeDePrensa',
+            avatar: {
+               icon: 'mdi-file-table',
+               color: 'indigo',
             }
          }
       },
