@@ -19,6 +19,12 @@
     import am4themes_animated from "@amcharts/amcharts4/themes/animated";
     export default {
         name: "PreguntasChart",
+        props:{
+          parametros: {
+            type: [Object, Array],
+            default: null
+          }
+        },
         data: () => ({
             chartsNames: [
                 {parameter: 'Sintomas_paciente', chartName: 'chartQdiv-4', open: false, step: 1, description: '¿Usted presenta Alguno de los siguientes síntomas?', data: []},
@@ -51,29 +57,28 @@
                 this.chartsNames.find(x => x.parameter === data.parameter).open
                     = !this.chartsNames.find(x => x.parameter === data.parameter).open
                 if (this.chartsNames.find(x => x.parameter === data.parameter).open) {
-                    if(data.data.length) {
+                    /*if(data.data.length) {
                         this.createDataPie(data.data, data.chartName, data.step)
-                    }else {
-                        this.axios.get(`indicadores-preguntas-rcv?query=${data.parameter}`).then(response => {
-                            let charData = []
-                            response.data.data.forEach((element) => {
-                                let object = {
-                                    'country': element.label,
-                                    'litres': element.cantidad
-                                }
+                    }else {*/
+                    this.axios.get(`indicadores-preguntas-rcv?query=${data.parameter}&departamentos=${this.parametros.departamentos ? this.parametros.departamentos : []}&municipios=${this.parametros.municipios ? this.parametros.municipios : []}`).then(response => {
+                        let charData = []
+                        response.data.data.forEach((element) => {
+                            let object = {
+                                'country': element.label,
+                                'litres': element.cantidad
+                            }
 
-                                charData.push(object)
-                            })
-                            this.chartsNames.find(x => x.parameter === data.parameter).data = charData
-                            this.createDataPie(data.data, data.chartName, data.step)
-                        }).catch(error => {
-                            this.$store.commit('snackbar', {
-                                color: 'error',
-                                message: ` al cargar la informacion solicitada`,
-                                error: error
-                            })
+                            charData.push(object)
                         })
-                    }
+                        this.chartsNames.find(x => x.parameter === data.parameter).data = charData
+                        this.createDataPie(data.data, data.chartName, data.step)
+                    }).catch(error => {
+                        this.$store.commit('snackbar', {
+                            color: 'error',
+                            message: ` al cargar la informacion solicitada`,
+                            error: error
+                        })
+                    })
                 }
             },
             createDataPie(pieData, chartName, colorStep) {

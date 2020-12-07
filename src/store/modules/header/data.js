@@ -236,6 +236,15 @@ export const itemsMenu = [
         routeName: 'ReportesDeLey',
         typeRoute: 'covid'
     },
+    {
+        id: 37,
+        title: 'Informe de Prensa',
+        subtitle: '',
+        icon: 'mdi-file-table',
+        color: 'indigo',
+        routeName: 'InformeDePrensa',
+        typeRoute: 'covid'
+    },
     // RCV
     {
         id: 27,
