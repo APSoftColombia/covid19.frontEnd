@@ -27,6 +27,14 @@
 			</div>
 			<v-spacer></v-spacer>
 			<div class="d-custom-flex align-items-center navbar-right pa-0">
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
+              <v-icon>far fa-file-pdf</v-icon>
+            </v-btn>
+          </template>
+          <span>Generar informe de prensa corte diario</span>
+        </v-tooltip>
 				<v-tooltip left>
 					<template v-slot:activator="{ on }">
 						<v-btn icon large v-on="on">
@@ -62,6 +70,7 @@ import AppMenu from './AppMenu'
 import MobileSearchForm from './MobileSearchForm'
 import { mapGetters } from 'vuex'
 import User from './User'
+import axios from "axios";
 export default {
 	name: 'Header',
 	props: {
@@ -72,7 +81,8 @@ export default {
 	},
 	data() {
 		return {
-			chatSidebar: false // chat component right sidebar
+			chatSidebar: false, // chat component right sidebar,
+      loadingPDF: false
 		}
 	},
 	computed: {
@@ -91,7 +101,30 @@ export default {
 		},
 		toggleSearchForm() {
 			this.$store.dispatch('toggleSearchForm')
-		}
+		},
+    descargarPDF(){
+      const apiAxios = axios.create()
+      apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
+      apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+      this.loadingPDF = true
+      this.axios( {
+        url: `generar-pdf-reporte-de-prensa?corte_diario=${true}`, //your url,
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then(async response => {
+        if(response.status === 204) {
+          this.$store.commit('snackbar', {color: 'info', message: 'Los parametros aplicados no han generado registros para crear PDF'})
+        }else{
+          const fileURL = window.URL.createObjectURL(
+              new Blob([response.data], {type: 'application/pdf'}))
+          await window.open(fileURL, '_blank')
+        }
+        this.loadingPDF = false
+      }).catch(error => {
+        this.loadingPDF = false
+        this.$store.commit('snackbar', {color: 'error', message: 'al descargar el PDF', error: error})
+      })
+    },
 	},
 	components: {
 		// ChatSidebar,
