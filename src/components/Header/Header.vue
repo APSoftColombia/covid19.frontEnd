@@ -27,13 +27,13 @@
 			</div>
 			<v-spacer></v-spacer>
 			<div class="d-custom-flex align-items-center navbar-right pa-0">
-        <v-tooltip left>
+        <v-tooltip left v-if="permisos.generarReporteDePrensa">
           <template v-slot:activator="{ on }">
             <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
               <v-icon>far fa-file-pdf</v-icon>
             </v-btn>
           </template>
-          <span>Generar informe de prensa corte diario</span>
+          <span>Generar informe de corte diario</span>
         </v-tooltip>
 				<v-tooltip left>
 					<template v-slot:activator="{ on }">
@@ -91,7 +91,10 @@ export default {
 			'activeHeaderFilter',
 			'appVersion',
 			'onLine'
-		])
+		]),
+    permisos() {
+      return this.$store.getters.getPermissionModule('covid')
+    },
 	},
 	methods: {
 		toggleFullScreen() {
