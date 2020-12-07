@@ -143,11 +143,11 @@
                     </v-card-text>
                     <v-card-text v-else>
                       <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha)">
-                        <v-chip label class="white--text" color="indigo" :key="`chip${indexChip}`">
+                        <v-chip label class="mr-2 mb-2 white--text" color="indigo" :key="`chip${indexChip}`">
                           {{ chip.descripcion }}
                         </v-chip>
                       </template>
-                      <v-chip label class="white--text" color="orange" v-if="tamizaje.fecha_sintomas">
+                      <v-chip label class="mb-2 white--text" color="orange" v-if="tamizaje.fecha_sintomas">
                         <v-icon small left>mdi-calendar-month</v-icon>
                         {{ tamizaje.fecha_sintomas ? moment(tamizaje.fecha_sintomas).format('DD/MM/YYYY') : '' }}
                       </v-chip>
@@ -172,6 +172,23 @@
                   </v-card>
                 </v-col>
               </template>
+              <v-col cols="12">
+                <v-card flat>
+                  <v-card-title>
+                    <span class="title">Comorbilidades</span>
+                  </v-card-title>
+                  <v-card-text class="text-center" v-if="!comorbilidades.length">
+                    No registra comorbilidades
+                  </v-card-text>
+                  <v-card-text v-else>
+                    <template v-for="(chip, indexChip) in comorbilidades">
+                      <v-chip label class="mr-2 mb-2 white--text" color="indigo lighten-1" :key="`chipx${indexChip}`">
+                        {{ chip.descrip }}
+                      </v-chip>
+                    </template>
+                  </v-card-text>
+                </v-card>
+              </v-col>
               <v-col cols="12">
                 <v-row no-gutters>
                   <v-col cols="12" sm="12" md="4">
@@ -226,23 +243,6 @@
                     </v-list>
                   </v-col>
                 </v-row>
-              </v-col>
-              <v-col cols="12">
-                <v-card flat>
-                  <v-card-title>
-                    <span class="title">Comorbilidades</span>
-                  </v-card-title>
-                  <v-card-text class="text-center" v-if="!comorbilidades.length">
-                    No registra comorbilidades
-                  </v-card-text>
-                  <v-card-text v-else>
-                    <template v-for="(chip, indexChip) in comorbilidades">
-                      <v-chip label class="mr-2 mb-2 white--text" color="indigo lighten-1" :key="`chipx${indexChip}`">
-                        {{ chip.descrip }}
-                      </v-chip>
-                    </template>
-                  </v-card-text>
-                </v-card>
               </v-col>
               <app-card
                   v-if="tamizaje.infoviajero"
@@ -446,7 +446,8 @@ export default {
   methods: {
     assign() {
       this.panel = (!this.tamizaje.medico_id || (this.tamizaje.medico_id && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0)) ? [0] : []
-      this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      // this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       this.datos = []
       this.datos.push(
           {

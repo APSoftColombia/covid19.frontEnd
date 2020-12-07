@@ -67,7 +67,8 @@ const state = {
         codIpsBai: null,
         ////
         user_id: null,
-        signos_alarma: []
+        signos_alarma: [],
+        comorbilidades: []
     },
     modelPersona: {
         id: null,

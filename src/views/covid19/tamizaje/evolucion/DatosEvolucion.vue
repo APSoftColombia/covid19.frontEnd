@@ -252,18 +252,18 @@
                   </v-col>
                 </v-row>
               </v-col>
-                <v-col cols="12" v-if="evolucion.comorbilidades && evolucion.comorbilidades.length">
-                    <v-card flat>
-                        <v-card-title>
-                            <span class="title">Comorbilidades</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <template v-for="(chip, indexChip) in evolucion.comorbilidades">
-                                <v-chip label class="mr-2 mb-2 white--text" color="indigo  lighten-1" :key="`chip${indexChip}`">{{chip.descrip}}</v-chip>
-                            </template>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
+<!--                <v-col cols="12" v-if="evolucion.comorbilidades && evolucion.comorbilidades.length">-->
+<!--                    <v-card flat>-->
+<!--                        <v-card-title>-->
+<!--                            <span class="title">Comorbilidades</span>-->
+<!--                        </v-card-title>-->
+<!--                        <v-card-text>-->
+<!--                            <template v-for="(chip, indexChip) in evolucion.comorbilidades">-->
+<!--                                <v-chip label class="mr-2 mb-2 white&#45;&#45;text" color="indigo  lighten-1" :key="`chip${indexChip}`">{{chip.descrip}}</v-chip>-->
+<!--                            </template>-->
+<!--                        </v-card-text>-->
+<!--                    </v-card>-->
+<!--                </v-col>-->
                 <v-col cols="12" v-if="evolucion.hospitalizado || evolucion.evolucion || evolucion.estado_afectacion">
                     <v-list two-line flat class="notification-wrap">
                         <v-list-item

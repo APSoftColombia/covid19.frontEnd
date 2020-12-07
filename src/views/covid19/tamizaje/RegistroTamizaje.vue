@@ -53,6 +53,10 @@
                         </v-card>
                       </v-col>
                     </v-row>
+                    <form-comorbilidades
+                        :array-comorbilidades="tamizaje.comorbilidades"
+                        @changeComorbilidades="val => tamizaje.comorbilidades = val"
+                    ></form-comorbilidades>
                     <v-row>
                       <v-col class="pb-0" cols="12">
                         <v-checkbox
@@ -184,6 +188,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import FormComorbilidades from 'Views/covid19/tamizaje/FormComorbilidades'
 import FormTamizaje from 'Views/covid19/tamizaje/FormTamizaje'
 
 const FormSintomas = () => import('Views/covid19/tamizaje/FormSIntomas')
@@ -191,6 +196,7 @@ var intervalo
 export default {
   name: 'RegistroTamizaje',
   components: {
+    FormComorbilidades,
     FormTamizaje,
     FormSintomas
   },

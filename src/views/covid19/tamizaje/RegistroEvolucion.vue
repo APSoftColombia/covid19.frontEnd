@@ -954,7 +954,11 @@ export default {
         this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
         this.evolucion.orden_medica_id = this.tamizaje.orden_medica_id
         this.evolucion.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
-        this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+        if (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0) {
+          this.evolucion.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
+        }
+        this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
+        // this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
         this.evolucion.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
         this.verificaInfoPaciente()
       }
@@ -1059,7 +1063,7 @@ export default {
       newEvolution.duracion = evolucionActual.duracion
       newEvolution.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
       this.evolucion = newEvolution
-      this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+      this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       newEvolution.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
       let sintomasAsignar = this.clone(evolucionCopiada.sintomas.filter(z => z.solicita_fecha)).map(x => {
         return {
@@ -1085,11 +1089,14 @@ export default {
       this.activaPR = evolucionCopiada.frecuencia_pulso !== null
       this.activaSPO2 = evolucionCopiada.saturacion_oxigeno !== null
       this.activaTemperatura = evolucionCopiada.temperatura !== null
-      if (evolucionCopiada.comorbilidades.length) {
-        evolucionCopiada.comorbilidades = evolucionCopiada.comorbilidades.map(x => x.codigo)
+      if (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 1) {
+        evolucionCopiada.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
       } else {
-        this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
+        this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       }
+      // if (evolucionCopiada.comorbilidades.length) {
+      //   evolucionCopiada.comorbilidades = evolucionCopiada.comorbilidades.map(x => x.codigo)
+      // }
       evolucionCopiada.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
       if(!evolucionCopiada.aislamiento) evolucionCopiada.aislamiento = null
       this.evolucion = evolucionCopiada
