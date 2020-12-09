@@ -100,15 +100,20 @@
               url: `reportes-de-ley/${this.reporte.id}`,
               method: 'POST',
               data: data,
-              responseType: 'blob'
+              responseType: 'blob',
             })
                 .then((response) => {
                   console.log('numero', response)
                   if (response.status === 204) {
                     this.$store.commit('snackbar', {color: 'info', message: `El reporte no contiene registros para exportar.`})
                   } else {
-                    const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))
-                    window.open(url,'_blank')
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: this.reporte.mimeType}));
+                    var fileLink = document.createElement('a');
+
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', this.reporte.nombre + "." + this.reporte.extension);
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
                   }
                   this.loading = false
                 })
