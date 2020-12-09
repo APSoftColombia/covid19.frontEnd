@@ -241,7 +241,7 @@ export const itemsMenu = [
         title: 'Informe de Prensa',
         subtitle: '',
         icon: 'mdi-file-table',
-        color: 'indigo',
+        color: 'indigo darken-4',
         routeName: 'InformeDePrensa',
         typeRoute: 'covid'
     },

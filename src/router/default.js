@@ -480,7 +480,7 @@ export default {
             requiresPermission: 'covid-informeDePrensa',
             avatar: {
                icon: 'mdi-file-table',
-               color: 'indigo',
+               color: 'indigo darken-4',
             }
          }
       },
