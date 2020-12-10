@@ -247,6 +247,7 @@ const state = {
     tiposOrdenador: [],
     entidadesFinancieras: [],
     lugaresTomaMuestra: [],
+    ambitosMuestras: [],
     causalesNoReportaContactos: [
         {value: 1, text: 'No los conoce'},
         {value: 2, text: 'Los conoce pero no tiene los datos de contacto'},
@@ -424,6 +425,11 @@ const getters = {
     },
     lugaresTomaMuestra: state => {
         return state.lugaresTomaMuestra
+    },
+    ambitosMuestras: state => {
+        return state.ambitosMuestras.map(x => {
+            return { value: x, text: x }
+        })
     }
 }
 // actions
@@ -526,6 +532,7 @@ const actions = {
                             context.commit('assignTiposOrdenador', response.data.parametros.ordenadores)
                             context.commit('assignEntidadesFinancieras', response.data.parametros.entidadesFinancieras)
                             context.commit('assignLugaresTomaMuestra', response.data.parametros.lugares_toma_muestra)
+                            context.commit('assignAmbitosMuestras', response.data.parametros.ambitos_muestras)
                             resolve(true)
                         })
                         .catch(error => {
@@ -680,6 +687,9 @@ const mutations = {
     },
     assignLugaresTomaMuestra(state, lugaresTomaMuestra) {
         state.lugaresTomaMuestra = lugaresTomaMuestra
+    },
+    assignAmbitosMuestras(state, ambitosMuestras) {
+        state.ambitosMuestras = ambitosMuestras
     },
     snackbar(state, data) {
         let timeout = 8000

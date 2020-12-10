@@ -80,6 +80,19 @@
               >
               </c-texto>
             </v-col>
+            <v-col class="pb-0" cols="12" sm="12">
+              <c-select-complete
+                  v-model="muestra.ambito"
+                  label="Ámbito"
+                  :items="ambitosMuestras"
+                  rules="required"
+                  name="á mbito"
+                  item-value="value"
+                  item-text="text"
+                  :clearable="false"
+              >
+              </c-select-complete>
+            </v-col>
             <v-col class="pb-0" cols="12">
               <c-texto
                   v-model="muestra.nombre_tomador"
@@ -243,6 +256,7 @@ export default {
   computed: {
     ...mapGetters([
       'lugaresTomaMuestra',
+      'ambitosMuestras',
       'modelMuestra',
       'tiposMuestra',
       'tiposResultadosCovid',

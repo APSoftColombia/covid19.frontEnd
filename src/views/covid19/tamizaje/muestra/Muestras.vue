@@ -57,9 +57,7 @@
                       </v-list-item-avatar>
                       <v-list-item-content class="pa-0">
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">Toma de la muestra</v-list-item-subtitle>
-                        <v-list-item-title>
-                          <h6 class="mb-0">{{ [muestra.lugar_toma, muestra.lugar_toma_muestra].filter(x => x).join(' - ') }}</h6>
-                        </v-list-item-title>
+                        <p class="mb-0">Lugar: <strong>{{ [muestra.lugar_toma, muestra.lugar_toma_muestra].filter(x => x).join(' - ') }}</strong></p>
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                           Fecha: {{ muestra.fecha_toma ? moment(muestra.fecha_toma).format('DD/MM/YYYY') : '-'}}
                         </v-list-item-subtitle>
@@ -81,6 +79,7 @@
                         <v-list-item-title>
                           <h6 class="mb-0">{{ tomadores && muestra.tomador_muestra_id ? tomadores.find(x => x.id === muestra.tomador_muestra_id).institucion : muestra.tomado_por }}</h6>
                         </v-list-item-title>
+                        <p v-if="muestra.ambito" class="mb-0">Ámbito: <strong>{{ muestra.ambito }}</strong></p>
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">
                           Medico: {{ muestra.nombre_tomador }}
                         </v-list-item-subtitle>
@@ -118,11 +117,11 @@
                       <v-list-item-content class="pa-0">
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">Resultado</v-list-item-subtitle>
                         <template v-if="muestra.resultado !== null">
-                          <v-list-item-title>
-                            <h6 class="mb-0">{{ muestra.resultado === null ? 'Pendiente' : tiposResultadosCovid.find(x => x.value === muestra.resultado).text }}</h6>
-                          </v-list-item-title>
+<!--                          <v-list-item-title>-->
+<!--                            <h6 class="mb-0">{{ muestra.resultado === null ? 'Pendiente' : tiposResultadosCovid.find(x => x.value === muestra.resultado).text }}</h6>-->
+<!--                          </v-list-item-title>-->
                           <v-list-item-subtitle class="grey--text fs-12 fw-normal">
-                            Fecha Resultado: {{ muestra.fecha_resultado ? moment(muestra.fecha_resultado).format('DD/MM/YYYY') : '-' }}
+                            Fecha: {{ muestra.fecha_resultado ? moment(muestra.fecha_resultado).format('DD/MM/YYYY') : '-' }}
                           </v-list-item-subtitle>
                         </template>
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">
@@ -233,6 +232,7 @@
           let muestraCero = this.clone(this.tamizaje.muestras[0])
           delete muestraCero.laboratorio
           delete muestraCero.tomado_por
+          delete muestraCero.lugar_toma
           return Object.values(muestraCero).filter(x => x === null).length > 0
         } else {
           return false

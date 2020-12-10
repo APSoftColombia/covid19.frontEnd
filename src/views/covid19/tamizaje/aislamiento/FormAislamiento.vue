@@ -38,6 +38,7 @@
             :items="tiposAislamiento"
             rules="required"
             name="tipo de aislamiento"
+            :clearable="false"
         >
         </c-select-complete>
       </v-col>
@@ -103,9 +104,10 @@
       </v-col>
       <v-col class="pb-0" cols="12">
         <c-select-complete
+            :disabled="!aislamiento.tipo"
             v-model="aislamiento.ambito"
             label="Ambito de atención médica"
-            :items="ambitosAtencion"
+            :items="ambitosFiltrados"
             rules="required"
             name="ambito de atención médica"
         >
@@ -163,6 +165,15 @@ export default {
     ]),
     fechaMinimaAislamiento() {
       return this && this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length ? this.tamizaje.aislamientos[0].fecha_egreso ? this.tamizaje.aislamientos[0].fecha_egreso : this.tamizaje.aislamientos[0].fecha_ingreso : null
+    },
+    ambitosFiltrados () {
+      return this.ambitosAtencion
+          ? this.aislamiento && this.aislamiento.tipo
+              ? this.aislamiento.tipo === 'Institución de Salud'
+                  ? this.ambitosAtencion.filter(x => x !== 'Domiciliaria' && x !== 'Otro')
+                  : this.ambitosAtencion.filter(x => x === 'Domiciliaria' || x === 'Otro')
+              : []
+          : []
     }
   },
   watch: {
@@ -171,6 +182,12 @@ export default {
         if (val !== 'IPS') {
           this.aislamiento.codigo_habilitacion = null
         }
+      },
+      immediate: false
+    },
+    'aislamiento.tipo': {
+      handler() {
+        this.aislamiento.ambito = null
       },
       immediate: false
     },

@@ -298,7 +298,9 @@ const state = {
         fecha_recepcion_procesamiento: null,
         fecha_procesamiento: null,
         fecha_notificacion_eps: null,
-        fecha_notificacion_afiliado: null
+        fecha_notificacion_afiliado: null,
+        lugar_toma_muestra: null,
+        ambito: null
     },
     modelLlamada: {
         id: null,
