@@ -171,7 +171,7 @@ export default {
           ? this.aislamiento && this.aislamiento.tipo
               ? this.aislamiento.tipo === 'Institución de Salud'
                   ? this.ambitosAtencion.filter(x => x !== 'Domiciliaria' && x !== 'Otro')
-                  : this.ambitosAtencion.filter(x => x === 'Domiciliaria' || x === 'Otro')
+                  : this.ambitosAtencion.filter(x => x === 'Domiciliaria' || x === 'Otro' || x === 'No Aplica')
               : []
           : []
     }
