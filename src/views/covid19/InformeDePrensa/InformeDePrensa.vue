@@ -304,6 +304,90 @@
               </v-card-text>
             </v-card>
           </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Reporte General</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.reporteGeneral"
+                    :headers="[{text:'Procedimiento'},{text:'Variable',align:'right'}]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+                <template v-if="dataInforme.reporteGeneral && !dataInforme.reporteGeneral.length">
+                  <v-row>
+                    <div class="grey--text mx-auto mt-2 subtitle-1">
+                      No hay registros para mostrar
+                    </div>
+                  </v-row>
+                </template>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Cantidad de Muestras Por Municipios Casanare</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.muestrasPorMunicipioCasanare"
+                    :headers="[{text:'Departamento'},{text:'Municipio'},{text:'Cantidad',align:'right'}]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+                <template v-if="dataInforme.muestrasPorMunicipioCasanare && !dataInforme.muestrasPorMunicipioCasanare.length">
+                  <v-row>
+                    <div class="grey--text mx-auto mt-2 subtitle-1">
+                      No hay registros para mostrar
+                    </div>
+                  </v-row>
+                </template>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Cantidad de Muestras Por Municipios Diferentes de Casanare</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.muestrasPorMunicipiosDiferenteCasanare"
+                    :headers="[{text:'Departamento'},{text:'Municipio'},{text:'Cantidad',align:'right'}]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+                <template v-if="dataInforme.muestrasPorMunicipiosDiferenteCasanare && !dataInforme.muestrasPorMunicipiosDiferenteCasanare.length">
+                  <v-row>
+                    <div class="grey--text mx-auto mt-2 subtitle-1">
+                      No hay registros para mostrar
+                    </div>
+                  </v-row>
+                </template>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Tipos de Prueba</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.porTipoDePrueba"
+                    :headers="[{text:'Detalle'},{text:'Cantidad',align:'right'}]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+                <template v-if="dataInforme.porTipoDePrueba && !dataInforme.porTipoDePrueba.length">
+                  <v-row>
+                    <div class="grey--text mx-auto mt-2 subtitle-1">
+                      No hay registros para mostrar
+                    </div>
+                  </v-row>
+                </template>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
       </v-card-text>
       <app-section-loader :status="loading"></app-section-loader>
