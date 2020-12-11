@@ -40,7 +40,7 @@
 			</v-card>
 		</v-expand-transition>
 		<app-card :fullBlock="true">
-      <div class="floating-panel">
+      <div class="floating-panel" v-if="!loading">
         <v-btn-toggle
             v-model="togglebtn"
             mandatory
@@ -132,9 +132,9 @@
 			goDatos (ruta) {
 				this.loading = true
 				this.axios.get( `${ruta}${ruta.indexOf('?') > -1 ? '&' : '?'}per_page=5000`)
-						.then(response => {
+						.then(async response => {
 						  console.log('response', response)
-							this.datos = response.data.data.filter(x => x.coordenadas)
+							this.datos = await response.data.data.filter(x => x.coordenadas)
               if(this.togglebtn) {
                 this.goCalor()
               } else {
