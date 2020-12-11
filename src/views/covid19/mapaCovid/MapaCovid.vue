@@ -154,6 +154,7 @@
         if (this.heatmap) this.heatmap.setMap(null)
       },
       goCalor () {
+        if (this.heatmap) this.heatmap.setMap(null)
         this.deleteMarkers()
         this.markerCluster.clearMarkers()
         this.heatmap = new this.googleMaps.visualization.HeatmapLayer({
