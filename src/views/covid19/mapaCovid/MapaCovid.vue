@@ -40,6 +40,15 @@
 			</v-card>
 		</v-expand-transition>
 		<app-card :fullBlock="true">
+      <div class="floating-panel">
+        <v-btn-toggle
+            v-model="togglebtn"
+            mandatory
+        >
+          <v-btn>Sectorizado</v-btn>
+          <v-btn>Calor</v-btn>
+        </v-btn-toggle>
+      </div>
 			<div id="map"></div>
 			<app-section-loader :status="loading"></app-section-loader>
 		</app-card>
@@ -64,6 +73,9 @@
 				loading: false,
 				googleMaps: null,
 				map: null,
+        heatmap: null,
+        markerCluster: null,
+        togglebtn: 0,
 				datos: [],
 				markers: []
 			}
@@ -73,6 +85,18 @@
 				return this.$store.getters.getPermissionModule('covid')
 			}
 		},
+    watch: {
+      togglebtn: {
+        handler(val) {
+          if (val === 0) {
+            this.goMarkers()
+          } else if (val === 1) {
+            this.goCalor()
+          }
+        },
+        immediate: false
+      }
+    },
 		created () {
 			this.filtrar()
 			this.getMedicos()
@@ -83,11 +107,25 @@
 			this.googleMaps = google.maps
 			this.map = new this.googleMaps.Map(document.getElementById('map'), {
 				zoom: 8,
-				maxZoom: 17,
+				maxZoom: 18,
 				center: latLng
 			})
+      this.markerCluster = new MarkerClusterer(this.map, this.markers,
+          {
+            ignoreHidden: true,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          }
+      )
 		},
 		methods: {
+      getPoints () {
+        let puntos = []
+        this.datos.forEach(x => {
+          let latlan = x.coordenadas.replace(/ /g, '').split(',')
+          puntos.push(new this.googleMaps.LatLng(Number(latlan[0]), Number(latlan[1])))
+        })
+        return puntos
+      },
 			filtrar () {
 				this.$refs && this.$refs.filtrosTamizaje && this.$refs.filtrosTamizaje.aplicaFiltros()
 			},
@@ -95,25 +133,40 @@
 				this.loading = true
 				this.axios.get(ruta)
 						.then(response => {
-							console.log('la data', response.data)
 							this.datos = response.data.filter(x => x.coordenadas)
-							console.log('la data', this.datos ? this.datos.length : 0)
-							this.deleteMarkers()
-							this.createMarkers()
-							this.loading = false
+              if(this.togglebtn) {
+                this.goCalor()
+              } else {
+                this.goMarkers()
+              }
+              this.loading = false
 						})
 						.catch(error => {
 							this.deleteMarkers()
 							this.loading = false
-							context.commit('snackbar', {color: 'error', message: `al recuperar los datos.`, error: error.response.data})
+							this.$store.commit('snackbar', {color: 'error', message: `al recuperar los datos.`, error: error.response.data})
 						})
 			},
+      async goMarkers () {
+        await this.deleteMarkers()
+        await this.createMarkers()
+        if (this.heatmap) this.heatmap.setMap(null)
+      },
+      goCalor () {
+        this.deleteMarkers()
+        this.markerCluster.clearMarkers()
+        this.heatmap = new this.googleMaps.visualization.HeatmapLayer({
+          data: this.getPoints(),
+          map: this.map
+        })
+        this.heatmap.set('radius', 20)
+      },
 			deleteMarkers () {
 				if (this.markers && this.markers.length) {
 					this.markers.forEach(x => {
 						x.setMap(null)
 					})
-					this.marker = []
+					this.markers = []
 				}
 			},
 			createMarkers () {
@@ -135,7 +188,6 @@
 						position: {lat: Number(latlan[0]), lng: Number(latlan[1])},
 						// map: this.map,
 						title: x.direccion || 'No reporta',
-						label: x.id,
 						icon: circle
 					});
 					marker.addListener('click', () => {
@@ -149,12 +201,7 @@
 					});
 					this.markers.push(marker)
 				})
-
-				new MarkerClusterer(this.map, this.markers,
-						{
-							imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-						}
-				)
+        this.markerCluster.addMarkers(this.markers)
 			},
 			textInfoWindow (dato) {
 				return `
@@ -201,8 +248,17 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	#map {
 		height: 720px;
 	}
+  .floating-panel {
+    position: absolute;
+    top: 4px;
+    left: 42%;
+    z-index: 5;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+  }
 </style>
