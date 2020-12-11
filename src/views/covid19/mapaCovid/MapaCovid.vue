@@ -131,9 +131,10 @@
 			},
 			goDatos (ruta) {
 				this.loading = true
-				this.axios.get(ruta)
+				this.axios.get( `${ruta}${ruta.indexOf('?') > -1 ? '&' : '?'}per_page=5000`)
 						.then(response => {
-							this.datos = response.data.filter(x => x.coordenadas)
+						  console.log('response', response)
+							this.datos = response.data.data.filter(x => x.coordenadas)
               if(this.togglebtn) {
                 this.goCalor()
               } else {
