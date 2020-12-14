@@ -312,7 +312,7 @@
                 </div>
                 <simple-table
                     :data="dataInforme.reporteGeneral"
-                    :headers="[{text:'Procedimiento'},{text:'Variable',align:'right'}]"
+                    :headers="[{text:'Detalle'},{text:'Cantidad',align:'right'}]"
                     :alignNumbersRight="true"
                 ></simple-table>
                 <template v-if="dataInforme.reporteGeneral && !dataInforme.reporteGeneral.length">
@@ -333,7 +333,7 @@
                 </div>
                 <simple-table
                     :data="dataInforme.muestrasPorMunicipioCasanare"
-                    :headers="[{text:'Departamento'},{text:'Municipio'},{text:'Cantidad',align:'right'}]"
+                    :headers="[{text:'Detalle'},{text:'Cantidad',align:'right'}]"
                     :alignNumbersRight="true"
                 ></simple-table>
                 <template v-if="dataInforme.muestrasPorMunicipioCasanare && !dataInforme.muestrasPorMunicipioCasanare.length">
@@ -354,7 +354,7 @@
                 </div>
                 <simple-table
                     :data="dataInforme.muestrasPorMunicipiosDiferenteCasanare"
-                    :headers="[{text:'Departamento'},{text:'Municipio'},{text:'Cantidad',align:'right'}]"
+                    :headers="[{text:'Detalle'},{text:'Cantidad',align:'right'}]"
                     :alignNumbersRight="true"
                 ></simple-table>
                 <template v-if="dataInforme.muestrasPorMunicipiosDiferenteCasanare && !dataInforme.muestrasPorMunicipiosDiferenteCasanare.length">
@@ -438,7 +438,7 @@
         return this.defaultDepartamentos
       },
       */
-      descargarPDF(){
+      descargarPDF(){ 
         const apiAxios = axios.create()
         apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
         apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`

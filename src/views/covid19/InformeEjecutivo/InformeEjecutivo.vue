@@ -253,7 +253,6 @@
         return this.defaultDepartamentos
       },
       descargarPDF(){
-
         this.loadingPDF = true
         this.axios( {
           url: `generar-pdf-informe-ejecutivo_tamizajes?fecha_inicio=${this.data.fecha_inicio ? this.data.fecha_inicio : ''}&fecha_final=${this.data.fecha_fin ? this.data.fecha_fin : ''}&departamentos=${this.data.departamentos ? this.data.departamentos : []}`, //your url,
