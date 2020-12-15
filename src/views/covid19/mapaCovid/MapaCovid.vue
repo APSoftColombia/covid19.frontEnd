@@ -68,7 +68,7 @@
 		data() {
 			return {
 				medicos: [],
-				rutaBase: 'tamizajes',
+				rutaBase: 'tamizajes-mapa',
 				showFilters: true,
 				loading: false,
 				googleMaps: null,
@@ -77,7 +77,23 @@
         markerCluster: null,
         togglebtn: 0,
 				datos: [],
-				markers: []
+				markers: [],
+        gradient: [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
 			}
 		},
 		computed: {
@@ -106,8 +122,9 @@
 			/* eslint-disable */
 			this.googleMaps = google.maps
 			this.map = new this.googleMaps.Map(document.getElementById('map'), {
-				zoom: 8,
-				maxZoom: 18,
+				zoom: 9,
+				maxZoom: 17,
+				minZoom: 8,
 				center: latLng
 			})
       this.markerCluster = new MarkerClusterer(this.map, this.markers,
@@ -131,10 +148,14 @@
 			},
 			goDatos (ruta) {
 				this.loading = true
-				this.axios.get( `${ruta}${ruta.indexOf('?') > -1 ? '&' : '?'}per_page=5000`)
+        if (this.heatmap) this.heatmap.setMap(null)
+        this.deleteMarkers()
+        this.markerCluster.clearMarkers()
+				// this.axios.get( `${ruta}${ruta.indexOf('?') > -1 ? '&' : '?'}per_page=5000`)
+				this.axios.get( `${ruta}`)
 						.then(async response => {
 						  console.log('response', response)
-							this.datos = await response.data.data.filter(x => x.coordenadas)
+							this.datos = await response.data.filter(x => x.coordenadas)
               if(this.togglebtn) {
                 this.goCalor()
               } else {
@@ -161,7 +182,10 @@
           data: this.getPoints(),
           map: this.map
         })
-        this.heatmap.set('radius', 20)
+        this.heatmap.set('radius', 60)
+        this.heatmap.set('opacity', 0.9)
+        this.heatmap.set('maxIntensity', 0.9)
+        // this.heatmap.set('gradient', this.gradient)
       },
 			deleteMarkers () {
 				if (this.markers && this.markers.length) {
@@ -192,15 +216,15 @@
 						title: x.direccion || 'No reporta',
 						icon: circle
 					});
-					marker.addListener('click', () => {
-						infowindow.setContent(this.textInfoWindow(x))
-						infowindow.open(this.map, marker);
-						document.addEventListener('click',e => {
-							if(e.target.id === 'firstHeading'){
-								this.verSeguimiento(e.target.attributes.data.value)
-							}
-						});
-					});
+					// marker.addListener('click', () => {
+					// 	infowindow.setContent(this.textInfoWindow(x))
+					// 	infowindow.open(this.map, marker);
+					// 	document.addEventListener('click',e => {
+					// 		if(e.target.id === 'firstHeading'){
+					// 			this.verSeguimiento(e.target.attributes.data.value)
+					// 		}
+					// 	});
+					// });
 					this.markers.push(marker)
 				})
         this.markerCluster.addMarkers(this.markers)
