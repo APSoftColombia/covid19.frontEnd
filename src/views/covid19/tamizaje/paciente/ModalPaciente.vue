@@ -119,6 +119,9 @@ export default {
         elTamizaje.sintomas = elTamizaje.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
         elTamizaje.signos_alarma = copySintomas.filter(b => b.aplica_covid && !b.solicita_fecha).map(x => x.id)
       }
+      if (elTamizaje && elTamizaje.comorbilidades && elTamizaje.comorbilidades.length) {
+        elTamizaje.comorbilidades = elTamizaje.comorbilidades.map(x => x.codigo)
+      }
       elTamizaje.si_eps = elTamizaje.eps_id ? 1 : 0
       this.tamizaje = elTamizaje
       setTimeout(() => {
