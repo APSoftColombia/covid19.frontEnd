@@ -309,8 +309,10 @@ export default {
             if (response.data && response.data.sintomas && response.data.sintomas.length) {
               let copySintomas = this.clone(response.data.sintomas)
               response.data.sintomas = response.data.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
-              response.data.comorbilidades = response.data.comorbilidades.map(x => x.codigo)
               response.data.signos_alarma = copySintomas.filter(b => b.aplica_covid && !b.solicita_fecha).map(x => x.id)
+            }
+            if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
+              response.data.comorbilidades = response.data.comorbilidades.map(x => x.codigo)
             }
             this.activaPR = response.data.frecuencia_pulso !== null
             this.activaSPO2 = response.data.saturacion_oxigeno !== null
