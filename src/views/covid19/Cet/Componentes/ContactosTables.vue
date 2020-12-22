@@ -120,7 +120,7 @@
             </div>
             <v-row>
               <v-spacer></v-spacer>
-              <v-text-field style="max-width: 400px" v-model="search" append-icon="search" label="Search" hide-details></v-text-field>
+              <!--<v-text-field style="max-width: 400px" v-model="search" append-icon="search" label="Search" hide-details></v-text-field>-->
             </v-row>
             <template>
               <v-data-table
