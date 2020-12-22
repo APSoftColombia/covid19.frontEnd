@@ -54,6 +54,7 @@ import JitsiMeet from 'Components/Inputs/JitsiMeet'
 import JitsiMeetButton from 'Components/Inputs/JitsiMeetButton'
 import BuscadorIps from 'Components/Inputs/BuscadorIps'
 import BuscadorAfiliado from 'Components/Inputs/BuscadorAfiliado'
+import CCombo from 'Components/Inputs/CCombo'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -99,6 +100,7 @@ const GlobalComponents = {
       Vue.component('BuscadorIps', BuscadorIps)
       Vue.component('IconTooltip', IconTooltip)
       Vue.component('BuscadorAfiliado', BuscadorAfiliado)
+      Vue.component('CCombo', CCombo)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)

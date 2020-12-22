@@ -86,6 +86,15 @@
                             >
                             </c-date>
                         </v-col>
+                      <v-col class="pb-0" cols="12">
+                        <c-combo
+                            label="Cargo"
+                            v-model="usuario.cargo"
+                            :items="cargos"
+                            name="cargo"
+                            rules="required"
+                        />
+                      </v-col>
                         <v-col class="pb-0" cols="12">
                             <v-autocomplete
                                     label="EPS"
@@ -160,20 +169,22 @@
             loading: false,
             usuario: null,
             makeUsuario: {
-                id: null,
-                numero_documento_identidad: null,
-                tipo_documento_identidad_id: null,
-                name: null,
-                telefono: null,
-                direccion: null,
-                email: null,
-                fecha_nacimiento: null,
-                habilitado: 1,
-                roles: [],
-                eps_id: null
+              id: null,
+              numero_documento_identidad: null,
+              tipo_documento_identidad_id: null,
+              name: null,
+              telefono: null,
+              direccion: null,
+              email: null,
+              fecha_nacimiento: null,
+              habilitado: 1,
+              roles: [],
+              eps_id: null,
+              cargo: null
             },
             tiposDocumentoIdentidad: [],
             permisos: [],
+            cargos: [],
             rolesx: [],
             filterEpsTamizajes (item, queryText) {
                 const hasValue = val => val != null ? val : ''

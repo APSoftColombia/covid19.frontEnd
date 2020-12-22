@@ -305,7 +305,6 @@ export default {
       this.loading = true
       this.axios.get(`tamizajes/${idTamizaje}`)
           .then(response => {
-            console.log('response guardado tamizaje', response)
             if (response.data && response.data.sintomas && response.data.sintomas.length) {
               let copySintomas = this.clone(response.data.sintomas)
               response.data.sintomas = response.data.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)

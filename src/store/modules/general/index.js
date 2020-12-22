@@ -251,7 +251,8 @@ const state = {
     causalesNoReportaContactos: [
         {value: 1, text: 'No los conoce'},
         {value: 2, text: 'Los conoce pero no tiene los datos de contacto'},
-        {value: 3, text: 'No quiso relacionar contactos'}
+        {value: 3, text: 'No quiso relacionar contactos'},
+        {value: 4, text: 'Ya relacionó contactos'}
     ]
 }
 
