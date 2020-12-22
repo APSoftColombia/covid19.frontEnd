@@ -123,7 +123,7 @@
 			this.googleMaps = google.maps
 			this.map = new this.googleMaps.Map(document.getElementById('map'), {
 				zoom: 9,
-				maxZoom: 17,
+				maxZoom: 20,
 				minZoom: 8,
 				center: latLng
 			})
@@ -216,25 +216,34 @@
 						title: x.direccion || 'No reporta',
 						icon: circle
 					});
-					// marker.addListener('click', () => {
-					// 	infowindow.setContent(this.textInfoWindow(x))
-					// 	infowindow.open(this.map, marker);
-					// 	document.addEventListener('click',e => {
-					// 		if(e.target.id === 'firstHeading'){
-					// 			this.verSeguimiento(e.target.attributes.data.value)
-					// 		}
-					// 	});
-					// });
+					marker.addListener('click', () => {
+						infowindow.setContent(this.textInfoWindow(x))
+						infowindow.open(this.map, marker);
+						document.addEventListener('click',e => {
+							if(e.target.id === 'firstHeading'){
+								this.verSeguimiento(e.target.attributes.data.value)
+							}
+						});
+					});
 					this.markers.push(marker)
 				})
         this.markerCluster.addMarkers(this.markers)
 			},
 			textInfoWindow (dato) {
+        /*
+        <i class="primary--text ${dato.infoviajero ? 'mdi mdi-bus-marker' : 'fas fa-file-medical'}"></i>
+        <p>
+							<b>
+								<i class="fas fa-map-signs orange--text font-lg"></i>
+								${dato.direccion || 'No registra dirección'}
+							</b>
+						</p>
+         */
 				return `
 				<div id="content">
 					<a id="elcoso">
 						<h3 id="firstHeading" class="firstHeading" data="${dato.id}">
-							<i class="primary--text ${dato.infoviajero ? 'mdi mdi-bus-marker' : 'fas fa-file-medical'}"></i>
+							<i class="primary--text fas fa-file-medical"></i>
 							ERP No. ${dato.id}
 						</h3>
 					</a>
@@ -243,12 +252,6 @@
 							<b>
 								<i class="${dato.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'} indigo--text font-lg"></i>
 								${[dato.nombre1, dato.nombre2, dato.apellido1, dato.apellido2].filter(x => x).join(' ')}
-							</b>
-						</p>
-						<p>
-							<b>
-								<i class="fas fa-map-signs orange--text font-lg"></i>
-								${dato.direccion || 'No registra dirección'}
 							</b>
 						</p>
 					</div>
