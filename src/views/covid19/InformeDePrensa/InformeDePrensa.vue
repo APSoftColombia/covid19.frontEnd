@@ -39,11 +39,11 @@
           <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
-                  <v-icon>fas fa-file-pdf</v-icon>
+                <v-btn color="green" icon v-on="on" :disabled="loadingExcel" :loading="loadingExcel" @click="descargarExcel">
+                  <v-icon>far fa-file-excel</v-icon>
                 </v-btn>
               </template>
-              <span>Generar PDF</span>
+              <span>Generar Excel</span>
             </v-tooltip>
           </v-col>
         </v-row>
@@ -397,7 +397,6 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import axios from "axios";
   const SimpleTable = () => import('../../../components/SimpleTable/SimpleTable')
   export default {
     name: "InformeDePrensa",
@@ -406,7 +405,7 @@
       data: {},
       loading: false,
       //defaultDepartamentos: [],
-      loadingPDF: false
+      loadingExcel: false
     }),
     components: {
       SimpleTable
@@ -438,27 +437,33 @@
         return this.defaultDepartamentos
       },
       */
-      descargarPDF(){ 
-        const apiAxios = axios.create()
-        apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
-        apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
-        this.loadingPDF = true
+      descargarExcel(){
+        this.loadingExcel = true
         this.axios( {
-          url: `generar-pdf-reporte-de-prensa?fecha_inicio=${this.data.fecha_inicio ? this.data.fecha_inicio : ''}&fecha_final=${this.data.fecha_fin ? this.data.fecha_fin : ''}`, //your url,
+          url: `download-excel-informe-de-prensa?fecha_inicio=${this.data.fecha_inicio ? this.data.fecha_inicio : ''}&fecha_final=${this.data.fecha_fin ? this.data.fecha_fin : ''}`, //your url
           method: 'GET',
           responseType: 'blob', // important
-        }).then(async response => {
-          if(response.status === 204) {
-            this.$store.commit('snackbar', {color: 'info', message: 'Los parametros aplicados no han generado registros para crear PDF'})
+        }).then(response => {
+          if(response.status === 204){
+            this.$store.commit('snackbar', {color: 'info', message: `Los parametros aplicados no han generado registros para crear el informe`})
+            this.loadingExcel = false
           }else{
-            const fileURL = window.URL.createObjectURL(
-                new Blob([response.data], {type: 'application/pdf'}))
-            await window.open(fileURL, '_blank')
+            //Create a Blob from the PDF Stream
+            const file = new Blob(
+                [response.data],
+                {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+            const fileURL = URL.createObjectURL(file);
+            const a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = fileURL
+            a.download = 'Informe de prensa.xlsx'
+            a.click();
+            this.loadingExcel = false
           }
-          this.loadingPDF = false
         }).catch(error => {
-          this.loadingPDF = false
-          this.$store.commit('snackbar', {color: 'error', message: 'al descargar el PDF', error: error})
+          this.loadingExcel = false
+          this.$store.commit('snackbar', {color: 'error', message: 'al descargar excel', error: error})
         })
       },
     },
