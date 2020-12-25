@@ -35,6 +35,16 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.estado"
+          label="Estado"
+          :items="filters.data.estados"
+          item-text="text"
+          item-value="value"
+      >
+      </c-select-complete>
+    </v-col>
   </v-row>
 </template>
 
@@ -51,12 +61,18 @@
       filters: {
         models: {
           covid_contacto: 1,
-          cet_id: ''
+          cet_id: '',
+          estado: null
         },
         data: {
           tipos: [
             {text: 'Confirmados', value: 1},
             {text: 'Contactos', value: 2}
+          ],
+          estados: [
+            {text: 'Glosados', value: 1},
+            {text: 'Validados', value: 2},
+            {text: 'Sin Estado', value: 3}
           ],
         }
       },
@@ -70,6 +86,9 @@
         }
         if (this.filters.models.cet_id != null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[cet_id]=' + this.filters.models.cet_id
+        }
+        if (this.filters.models.estado != null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filters.models.estado
         }
         this.$emit('filtra', rutaTemp)
       },

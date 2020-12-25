@@ -18,6 +18,9 @@
         <cargar-registros
             @reloadTable="reloadTable"
         ></cargar-registros>
+        <cargar-negativos
+            @reloadTable="reloadTable"
+        ></cargar-negativos>
       </template>
       <filtros
           slot="filters"
@@ -45,8 +48,10 @@
   import PersonaItemTabla from "Views/covid19/Cet/Componentes/PersonaItemTabla";
   import CetView from "./CetView";
   import InformacionPersona from "./InformacionPersona";
+  import EstadosCets from "./Componentes/EstadosCets";
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
+  const CargarNegativos = () => import('Views/covid19/Cet/Componentes/CargarNegativos.vue')
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   const EditarContacto = () => import('./Componentes/EditarContacto')
   export default {
@@ -183,6 +188,29 @@
             }
           },
           {
+            text: 'Estado',
+            align: 'left',
+            sortable: true,
+            component: {
+              functional: true,
+              render: function (createElement, context) {
+                return context.props.value.estado_id
+                    ? createElement(
+                        EstadosCets,
+                        {
+                          props: {
+                            value: {
+                              descripcion: context.props.value.descripcion,
+                              aplica_devolucion: context.props.value.aplica_devolucion
+                            }
+                          }
+                        }
+                    )
+                    : createElement('div', '')
+              }
+            }
+          },
+          {
             text: 'Opciones',
             align: 'center',
             sortable: false,
@@ -207,6 +235,7 @@
       InformacionPersona,
       DescargarReporte,
       EditarContacto,
+      CargarNegativos
     },
     methods: {
       resetOptions(item) {
@@ -234,6 +263,7 @@
         this.$refs.addContactos.open(item.id)
       },
       infoContacto(item){
+        console.log("entre")
         this.$refs.infoContacto.open(item.id)
       },
       goDatos(ruta) {
