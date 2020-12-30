@@ -301,5 +301,13 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'Powerbi',
         typeRoute: 'powerbi'
+    },
+    {
+        id: 38,
+        title: 'Importadores',
+        icon: 'fas fa-file-upload',
+        color: 'green',
+        routeName: 'Importadores',
+        typeRoute: 'importadores'
     }
 ]
