@@ -85,6 +85,18 @@
                         </template>
                         <span>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</span>
                       </v-tooltip>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-on="on"
+                                 color="blue"
+                                 icon
+                                 @click="infoContacto(contacto)"
+                          >
+                            <v-icon>mdi-information-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Información</span>
+                      </v-tooltip>
                       <v-tooltip top v-if="contacto.covid_contacto === 2">
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on" icon>
@@ -203,10 +215,14 @@
         ref="registrarAfiliado"
         @contactoCreado="refreshAfiliado"
     ></registrar-afiliado>
+    <informacion-persona
+        ref="infoContacto"
+    ></informacion-persona>
   </v-expansion-panels>
 </template>
 
 <script>
+  import InformacionPersona from "../InformacionPersona";
   const DesvincularAfiliado = () => import('./DesvincularAfiliado')
   const EditarContacto = () => import('./EditarContacto')
   const RegistrarAfiliado = () => import('./RegistrarAfiliado')
@@ -277,7 +293,8 @@
     components: {
       DesvincularAfiliado,
       EditarContacto,
-      RegistrarAfiliado
+      RegistrarAfiliado,
+      InformacionPersona
     },
     watch: {
       abierto: {
@@ -299,6 +316,9 @@
       },
       editarContacto(contacto){
         this.$refs.editarContacto.open(contacto, this.setNoToAuthEPS, this.hasContactos, false)
+      },
+      infoContacto(item){
+        this.$refs.infoContacto.open(item.id)
       },
       desvincular(contacto){
         contacto.loading = true
