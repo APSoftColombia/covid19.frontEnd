@@ -60,7 +60,7 @@
     data: () => ({
       filters: {
         models: {
-          covid_contacto: 1,
+          covid_contacto: null,
           cet_id: '',
           estado: null
         },

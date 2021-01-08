@@ -54,13 +54,13 @@
         }
       },
       close(){
+        this.$emit('reloadTable')
         this.dialog = false
       },
       getInfoAfiliado(id){
         this.loading = true
         this.axios.get(`infocets/${id}`).then(response => {
           this.data = response.data
-          this.$emit('reloadTable')
           this.loading = false
         }).catch(error => {
           this.loading = false
