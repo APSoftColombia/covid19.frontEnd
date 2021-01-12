@@ -51,7 +51,40 @@
             >
             </c-select-complete>
           </v-col>
-          <v-col class="pb-0" cols="12">
+          <v-col class="pb-0" cols="6">
+            <c-texto
+              v-model="cargador.like_table"
+              label="Tabla de referencia"
+              name="nombre tabla referencia"
+            >
+            </c-texto>
+          </v-col>
+          <v-col class="pb-0" cols="2">
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  outlined
+                  color="green"
+                  v-bind="attrs"
+                  v-on="on"
+                  :disabled="cargador.like_table ? false : true"
+                  @click.stop="checkTable"
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+              <span>Verificar</span>
+            </v-tooltip>
+          </v-col>
+          <v-col class="pb-0" cols="4">
+            <v-checkbox
+              style="mt-1"
+              v-model="cargador.delete_temp"
+              label="Borrar tabla temporal al final"
+            ></v-checkbox>
+          </v-col>
+          <v-col class="pb-0" cols="12" v-if="!cargador.like_table">
             <v-toolbar flat>
               <v-toolbar-title>Cabeceras</v-toolbar-title>
               <v-spacer></v-spacer>
@@ -129,7 +162,7 @@
               </v-tooltip>
             </v-toolbar>
             <v-expansion-panels>
-               <v-expansion-panel v-for="(item, i) in cargador.querys" :key="i">
+              <v-expansion-panel v-for="(item, i) in cargador.querys" :key="i">
                 <v-expansion-panel-header v-slot="{ open }">
                   Query {{ i }}
                 </v-expansion-panel-header>
@@ -167,10 +200,7 @@
                   </v-row>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="error"
-                      @click.stop="deleteQuery(item)"
-                    >
+                    <v-btn color="error" @click.stop="deleteQuery(item)">
                       <v-icon dark> mdi-delete </v-icon>
                     </v-btn>
                   </v-card-actions>
@@ -191,74 +221,89 @@
           large
           color="pink"
           class="white--text"
-          @click.stop="cargador && cargador.id ? editarCargador() : guardarNuevoCargador()"
-          :disabled="cargador.cabeceras.length ? false : true"
+          @click.stop="
+            cargador && cargador.id ? editarCargador() : guardarNuevoCargador()
+          "
+          :disabled="cargador.cabeceras.length || cargador.like_table ? false : true"
         >
           <v-icon left>fas fa-save</v-icon>
-          {{cargador && cargador.id ? 'Editar' : 'Guardar'}}
+          {{ cargador && cargador.id ? "Editar" : "Guardar" }}
         </v-btn>
       </v-card-actions>
     </v-container>
 
     <!-- Dialog new Header -->
     <v-dialog v-model="dialogNewCabecera" max-width="800px" persistent>
-        <v-card>
-            <v-card-title class="headline">{{ isEdit ? 'Editar cabecera' : 'Nueva cabecera' }}</v-card-title>
-            <v-card-text>
-                <ValidationObserver
-                    ref="formNewHeader"
-                    v-slot="{ invalid, validated, passes, validate }"
-                    autocomplete="off"
+      <v-card>
+        <v-card-title class="headline">{{
+          isEdit ? "Editar cabecera" : "Nueva cabecera"
+        }}</v-card-title>
+        <v-card-text>
+          <ValidationObserver
+            ref="formNewHeader"
+            v-slot="{ invalid, validated, passes, validate }"
+            autocomplete="off"
+          >
+            <v-row>
+              <v-col class="pb-0" cols="3">
+                <c-texto
+                  v-model="cabecera.header"
+                  label="Nombre"
+                  name="nombre"
+                  upper-case
+                  rules="required"
                 >
-                    <v-row>
-                        <v-col class="pb-0" cols="3">
-                            <c-texto
-                            v-model="cabecera.header"
-                            label="Nombre"
-                            name="nombre"
-                            upper-case
-                            rules="required"
-                            >
-                            </c-texto>
-                        </v-col>
-                        <v-col class="pb-0" cols="3">
-                            <c-select-complete
-                            v-model="cabecera.type"
-                            placeholder="Tipo"
-                            name="tipo"
-                            :items="tipoDatos ? tipoDatos : []"
-                            item-text="nombre"
-                            item-value="id"
-                            rules="required"
-                            >
-                            </c-select-complete>
-                        </v-col>
-                        <v-col class="pb-0" cols="3">
-                            <v-checkbox
-                            style="mt-1"
-                            v-model="cabecera.required"
-                            label="Requerido"
-                            ></v-checkbox>
-                        </v-col>
-                        <v-col class="mt-3" cols="3" v-if="cabecera.type && cabecera.type != 'INT'">
-                            <c-texto
-                            v-model="cabecera.length"
-                            label="Longitud"
-                            name="Longitud"
-                            upper-case
-                            rules="required"
-                            >
-                            </c-texto>
-                        </v-col>
-                    </v-row>
-                </ValidationObserver>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDialogNewHeader">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="isEdit ? updateHeader() : addHeader()">{{ isEdit ? 'Editar' : 'Guardar' }}</v-btn>
-            </v-card-actions>
-        </v-card>
+                </c-texto>
+              </v-col>
+              <v-col class="pb-0" cols="3">
+                <c-select-complete
+                  v-model="cabecera.type"
+                  placeholder="Tipo"
+                  name="tipo"
+                  :items="tipoDatos ? tipoDatos : []"
+                  item-text="nombre"
+                  item-value="id"
+                  rules="required"
+                >
+                </c-select-complete>
+              </v-col>
+              <v-col class="pb-0" cols="3">
+                <v-checkbox
+                  style="mt-1"
+                  v-model="cabecera.required"
+                  label="Requerido"
+                ></v-checkbox>
+              </v-col>
+              <v-col
+                class="mt-3"
+                cols="3"
+                v-if="cabecera.type && cabecera.type != 'INT'"
+              >
+                <c-texto
+                  v-model="cabecera.length"
+                  label="Longitud"
+                  name="Longitud"
+                  upper-case
+                  rules="required"
+                >
+                </c-texto>
+              </v-col>
+            </v-row>
+          </ValidationObserver>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDialogNewHeader"
+            >Cancel</v-btn
+          >
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="isEdit ? updateHeader() : addHeader()"
+            >{{ isEdit ? "Editar" : "Guardar" }}</v-btn
+          >
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </v-card>
 </template>
@@ -315,21 +360,26 @@ export default {
     dialogNewCabecera: false,
     cabecera: null,
     cabeceraModel: {
-        header: null,
-        type: null,
-        required: false,
-        length: 0,
+      header: null,
+      type: null,
+      required: false,
+      length: 0,
     },
-    isEdit: false
+    isEdit: false,
   }),
   watch: {
-      'cabecera.type': {
-          handler(value) {
-            if(value == 'INT'){
-                this.cabecera.length = 0
-            }
-          }
+    "cabecera.type": {
+      handler(value) {
+        if (value == "INT") {
+          this.cabecera.length = 0;
+        }
+      },
+    },
+    "cargador.like_table": {
+      handler(value) {
+        value ? this.cargador.cabeceras = [] : this.cargador.like_table = null
       }
+    }
   },
   methods: {
     close() {
@@ -338,64 +388,87 @@ export default {
     },
     addQuery() {
       let query = {
-        query: '# Here write your query'
-      }
-      this.$emit('addQuery', query)
+        query: "# Here write your query",
+      };
+      this.$emit("addQuery", query);
     },
     deleteQuery(item) {
-      let deletedIndex = this.cargador.querys.indexOf(item)
-      this.$emit('deleteQuery', deletedIndex)
+      let deletedIndex = this.cargador.querys.indexOf(item);
+      this.$emit("deleteQuery", deletedIndex);
     },
     editarCargador() {
-        this.$refs.formCargador.validate().then(result => {
-            if (result) {
-                this.$emit('editCargador')
-            }
-        })
+      this.$refs.formCargador.validate().then((result) => {
+        if (result) {
+          this.$emit("editCargador");
+        }
+      });
     },
     guardarNuevoCargador() {
-        this.$refs.formCargador.validate().then(result => {
-            if (result) {
-                this.$emit('saveNewCargador')
-            }
-        })
+      this.$refs.formCargador.validate().then((result) => {
+        if (result) {
+          this.$emit("saveNewCargador");
+        }
+      });
     },
     crearNuevaCabecera() {
-        this.isEdit = false
-        this.cabecera = this.clone(this.cabeceraModel)
-        this.dialogNewCabecera = true
+      this.isEdit = false;
+      this.cabecera = this.clone(this.cabeceraModel);
+      this.dialogNewCabecera = true;
     },
     editCabecera(item) {
-        this.isEdit = true
-        this.dialogNewCabecera = true
-        let editedIndex = this.cargador.cabeceras.indexOf(item)
-        item.index = editedIndex
-        this.cabecera = this.clone(item)
+      this.isEdit = true;
+      this.dialogNewCabecera = true;
+      let editedIndex = this.cargador.cabeceras.indexOf(item);
+      item.index = editedIndex;
+      this.cabecera = this.clone(item);
     },
     closeDialogNewHeader() {
-        this.cabecera = this.clone(this.cabeceraModel)
-        this.$refs.formNewHeader.reset()
-        this.dialogNewCabecera = false
+      this.cabecera = this.clone(this.cabeceraModel);
+      this.$refs.formNewHeader.reset();
+      this.dialogNewCabecera = false;
     },
     addHeader() {
-        this.$refs.formNewHeader.validate().then(result => {
-            if (result) {
-                this.$emit("addHeader", {idCargador: this.cargador.id, header: this.cabecera})
-                this.closeDialogNewHeader()
-            }
-        })
+      this.$refs.formNewHeader.validate().then((result) => {
+        if (result) {
+          this.$emit("addHeader", {
+            idCargador: this.cargador.id,
+            header: this.cabecera,
+          });
+          this.closeDialogNewHeader();
+        }
+      });
     },
     updateHeader() {
-        this.$refs.formNewHeader.validate().then(result => {
-            if (result) {
-                this.$emit("updateHeader", this.cabecera)
-                this.closeDialogNewHeader()
-            }
-        })
+      this.$refs.formNewHeader.validate().then((result) => {
+        if (result) {
+          this.$emit("updateHeader", this.cabecera);
+          this.closeDialogNewHeader();
+        }
+      });
     },
     deleteCabecera(item) {
-        let editedIndex = this.cargador.cabeceras.indexOf(item)
-        this.$emit("deleteHeader", editedIndex)
+      let editedIndex = this.cargador.cabeceras.indexOf(item);
+      this.$emit("deleteHeader", editedIndex);
+    },
+    checkTable() {
+      this.loading = true;
+      this.axios
+        .get(`check-table/${this.cargador.like_table}`)
+        .then((response) => {
+          this.$store.commit("snackbar", {
+            color: "success",
+            message: `Tabla verificada ${response.data} con exito`,
+          });
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.$store.commit("snackbar", {
+            color: "error",
+            message: `al obtener la tabla ${this.cargador.like_table}`,
+            error: error,
+          });
+          this.loading = false;
+        });
     },
   },
 };

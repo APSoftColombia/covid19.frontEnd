@@ -138,6 +138,8 @@ export default {
       id: null,
       nombre_cargador: null,
       nombre_table_temp: null,
+      delete_temp: true,
+      like_table: null,
       separator: null,
       cabeceras: [],
       querys: [],
@@ -164,7 +166,9 @@ export default {
           id: this.copyCargador.id,
           nombre_cargador: this.copyCargador.nombre_cargador,
           nombre_table_temp: this.copyCargador.nombre_table_temp,
-          separator: this.copyCargador.separator
+          separator: this.copyCargador.separator,
+          delete_temp: this.copyCargador.delete_temp,
+          like_table: this.copyCargador.like_table
         },
         cabeceras : this.copyCargador.cabeceras.map(x => {
           return {
@@ -203,7 +207,9 @@ export default {
         cargador: {
           nombre_cargador: this.copyCargador.nombre_cargador,
           nombre_table_temp: this.copyCargador.nombre_table_temp,
-          separator: this.copyCargador.separator
+          separator: this.copyCargador.separator,
+          delete_temp: this.copyCargador.delete_temp,
+          like_table: this.copyCargador.like_table
         },
         cabeceras : this.copyCargador.cabeceras,
         querys: this.copyCargador.querys.map(a => a.query)

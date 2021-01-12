@@ -1175,8 +1175,8 @@ export default {
                 if(value && this.moment(value).isValid()){
                     let a = this.moment()
                     let b = this.moment(value)
-                    let days = a.diff(b, 'days')
-                    this.encuesta.edad_gestacional = days/7
+                    let days = a.diff(b, 'weeks')
+                    this.encuesta.edad_gestacional = days
                 }
             },
             inmediate: false
