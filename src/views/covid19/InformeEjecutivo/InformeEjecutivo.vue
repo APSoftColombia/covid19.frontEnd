@@ -56,11 +56,11 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Seguimiento por Grupos Etarios en Decenios</p>
+                  <p>Muestras Tomadas</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.reporte_edad"
-                    :headers="[{text:'Edades'}, {text:'Mujer',align:'right'},{text:'Hombre',align:'right'}]"
+                    :data="dataInforme.byMuestras"
+                    :headers="[{text:'Regional'}, {text:'Detalle'},{text:'Tipo Muestra'},{text:'Cantidad',align:'right'}]"
                     :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
@@ -70,134 +70,67 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Estadisticas por Persona (Agrupado por Identificación)</p>
+                  <p>Resultados Pacientes</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.reporte_persona"
+                    :data="dataInforme.byResultado"
                     :headers="[
-                        {text:'Regional'},{text:'Cargados Sivigila',align:'right'},
-                        {text:'Probables',align:'right'},{text:'Sospechosos',align:'right'},
-                        {text:'Positivo Covid',align:'right'},{text:'Negativo Covid',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                     ]"
-                    :lastRowBold="true"
                     :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="12" md="12" lg="12">
+          <v-col cols="12" sm="12" md="6" lg="6">
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Etadisticas Estados de Afectación por Persona</p>
+                  <p>Nexos y Convivientes</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.reporte_estado_afectacion_persona"
+                    :data="dataInforme.byNexosConvivientes"
                     :headers="[
-                        {text:'Regional'},{text:'Leve',align:'right'},
-                        {text:'Moderado',align:'right'},{text:'Grave',align:'right'},
-                        {text:'Critico',align:'right'},{text:'Fallecido',align:'right'},
-                        {text:'Recuperado',align:'right'},{text:'Reinfectado',align:'right'},
-                        {text:'Ninguno',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                     ]"
-                    :lastRowBold="true"
                     :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="12" md="12" lg="12">
+          <v-col cols="12" sm="12" md="6" lg="6">
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Estadisticas Personas Cargadas en Archivo SIVIGILA Segun Nivel de Riesgo</p>
+                  <p>Llamadas Call Center</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.reporte_cargue_archivo_segun_riesgo"
-                    :headers="[{text:'Regional'}, {text:'Sin Seguimientos',align:'right'},{text:'Riesgo Bajo',align:'right'}, {text:'Riesgo Medio',align:'right'}, {text:'Riesgo Alto',align:'right'}]"
-                    :lastRowBold="true"
-                    :alignNumbersRight="true"
-                ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="12" md="12" lg="12">
-            <v-card>
-              <v-card-text>
-                <div class="font-weight-bold text-center">
-                  <p>Estadisticas de Llamadas Efectivas</p>
-                </div>
-                <simple-table
-                    :data="dataInforme.reporte_efectividad_llamada"
+                    :data="dataInforme.byCallCenter"
                     :headers="[
-                        {text:'Regional'}, {text:'Llamada Efectiva',align:'right'},
-                        {text:'No Contesta',align:'right'}, {text:'Fuera de Servicio',align:'right'},
-                        {text:'Apagado',align:'right'},{text:'No Acepta Encuesta',align:'right'},
-                        {text:'Equivocado',align:'right'},{text:'Llamar Luego',align:'right'},
-                        {text:'No se Encuentra en Ciudad',align:'right'}, {text:'Falla de la Plataforma',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
+                    ]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Tipo Aislamiento</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.byAislamiento"
+                    :headers="[
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                       ]"
-                    :lastRowBold="true"
                     :alignNumbersRight="true"
                 ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12">
-            <v-card>
-              <v-card-text>
-                <v-row class="justify-center">
-                  <v-col cols="12" sm="12" md="4" lg="4">
-                    <div class="font-weight-bold text-center">
-                      <p>Estadisticas Segun Estado de Afectación</p>
-                    </div>
-                    <simple-table
-                        :data="dataInforme.reporte_estado_afectacion"
-                        :headers="[{text:'Evolucion'},{text:'Cantidad',align:'right'}]"
-                        :alignNumbersRight="true"
-                    ></simple-table>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4" lg="4">
-                    <div class="font-weight-bold text-center">
-                      <p>Estadisticas por Tipo de Atención</p>
-                    </div>
-                    <simple-table
-                        :data="dataInforme.reporte_tipo_atencion"
-                        :headers="[{text:'Tipo de Atención'},{text:'Cantidad',align:'right'}]"
-                        :alignNumbersRight="true"
-                    ></simple-table>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="4" lg="4">
-                    <div class="font-weight-bold text-center">
-                      <p>Estadisticas de Tamizajes por Región</p>
-                    </div>
-                    <simple-table
-                        :data="dataInforme.reporte_regional"
-                        :headers="[{text:'Departamento'},{text:'Cantidad',align:'right'}]"
-                        :alignNumbersRight="true"
-                    ></simple-table>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="5" lg="5">
-                    <div class="font-weight-bold text-center">
-                      <p>Estadisticas por Régimen y Regional</p>
-                    </div>
-                    <simple-table
-                        :data="dataInforme.reporte_regimen_regional"
-                        :headers="[{text:'Regional'}, {text:'ERP Por Régimen'}, {text:'Cantidad',align:'right'}]"
-                        :alignNumbersRight="true"
-                    ></simple-table>
-                  </v-col>
-                  <v-col cols="12" sm="12" md="5" lg="5">
-                    <div class="font-weight-bold text-center">
-                      <p>Estadisticas por Personas y Número de Seguimientos</p>
-                    </div>
-                    <simple-table
-                        :data="dataInforme.reporte_persona_seguimientos"
-                        :headers="[{text:'Regional'}, {text:'Numero Seguimientos',align:'right'}, {text:'Casos',align:'right'}]"
-                        :lastRowBold="true"
-                        :alignNumbersRight="true"
-                    ></simple-table>
-                  </v-col>
-                </v-row>
               </v-card-text>
             </v-card>
           </v-col>
@@ -234,10 +167,6 @@
         this.loading = true
         this.axios.post('informe-ejecutivo_tamizajes', this.data).then(response => {
           this.dataInforme = response.data
-          let por_edad = response.data.reporte_edad.find(x => x.Hombre > 0 || x.Mujer > 0)
-          if(!por_edad) {
-            this.dataInforme.reporte_edad = []
-          }
           this.loading = false
         }).catch(error => {
           this.loading = false
