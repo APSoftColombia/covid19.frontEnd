@@ -8,13 +8,14 @@
             v-on="on"
         >
           Asignar Rastreador
+          <v-icon class="ml-2">fas fa-user-secret</v-icon>
         </v-btn>
       </template>
         <v-card>
           <v-card-title>
             Asignación de rastreador
             <v-spacer/>
-            <v-btn icon dark @click="close">
+            <v-btn icon @click="close">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>

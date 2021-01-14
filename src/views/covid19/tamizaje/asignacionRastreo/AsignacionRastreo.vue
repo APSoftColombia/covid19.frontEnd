@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Asignación de encuestas a rastreo"></page-title-bar>
+    <page-title-bar title="Asignación de encuestas para rastreo"></page-title-bar>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -38,12 +38,17 @@
               </v-list-item>
             </template>
             <template v-slot:top>
-              <asignador
-                  v-if="seleccionados.length"
-                  :seleccionados="seleccionados"
-                  :rastreadores="rastreadores"
-                  @guardado="getTamizajesPendientes"
-              />
+              <v-container fluid class="px-2 py-0" v-if="seleccionados.length">
+                <v-row>
+                  <v-col cols="12" justify="end" align="end">
+                    <asignador
+                        :seleccionados="seleccionados"
+                        :rastreadores="rastreadores"
+                        @guardado="getTamizajesPendientes"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
             </template>
           </v-data-table>
         </v-card>
@@ -108,7 +113,7 @@ export default {
           })
     },
     getRastreadores() {
-      this.axios.get(`users-role?role=Médico`)
+      this.axios.get(`users-role?role=Agente Rastreador`)
           .then(response => {
             this.rastreadores = response.data
           })
