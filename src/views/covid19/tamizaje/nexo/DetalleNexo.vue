@@ -7,7 +7,7 @@
       <v-toolbar dark color="primary">
         <v-icon left>fas fa-file-prescription</v-icon>
         <v-list-item-content class="pa-0">
-          <v-list-item-title class="mb-0"><h6 class="mb-0 title">{{reporteComunitario && reporteComunitario.id ? `${sonNexos || sonNexos === null ? 'Nexo' : 'Conviviente'} No. ${reporteComunitario.id}` : ''}}</h6></v-list-item-title>
+          <v-list-item-title class="mb-0"><h6 class="mb-0 title">{{reporteComunitario && reporteComunitario.id ? `${sonNexos || sonNexos === null ? 'Nexo' : 'Contacto'} No. ${reporteComunitario.id}` : ''}}</h6></v-list-item-title>
           <v-list-item-subtitle class="grey--text fs-12 fw-normal">
             {{reporteComunitario.created_at ? moment(reporteComunitario.created_at).format('DD/MM/YYYY HH:mm') : ''}}
           </v-list-item-subtitle>

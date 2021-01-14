@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-row>
-      <v-col class="pb-0" cols="12" v-if="esTamizaje">
+      <v-col class="pb-0" cols="12" v-if="esTamizaje && tamizaje && tamizaje.tipo_tamizaje !== 'email'">
         <v-card outlined tile>
           <v-card-text>
             <c-radio
                 v-model="tamizaje.tipo_tamizaje"
-                label="Tipo de Encuesta de Riesgo Poblacional: "
+                label="Tipo de Encuesta: "
                 rules="required"
-                name="tipo de encuesta de riesgo poblacional"
+                name="tipo de encuesta"
                 :items="tiposTamizaje"
                 item-text="nombre"
                 item-value="id"
@@ -51,13 +51,13 @@
           >
           </c-select-complete>
         </v-col>
-        <v-col cols="12" class="pb-0" v-if="tamizaje.tamizador_id === 897">
+        <v-col cols="12" class="pb-0" v-if="[888,897,900].find(x => tamizaje.tamizador_id === x)">
           <buscador-ips
               ref="buscadorips"
-              label="IPS Busqueda Activa Institucional"
+              label="IPS"
               v-model="tamizaje.codIpsBai"
               rules="required"
-              name="IPS Busqueda Activa Institucional"
+              name="IPS"
           ></buscador-ips>
         </v-col>
         <v-col class="pb-0" cols="12" v-if="tamizaje.tamizador_id === 890">
@@ -131,6 +131,23 @@
                       :items="gruposAtencionEspecial"
                       item-text="nombre"
                       item-value="id"
+                  >
+                  </c-radio>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="12" v-if="mujerGestante">
+              <v-card outlined tile>
+                <v-card-text>
+                  <c-radio
+                      v-model="tamizaje.estado_gestacion_lactancia"
+                      label="¿Se encuentra en estado de gestación o lactancia?"
+                      rules="required"
+                      name="estado de gestación o lactancia"
+                      :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                      item-text="text"
+                      item-value="value"
+                      :column="!$vuetify.breakpoint.smAndUp"
                   >
                   </c-radio>
                 </v-card-text>
@@ -463,6 +480,7 @@ export default {
     verificado: 0,
     loadingidentidad: false,
     dialog: false,
+    mujerGestante: 0,
     respuestaPersona: null
   }),
   computed: {
@@ -484,6 +502,18 @@ export default {
     ])
   },
   watch: {
+    'tamizaje.sexo': {
+      handler() {
+        this.verificaGestante()
+      },
+      immediate: true
+    },
+    'tamizaje.fecha_nacimiento': {
+      handler() {
+        this.verificaGestante()
+      },
+      immediate: true
+    },
     'tamizaje.localiza_persona': {
       handler(val) {
         if (!val) {
@@ -559,6 +589,16 @@ export default {
     }, 600)
   },
   methods: {
+    verificaGestante() {
+      if (this && this.tamizaje) {
+        setTimeout(() => {
+          console.log('this.tamizaje', `Edad: ${this.tamizaje.edad}, Sexo:${this.tamizaje.sexo}`)
+          this.mujerGestante = (this.tamizaje.sexo === 'F' && this.tamizaje.edad > 12) ? 1 : 0
+          console.log('this.this.mujerGestante', this.mujerGestante)
+          if (!this.mujerGestante) this.tamizaje.estado_gestacion_lactancia = null
+        }, 1000)
+      }
+    },
     verSeguimiento(id) {
       this.$refs.seguimiento.open(id)
       // this.dialog = false

@@ -65,6 +65,8 @@ const state = {
         temperatura: null,
         no_efectividad: null,
         codIpsBai: null,
+        estado_gestacion_lactancia: null,
+        edad: null,
         ////
         user_id: null,
         signos_alarma: [],

@@ -2,10 +2,10 @@
   <v-dialog v-model="dialog" max-width="720px">
     <v-card>
       <v-card-title>
-        Eliminar {{ sonNexos ? 'nexo' : 'conviviente' }}
+        Eliminar {{ sonNexos ? 'nexo' : 'contacto' }}
       </v-card-title>
       <v-card-text class="body-1">
-        ¿Esta seguro de eliminar el {{ sonNexos ? 'nexo' : 'conviviente' }} seleccionado?
+        ¿Esta seguro de eliminar el {{ sonNexos ? 'nexo' : 'contacto' }} seleccionado?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -58,14 +58,14 @@
           this.close()
           this.$store.commit('snackbar', {
             color: 'success',
-            message: `${this.sonNexos ? 'nexo' : 'conviviente'} eliminado con exito`
+            message: `${this.sonNexos ? 'Nexo' : 'Contacto'} eliminado correctamente`
           })
           this.$emit('nexoOConvivienteEliminado', this.idTamizaje)
         }).catch(error => {
           this.loading = false
           this.$store.commit('snackbar', {
             color: 'error',
-            message: `al eliminar ${this.sonNexos ? 'nexo' : 'conviviente'}`,
+            message: `al eliminar el ${this.sonNexos ? 'nexo' : 'contacto'}`,
             error: error
           })
         })

@@ -33,6 +33,7 @@ const HogarView = () => import('Views/covid19/hogar/HogarView')
 const InformeEjecutivoERP = () => import('Views/covid19/InformeEjecutivo/InformeEjecutivo')
 const InformeDePrensa = () => import('Views/covid19/InformeDePrensa/InformeDePrensa.vue')
 const Cets = () => import('Views/covid19/Cet/Cets')
+const AsignacionRastreo = () => import('Views/covid19/tamizaje/asignacionRastreo/AsignacionRastreo')
 
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
@@ -551,6 +552,20 @@ export default {
             avatar: {
                icon: 'mdi-content-paste',
                color: 'purple',
+            }
+         }
+      },
+      {
+         path: 'asignacion-rastreo',
+         name: 'AsignacionTamizajesRastreo',
+         component: AsignacionRastreo,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'covid-asignacionERPRastreoIndex',
+            avatar: {
+               icon: 'mdi-file-move',
+               color: 'green',
             }
          }
       }

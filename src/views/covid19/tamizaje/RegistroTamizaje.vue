@@ -26,15 +26,19 @@
             <v-col md="6" offset-md="3">
               <ValidationObserver ref="formTamizaje" v-slot="{ invalid, validated, passes, validate }"
                                   autocomplete="off">
-                <form-tamizaje v-if="tamizaje" :tamizaje="tamizaje" :llamada="llamada"
-                               @verificado="val => verificado = val"></form-tamizaje>
+                <form-tamizaje
+                    v-if="tamizaje"
+                    :tamizaje="tamizaje"
+                    :llamada="llamada"
+                    @verificado="val => verificado = val"
+                />
                 <template v-if="tamizaje && verificado === 1 && autoriza">
                   <form-sintomas
                       :array-sintomas="tamizaje.sintomas"
                       :fecha-sintomas="tamizaje.fecha_sintomas"
                       @changeSintomas="val => tamizaje.sintomas = val"
                       @changeFecha="val => tamizaje.fecha_sintomas = val"
-                  ></form-sintomas>
+                  />
                   <v-divider class="ma-0" v-if="tamizaje.sintomas && tamizaje.sintomas.length"></v-divider>
                   <template>
                     <v-row>

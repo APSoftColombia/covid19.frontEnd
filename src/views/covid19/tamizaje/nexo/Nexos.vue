@@ -2,17 +2,17 @@
     <v-card flat>
         <v-toolbar dark color="warning" dense>
             <v-icon left>fas fa-people-arrows</v-icon>
-            <v-toolbar-title>{{ sonNexos ? 'Nexos' : 'Convivientes' }}</v-toolbar-title>
+            <v-toolbar-title>{{ sonNexos ? 'Nexos' : 'Contactos' }}</v-toolbar-title>
             <template v-if="editable">
                 <v-spacer></v-spacer>
                 <v-btn dark @click="agregarNexo" color="warning darken-3">
                     <v-icon left>mdi-plus</v-icon>
-                    Agregar {{ sonNexos ? 'nexo' : 'conviviente' }}
+                    Agregar {{ sonNexos ? 'nexo' : 'contacto' }}
                 </v-btn>
             </template>
         </v-toolbar>
         <v-card-text class="text-center font-lg" v-if="!tamizaje.nexos.length">
-            No registra {{ sonNexos ? 'nexos' : 'convivientes' }}
+            No registra {{ sonNexos ? 'nexos' : 'contactos' }}
         </v-card-text>
         <v-row v-else>
             <v-col cols="12" class="pt-0">
@@ -20,7 +20,7 @@
                     <template v-slot:default>
                         <thead>
                         <tr>
-                          <th class="text-left">{{ sonNexos ? 'Nexo' : 'Conviviente' }}</th>
+                          <th class="text-left">{{ sonNexos ? 'Nexo' : 'Contacto' }}</th>
                           <th class="text-left">Persona</th>
                           <th class="text-left">Ubicación</th>
                           <th class="text-left">Parentesco</th>
@@ -127,7 +127,7 @@
                                       <v-icon>fas fa-trash-alt</v-icon>
                                     </v-btn>
                                   </template>
-                                  <span>Eliminar {{ sonNexos ? 'Nexo' : 'Conviviente' }}</span>
+                                  <span>Eliminar {{ sonNexos ? 'Nexo' : 'Contacto' }}</span>
                                 </v-tooltip>
                               </template>
                             </td>

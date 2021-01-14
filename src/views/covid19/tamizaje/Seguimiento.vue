@@ -76,7 +76,7 @@
                 <v-tab
                     href="#tab-2"
                 >
-                  {{ sonNexos ? 'Nexos' : 'Convivientes' }}
+                  {{ sonNexos ? 'Nexos' : 'Contactos' }}
                   <v-icon>fas fa-people-arrows</v-icon>
                 </v-tab>
                 <v-tab

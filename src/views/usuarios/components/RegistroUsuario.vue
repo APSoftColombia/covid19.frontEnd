@@ -241,6 +241,7 @@
                         this.tiposDocumentoIdentidad = response.data.tipos_documento_identidad
                         this.permisos = response.data.permisos
                         this.rolesx = response.data.roles
+                        this.cargos = response.data.cargos.map(x => x.cargo)
                         if (id) this.usuario = response.data.usuario
                         this.loading = false
                     })

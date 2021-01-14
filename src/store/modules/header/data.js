@@ -301,5 +301,14 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'Powerbi',
         typeRoute: 'powerbi'
-    }
+    },
+    {
+        id: 38,
+        title: 'Asignación de ERP',
+        subtitle: 'Encuestas para rastreo',
+        icon: 'mdi-file-move',
+        color: 'green',
+        routeName: 'AsignacionTamizajesRastreo',
+        typeRoute: 'covid'
+    },
 ]

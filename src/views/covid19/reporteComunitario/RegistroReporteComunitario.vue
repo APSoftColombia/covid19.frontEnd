@@ -20,7 +20,7 @@
       <v-toolbar dark :color="tamizaje ? 'warning' : 'primary'">
         <v-icon left>fas fa-{{ tamizaje ? 'people-arrows' : 'file-prescription' }}</v-icon>
         <v-toolbar-title>
-          {{ reporte && reporte.id ? `${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte'} No. ${reporte.id}` : `Nuevo ${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte'}` }}
+          {{ reporte && reporte.id ? `${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Contacto' : 'Reporte'} No. ${reporte.id}` : `Nuevo ${sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Contacto' : 'Reporte'}` }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon dark @click="close">
@@ -259,7 +259,7 @@
                   @click.stop="guardarReporte"
               >
                 <v-icon left>fas fa-save</v-icon>
-                Guardar {{ sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Conviviente' : 'Reporte' }}
+                Guardar {{ sonNexos && tamizaje ? 'Nexo' : !sonNexos && tamizaje ? 'Contacto' : 'Reporte' }}
               </v-btn>
             </v-card-actions>
           </v-col>
