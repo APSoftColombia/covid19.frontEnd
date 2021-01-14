@@ -528,7 +528,7 @@ export default {
           this.tamizaje.entidad_reporta_sivigila = null
           this.tamizaje.hospitalizado = null
         }
-        if (val !== 897) {
+        if ((val !== 888) && (val !== 897) && (val !== 900)) {
           this.tamizaje.codIpsBai = null
         }
       },

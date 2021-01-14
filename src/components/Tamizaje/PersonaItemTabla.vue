@@ -5,7 +5,23 @@
             <icon-tooltip v-if="[this.value.tipo_identificacion, this.value.identificacion, this.value.nombre1, this.value.apellido1, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
           </div>
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
-            <v-icon :color="colorText" large class="mr-2">{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
+          <v-card align="center" color="transparent" class="elevation-0">
+            <v-icon :color="colorText" large>{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
+            <v-card-actions class="py-0 px-1">
+              <v-chip
+                  align="center"
+                  color="primary"
+                  class="font-weight-bold"
+                  label
+                  x-small
+              >
+                <v-icon left x-small>
+                  fas fa-users
+                </v-icon>
+                <p class="ma-0 align-center">{{ value && value.cantidad_nexos ? value.cantidad_nexos : '0' }}</p>
+              </v-chip>
+            </v-card-actions>
+          </v-card>
             <v-list-item-content class="pa-0" v-if="isNotFromNexos">
                 <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">
                     {{this.value.nombre}}
