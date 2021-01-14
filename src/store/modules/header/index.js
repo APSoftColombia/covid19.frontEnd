@@ -13,6 +13,8 @@ const getters = {
         let menuPrincipal = []
         // if (getters.getPermission('inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
+        //Importadores
+        if (getters.getPermission('importadores-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 38))
         //Demanda Inducida
         if (getters.getPermission('demandaInducida-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 30))
         if (getters.getPermission('demandaInducida-config') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 36))

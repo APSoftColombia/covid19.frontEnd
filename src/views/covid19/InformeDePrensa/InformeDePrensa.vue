@@ -457,7 +457,9 @@
             document.body.appendChild(a);
             a.style = "display: none";
             a.href = fileURL
-            a.download = 'Informe de prensa.xlsx'
+            let addFecha1 = this.data.fecha_inicio ? this.data.fecha_inicio : ''
+            let addFecha2 = this.data.fecha_fin ? ' a ' + this.data.fecha_fin : ''
+            a.download = 'Informe de prensa '+ addFecha1 + addFecha2 +'.xlsx'
             a.click();
             this.loadingExcel = false
           }

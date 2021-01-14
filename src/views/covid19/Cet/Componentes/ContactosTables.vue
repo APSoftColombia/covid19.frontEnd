@@ -85,6 +85,18 @@
                         </template>
                         <span>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</span>
                       </v-tooltip>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-on="on"
+                                 color="blue"
+                                 icon
+                                 @click="infoContacto(contacto)"
+                          >
+                            <v-icon>mdi-information-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Información</span>
+                      </v-tooltip>
                       <v-tooltip top v-if="contacto.covid_contacto === 2">
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on" icon>
@@ -111,6 +123,7 @@
               </v-row>
             </template>
           </v-col>
+          <!--
           <v-col cols="12">
             <div class="grey--text text-center">
               <h5>Registros sin vincular</h5>
@@ -120,7 +133,7 @@
             </div>
             <v-row>
               <v-spacer></v-spacer>
-              <!--<v-text-field style="max-width: 400px" v-model="search" append-icon="search" label="Search" hide-details></v-text-field>-->
+              <v-text-field style="max-width: 400px" v-model="search" append-icon="search" label="Search" hide-details></v-text-field>
             </v-row>
             <template>
               <v-data-table
@@ -174,7 +187,7 @@
                 </template>
               </v-data-table>
             </template>
-          </v-col>
+          </v-col>-->
         </v-row>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -203,10 +216,14 @@
         ref="registrarAfiliado"
         @contactoCreado="refreshAfiliado"
     ></registrar-afiliado>
+    <informacion-persona
+        ref="infoContacto"
+    ></informacion-persona>
   </v-expansion-panels>
 </template>
 
 <script>
+  import InformacionPersona from "../InformacionPersona";
   const DesvincularAfiliado = () => import('./DesvincularAfiliado')
   const EditarContacto = () => import('./EditarContacto')
   const RegistrarAfiliado = () => import('./RegistrarAfiliado')
@@ -277,7 +294,8 @@
     components: {
       DesvincularAfiliado,
       EditarContacto,
-      RegistrarAfiliado
+      RegistrarAfiliado,
+      InformacionPersona
     },
     watch: {
       abierto: {
@@ -299,6 +317,9 @@
       },
       editarContacto(contacto){
         this.$refs.editarContacto.open(contacto, this.setNoToAuthEPS, this.hasContactos, false)
+      },
+      infoContacto(item){
+        this.$refs.infoContacto.open(item.id)
       },
       desvincular(contacto){
         contacto.loading = true

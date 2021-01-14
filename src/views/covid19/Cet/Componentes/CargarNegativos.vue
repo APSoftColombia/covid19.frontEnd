@@ -8,32 +8,14 @@
           @click.stop="dialog = true"
       >
         <v-icon left>fas fa-file-upload</v-icon>
-        Cargar Registros
+        Cargar Negativos
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline">Carga de registros</v-card-title>
+      <v-card-title class="headline">Carga de Negativos</v-card-title>
       <v-card-text>
         <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row>
-            <v-col cols="12" sm="12" md="8" lg="8" class="ml-md-8 ml-lg-8">
-              <c-date
-                    v-model="data.fecha_proceso"
-                    label="Fecha del Proceso"
-                    :max="moment().format('YYYY-MM-DD')"
-                    :rules="'required'"
-                    name="fecha del proceso"
-                >
-                </c-date>
-            </v-col>
-            <!--<v-col cols="12" sm="12" md="5" lg="5" class="ml-md-8 ml-lg-8">
-              <c-texto
-                    v-model="data.nombre_archivo"
-                    label="Nombre del archivo"
-                    :rules="'required'"
-                    name="nombre del archivo"
-                ></c-texto>
-            </v-col>-->
             <v-col cols="12" sm="12" md="12" lg="12">
               <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
                 <v-file-input
@@ -96,9 +78,7 @@
             this.loading = true
             let data = new FormData()
             data.append('archivo', this.data.archivo)
-            data.append('fecha_proceso', this.data.fecha_proceso)
-            data.append('nombre_archivo', this.data.nombre_archivo)
-            this.axios.post(`upload-info-cets`, data)
+            this.axios.post(`upload-estados-cet`, data)
                 .then(response => {
                   response
                   this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})

@@ -4,6 +4,7 @@ import Router from 'vue-router'
 //routes
 import defaultRoutes from './default'
 import rutasDemandaInducida from 'Views/demandaInducida/router/index'
+import rutasImportadores from 'Views/importadores/router/index'
 import rutasPowerbi from 'Views/powerbi/router/index'
 // session components
 const SignUpOne = () => import('Views/session/SignUpOne')
@@ -20,6 +21,7 @@ export default new Router({
 		defaultRoutes,
 		rutasDemandaInducida,
 		rutasPowerbi,
+		rutasImportadores,
 		{
 			path: '/session/sign-up',
 			component: SignUpOne,

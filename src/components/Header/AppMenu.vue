@@ -30,8 +30,12 @@
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'demandaInducida')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
 			<v-card-text v-if="datosEmpresa.powerbi_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'powerbi').length">
-              <v-subheader class="font-weight-bold">Power bi</v-subheader>
+              <v-subheader class="font-weight-bold">POWER BI</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'powerbi')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+			<v-card-text v-if="datosEmpresa.importadores_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'importadores').length">
+              <v-subheader class="font-weight-bold">IMPORTADORES</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'importadores')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
             <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'general').length">
               <v-subheader class="font-weight-bold">GENERAL</v-subheader>

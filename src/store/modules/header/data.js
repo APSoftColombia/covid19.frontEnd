@@ -304,11 +304,19 @@ export const itemsMenu = [
     },
     {
         id: 38,
+        title: 'Importadores',
+        icon: 'fas fa-file-upload',
+        color: 'green',
+        routeName: 'Importadores',
+        typeRoute: 'importadores'
+    },
+    {
+        id: 39,
         title: 'Asignación de ERP',
         subtitle: 'Encuestas para rastreo',
         icon: 'mdi-file-move',
         color: 'green',
         routeName: 'AsignacionTamizajesRastreo',
         typeRoute: 'covid'
-    },
+    }
 ]
