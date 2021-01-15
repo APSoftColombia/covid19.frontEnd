@@ -686,6 +686,7 @@
       </v-dialog>
       <modal-paciente v-if="permisos.datosPacienteEditar" ref="modalPaciente" @actualizado="val => $emit('actualizarTamizaje', val)"></modal-paciente>
       <app-section-loader :status="loading"></app-section-loader>
+      <modal-cierre ref="modalCierre" @guardado="val => enviarSeguimiento(val)"/>
     </v-card>
   </v-dialog>
 </template>
@@ -700,11 +701,13 @@ import DatosPersonales from 'Views/covid19/tamizaje/DatosPersonales'
 import FormAislamiento from 'Views/covid19/tamizaje/aislamiento/FormAislamiento'
 import FormSeguimientoAislamiento from 'Views/covid19/tamizaje/aislamiento/FormSeguimientoAislamiento'
 import ModalPaciente from 'Views/covid19/tamizaje/paciente/ModalPaciente'
+import ModalCierre from "Views/covid19/tamizaje/evolucion/components/ModalCierre"
 
 var intervalo
 export default {
   name: 'RegistroEvolucion',
   components: {
+    ModalCierre,
     DatosPersonales,
     FormComorbilidades,
     HelpModal,
@@ -928,20 +931,32 @@ export default {
         }, {}) : null
         let evolution = this.clone(this.evolucion)
         evolution.sintomas = coso
-        let request = evolution.id
-            ? this.axios.put(`evoluciones/${evolution.id}`, evolution)
-            : this.axios.post(`tamizajes/${evolution.tamizaje_id}/evoluciones`, evolution)
-        request
-            .then(response => {
-              this.$emit('guardado', response.data)
-              this.$store.commit('snackbar', {color: 'success', message: `La evolución se guardo correctamente.`})
-              this.close()
-            })
-            .catch(error => {
-              this.loading = false
-              this.$store.commit('snackbar', {color: 'error', message: `al guardar la evolución.`, error: error})
-            })
+        console.log('llega', this.aplicaCierre(evolution))
+        await this.aplicaCierre(evolution) ? this.lanzarModalCierre(evolution) : this.enviarSeguimiento(evolution)
       }
+    },
+    aplicaCierre (evolution) {
+      return evolution
+    },
+    lanzarModalCierre (evolution) {
+      this.loading = false
+      this.$refs.modalCierre.open( { tamizaje: this.tamizaje, evolucion: evolution })
+    },
+    enviarSeguimiento (evolution) {
+      this.loading = true
+      let request = evolution.id
+          ? this.axios.put(`evoluciones/${evolution.id}`, evolution)
+          : this.axios.post(`tamizajes/${evolution.tamizaje_id}/evoluciones`, evolution)
+      request
+          .then(response => {
+            this.$emit('guardado', response.data)
+            this.$store.commit('snackbar', {color: 'success', message: `La evolución se guardo correctamente.`})
+            this.close()
+          })
+          .catch(error => {
+            this.loading = false
+            this.$store.commit('snackbar', {color: 'error', message: `al guardar la evolución.`, error: error})
+          })
     },
     open(idEvolucion = null) {
       if (idEvolucion) this.getEvolucion(idEvolucion)
