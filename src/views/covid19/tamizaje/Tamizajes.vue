@@ -138,7 +138,24 @@ export default {
           text: 'ID',
           align: 'left',
           sortable: false,
-          value: 'id'
+          value: 'id',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'a',
+                  {
+                    class: ['font-weight-bold'],
+                    on: {
+                      click: () => {
+                        vm.verSeguimiento(context.props.value)
+                      }
+                    }
+                  },
+                  context.props.value.id
+              )
+            }
+          }
         },
         {
           text: 'Creación',
@@ -487,7 +504,6 @@ export default {
                   : createElement('span', '')
             }
           }
-
         },
         {
           text: 'Atención',
