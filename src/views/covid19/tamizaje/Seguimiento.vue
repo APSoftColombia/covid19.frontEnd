@@ -124,7 +124,7 @@
                   <nexos
                       v-if="permisos.nexoVer"
                       :tamizaje="tamizaje"
-                      :editable="editableNexos"
+                      :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
                       @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
@@ -151,13 +151,61 @@
               </v-tabs-items>
             </template>
             <template v-else>
-              <nexos
+              <v-tabs
                   class="mt-3"
-                  :tamizaje="tamizaje"
-                  :editable="editableNexos"
-                  @change="changeTamizaje(tamizaje.id)"
-                  :sonNexos="sonNexos"
-              ></nexos>
+                  v-model="tab"
+                  fixed-tabs
+                  right
+                  icons-and-text
+                  show-arrows
+                  :color="tab === 'tab-1' ? 'warning' : 'error'"
+              >
+                <v-tabs-slider></v-tabs-slider>
+                <v-tab
+                    href="#tab-1"
+                >
+                  {{ sonNexos ? 'Nexos' : 'Contactos' }}
+                  <v-icon>fas fa-people-arrows</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-2"
+                >
+                  Muestras
+                  <v-icon>fas fa-vials</v-icon>
+                </v-tab>
+              </v-tabs>
+              <v-tabs-items v-model="tab" class="mt-2" touchless>
+                <v-tab-item
+                    value="tab-1"
+                >
+                  <nexos
+                      v-if="permisos.nexoVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                      @nexoEliminado="getTamizaje(tamizaje.id)"
+                      :sonNexos="sonNexos"
+                  ></nexos>
+                  <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="warning" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-2"
+                >
+                  <muestras
+                      v-if="permisos.muestraVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></muestras>
+                  <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="error" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+              </v-tabs-items>
             </template>
           </template>
         </template>
@@ -199,16 +247,7 @@ export default {
       return this.$store.getters.getPermissionModule('covid')
     },
     editable() {
-      if (this && this.tamizaje && this.tamizaje.medico_id) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
-      }
-      return false
-    },
-    editableNexos() {
-      if (this && this.tamizaje) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
-      }
-      return false
+      return this && this.tamizaje && this.tamizaje.id && (this.tamizaje.estado === null || this.tamizaje.estado === 'Abierto')
     },
     ...mapGetters([
       'modelTamizaje'

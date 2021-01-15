@@ -202,6 +202,7 @@ export default {
           text: 'Punto ERP',
           align: 'left',
           sortable: false,
+          visibleColumn: false,
           component: {
             render: function (createElement) {
               return createElement(
@@ -347,7 +348,7 @@ export default {
           }
         },
         {
-          text: 'Estado Afectación',
+          text: 'Afectación',
           align: 'left',
           sortable: false,
           value: 'estado_afectacion'
@@ -356,6 +357,7 @@ export default {
           text: 'Último Seguimiento',
           align: 'left',
           sortable: true,
+          visibleColumn: false,
           value: 'ultimo_seguimiento',
           component: {
             render: function (createElement) {
@@ -488,7 +490,7 @@ export default {
 
         },
         {
-          text: 'Estado Atención',
+          text: 'Atención',
           sortable: false,
           value: 'semaforo',
           component: {
