@@ -12,6 +12,7 @@
                                         :nombreCargador="item.nombre_cargador"
                                         :separador="item.separator"
                                         :idCargador="item.id"
+                                        :cabeceras="item.cabeceras"
                                     ></cargador-component>
                                 </v-col>
                             </template>
