@@ -115,7 +115,7 @@
                 :server-items-length="value.items.length"
                 :loading="value.visibleLoading && value.loading"
                 loading-text="Cargando... por favor espere"
-                class="elevation-0 pa-0 ma-0 mt-1"
+                class="elevation-0 pa-0 ma-0 mt-1 mb-12"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
         >
@@ -186,19 +186,38 @@
                     No hay registros para mostrar
                 </div>
             </template>
-            <template v-slot:footer>
-                <div class="text-center">
-          <span class="title grey--text text--darken-1 text-center caption pa-1">
-              Registros del {{ pagination.from }} al {{ pagination.to }} de {{ pagination.total }} totales
-            </span>
-                    <v-pagination v-model="pagination.current_page" :total-visible="7"
-                                  :length="pagination.last_page" @input="reloadPage"></v-pagination>
-                </div>
-            </template>
+<!--            <template v-slot:footer>-->
+<!--                <div class="text-center">-->
+<!--          <span class="title grey&#45;&#45;text text&#45;&#45;darken-1 text-center caption pa-1">-->
+<!--              Registros del {{ pagination.from }} al {{ pagination.to }} de {{ pagination.total }} totales-->
+<!--            </span>-->
+<!--                    <v-pagination v-model="pagination.current_page" :total-visible="7"-->
+<!--                                  :length="pagination.last_page" @input="reloadPage"></v-pagination>-->
+<!--                </div>-->
+<!--            </template>-->
         </v-data-table>
         <div v-show="!value.headers.length" class="title grey--text text-center pa-4">No hay columnas seleccionadas para
             mostrar
         </div>
+      <div
+          v-if="pagination && pagination.total"
+          style="left: 0px !important; right: 0px !important; bottom: 0px !important; position: fixed !important;"
+      >
+        <v-sheet
+            tile
+            elevation="5"
+        >
+          <v-container fluid class="px-2 py-1">
+            <v-row align="center" justify="center">
+              <span class="title grey--text text--darken-1 text-center caption pa-1">
+              Registros del {{ pagination.from }} al {{ pagination.to }} de {{ pagination.total }} totales
+            </span>
+              <v-pagination v-model="pagination.current_page" :total-visible="7"
+                            :length="pagination.last_page" @input="reloadPage"></v-pagination>
+            </v-row>
+          </v-container>
+        </v-sheet>
+      </div>
     </div>
 </template>
 <script>

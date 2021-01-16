@@ -8,7 +8,7 @@
               v-model="seleccionados"
               :headers="headers"
               :items="items"
-              item-key="name"
+              item-key="id"
               show-select
               class="elevation-1"
           >
@@ -38,17 +38,19 @@
               </v-list-item>
             </template>
             <template v-slot:top>
-              <v-container fluid class="px-2 py-0" v-if="seleccionados.length">
-                <v-row>
-                  <v-col cols="12" justify="end" align="end">
-                    <asignador
-                        :seleccionados="seleccionados"
-                        :rastreadores="rastreadores"
-                        @guardado="getTamizajesPendientes"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
+              <v-expand-transition>
+                <v-container fluid class="px-2 py-0" v-if="seleccionados.length">
+                  <v-row>
+                    <v-col cols="12" justify="end" align="end">
+                      <asignador
+                          :seleccionados="seleccionados"
+                          :rastreadores="rastreadores"
+                          @guardado="getTamizajesPendientes"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-expand-transition>
             </template>
           </v-data-table>
         </v-card>
