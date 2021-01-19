@@ -11,7 +11,7 @@
               <v-chip
                   align="center"
                   color="primary"
-                  class="font-weight-bold"
+                  class="font-weight-bold pl-2 pr-1"
                   label
                   x-small
               >
@@ -24,6 +24,19 @@
           </v-card>
             <v-list-item-content class="pa-0" v-if="isNotFromNexos">
                 <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">
+                  <template v-if="!!(value && value.reporte && value.reporte.tamizaje_id)">
+                    <v-btn
+                        style="width: 20px !important; height: 20px !important;"
+                        depressed
+                        fab
+                        color="indigo"
+                        x-small
+                        dark
+                        @click="$emit('verTamizajeOrigen', value.reporte.tamizaje_id)"
+                    >
+                      <v-icon x-small>fas fa-people-arrows</v-icon>
+                    </v-btn>
+                  </template>
                     {{this.value.nombre}}
                     <v-tooltip top v-if="this.value.showButton">
                         <template v-slot:activator="{ on }">

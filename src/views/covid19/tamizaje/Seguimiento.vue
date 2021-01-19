@@ -284,7 +284,9 @@ export default {
     },
     close() {
       this.dialog = false
-      this.tamizaje = this.clone(this.modelTamizaje)
+      setTimeout(() => {
+        this.tamizaje = this.clone(this.modelTamizaje)
+      }, 500)
     },
     changeTamizaje(idTamizaje) {
       this.getTamizaje(idTamizaje)

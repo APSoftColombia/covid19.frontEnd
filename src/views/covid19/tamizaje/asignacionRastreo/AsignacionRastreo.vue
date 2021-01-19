@@ -8,7 +8,6 @@
               v-model="seleccionados"
               :headers="headers"
               :items="items"
-              item-key="id"
               show-select
               class="elevation-1"
           >

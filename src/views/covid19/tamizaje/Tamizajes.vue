@@ -285,6 +285,11 @@ export default {
                       {
                         props: {
                           value: context.props.value
+                        },
+                        on: {
+                          verTamizajeOrigen: (tamizajeId) => {
+                            vm.verSeguimiento({ id: tamizajeId })
+                          }
                         }
                       }
                   )
