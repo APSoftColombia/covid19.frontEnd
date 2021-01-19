@@ -132,7 +132,7 @@
         },
         computed: {
             colorText () {
-            return this.value.total_riesgo > 50 ? 'white' : ''
+            return this.value.estado === 'Cerrado' ? 'white' : (this.value.total_riesgo > 50 ? 'white' : '')
             }
         }
     }

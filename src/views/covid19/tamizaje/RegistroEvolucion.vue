@@ -904,6 +904,8 @@ export default {
         if (this.evolucion.fallida) {
           let copia = this.clone(this.evolucion)
           this.evolucion = this.clone(this.modelEvolucion)
+          this.evolucion.id = copia.id
+          this.evolucion.user_id = copia.user_id
           this.evolucion.tamizaje_id = copia.tamizaje_id
           this.evolucion.fecha_seguimiento = copia.fecha_seguimiento
           this.evolucion.lugar_atencion = copia.lugar_atencion
