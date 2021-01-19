@@ -104,7 +104,7 @@
                 <span>Agregar cabecera</span>
               </v-tooltip>
             </v-toolbar>
-            <v-simple-table
+            <v-simple-table dense
               v-if="cargador.cabeceras && cargador.cabeceras.length"
             >
               <template v-slot:default>
@@ -161,7 +161,7 @@
                 <span>Agregar query</span>
               </v-tooltip>
             </v-toolbar>
-            <v-expansion-panels>
+            <v-expansion-panels flat>
               <v-expansion-panel v-for="(item, i) in cargador.querys" :key="i">
                 <v-expansion-panel-header v-slot="{ open }">
                   Query {{ i }}
@@ -199,6 +199,13 @@
                     </v-col>
                   </v-row>
                   <v-card-actions>
+                    <c-texto
+                        v-model="item.orden"
+                        label="Orden"
+                        name="orden"
+                        rules="required"
+                      >
+                      </c-texto>
                     <v-spacer></v-spacer>
                     <v-btn color="error" @click.stop="deleteQuery(item)">
                       <v-icon dark> mdi-delete </v-icon>
@@ -356,6 +363,7 @@ export default {
       { text: "Tipo", value: "type" },
       { text: "Longitud", value: "length" },
       { text: "Requerido", value: "required" },
+      { text: "Opciones", value: "opciones" },
     ],
     dialogNewCabecera: false,
     cabecera: null,

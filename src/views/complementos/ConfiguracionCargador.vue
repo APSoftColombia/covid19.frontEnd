@@ -178,7 +178,7 @@ export default {
             length: x.length
           }
         }),
-        querys: this.copyCargador.querys.map(a => a.query)
+        querys: this.copyCargador.querys.map(a => { return {query: a.query, orden: a.orden} })
       }
       this.axios
         .put(`config-cargador/${this.copyCargador.id}`, cargador)
@@ -212,7 +212,7 @@ export default {
           like_table: this.copyCargador.like_table
         },
         cabeceras : this.copyCargador.cabeceras,
-        querys: this.copyCargador.querys.map(a => a.query)
+        querys: this.copyCargador.querys.map(a => { return {query: a.query, orden: a.orden} })
       }
       this.axios
         .post("config-cargador", cargador)
