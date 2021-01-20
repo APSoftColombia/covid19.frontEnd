@@ -659,8 +659,10 @@ export default {
     resetOptions(item) {
       item.nombre = [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ')
       item.tipoIdentificacion = this.tiposDocumentoIdentidad && item.tipo_identificacion && this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion) ? this.tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : ''
-      item.colortrrgba = item.estado === 'Cerrado' ? '143,143,143,0.8' : (item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo / 100}` : '')
-      item.colortext = item.estado === 'Cerrado' ? 'white' : (item.total_riesgo > 50 ? 'white' : '')
+      // item.colortrrgba = item.estado === 'Cerrado' ? '143,143,143,0.8' : (item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo / 100}` : '')
+      // item.colortext = item.estado === 'Cerrado' ? 'white' : (item.total_riesgo > 50 ? 'white' : '')
+      item.colortrrgba = item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo / 100}` : ''
+      item.colortext = item.total_riesgo > 50 ? 'white' : ''
       item.options = []
       if (this.permisos.tamizajeEditar) item.options.push({
         event: 'actualizar',

@@ -938,7 +938,9 @@ export default {
       }
     },
     aplicaCierre (evolution) {
-      return evolution
+      console.log('evolution', evolution)
+      return false
+      // return evolution
     },
     lanzarModalCierre (evolution) {
       this.loading = false

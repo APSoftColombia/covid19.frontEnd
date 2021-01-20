@@ -124,7 +124,7 @@
                   <nexos
                       v-if="permisos.nexoVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="editableNexos"
                       @change="changeTamizaje(tamizaje.id)"
                       @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
@@ -181,7 +181,7 @@
                   <nexos
                       v-if="permisos.nexoVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="editableNexos"
                       @change="changeTamizaje(tamizaje.id)"
                       @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
@@ -247,8 +247,20 @@ export default {
       return this.$store.getters.getPermissionModule('covid')
     },
     editable() {
-      return this && this.tamizaje && this.tamizaje.id && (this.tamizaje.estado === null || this.tamizaje.estado === 'Abierto')
+      if (this && this.tamizaje && this.tamizaje.medico_id) {
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+      }
+      return false
     },
+    editableNexos() {
+      if (this && this.tamizaje) {
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+      }
+      return false
+    },
+    // editable() {
+    //   return this && this.tamizaje && this.tamizaje.id && (this.tamizaje.estado === null || this.tamizaje.estado === 'Abierto')
+    // },
     ...mapGetters([
       'modelTamizaje'
     ]),

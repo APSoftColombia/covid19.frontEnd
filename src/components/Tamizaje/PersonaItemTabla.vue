@@ -49,7 +49,7 @@
             </v-list-item-content>
             <v-list-item-content class="pa-0" v-if="!isNotFromNexos">
                 <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">{{this.value.nombres}}</v-list-item-title>
-                <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.celular ? 'Cel: ' + this.value.celular : ''}} {{ this.value.edad ? "Edad: " + this.value.edad : '' }}</v-list-item-subtitle>
+                <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{ [[value.tipo_identificacion && tiposDocumentoIdentidad ? tiposDocumentoIdentidad.find(x => x.id === value.tipo_identificacion).tipo : null, value.identificacion].filter(x => x).join(' '), this.value.celular ? 'Cel: ' + this.value.celular : null, this.value.edad ? "Edad: " + this.value.edad : null].filter(z => z).join(', ') }}</v-list-item-subtitle>
             </v-list-item-content>
 <!--            <template v-if="verAltoCosto">-->
 <!--                <v-tooltip top>-->
@@ -109,6 +109,8 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
+
     const Seguimiento = () => import('../../views/covid19/tamizaje/Seguimiento')
     export default {
         name: 'PersonaItemTabla',
@@ -131,8 +133,12 @@
             Seguimiento
         },
         computed: {
+          ...mapGetters([
+            'tiposDocumentoIdentidad'
+          ]),
             colorText () {
-            return this.value.estado === 'Cerrado' ? 'white' : (this.value.total_riesgo > 50 ? 'white' : '')
+            // return this.value.estado === 'Cerrado' ? 'white' : (this.value.total_riesgo > 50 ? 'white' : '')
+            return this.value.total_riesgo > 50 ? 'white' : ''
             }
         }
     }
