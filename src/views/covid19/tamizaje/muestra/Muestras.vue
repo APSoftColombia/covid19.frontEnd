@@ -23,8 +23,18 @@
               :key="`muestra${muestraIndex}`"
               class="mb-4"
           >
-            <v-toolbar dense elevation="0" color="blue-grey lighten-4">
-              <v-toolbar-title>Muestra No. {{ tamizaje.muestras.length - muestraIndex }}</v-toolbar-title>
+            <v-toolbar dense elevation="0" color="blue-grey lighten-5">
+              <v-toolbar-title>
+                <v-list-item class="pa-0" v-if="muestra.deleted_at">
+                  <v-list-item-content class="pa-0">
+                    <v-list-item-title class="font-weight-bold">Muestra No. {{ tamizaje.muestras.length - muestraIndex }}</v-list-item-title>
+                    <v-list-item-subtitle class="red--text">El registro ya no se encuentra en sismuestras a partir del {{ moment(muestra.deleted_at).format('DD/MM/YYYY') }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+                <template v-else>
+                  Muestra No. {{ tamizaje.muestras.length - muestraIndex }}
+                </template>
+              </v-toolbar-title>
               <v-spacer></v-spacer>
               <template v-if="permisos.muestraCrear && (muestraIndex === 0)">
                 <v-spacer></v-spacer>

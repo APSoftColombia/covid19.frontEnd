@@ -119,6 +119,9 @@
                                                         <v-list-item-subtitle class="body-2">
                                                             ${this.value.fecha_resultado ? 'Fecha Resultado: ' + this.value.fecha_resultado : ''}
                                                         </v-list-item-subtitle>
+                                                        <v-list-item-subtitle class="body-2 red--text">
+                                                            ${this.value.deleted_at ? `No registrado en sismuestras: ${this.moment(this.value.deleted_at).format('DD/MM/YYYY')}` : ''}
+                                                        </v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
 											`
