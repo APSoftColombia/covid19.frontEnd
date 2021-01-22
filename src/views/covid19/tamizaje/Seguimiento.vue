@@ -93,7 +93,7 @@
                   <evoluciones
                       v-if="permisos.seguimientoVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                       @actualizarTamizaje="val => changeTamizaje(val.id)"
                   ></evoluciones>
@@ -109,7 +109,7 @@
                   <aislamientos
                       v-if="permisos.aislamientoVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                   ></aislamientos>
                   <div v-if="!permisos.aislamientoVer"
@@ -124,7 +124,7 @@
                   <nexos
                       v-if="permisos.nexoVer"
                       :tamizaje="tamizaje"
-                      :editable="editableNexos"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                       @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
@@ -140,7 +140,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
@@ -181,7 +181,7 @@
                   <nexos
                       v-if="permisos.nexoVer"
                       :tamizaje="tamizaje"
-                      :editable="editableNexos"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                       @nexoEliminado="getTamizaje(tamizaje.id)"
                       :sonNexos="sonNexos"
@@ -197,7 +197,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
