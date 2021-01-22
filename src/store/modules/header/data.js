@@ -308,7 +308,7 @@ export const itemsMenu = [
         icon: 'fas fa-file-upload',
         color: 'green',
         routeName: 'Importadores',
-        typeRoute: 'importadores'
+        typeRoute: 'general'
     },
     {
         id: 39,

@@ -24,7 +24,6 @@
               v-model="cargador.nombre_cargador"
               label="Nombre del cargador"
               name="nombre cargador"
-              upper-case
               rules="required"
             >
             </c-texto>
@@ -34,7 +33,6 @@
               v-model="cargador.nombre_table_temp"
               label="Tabla temporal"
               name="nombre tabla temporal"
-              upper-case
               rules="required"
             >
             </c-texto>
@@ -161,7 +159,54 @@
                 <span>Agregar query</span>
               </v-tooltip>
             </v-toolbar>
-            <v-expansion-panels flat>
+            <v-tabs
+              v-if="cargador.querys && cargador.querys.length"
+              v-model="currentQuery"
+              background-color="primary"
+              dark
+            >
+              <v-tab
+                v-for="(item, i) in cargador.querys"
+                :key="i"
+              >
+                Query {{ i }}
+              </v-tab>
+            </v-tabs>
+            <div v-else class="title grey--text text-center pa-4">
+              Sin querys
+            </div>
+            <v-tabs-items v-model="currentQuery">
+              <v-tab-item
+                v-for="(item, i) in cargador.querys"
+                :key="i"
+              >
+                <v-card flat>
+                  <v-card-text>
+                    <codemirror
+                      :key="i"
+                      v-model="item.query"
+                      :options="cmOptions"
+                      @focus="focusCOdemirror = true"
+                      @blur="focusCOdemirror = false"
+                    ></codemirror>
+                  </v-card-text>
+                  <v-card-actions>
+                    <c-texto
+                        v-model="item.orden"
+                        label="Orden"
+                        name="orden"
+                        rules="required"
+                      >
+                      </c-texto>
+                    <v-spacer></v-spacer>
+                    <v-btn color="error" @click.stop="deleteQuery(item)">
+                      <v-icon dark> mdi-delete </v-icon>
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
+            <!-- <v-expansion-panels flat>
               <v-expansion-panel v-for="(item, i) in cargador.querys" :key="i">
                 <v-expansion-panel-header v-slot="{ open }">
                   Query {{ i }}
@@ -188,13 +233,7 @@
                           class="caption v-label v-label--active theme--light"
                           >Sentencia SQL</span
                         >
-                        <codemirror
-                          :key="i"
-                          v-model="item.query"
-                          :options="cmOptions"
-                          @focus="focusCOdemirror = true"
-                          @blur="focusCOdemirror = false"
-                        ></codemirror>
+                        
                       </ValidationProvider>
                     </v-col>
                   </v-row>
@@ -213,7 +252,7 @@
                   </v-card-actions>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-            </v-expansion-panels>
+            </v-expansion-panels> -->
           </v-col>
         </v-row>
       </ValidationObserver>
@@ -257,7 +296,6 @@
                   v-model="cabecera.header"
                   label="Nombre"
                   name="nombre"
-                  upper-case
                   rules="required"
                 >
                 </c-texto>
@@ -336,6 +374,7 @@ export default {
     },
   },
   data: () => ({
+    currentQuery: null,
     focusCOdemirror: false,
     patron: /:(\w+)(?!\w)/g,
     cmOptions: {
@@ -396,7 +435,7 @@ export default {
     },
     addQuery() {
       let query = {
-        query: "# Here write your query",
+        query: "",
       };
       this.$emit("addQuery", query);
     },

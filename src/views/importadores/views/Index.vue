@@ -5,7 +5,7 @@
 			<v-col cols="12">
 				<v-card>
                     <v-card-text>
-                        <v-row>
+                        <v-row v-if="cargadores && cargadores.length">
                             <template v-for="(item, index) in cargadores">
                                 <v-col cols="12" :key="index">
                                     <cargador-component
@@ -17,6 +17,9 @@
                                 </v-col>
                             </template>
                         </v-row>
+                        <div v-else class="title grey--text text-center pa-4">
+                            No hay cargadores creados
+                        </div>
                     </v-card-text>
                 </v-card>
             </v-col>
