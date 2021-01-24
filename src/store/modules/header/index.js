@@ -52,6 +52,9 @@ const getters = {
         if (getters.getPermission('aps-bitacorasRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 35))
         if (getters.getPermission('covid-reportesDeLeyVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 34))
         if (getters.getPermission('covid-informeDePrensa') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 37))
+
+        if (getters.getPermission('covid-AsignarMuestras') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 40))
+        if (getters.getPermission('covid-RegistroTomaMuestras') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 41))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 11))

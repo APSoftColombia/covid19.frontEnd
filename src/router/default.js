@@ -35,6 +35,9 @@ const InformeDePrensa = () => import('Views/covid19/InformeDePrensa/InformeDePre
 const Cets = () => import('Views/covid19/Cet/Cets')
 const AsignacionRastreo = () => import('Views/covid19/tamizaje/asignacionRastreo/AsignacionRastreo')
 
+const AsignacionMuestras = () => import('Views/covid19/AsignacionMuestras/Index')
+const RegistroTomaMuestra = () => import('Views/covid19/TomaMuestraTamizajes/Index')
+
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
 const IndicadoresViewRCV = () => import('Views/aps/rcv/IndicadoresRCV/IndicadoresView')
@@ -566,6 +569,34 @@ export default {
             avatar: {
                icon: 'mdi-file-move',
                color: 'green',
+            }
+         }
+      },
+      {
+         path: 'asignacion-muestras',
+         name: 'AsignacionMuestras',
+         component: AsignacionMuestras,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'covid-AsignarMuestras',
+            avatar: {
+               icon: 'mdi-file-move',
+               color: 'red',
+            }
+         }
+      },
+      {
+         path: 'registro-toma-muestra',
+         name: 'RegistroTomaMuestra',
+         component: RegistroTomaMuestra,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'covid-RegistroTomaMuestras',
+            avatar: {
+               icon: 'mdi-calendar-plus',
+               color: 'purple',
             }
          }
       }
