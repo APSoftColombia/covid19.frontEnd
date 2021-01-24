@@ -31,7 +31,7 @@
             <template v-slot:item.direccion="{ item }">
               <v-list-item class="pa-0">
                 <v-list-item-content class="pa-0">
-                  <v-list-item-title class="body-2 text-truncate">{{ [municipiosTotal && item.municipio_id ? municipiosTotal.find(x => x.id === item.municipio_id).nombre : null, departamentos && item.departamento_id ? departamentos.find(x => x.id === item.departamento_id).nombre : null].filter(x => x).join(', ') }}</v-list-item-title>
+                  <v-list-item-title class="body-2 text-truncate">{{ [municipiosTotal && item.municipio_id && municipiosTotal.find(x => x.id === item.municipio_id) ? municipiosTotal.find(x => x.id === item.municipio_id).nombre : null, departamentos && item.departamento_id && departamentos.find(x => x.id === item.departamento_id) ? departamentos.find(x => x.id === item.departamento_id).nombre : null].filter(x => x).join(', ') }}</v-list-item-title>
                   <v-list-item-subtitle class="body-2 text-truncate">{{ item.direccion || '' }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
