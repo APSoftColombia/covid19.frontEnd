@@ -579,21 +579,21 @@ export default {
          meta: {
             requiresAuth: true,
             requiresOnLine: false,
-            requiresPermission: 'covid-AsignarMuestras',
+            requiresPermission: 'covid-asignacionMuestras',
             avatar: {
-               icon: 'mdi-file-move',
+               icon: 'mdi-bookmark-plus',
                color: 'red',
             }
          }
       },
       {
          path: 'registro-toma-muestra',
-         name: 'RegistroTomaMuestra',
+         name: 'TomaMuestra',
          component: RegistroTomaMuestra,
          meta: {
             requiresAuth: true,
             requiresOnLine: false,
-            requiresPermission: 'covid-RegistroTomaMuestras',
+            requiresPermission: 'covid-tomaMuestras',
             avatar: {
                icon: 'mdi-calendar-plus',
                color: 'purple',

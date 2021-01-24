@@ -7,7 +7,7 @@
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
           <v-card align="center" color="transparent" class="elevation-0">
             <v-icon :color="colorText" large>{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
-            <v-card-actions class="py-0 px-1">
+            <v-card-actions class="py-0 px-1" v-if="value && (typeof value.cantidad_nexos !== 'undefined')">
               <v-chip
                   align="center"
                   color="primary"

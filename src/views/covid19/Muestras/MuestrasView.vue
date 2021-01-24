@@ -61,7 +61,8 @@
                                                     sexo: context.props.value.sexo,
                                                     tipoIdentificacion: vm.tiposDocumentoIdentidad.find(x => x.id === context.props.value.tipo_identificacion).tipo,
                                                     identificacion: context.props.value.identificacion,
-                                                    celular: context.props.value.celular
+                                                    celular: context.props.value.celular,
+                                                    cantidad_nexos: context.props.value.cantidad_nexos
                                                 }
                                             }
                                         }

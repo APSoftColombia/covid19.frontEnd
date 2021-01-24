@@ -8,7 +8,7 @@
             v-on="on"
         >
           Asignar Pruebas a IPS
-          <v-icon class="ml-2">fas fa-user-md</v-icon>
+          <v-icon class="ml-2">fas fa-clinic-medical</v-icon>
         </v-btn>
       </template>
         <v-card>
@@ -76,15 +76,48 @@
                 <ValidationObserver ref="formAsignacion" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
                     <v-row class="mt-3">
                         <v-col cols="12" class="pb-0">
-                            <ValidationProvider name="médico asignado" rules="required" v-slot="{ errors }">
-                                <buscador-ips
-                                    ref="buscadoripsreps"
-                                    label="¿Cual es su IPS de atención?"
-                                    v-model="cod_habilitacion_ips"
-                                    name="ips de atención"
-                                    rules="required"
-                                ></buscador-ips>
-                            </ValidationProvider>
+                          <ValidationProvider name="IPS que toma muestras" rules="required" v-slot="{ errors }">
+                            <v-autocomplete
+                                label="IPS que toma muestras"
+                                v-model="cod_habilitacion_ips"
+                                item-value="codigohabilitacion"
+                                :items="prestadores"
+                                placeholder="Buscar por código de habilitación, NIT o nombre"
+                                no-data-text="No hay registros para mostrar"
+                                outlined
+                                :error-messages="errors"
+                                persistent-hint
+                                :hint="ipsSeleccionada ? [ipsSeleccionada.telefono ? `Tel.${ipsSeleccionada.telefono}`: null, `${ipsSeleccionada.direccion} ${ipsSeleccionada.nompio}, ${ipsSeleccionada.nomdepto}`].filter(x => x).join(' | '): null"
+                            >
+                              <template v-slot:selection="data">
+                                <v-list-item class="pa-0" style="width: 100% !important;">
+                                  <v-list-item-content class="pa-0">
+                                    <v-list-item-title class="body-2 text-truncate">
+                                      {{ data.item.nombre }}
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle class="caption text-truncate">Código de
+                                      Habilitación:{{ data.item.codigohabilitacion }}
+                                    </v-list-item-subtitle>
+                                  </v-list-item-content>
+                                </v-list-item>
+                              </template>
+                              <template v-slot:item="data">
+                                <div style="width: 100% !important;">
+                                  <v-list-item class="pa-0">
+                                    <v-list-item-content class="text-truncate pa-0">
+                                      <v-list-item-title class="body-2">
+                                        {{ data.item.nombre }}
+                                      </v-list-item-title>
+                                      <v-list-item-subtitle class="caption">Código de
+                                        Habilitación:{{ data.item.codigohabilitacion }}
+                                      </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                  </v-list-item>
+                                  <v-divider class="ma-0"></v-divider>
+                                </div>
+                              </template>
+                            </v-autocomplete>
+                          </ValidationProvider>
                         </v-col>
                     </v-row>
                 </ValidationObserver>
@@ -122,16 +155,24 @@
         data: () => ({
             dialog: false,
             loading: false,
-            cod_habilitacion_ips: null
+            cod_habilitacion_ips: null,
+            prestadores: []
         }),
         computed: {
+          ipsSeleccionada() {
+            return (this && this.prestadores && this.cod_habilitacion_ips && this.prestadores.find(x => x.codigohabilitacion === this.cod_habilitacion_ips)) || null
+          },
             ...mapGetters([
               'tiposDocumentoIdentidad',
               'departamentos',
               'municipiosTotal'
             ])
         },
-        methods: {
+      created() {
+        console.log('entra al xcreated las ips')
+          this.getips()
+      },
+      methods: {
             close () {
               this.dialog = false
               setTimeout(() => {
@@ -139,6 +180,15 @@
                 this.$refs.formAsignacion.reset()
               }, 400)
             },
+          getips() {
+            this.axios.get(`prestadores?filter[laboratorio_covid]=1`)
+                .then(response => {
+                  console.log('las ips', response)
+                  this.prestadores = response.data
+                }).catch(e => {
+              this.$store.commit('snackbar', {color: 'error', message: `al recuperar las IPS que toman muestras.`, error: e})
+            })
+          },
             asignar () {
                 this.$refs.formAsignacion.validate().then(result => {
                     if (result) {

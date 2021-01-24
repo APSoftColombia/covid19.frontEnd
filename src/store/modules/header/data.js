@@ -322,7 +322,7 @@ export const itemsMenu = [
     {
         id: 40,
         title: 'Asignación de Muestras',
-        subtitle: 'Asignacion de muestras a IPS',
+        subtitle: 'Asignación de muestras a IPS',
         icon: 'mdi-bookmark-plus',
         color: 'red',
         routeName: 'AsignacionMuestras',
@@ -330,11 +330,11 @@ export const itemsMenu = [
     },
     {
         id: 41,
-        title: 'Registro Toma Muestras',
+        title: 'Toma de Muestras',
         subtitle: 'Registro fecha toma de muestra',
         icon: 'mdi-calendar-plus',
         color: 'purple',
-        routeName: 'RegistroTomaMuestra',
+        routeName: 'TomaMuestra',
         typeRoute: 'covid'
     }
 ]
