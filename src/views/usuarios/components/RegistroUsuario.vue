@@ -256,11 +256,11 @@ export default {
             this.rolesx = response.data.roles
             this.cargos = response.data.cargos.map(x => x.cargo)
             if (id) {
-              if (response.data.usuario.cod_ips) response.data.usuario.cod_ips = parseInt(response.data.usuario.cod_ips)
+              // if (response.data.usuario.cod_ips) response.data.usuario.cod_ips = parseInt(response.data.usuario.cod_ips)
               this.usuario = response.data.usuario
               setTimeout(() => {
-                if (this.$refs.buscadorips) this.$refs.buscadorips.assign(this.usuario.ips)
-              }, 1000)
+                if (this.$refs.buscadorips && this.usuario.ips) this.$refs.buscadorips.assign(this.usuario.ips)
+              }, 500)
             }
             this.loading = false
           })
