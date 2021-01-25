@@ -260,7 +260,7 @@ export default {
               this.usuario = response.data.usuario
               setTimeout(() => {
                 if (this.$refs.buscadorips) this.$refs.buscadorips.assign(this.usuario.ips)
-              }, 600)
+              }, 1000)
             }
             this.loading = false
           })

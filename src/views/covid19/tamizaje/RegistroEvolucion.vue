@@ -290,7 +290,7 @@
                     </v-col>
                   </v-row>
                   <form-comorbilidades
-                      v-if="tamizaje && tamizaje.evoluciones && ((!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida))) || (evolucion.id && tamizaje.evoluciones.length === 1))"
+                      v-if="tamizaje && tamizaje.evoluciones && ((!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida))) || (evolucion.id && tamizaje.evoluciones.filter(x => !x.fallida).length === 1))"
                       :array-comorbilidades="evolucion.comorbilidades"
                       @changeComorbilidades="val => evolucion.comorbilidades = val"
                   ></form-comorbilidades>
@@ -973,7 +973,7 @@ export default {
         this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
         this.evolucion.orden_medica_id = this.tamizaje.orden_medica_id
         this.evolucion.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
-        if (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0) {
+        if (this.tamizaje.evoluciones && ((this.tamizaje.evoluciones.length === 0) || (this.tamizaje.evoluciones.filter(x => !x.fallida).length === 0))) {
           this.evolucion.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
         }
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
@@ -1108,7 +1108,7 @@ export default {
       this.activaPR = evolucionCopiada.frecuencia_pulso !== null
       this.activaSPO2 = evolucionCopiada.saturacion_oxigeno !== null
       this.activaTemperatura = evolucionCopiada.temperatura !== null
-      if (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 1) {
+      if (this.tamizaje.evoluciones && ((this.tamizaje.evoluciones.length === 1) || (this.tamizaje.evoluciones.filter(x => !x.fallida).length <= 1))) {
         evolucionCopiada.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
       } else {
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
