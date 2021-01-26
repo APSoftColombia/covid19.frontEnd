@@ -75,3 +75,10 @@ export default {
   }
 }
 </script>
+
+
+<style>
+.v-list-item--link{
+  user-select: auto !important;
+}
+</style>

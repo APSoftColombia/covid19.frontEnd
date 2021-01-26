@@ -146,6 +146,16 @@
                           color="primary"
                       ></v-switch>
                     </v-col>
+                    <v-col class="pb-0" cols="12">
+                      <v-switch
+                          class="mt-0"
+                          label="Solicitar Toma de Muestra"
+                          v-model="tamizaje.estado_prueba"
+                          :false-value="null"
+                          true-value="Requiere Muestra"
+                          color="primary"
+                      ></v-switch>
+                    </v-col>
                   </v-row>
                 </template>
                 <v-row v-if="tamizaje">

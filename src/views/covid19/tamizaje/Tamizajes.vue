@@ -190,7 +190,7 @@ export default {
           }
         },
         {
-          text: 'Estado Encuesta',
+          text: 'Estado ERP',
           align: 'left',
           sortable: false,
           visibleColumn: false,
@@ -205,11 +205,13 @@ export default {
                   },
                   context.props.value.localiza_persona === 1 && context.props.value.contesta_encuesta === 1
                       ? 'Encuesta Realizada'
+                      : context.props.value.localiza_persona === null
+                      ? `Pendiente`
                       : context.props.value.localiza_persona === 0
-                      ? `Fallida - Persona No Localizada${context.props.value.no_efectividad ? ` - ${context.props.value.no_efectividad}` : ''}`
-                      : context.props.value.contesta_encuesta === 0
-                          ? 'Fallida - Persona No Desea Responder'
-                          : ''
+                          ? `Fallida - Persona No Localizada${context.props.value.no_efectividad ? ` - ${context.props.value.no_efectividad}` : ''}`
+                          : context.props.value.contesta_encuesta === 0
+                              ? 'Fallida - Persona No Desea Responder'
+                              : ''
               )
             },
             props: ['value']

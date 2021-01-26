@@ -140,7 +140,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="false"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
@@ -197,7 +197,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="false"
+                      :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">

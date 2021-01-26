@@ -2,9 +2,9 @@
 const state = {
     tables: {
         tablaTamizajes: 0,
-        tablaTamizajesVersion: 8,
+        tablaTamizajesVersion: 9,
         tablaTamizajesLight: 0,
-        tablaTamizajesLightVersion: 4,
+        tablaTamizajesLightVersion: 5,
         tablaReportesComunitarios: 0,
         tablaReportesComunitariosVersion: 4,
         tablaLlamadas: 0,

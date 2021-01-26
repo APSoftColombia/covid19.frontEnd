@@ -312,8 +312,8 @@ export const itemsMenu = [
     },
     {
         id: 39,
-        title: 'Asignación de ERP',
-        subtitle: 'Encuestas para rastreo',
+        title: 'Asignación de Reportes',
+        subtitle: 'Reportes para rastreo',
         icon: 'mdi-file-move',
         color: 'green',
         routeName: 'AsignacionTamizajesRastreo',
