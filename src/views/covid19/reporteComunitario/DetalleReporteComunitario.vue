@@ -58,7 +58,7 @@
                                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">Ubicación Posible Caso</v-list-item-subtitle>
                                     <v-list-item-title><h6 class="mb-0">{{ reporteComunitario.direccion }}</h6></v-list-item-title>
                                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">
-                                        {{ reporteComunitario.municipio_id && divipol ? divipol.find(x => x.id === reporteComunitario.municipio_id).nombre : '' }}
+                                        {{ reporteComunitario.municipio_id && municipiosTotal && municipiosTotal.find(x => x.id === reporteComunitario.municipio_id) ? `${municipiosTotal.find(x => x.id === reporteComunitario.municipio_id).nombre}, ${municipiosTotal.find(x => x.id === reporteComunitario.municipio_id).departamento.nombre}` : '' }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -103,7 +103,7 @@
         computed: {
             ...mapGetters([
                 'modelReporteComunitario',
-                'divipol'
+                'municipiosTotal'
             ])
         },
         created() {
