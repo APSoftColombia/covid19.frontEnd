@@ -169,12 +169,12 @@
 <script>
 	import { mapGetters } from 'vuex'
   const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
-  const CargadorSeguimientosSivigila = () => import('Views/complementos/CargadorRegistrosSIVIGILA')
+  // const CargadorSeguimientosSivigila = () => import('Views/complementos/CargadorRegistrosSIVIGILA')
   const ConfiguracionCargador = () => import('Views/complementos/ConfiguracionCargador')
 	export default {
 		components: {
 			CargadorSeguimientos,
-      CargadorSeguimientosSivigila,
+      // CargadorSeguimientosSivigila,
       ConfiguracionCargador
 		},
 		data: () => ({
