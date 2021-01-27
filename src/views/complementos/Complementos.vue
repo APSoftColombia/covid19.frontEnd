@@ -76,6 +76,7 @@
 					</v-list>
 				</v-card>
 			</v-col>
+      <!--
       <v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
         <v-card>
           <v-list two-line>
@@ -92,6 +93,7 @@
           </v-list>
         </v-card>
       </v-col>
+      -->
       <v-col cols="12" v-if="datosEmpresa && datosEmpresa.url_pwa">
         <v-card>
           <v-list two-line>
