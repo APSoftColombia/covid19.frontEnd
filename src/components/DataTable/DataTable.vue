@@ -113,7 +113,7 @@
                 :page.sync="pagination.current_page"
                 hide-default-footer
                 :server-items-length="value.items.length"
-                :loading="value.visibleLoading && value.loading"
+                :loading="value.visibleLoading && loading"
                 loading-text="Cargando... por favor espere"
                 class="elevation-0 pa-0 ma-0 mt-1 mb-12"
                 :sort-by.sync="sortBy"
@@ -232,6 +232,7 @@
             value: Object
         },
         data: () => ({
+            loading: false,
             panelAdvanceFilters: false,
             selecteds: [],
             activePetition: false,
@@ -326,7 +327,6 @@
         created() {
             // this.sortBy = this.value.makeHeaders.filter(x => x.sortable).map(z => z.value)
             this.$set(this.value, 'items', [])
-            this.$set(this.value, 'loading', true)
             this.$set(this.value, 'filters', true)
             if (typeof this.value.buttonZone === 'undefined') {
                 this.$set(this.value, 'buttonZone', false)
@@ -437,7 +437,7 @@
             async reloadPage() {
                 if (this.activePetition) {
                     this.activePetition = false
-                    this.value.loading = true
+                    this.loading = true
                     // let stringSort = this.pagination.sortBy ? (`&sort=${(this.pagination.descending ? '-' : '')}${this.pagination.sortBy}`) : ''
                   this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
                         .then(response => {
@@ -457,11 +457,11 @@
                             this.pagination.next = response.data.next_page_url
                             this.pagination.prev = response.data.prev_page_url
                             this.value.items = Object.freeze(response.data.data)
-                            this.value.loading = false
+                            this.loading = false
                             this.activePetition = true
                         })
                         .catch(e => {
-                            this.value.loading = false
+                            this.loading = false
                             this.activePetition = true
                             this.$store.commit('snackbar', {
                                 color: 'error',

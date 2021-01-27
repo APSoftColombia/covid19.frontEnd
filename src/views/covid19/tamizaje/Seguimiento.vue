@@ -93,7 +93,7 @@
                   <evoluciones
                       v-if="permisos.seguimientoVer"
                       :tamizaje="tamizaje"
-                      :editable="true"
+                      :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
                       @actualizarTamizaje="val => changeTamizaje(val.id)"
                   ></evoluciones>
@@ -109,7 +109,7 @@
                   <aislamientos
                       v-if="permisos.aislamientoVer"
                       :tamizaje="tamizaje"
-                      :editable="true"
+                      :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
                   ></aislamientos>
                   <div v-if="!permisos.aislamientoVer"
@@ -140,7 +140,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="true"
+                      :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
@@ -197,7 +197,7 @@
                   <muestras
                       v-if="permisos.muestraVer"
                       :tamizaje="tamizaje"
-                      :editable="true"
+                      :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">

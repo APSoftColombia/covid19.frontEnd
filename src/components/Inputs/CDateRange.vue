@@ -107,7 +107,8 @@ export default {
         if (this.$refs && this.$refs.menuFecha && this.value && this.value.length === 2) {
           this.$refs.menuFecha.save(this.model)
         }
-        return this.value ? this.value.join(' ~ ') : []
+        // return this.value ? this.value.join(' ~ ') : []
+        return this.value ? this.value.map(x => this.formatDate(x)).join(' ~ ') : []
       },
       set: function (newValue) {
         this.$emit('input', newValue)
