@@ -317,7 +317,24 @@
               this.$refs.registroReporteComunitario.open()
             },
             crearTamizaje (item) {
-              this.$refs.registroTamizaje.open(null, item.id)
+              let data = this.clone(this.modelTamizaje)
+              data.tipo_identificacion= item.tipo_identificacion
+              data.identificacion= item.identificacion
+              data.nombre1= item.nombre1
+              data.nombre2= item.nombre2
+              data.apellido1= item.apellido1
+              data.apellido2= item.apellido2
+              data.sexo= item.sexo
+              data.celular= item.celular
+              data.eps_id= item.eps_id
+              data.direccion= item.direccion
+              data.departamento_id= item.departamento_id
+              data.municipio_id= item.municipio_id
+              data.regimen_especial= null
+              data.observaciones= item.observaciones
+              data.si_eps= 1
+              data.reporte_id= item.id
+              this.$refs.registroTamizaje.openData(data, 'reporteComunitario')
             },
             verReporte (item) {
               this.$refs.detalleReporteComunitario.open(item)

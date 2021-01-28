@@ -77,6 +77,8 @@
         @verificado="val => verificar(val)"
         @responsetamizaje="val => respuestaPersona = val"
         :tipo="tipo"
+        :verificar-afiliado="verificarAfiliado"
+        :remplazar-afiliado-null="remplazarAfiliadoNull"
     />
     <v-row>
       <template v-if="verificado === 1">
@@ -476,6 +478,14 @@ export default {
       default: 'tamizaje'
     },
     muestraPreguntasEfectividad: {
+      type: Boolean,
+      default: true
+    },
+    verificarAfiliado: {
+      type: Boolean,
+      default: false
+    },
+    remplazarAfiliadoNull: {
       type: Boolean,
       default: true
     }

@@ -32,6 +32,8 @@
                     :llamada="llamada"
                     @verificado="val => verificado = val"
                     :muestra-preguntas-efectividad="muestraPreguntasEfectividad"
+                    :verificar-afiliado="verificarAfiliado"
+                    :remplazar-afiliado-null="remplazarAfiliadoNull"
                 />
                 <template v-if="tamizaje && verificado === 1 && autoriza">
                   <form-sintomas
@@ -226,7 +228,9 @@ export default {
     activaTemperatura: true,
     tamizaje: null,
     llamada: null,
-    verificado: 0
+    verificado: 0,
+    verificarAfiliado: false,
+    remplazarAfiliadoNull: true
   }),
   computed: {
     ...mapGetters([
@@ -319,7 +323,11 @@ export default {
         }, 1000)
       }
     },
-    openData(data) {
+    openData(data, modulo = '') {
+      console.log('daata', data)
+      console.log('modulo', modulo)
+      this.verificarAfiliado = (modulo === 'reporteComunitario')
+      this.remplazarAfiliadoNull = !(modulo === 'reporteComunitario')
       this.dialog = true
       this.tamizaje = this.clone(data)
       this.activaPR = true
@@ -327,6 +335,7 @@ export default {
       this.activaTemperatura = true
       intervalo = setInterval(() => {
         this.tamizaje.duracion++
+
       }, 1000)
     },
     close() {
@@ -338,9 +347,8 @@ export default {
       clearInterval(intervalo)
       this.$emit('close')
       this.tamizaje = null
-      // setTimeout(() => {
-      //     // this.tamizaje = this.clone(this.modelTamizaje)
-      // }, 400)
+      this.verificarAfiliado = false
+      this.remplazarAfiliadoNull = true
     },
     getTamizaje(idTamizaje) {
       this.loading = true
