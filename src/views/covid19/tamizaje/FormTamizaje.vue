@@ -80,7 +80,7 @@
     />
     <v-row>
       <template v-if="verificado === 1">
-        <v-col cols="12" v-if="esTamizaje">
+        <v-col cols="12" v-if="esTamizaje && muestraPreguntasEfectividad">
           <v-card outlined tile>
             <v-card-text>
               <c-radio
@@ -98,7 +98,7 @@
           </v-card>
         </v-col>
         <template v-if="tamizaje.localiza_persona">
-          <v-col cols="12">
+          <v-col cols="12" v-if="muestraPreguntasEfectividad">
             <v-card outlined tile>
               <v-card-text>
                 <c-radio
@@ -474,6 +474,10 @@ export default {
     tipo: {
       type: String,
       default: 'tamizaje'
+    },
+    muestraPreguntasEfectividad: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({

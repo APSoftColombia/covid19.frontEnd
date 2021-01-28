@@ -31,6 +31,7 @@
                     :tamizaje="tamizaje"
                     :llamada="llamada"
                     @verificado="val => verificado = val"
+                    :muestra-preguntas-efectividad="muestraPreguntasEfectividad"
                 />
                 <template v-if="tamizaje && verificado === 1 && autoriza">
                   <form-sintomas
@@ -136,14 +137,26 @@
                       >
                       </c-location>
                     </v-col>
-                    <v-col class="pb-0" cols="12">
+                    <v-col cols="12">
                       <v-switch
+                          v-if="permisos.cambiarSolicitudTomaMuestra"
                           class="mt-0"
                           label="Solicitar Toma de Muestra"
                           v-model="tamizaje.estado_prueba"
                           :false-value="null"
                           true-value="Requiere Muestra"
                           color="primary"
+                      ></v-switch>
+                      <v-switch
+                          v-else
+                          class="mt-0"
+                          label="Solicitar Toma de Muestra"
+                          value
+                          :input-value="tamizaje.estado_prueba === 'Requiere Muestra'"
+                          persistent-hint
+                          hint="No cuenta con permisos para interacturar con el control"
+                          color="primary"
+                          readonly
                       ></v-switch>
                     </v-col>
                   </v-row>
@@ -205,6 +218,7 @@ export default {
     FormSintomas
   },
   data: () => ({
+    muestraPreguntasEfectividad: true,
     loading: false,
     dialog: false,
     activaPR: true,
@@ -219,6 +233,9 @@ export default {
       'modelTamizaje',
       'signosAlarma',
     ]),
+    permisos() {
+      return this.$store.getters.getPermissionModule('covid')
+    },
     autoriza() {
       return !!(this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta)
     },
@@ -235,6 +252,25 @@ export default {
         s = initime
       }
       return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
+    },
+    evaluaSolicitaPrueba () {
+      if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
+        return (this.tamizaje.riesgo_contacto || (this.tamizaje.sintomas && (this.tamizaje.sintomas.length && ((this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))) || (this.tamizaje.comorbilidades && (this.tamizaje.comorbilidades.length && ((this.tamizaje.sintomas && this.tamizaje.sintomas.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))))
+            ? 'Requiere Muestra'
+            : null
+      } else {
+        return null
+      }
+    }
+  },
+  watch: {
+    evaluaSolicitaPrueba: {
+      handler (val) {
+        if (this && this.tamizaje) {
+          this.tamizaje.estado_prueba = val
+        }
+      },
+      immediate: false
     }
   },
   methods: {
@@ -263,6 +299,7 @@ export default {
     },
     open(idTamizaje = null, idReporte = null, llamada = null) {
       this.dialog = true
+      this.muestraPreguntasEfectividad = true
       if (idTamizaje) {
         this.getTamizaje(idTamizaje)
       } else {
@@ -321,6 +358,7 @@ export default {
             this.activaSPO2 = response.data.saturacion_oxigeno !== null
             this.activaTemperatura = response.data.temperatura !== null
             response.data.si_eps = response.data.eps_id ? 1 : 0
+            this.muestraPreguntasEfectividad = !(response.data.localiza_persona && response.data.contesta_encuesta)
             this.tamizaje = response.data
             this.loading = false
           })

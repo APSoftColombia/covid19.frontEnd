@@ -786,7 +786,8 @@ export default {
             if (this.evolucion) {
               if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
               else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido')
-              else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
+              // else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
+              else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x === 'Ninguno')
               else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
             }
             // if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
@@ -864,13 +865,15 @@ export default {
       handler(val) {
         if(this.permiteWatch) {
           this.evolucion.estado_afectacion = null
-          if (val && val !== '6') {
+          this.evolucion.solicitud_prueba = 0
+          if (val !== '6') {
             this.evolucion.justificacion_no_clasificado = null
-            if (val === '4') {
-              this.evolucion.estado_afectacion = 'Fallecido'
-            }
-          } else {
-            this.evolucion.solicitud_prueba = 0
+          }
+          if (val === '4') {
+            this.evolucion.estado_afectacion = 'Fallecido'
+          }
+          if (val === '6') {
+            this.evolucion.estado_afectacion = 'Ninguno'
           }
         }
       },
