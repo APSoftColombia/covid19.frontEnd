@@ -72,7 +72,8 @@
                 return this.$store.getters.getPermissionModule('covid')
             },
             ...mapGetters([
-                'municipiosTotal'
+                'municipiosTotal',
+                'tiposDocumentoIdentidad'
             ])
         },
         watch: {
@@ -133,7 +134,7 @@
 													<v-list-item-content style="display: grid !important;">
 														<v-list-item-title class="body-2">${this.value.nombre_reportante}</v-list-item-title>
 														<v-list-item-subtitle class="title caption">
-                                                            Celular: ${this.value.celular_reportante}
+                                                            ${this.value.celular_reportante ? ('' + this.value.celular_reportante) : ''}
                                                         </v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
@@ -192,6 +193,7 @@
                                                     <v-list-item>
                                                         <v-list-item-content style="display: grid !important; margin-top: 7px !important;">
                                                             <v-list-item-title class="body-2">${this.value.nombres}</v-list-item-title>
+                                                            <v-list-item-subtitle class="title caption">${[this.tiposDocumentoIdentidad && this.value.tipo_identificacion && this.tiposDocumentoIdentidad.find(x => x.id === this.value.tipo_identificacion) ? this.tiposDocumentoIdentidad.find(x => x.id === this.value.tipo_identificacion).tipo : null, this.value.identificacion || null].filter(x => x).join(' ')}</v-list-item-subtitle>
                                                             <v-list-item-subtitle class="title caption">${[this.value.edad ? ('Edad: ' + this.value.edad) : '', this.value.celular ? ('Cel: ' + this.value.celular) : ''].filter(x => x).join(', ')}</v-list-item-subtitle>
                                                         </v-list-item-content>
                                                     </v-list-item>
