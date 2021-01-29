@@ -2,7 +2,7 @@
   <v-card flat>
     <v-toolbar dark color="error" dense>
       <v-icon left>fas fa-vials</v-icon>
-      <v-toolbar-title>SISMUESTAS</v-toolbar-title>
+      <v-toolbar-title>SISMUESTRAS</v-toolbar-title>
       <template
           v-if="permisos.muestraCrear && editable && (!tamizaje.muestras.length || (tamizaje.muestras.length && this.tamizaje.muestras[0].resultado !== null))">
         <v-spacer></v-spacer>

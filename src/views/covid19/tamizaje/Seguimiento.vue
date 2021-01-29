@@ -88,7 +88,7 @@
                 <v-tab
                     href="#tab-3"
                 >
-                  SISMUESTAS
+                  SISMUESTRAS
                   <v-icon>fas fa-vials</v-icon>
                 </v-tab>
                 <v-tab
@@ -208,7 +208,7 @@
                 <v-tab
                     href="#tab-2"
                 >
-                  Muestras
+                  SISMUESTRAS
                   <v-icon>fas fa-vials</v-icon>
                 </v-tab>
               </v-tabs>
