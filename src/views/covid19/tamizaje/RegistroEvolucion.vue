@@ -93,532 +93,498 @@
                   </v-col>
                 </template>
               </v-row>
-              <template v-if="esPsicologo || esTrabajadorSocial">
-                <v-row>
-                  <v-col class="pb-0" cols="12">
-                    <c-text-area
-                        v-if="evolucion.fallida"
-                        v-model="evolucion.observaciones"
-                        label="Observaciones"
-                        rules="required"
-                        name="observaciones"
-                    >
-                    </c-text-area>
-                    <template v-else>
-                      <c-text-area
-                          v-if="esPsicologo"
-                          v-model="evolucion.observaciones"
-                          label="Valoración por Psicología"
-                          rules="required"
-                          name="valoración por psicología"
-                      >
-                      </c-text-area>
-                      <c-text-area
-                          v-else-if="esTrabajadorSocial"
-                          v-model="evolucion.observaciones"
-                          label="Valoración por Trabajo Social"
-                          rules="required"
-                          name="valoración por trabajo social"
-                      >
-                      </c-text-area>
-                    </template>
+              <template v-if="!evolucion.fallida">
+                <v-row justify="center">
+                  <v-btn color="primary" v-if="ultimoSeguimientoOK && !solicitaUltimo"
+                         @click="copiarUltimoSeguimiento">
+                    Obtener Copia de último seguimiento
+                  </v-btn>
+                  <v-col cols="12">
+                    <sintomas-fecha
+                        v-if="dialog"
+                        ref="sintomasFecha"
+                        :evolucion="evolucion"
+                    ></sintomas-fecha>
+                  </v-col>
+                  <v-col cols="12" class="pb-0">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-check
+                            v-model="evolucion.signos_alarma"
+                            label="Signos de Alarma"
+                            :items="signosAlarma ? signosAlarma.filter(x => x.aplica_covid) : []"
+                            item-text="descripcion"
+                            item-value="id"
+                        >
+                        </c-check>
+                      </v-card-text>
+                    </v-card>
                   </v-col>
                 </v-row>
-              </template>
-              <template v-else>
-                <template v-if="!evolucion.fallida">
-                  <v-row justify="center">
-                    <v-btn color="primary" v-if="ultimoSeguimientoOK && !solicitaUltimo"
-                           @click="copiarUltimoSeguimiento">
-                      Obtener Copia de último seguimiento
-                    </v-btn>
-                    <v-col cols="12">
-                      <sintomas-fecha
-                          v-if="dialog"
-                          ref="sintomasFecha"
-                          :evolucion="evolucion"
-                      ></sintomas-fecha>
+                <template>
+                  <v-row>
+                    <v-col class="pb-0" cols="12">
+                      <v-checkbox
+                          class="shrink mt-0 mb-1"
+                          v-model="activaPR"
+                          :label="activaPR ? 'Frecuencia de Pulso (PR)' : 'Toma de Frecuencia de Pulso (PR)'"
+                          :ripple="!activaPR"
+                          hide-details
+                          @change="!activaPR ? evolucion.frecuencia_pulso = null : ''"
+                      ></v-checkbox>
+                      <c-number
+                          v-if="activaPR"
+                          placeholder="Frecuencia de Pulso"
+                          v-model="evolucion.frecuencia_pulso"
+                          name="frecuencia de pulso"
+                          rules="required|min:0"
+                          min="0"
+                          step="1"
+                      >
+                      </c-number>
                     </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="pb-0" cols="12">
+                      <v-checkbox
+                          class="shrink mt-0 mb-1"
+                          v-model="activaSPO2"
+                          :label="activaSPO2 ? 'Saturación de Oxígeno (SPO2)' : 'Toma de Saturación de Oxígeno (SPO2)'"
+                          :ripple="!activaSPO2"
+                          hide-details
+                          @change="!activaSPO2 ? evolucion.saturacion_oxigeno = null : ''"
+                      ></v-checkbox>
+                      <c-number
+                          v-if="activaSPO2"
+                          placeholder="Saturación de Oxígeno"
+                          v-model="evolucion.saturacion_oxigeno"
+                          name="saturación de oxígeno"
+                          rules="required|min:0"
+                          min="0"
+                      >
+                      </c-number>
+                    </v-col>
+                  </v-row>
+                  <v-row>
                     <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-check
-                              v-model="evolucion.signos_alarma"
-                              label="Signos de Alarma"
-                              :items="signosAlarma ? signosAlarma.filter(x => x.aplica_covid) : []"
-                              item-text="descripcion"
-                              item-value="id"
-                          >
-                          </c-check>
-                        </v-card-text>
-                      </v-card>
+                      <v-checkbox
+                          class="shrink mt-0 mb-1"
+                          v-model="activaTemperatura"
+                          :label="activaTemperatura ? 'Temperatura' : 'Toma de Temperatura'"
+                          :ripple="!activaTemperatura"
+                          hide-details
+                          @change="!activaTemperatura ? evolucion.temperatura = null : ''"
+                      ></v-checkbox>
+                      <c-number
+                          v-if="activaTemperatura"
+                          placeholder="Temperatura"
+                          v-model="evolucion.temperatura"
+                          name="temperatura"
+                          suffix="°C"
+                          rules="required|min:0"
+                          min="0"
+                      >
+                      </c-number>
                     </v-col>
                   </v-row>
-                  <template>
-                    <v-row>
-                      <v-col class="pb-0" cols="12">
-                        <v-checkbox
-                            class="shrink mt-0 mb-1"
-                            v-model="activaPR"
-                            :label="activaPR ? 'Frecuencia de Pulso (PR)' : 'Toma de Frecuencia de Pulso (PR)'"
-                            :ripple="!activaPR"
-                            hide-details
-                            @change="!activaPR ? evolucion.frecuencia_pulso = null : ''"
-                        ></v-checkbox>
-                        <c-number
-                            v-if="activaPR"
-                            placeholder="Frecuencia de Pulso"
-                            v-model="evolucion.frecuencia_pulso"
-                            name="frecuencia de pulso"
-                            rules="required|min:0"
-                            min="0"
-                            step="1"
-                        >
-                        </c-number>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col class="pb-0" cols="12">
-                        <v-checkbox
-                            class="shrink mt-0 mb-1"
-                            v-model="activaSPO2"
-                            :label="activaSPO2 ? 'Saturación de Oxígeno (SPO2)' : 'Toma de Saturación de Oxígeno (SPO2)'"
-                            :ripple="!activaSPO2"
-                            hide-details
-                            @change="!activaSPO2 ? evolucion.saturacion_oxigeno = null : ''"
-                        ></v-checkbox>
-                        <c-number
-                            v-if="activaSPO2"
-                            placeholder="Saturación de Oxígeno"
-                            v-model="evolucion.saturacion_oxigeno"
-                            name="saturación de oxígeno"
-                            rules="required|min:0"
-                            min="0"
-                        >
-                        </c-number>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" class="pb-0">
-                        <v-checkbox
-                            class="shrink mt-0 mb-1"
-                            v-model="activaTemperatura"
-                            :label="activaTemperatura ? 'Temperatura' : 'Toma de Temperatura'"
-                            :ripple="!activaTemperatura"
-                            hide-details
-                            @change="!activaTemperatura ? evolucion.temperatura = null : ''"
-                        ></v-checkbox>
-                        <c-number
-                            v-if="activaTemperatura"
-                            placeholder="Temperatura"
-                            v-model="evolucion.temperatura"
-                            name="temperatura"
-                            suffix="°C"
-                            rules="required|min:0"
-                            min="0"
-                        >
-                        </c-number>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" sm="6" class="pb-0">
-                        <ValidationProvider name="linfocitos" rules="min:0|max:5" v-slot="{ errors }">
-                          <v-text-field
-                              class="labelforce"
-                              v-model.number="evolucion.linfocitos"
-                              type="number"
-                              min="0"
-                              max="5"
-                              step="0.1"
-                              outlined
-                              dense
-                              :error-messages="errors"
-                              clearable
-                          >
-                            <template slot="label">
-                              Linfocitos (*10<sup style="top: -0.5em; !important;">9</sup>/L)
-                            </template>
-                          </v-text-field>
-                        </ValidationProvider>
-                      </v-col>
-                      <v-col cols="12" sm="6" class="pb-0">
-                        <c-number
-                            label="LDH (U/L)"
-                            v-model="evolucion.ldh"
-                            name="LDH"
-                            rules="min:0|max:1000"
-                            min="0"
-                            max="1000"
-                            step="1"
-                        >
-                        </c-number>
-                      </v-col>
-                    </v-row>
-                  </template>
                   <v-row>
-                    <v-col cols="12">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-radio
-                              v-model="evolucion.antinflamatorios"
-                              label="¿Consume medicamentos antiinflamatorios o acetaminofén?"
-                              rules="required"
-                              name="consumo de antiinflamatorios"
-                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                              item-text="text"
-                              item-value="value"
-                          >
-                          </c-radio>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-radio
-                              v-model="evolucion.ibuprofeno"
-                              label="¿Consume o ha consumido Ibuprofeno?"
-                              rules="required"
-                              name="consumo de ibuprofeno"
-                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                              item-text="text"
-                              item-value="value"
-                          >
-                          </c-radio>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <form-comorbilidades
-                      v-if="tamizaje && tamizaje.evoluciones && ((!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida))) || (evolucion.id && tamizaje.evoluciones.filter(x => !x.fallida).length === 1))"
-                      :array-comorbilidades="evolucion.comorbilidades"
-                      @changeComorbilidades="val => evolucion.comorbilidades = val"
-                  ></form-comorbilidades>
-                  <v-row v-else>
-                    <v-col cols="12">
-                      <v-card outlined tile>
-                        <v-card-text class="pb-0">
-                          <v-label>Comorbilidades</v-label>
-                          <p v-if="comorbilidades && !comorbilidades.length">No registra comorbilidades.</p>
-                        </v-card-text>
-                        <v-card-text v-if="comorbilidades && comorbilidades.length">
-                          <template v-for="(chip, indexChip) in comorbilidades">
-                            <v-chip label class="mr-2 mb-2 white--text" color="indigo lighten-1"
-                                    :key="`chipx${indexChip}`">{{ chip.descrip }}
-                            </v-chip>
+                    <v-col cols="12" sm="6" class="pb-0">
+                      <ValidationProvider name="linfocitos" rules="min:0|max:5" v-slot="{ errors }">
+                        <v-text-field
+                            class="labelforce"
+                            v-model.number="evolucion.linfocitos"
+                            type="number"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            outlined
+                            dense
+                            :error-messages="errors"
+                            clearable
+                        >
+                          <template slot="label">
+                            Linfocitos (*10<sup style="top: -0.5em; !important;">9</sup>/L)
                           </template>
-                        </v-card-text>
-                      </v-card>
+                        </v-text-field>
+                      </ValidationProvider>
                     </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-radio
-                              v-model="evolucion.hospitalizado"
-                              label="¿Está actualmente hospitalizado por IRA IRAG o IRAGI?"
-                              rules="required"
-                              name="actualmente hospitalizado"
-                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                              item-text="text"
-                              item-value="value"
-                          >
-                          </c-radio>
-                        </v-card-text>
-                      </v-card>
+                    <v-col cols="12" sm="6" class="pb-0">
+                      <c-number
+                          label="LDH (U/L)"
+                          v-model="evolucion.ldh"
+                          name="LDH"
+                          rules="min:0|max:1000"
+                          min="0"
+                          max="1000"
+                          step="1"
+                      >
+                      </c-number>
                     </v-col>
-                    <template v-if="evolucion.hospitalizado">
-                      <v-col class="pb-0" cols="12">
-                        <c-texto
-                            v-model="evolucion.lugar_hospitalizacion"
-                            label="Lugar Hospitalización"
-                            rules="required"
-                            name="lugar hospitalización"
-                            upper-case
-                        >
-                        </c-texto>
-                      </v-col>
-                      <v-col class="pb-0" cols="12" sm="12">
-                        <c-select-complete
-                            v-model="evolucion.causa_hospitalizacion"
-                            label="Causa Hospitalización"
-                            rules="required"
-                            name="causa hospitalización"
-                            :items="causasHospitalizacion"
-                        >
-                        </c-select-complete>
-                      </v-col>
-                      <v-col class="pb-0" cols="12" sm="12">
-                        <c-date
-                            v-model="evolucion.fecha_ingreso"
-                            rules="required"
-                            label="Fecha Ingreso Hospitalización"
-                            name="fecha ingreso hospitalización"
-                            :max="moment().format('YYYY-MM-DD')"
-                        >
-                        </c-date>
-                      </v-col>
-                    </template>
                   </v-row>
                 </template>
                 <v-row>
-                  <v-col class="pb-0" cols="12">
-                    <v-label>Observaciones
-                      {{ evolucion.fallida ? '' : '- Describa la ruta de tratamiento a seguir del paciente' }}
-                    </v-label>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="evolucion.antinflamatorios"
+                            label="¿Consume medicamentos antiinflamatorios o acetaminofén?"
+                            rules="required"
+                            name="consumo de antiinflamatorios"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="evolucion.ibuprofeno"
+                            label="¿Consume o ha consumido Ibuprofeno?"
+                            rules="required"
+                            name="consumo de ibuprofeno"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <form-comorbilidades
+                    v-if="tamizaje && tamizaje.evoluciones && ((!tamizaje.evoluciones.length || (tamizaje.evoluciones.length && !tamizaje.evoluciones.find(x => !x.fallida))) || (evolucion.id && tamizaje.evoluciones.filter(x => !x.fallida).length === 1))"
+                    :array-comorbilidades="evolucion.comorbilidades"
+                    @changeComorbilidades="val => evolucion.comorbilidades = val"
+                ></form-comorbilidades>
+                <v-row v-else>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text class="pb-0">
+                        <v-label>Comorbilidades</v-label>
+                        <p v-if="comorbilidades && !comorbilidades.length">No registra comorbilidades.</p>
+                      </v-card-text>
+                      <v-card-text v-if="comorbilidades && comorbilidades.length">
+                        <template v-for="(chip, indexChip) in comorbilidades">
+                          <v-chip label class="mr-2 mb-2 white--text" color="indigo lighten-1"
+                                  :key="`chipx${indexChip}`">{{ chip.descrip }}
+                          </v-chip>
+                        </template>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="evolucion.hospitalizado"
+                            label="¿Está actualmente hospitalizado por IRA IRAG o IRAGI?"
+                            rules="required"
+                            name="actualmente hospitalizado"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <template v-if="evolucion.hospitalizado">
+                    <v-col class="pb-0" cols="12">
+                      <c-texto
+                          v-model="evolucion.lugar_hospitalizacion"
+                          label="Lugar Hospitalización"
+                          rules="required"
+                          name="lugar hospitalización"
+                          upper-case
+                      >
+                      </c-texto>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12">
+                      <c-select-complete
+                          v-model="evolucion.causa_hospitalizacion"
+                          label="Causa Hospitalización"
+                          rules="required"
+                          name="causa hospitalización"
+                          :items="causasHospitalizacion"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12">
+                      <c-date
+                          v-model="evolucion.fecha_ingreso"
+                          rules="required"
+                          label="Fecha Ingreso Hospitalización"
+                          name="fecha ingreso hospitalización"
+                          :max="moment().format('YYYY-MM-DD')"
+                      >
+                      </c-date>
+                    </v-col>
+                  </template>
+                </v-row>
+              </template>
+              <v-row>
+                <v-col class="pb-0" cols="12">
+                  <v-label>Observaciones
+                    {{ evolucion.fallida ? '' : '- Describa la ruta de tratamiento a seguir del paciente' }}
+                  </v-label>
+                  <c-text-area
+                      v-model="evolucion.observaciones"
+                      placeholder="Observaciones"
+                      rules="required"
+                      name="observaciones"
+                  >
+                  </c-text-area>
+                </v-col>
+              </v-row>
+              <template v-if="!evolucion.fallida">
+                <v-row>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="evolucion.clasificacion"
+                            label="Clasificación del Paciente de acuerdo con LINEAMIENTOS PARA LA DETECCIÓN Y MANEJO DE CASOS DE COVID-19 POR LOS PRESTADORES DE SERVICIOS DE SALUD EN COLOMBIA."
+                            rules="required"
+                            name="clasificación COVID-19"
+                            :items="clasificacionesCovidSeleccionables"
+                            item-text="nombre"
+                            item-value="id"
+                            classitempb="pb-2"
+                            @click:help="item => verAyuda(item)"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <template v-if="tamizaje.diagnosticado_covid">
+                    <v-col cols="12" class="pb-0">
+                      <c-select-complete
+                          v-model="evolucion.sivigila"
+                          label="Reportado a SIVIGILA"
+                          :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-value="value"
+                          item-text="text"
+                          :clearable="false"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" v-if="evolucion.sivigila === 1">
+                      <c-texto
+                          v-model="evolucion.entidad_reporta_sivigila"
+                          label="Entidad que reporta a SIVIGILA"
+                          rules="required"
+                          name="entidad que reporta a SIVIGILA"
+                          upper-case
+                      >
+                      </c-texto>
+                    </v-col>
+                    <v-col cols="12" class="pb-0">
+                      <c-select-complete
+                          v-model="evolucion.ssc"
+                          label="Reportado a SSC"
+                          :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-value="value"
+                          item-text="text"
+                          :clearable="false"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col cols="12" class="pb-0">
+                      <c-select-complete
+                          v-model="evolucion.crue"
+                          label="Llamada al CRUE"
+                          :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                          item-value="value"
+                          item-text="text"
+                          :clearable="false"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                  </template>
+                  <v-col cols="12" class="pb-0" v-if="evolucion.clasificacion === '6'">
+                    <v-label>Justificación clínica de no clasificado</v-label>
                     <c-text-area
-                        v-model="evolucion.observaciones"
-                        placeholder="Observaciones"
+                        v-model="evolucion.justificacion_no_clasificado"
+                        placeholder="Justificación clínica de no clasificado"
                         rules="required"
-                        name="observaciones"
+                        name="justificación clínica de no clasificado"
                     >
                     </c-text-area>
                   </v-col>
-                </v-row>
-                <template v-if="!evolucion.fallida">
-                  <v-row>
-                    <v-col cols="12">
-                      <v-card outlined tile>
-                        <v-card-text>
-                          <c-radio
-                              v-model="evolucion.clasificacion"
-                              label="Clasificación del Paciente de acuerdo con LINEAMIENTOS PARA LA DETECCIÓN Y MANEJO DE CASOS DE COVID-19 POR LOS PRESTADORES DE SERVICIOS DE SALUD EN COLOMBIA."
-                              rules="required"
-                              name="clasificación COVID-19"
-                              :items="clasificacionesCovidSeleccionables"
-                              item-text="nombre"
-                              item-value="id"
-                              classitempb="pb-2"
-                              @click:help="item => verAyuda(item)"
-                          >
-                          </c-radio>
-                        </v-card-text>
+                  <template v-if="evolucion.lugar_atencion === 2 && !evolucion.seguimiento_telefonico">
+                    <v-col cols="12" class="pb-0">
+                      <v-card flat>
+                        <v-toolbar dense color="teal">
+                          <v-toolbar-title class="white--text">
+                            <v-icon left>fas fa-{{ evolucion.lugar_atencion === 2 ? 'clinic-medical' : 'hospital' }}
+                            </v-icon>
+                            Resumen de Historia Clínica
+                          </v-toolbar-title>
+                        </v-toolbar>
                       </v-card>
                     </v-col>
-                    <template v-if="tamizaje.diagnosticado_covid">
-                      <v-col cols="12" class="pb-0">
-                        <c-select-complete
-                            v-model="evolucion.sivigila"
-                            label="Reportado a SIVIGILA"
-                            :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                            item-value="value"
-                            item-text="text"
-                            :clearable="false"
-                        >
-                        </c-select-complete>
-                      </v-col>
-                      <v-col class="pb-0" cols="12" v-if="evolucion.sivigila === 1">
-                        <c-texto
-                            v-model="evolucion.entidad_reporta_sivigila"
-                            label="Entidad que reporta a SIVIGILA"
-                            rules="required"
-                            name="entidad que reporta a SIVIGILA"
-                            upper-case
-                        >
-                        </c-texto>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-select-complete
-                            v-model="evolucion.ssc"
-                            label="Reportado a SSC"
-                            :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                            item-value="value"
-                            item-text="text"
-                            :clearable="false"
-                        >
-                        </c-select-complete>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-select-complete
-                            v-model="evolucion.crue"
-                            label="Llamada al CRUE"
-                            :items="[{value: null, text: 'NO APLICA'}, {value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                            item-value="value"
-                            item-text="text"
-                            :clearable="false"
-                        >
-                        </c-select-complete>
-                      </v-col>
-                    </template>
-                    <v-col cols="12" class="pb-0" v-if="evolucion.clasificacion === '6'">
-                      <v-label>Justificación clínica de no clasificado</v-label>
+                    <v-col cols="12" class="pb-0">
                       <c-text-area
-                          v-model="evolucion.justificacion_no_clasificado"
-                          placeholder="Justificación clínica de no clasificado"
+                          v-model="evolucion.motivo_consulta"
+                          label="Motivo de Consulta"
                           rules="required"
-                          name="justificación clínica de no clasificado"
-                      >
-                      </c-text-area>
+                          name="motivo de consulta"
+                      ></c-text-area>
                     </v-col>
-                    <template v-if="evolucion.lugar_atencion === 2 && !evolucion.seguimiento_telefonico">
-                      <v-col cols="12" class="pb-0">
-                        <v-card flat>
-                          <v-toolbar dense color="teal">
-                            <v-toolbar-title class="white--text">
-                              <v-icon left>fas fa-{{ evolucion.lugar_atencion === 2 ? 'clinic-medical' : 'hospital' }}
-                              </v-icon>
-                              Resumen de Historia Clínica
-                            </v-toolbar-title>
-                          </v-toolbar>
-                        </v-card>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-text-area
-                            v-model="evolucion.motivo_consulta"
-                            label="Motivo de Consulta"
-                            rules="required"
-                            name="motivo de consulta"
-                        ></c-text-area>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-text-area
-                            v-model="evolucion.anamnesis"
-                            label="Enfermedad Actual"
-                            rules="required"
-                            name="enfermedad actual"
-                        ></c-text-area>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-text-area
-                            v-model="evolucion.examen_fisico"
-                            label="Examen Físico"
-                            rules="required"
-                            name="examen físico"
-                        ></c-text-area>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <postulador
-                            no-data-text="Búsqueda por código o descripción."
-                            item-text="descrip"
-                            label="Diagnóstico"
-                            route="cie10"
-                            filter="codigo,descrip"
-                            v-model="evolucion.cie10"
-                            name="diagnóstico"
-                            rules="required"
-                            :hint="evolucion.cie10 ? evolucion.cie10.id : ''"
-                            @input="val => evolucion.cie10_id = val ? val.codigo : null"
-                        >
-                          <template v-slot:item="{ item }">
+                    <v-col cols="12" class="pb-0">
+                      <c-text-area
+                          v-model="evolucion.anamnesis"
+                          label="Enfermedad Actual"
+                          rules="required"
+                          name="enfermedad actual"
+                      ></c-text-area>
+                    </v-col>
+                    <v-col cols="12" class="pb-0">
+                      <c-text-area
+                          v-model="evolucion.examen_fisico"
+                          label="Examen Físico"
+                          rules="required"
+                          name="examen físico"
+                      ></c-text-area>
+                    </v-col>
+                    <v-col cols="12" class="pb-0">
+                      <postulador
+                          no-data-text="Búsqueda por código o descripción."
+                          item-text="descrip"
+                          label="Diagnóstico"
+                          route="cie10"
+                          filter="codigo,descrip"
+                          v-model="evolucion.cie10"
+                          name="diagnóstico"
+                          rules="required"
+                          :hint="evolucion.cie10 ? evolucion.cie10.id : ''"
+                          @input="val => evolucion.cie10_id = val ? val.codigo : null"
+                      >
+                        <template v-slot:item="{ item }">
+                          <v-list-item-content>
+                            <v-list-item-title>{{ item.descrip }}</v-list-item-title>
+                            <v-list-item-subtitle>Código: {{ item.codigo }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </template>
+                        <template v-slot:selection="{ attr, on, item, selected }">
+                          <v-list-item class="pa-0" style="width: 100% !important;">
                             <v-list-item-content>
                               <v-list-item-title>{{ item.descrip }}</v-list-item-title>
                               <v-list-item-subtitle>Código: {{ item.codigo }}</v-list-item-subtitle>
                             </v-list-item-content>
-                          </template>
-                          <template v-slot:selection="{ attr, on, item, selected }">
-                            <v-list-item class="pa-0" style="width: 100% !important;">
-                              <v-list-item-content>
-                                <v-list-item-title>{{ item.descrip }}</v-list-item-title>
-                                <v-list-item-subtitle>Código: {{ item.codigo }}</v-list-item-subtitle>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </postulador>
-                      </v-col>
-                      <v-col cols="12" class="pb-0">
-                        <c-text-area
-                            v-model="evolucion.tratamiento"
-                            label="Tratamiento"
-                            rules="required"
-                            name="tratamiento"
-                        ></c-text-area>
-                      </v-col>
-                    </template>
-                    <v-col cols="12" class="pb-0"
-                           v-if="evolucion.lugar_atencion === 3 && !evolucion.seguimiento_telefonico">
+                          </v-list-item>
+                        </template>
+                      </postulador>
+                    </v-col>
+                    <v-col cols="12" class="pb-0">
                       <c-text-area
-                          v-model="evolucion.evolucion_diaria_hospitalaria"
-                          label="Evolución diaria"
+                          v-model="evolucion.tratamiento"
+                          label="Tratamiento"
                           rules="required"
-                          name="evolución diaria"
+                          name="tratamiento"
                       ></c-text-area>
                     </v-col>
-                    <v-col cols="12" class="pb-0">
-                      <c-select-complete
-                          v-model="evolucion.orden_medica_id"
-                          label="Orden Médica"
-                          rules="required"
-                          name="orden médica"
-                          :items="ordenesMedicas"
-                          item-text="orden"
-                          item-value="id"
-                      >
-                      </c-select-complete>
-                    </v-col>
-                    <v-col cols="12" class="pb-0">
-                      <c-select-complete
-                          v-model="evolucion.estado_afectacion"
-                          label="Estado de Afectación"
-                          rules="required"
-                          name="estado de afectación"
-                          :items="estadosAfectacionFiltrados"
-                      >
-                      </c-select-complete>
-                    </v-col>
-                    <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
-                      <v-switch
-                          label="Solicitar Toma de Muestra"
-                          v-model="evolucion.solicitud_prueba"
-                          :false-value="0"
-                          :true-value="1"
-                          class="mt-0"
-                          color="primary"
-                          hide-details
-                      ></v-switch>
-                    </v-col>
-                    <v-col cols="12" v-if="verFormAislamiento">
-                      <v-switch
-                          label="Crear Orden de Aislamiento"
-                          v-model="verFormularioAislamiento"
-                          :false-value="0"
-                          :true-value="1"
-                          class="mt-0"
-                          color="primary"
-                          hide-details
-                      ></v-switch>
-                    </v-col>
-                  </v-row>
-                  <v-expand-transition mode="group">
-                    <div v-if="verFormularioAislamiento && verFormAislamiento && evolucion.aislamiento">
-                      <v-row>
-                        <v-col cols="12" class="pb-0">
-                          <v-card flat>
-                            <v-toolbar dense color="deep-purple">
-                              <v-toolbar-title class="white--text">
-                                <v-icon left>mdi-door-closed-lock</v-icon>
-                                Orden de Aislamiento
-                              </v-toolbar-title>
-                            </v-toolbar>
-                          </v-card>
-                        </v-col>
-                      </v-row>
-                      <form-aislamiento
-                          :tamizaje="tamizaje"
-                          :aislamiento="evolucion.aislamiento"
-                          :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
-                      ></form-aislamiento>
-                    </div>
-                  </v-expand-transition>
-                  <template v-if="verFormSeguimientoAislamiento && evolucion.seguimiento_aislamiento">
+                  </template>
+                  <v-col cols="12" class="pb-0"
+                         v-if="evolucion.lugar_atencion === 3 && !evolucion.seguimiento_telefonico">
+                    <c-text-area
+                        v-model="evolucion.evolucion_diaria_hospitalaria"
+                        label="Evolución diaria"
+                        rules="required"
+                        name="evolución diaria"
+                    ></c-text-area>
+                  </v-col>
+                  <v-col cols="12" class="pb-0">
+                    <c-select-complete
+                        v-model="evolucion.orden_medica_id"
+                        label="Orden Médica"
+                        rules="required"
+                        name="orden médica"
+                        :items="ordenesMedicas"
+                        item-text="orden"
+                        item-value="id"
+                    >
+                    </c-select-complete>
+                  </v-col>
+                  <v-col cols="12" class="pb-0">
+                    <c-select-complete
+                        v-model="evolucion.estado_afectacion"
+                        label="Estado de Afectación"
+                        rules="required"
+                        name="estado de afectación"
+                        :items="estadosAfectacionFiltrados"
+                    >
+                    </c-select-complete>
+                  </v-col>
+                  <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
+                    <v-switch
+                        label="Solicitar Toma de Muestra"
+                        v-model="evolucion.solicitud_prueba"
+                        :false-value="0"
+                        :true-value="1"
+                        class="mt-0"
+                        color="primary"
+                        hide-details
+                    ></v-switch>
+                  </v-col>
+                  <v-col cols="12" v-if="verFormAislamiento">
+                    <v-switch
+                        label="Crear Orden de Aislamiento"
+                        v-model="verFormularioAislamiento"
+                        :false-value="0"
+                        :true-value="1"
+                        class="mt-0"
+                        color="primary"
+                        hide-details
+                    ></v-switch>
+                  </v-col>
+                </v-row>
+                <v-expand-transition mode="group">
+                  <div v-if="verFormularioAislamiento && verFormAislamiento && evolucion.aislamiento">
                     <v-row>
                       <v-col cols="12" class="pb-0">
                         <v-card flat>
                           <v-toolbar dense color="deep-purple">
                             <v-toolbar-title class="white--text">
                               <v-icon left>mdi-door-closed-lock</v-icon>
-                              Seguimiento de Aislamiento
+                              Orden de Aislamiento
                             </v-toolbar-title>
                           </v-toolbar>
                         </v-card>
                       </v-col>
                     </v-row>
-                    <form-seguimiento-aislamiento
-                        :aislamiento="aislamientoFinal"
+                    <form-aislamiento
+                        :tamizaje="tamizaje"
+                        :aislamiento="evolucion.aislamiento"
                         :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
-                    >
-                    </form-seguimiento-aislamiento>
-                  </template>
+                    ></form-aislamiento>
+                  </div>
+                </v-expand-transition>
+                <template v-if="verFormSeguimientoAislamiento && evolucion.seguimiento_aislamiento">
+                  <v-row>
+                    <v-col cols="12" class="pb-0">
+                      <v-card flat>
+                        <v-toolbar dense color="deep-purple">
+                          <v-toolbar-title class="white--text">
+                            <v-icon left>mdi-door-closed-lock</v-icon>
+                            Seguimiento de Aislamiento
+                          </v-toolbar-title>
+                        </v-toolbar>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <form-seguimiento-aislamiento
+                      :aislamiento="aislamientoFinal"
+                      :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
+                  >
+                  </form-seguimiento-aislamiento>
                 </template>
               </template>
               <v-divider></v-divider>
@@ -769,7 +735,11 @@ export default {
       'modelSeguimientoAislamiento',
       'estadosAfectacion',
       'signosAlarma',
-      'tiposNoEfectiva'
+      'tiposNoEfectiva',
+        //// sicología
+        'respuestasPsicologicas',
+        'protocolosBioseguridad',
+        'alteracionesEmocionales'
     ]),
     clasificacionesCovidSeleccionables() {
       if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {
@@ -806,10 +776,18 @@ export default {
       return !this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso
     },
     ultimoSeguimientoOK() {
-      return this && !this.solicitaUltimo && this.tamizaje && !this.tamizaje.positivo_covid && !this.esTrabajadorSocial && !this.esPsicologo && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.find(x => !x.fallida)
+      return this && !this.solicitaUltimo && this.tamizaje && !this.tamizaje.positivo_covid && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.find(x => !x.fallida)
     }
   },
   watch: {
+    'evolucion.tiene_alteracion_emocional': {
+      handler(val) {
+        if (val !== 'Si') {
+          this.evolucion.alteraciones_emocionales = []
+        }
+      },
+      immediate: false
+    },
     'evolucion.sivigila': {
       handler(val) {
         if (val !== 1) {
@@ -934,8 +912,13 @@ export default {
           acc[cur.id] = {fecha_inicio: cur.fecha_inicio}
           return acc
         }, {}) : null
+
+        let protocolos = this.evolucion.cumplimiento_protocolos_bioseguridad && this.evolucion.cumplimiento_protocolos_bioseguridad.length ? this.evolucion.cumplimiento_protocolos_bioseguridad.join(',') : null
+        let alteraciones = this.evolucion.alteraciones_emocionales && this.evolucion.alteraciones_emocionales.length ? this.evolucion.alteraciones_emocionales.join(',') : null
         let evolution = this.clone(this.evolucion)
         evolution.sintomas = coso
+        evolution.cumplimiento_protocolos_bioseguridad = protocolos
+        evolution.alteraciones_emocionales = alteraciones
         console.log('llega', this.aplicaCierre(evolution))
         await this.aplicaCierre(evolution) ? this.lanzarModalCierre(evolution) : this.enviarSeguimiento(evolution)
       }
@@ -980,8 +963,7 @@ export default {
           this.evolucion.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
         }
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
-        // this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
-        this.evolucion.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
+        this.evolucion.tipo = 'Seguimiento Médico'
         this.verificaInfoPaciente()
       }
       this.dialog = true
@@ -1083,7 +1065,7 @@ export default {
       // newEvolution.clasificacion = evolucionCopiada.clasificacion
       // newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
       newEvolution.duracion = evolucionActual.duracion
-      newEvolution.tipo = this.esPsicologo ? 'Valoración por Psicología' : this.esTrabajadorSocial ? 'Valoración por Trabajo Social' : 'Seguimiento Médico'
+      newEvolution.tipo = 'Seguimiento Médico'
       this.evolucion = newEvolution
       this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       newEvolution.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)

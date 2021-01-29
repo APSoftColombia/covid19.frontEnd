@@ -253,7 +253,10 @@ const state = {
         {value: 2, text: 'Los conoce pero no tiene los datos de contacto'},
         {value: 3, text: 'No quiso relacionar contactos'},
         {value: 4, text: 'Ya relacionó contactos'}
-    ]
+    ],
+    respuestasPsicologicas: [],
+    protocolosBioseguridad: [],
+    alteracionesEmocionales: []
 }
 
 // getters
@@ -431,6 +434,17 @@ const getters = {
         return state.ambitosMuestras.map(x => {
             return { value: x, text: x }
         })
+    },
+    respuestasPsicologicas: state => {
+        return state.respuestasPsicologicas.map(x => {
+            return { value: x, text: x }
+        })
+    },
+    protocolosBioseguridad: state => {
+        return state.protocolosBioseguridad
+    },
+    alteracionesEmocionales: state => {
+        return state.alteracionesEmocionales
     }
 }
 // actions
@@ -534,6 +548,10 @@ const actions = {
                             context.commit('assignEntidadesFinancieras', response.data.parametros.entidadesFinancieras)
                             context.commit('assignLugaresTomaMuestra', response.data.parametros.lugares_toma_muestra)
                             context.commit('assignAmbitosMuestras', response.data.parametros.ambitos_muestras)
+
+                            context.commit('assignRespuestasPsicologicas', response.data.parametros.respuestas_seguimientos)
+                            context.commit('assignProtocolosBioseguridad', response.data.parametros.protocolos_bioseguridad_respuestas)
+                            context.commit('assignAlteracionesEmocionales', response.data.parametros.alteraciones_emocionales_respuestas)
                             resolve(true)
                         })
                         .catch(error => {
@@ -691,6 +709,15 @@ const mutations = {
     },
     assignAmbitosMuestras(state, ambitosMuestras) {
         state.ambitosMuestras = ambitosMuestras
+    },
+    assignRespuestasPsicologicas(state, respuestasPsicologicas) {
+        state.respuestasPsicologicas = respuestasPsicologicas
+    },
+    assignProtocolosBioseguridad(state, protocolosBioseguridad) {
+        state.protocolosBioseguridad = protocolosBioseguridad
+    },
+    assignAlteracionesEmocionales(state, alteracionesEmocionales) {
+        state.alteracionesEmocionales = alteracionesEmocionales
     },
     snackbar(state, data) {
         let timeout = 8000

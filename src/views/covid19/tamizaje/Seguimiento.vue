@@ -58,7 +58,7 @@
                   right
                   icons-and-text
                   show-arrows
-                  :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : 'deep-purple'"
+                  :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : tab === 'tab-4' ? 'deep-purple' : tab === 'tab-5' ? 'indigo' : 'teal'"
               >
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab
@@ -70,7 +70,7 @@
                 <v-tab
                     href="#tab-4"
                 >
-                  Ordenes de Aislamiento
+                  Aislamientos
                   <v-icon>mdi-door-closed-lock</v-icon>
                 </v-tab>
                 <v-tab
@@ -79,11 +79,23 @@
                   {{ sonNexos ? 'Nexos' : 'Contactos' }}
                   <v-icon>fas fa-people-arrows</v-icon>
                 </v-tab>
+<!--                <v-tab-->
+<!--                    href="#tab-5"-->
+<!--                >-->
+<!--                  Toma Muestas-->
+<!--                  <v-icon>fas fa-vial</v-icon>-->
+<!--                </v-tab>-->
                 <v-tab
                     href="#tab-3"
                 >
-                  Muestras
+                  SISMUESTAS
                   <v-icon>fas fa-vials</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-6"
+                >
+                  Psicología
+                  <v-icon>fas fa-street-view</v-icon>
                 </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
@@ -131,6 +143,32 @@
                   ></nexos>
                   <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                     <v-icon color="warning" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+<!--                <v-tab-item-->
+<!--                    value="tab-5"-->
+<!--                >-->
+<!--                  <div v-if="permisos.seguimientoPsicologicoVer">las muestras tomadas</div>-->
+<!--                  <div v-if="!permisos.seguimientoPsicologicoVer"-->
+<!--                       class="font-weight-bold grey&#45;&#45;text text&#45;&#45;lighten-1 text-center mt-10">-->
+<!--                    <v-icon color="primary" large left>mdi-alert-outline</v-icon>-->
+<!--                    No tiene permisos para ver ésta sección.-->
+<!--                  </div>-->
+<!--                </v-tab-item>-->
+                <v-tab-item
+                    value="tab-6"
+                >
+                  <seguimientos
+                      v-if="permisos.seguimientoPsicologicoVer"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                      @actualizarTamizaje="val => changeTamizaje(val.id)"
+                  ></seguimientos>
+                  <div v-if="!permisos.seguimientoPsicologicoVer"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="primary" large left>mdi-alert-outline</v-icon>
                     No tiene permisos para ver ésta sección.
                   </div>
                 </v-tab-item>
@@ -224,9 +262,11 @@ const Evoluciones = () => import('Views/covid19/tamizaje/evolucion/Evoluciones')
 const Aislamientos = () => import('Views/covid19/tamizaje/aislamiento/Aislamientos')
 const Muestras = () => import('Views/covid19/tamizaje/muestra/Muestras')
 const Nexos = () => import('Views/covid19/tamizaje/nexo/Nexos')
+const Seguimientos = () => import('Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos')
 export default {
   name: 'Seguimiento',
   components: {
+    Seguimientos,
     DatosPersonales,
     DatosTamizaje,
     Evoluciones,
@@ -310,6 +350,9 @@ export default {
           .then(response => {
             if (response.data.evoluciones.length) response.data.evoluciones.map((x, i) => {
               x.numero = (response.data.evoluciones.length - i)
+            })
+            if (response.data.seguimientos_psicologicos.length) response.data.seguimientos_psicologicos.map((x, i) => {
+              x.numero = (response.data.seguimientos_psicologicos.length - i)
             })
             this.tamizaje = response.data
             this.tab = 1

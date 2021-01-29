@@ -38,7 +38,7 @@
             </template>
             <v-divider class="mt-1 mb-0" v-if="divider"></v-divider>
         </v-radio-group>
-        <div class="v-messages theme--light error--text" role="alert" v-if="errors.length">
+        <div class="v-messages theme--light error--text mt-3" role="alert" v-if="errors.length">
             <div class="v-messages__wrapper">
                 <div class="v-messages__message">
                     {{errors[0]}}

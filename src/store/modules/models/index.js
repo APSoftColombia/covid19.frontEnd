@@ -231,8 +231,28 @@ const state = {
         linfocitos: null,
         ldh: null,
         fecha_seguimiento: null,
-        lugar_toma_muestra: null,
-        estado: null
+        lugar_toma_muestra: null
+
+    },
+    modelSeguimientoPscologico: {
+        id: null,
+        tamizaje_id: null,
+        observaciones: null,
+        user_id: null,
+        lugar_atencion: null,
+        fallida: 0,
+        duracion: 0,
+        no_efectividad: null,
+        fecha_seguimiento: null,
+        //// Psicologico
+        cumplimiento_protocolos_bioseguridad: [],
+        afectacion_mental: null,
+        tiene_alteracion_emocional: null,
+        alteraciones_emocionales: [],
+        afectacion_emocional_familiar: null,
+        red_apoyo_familiar: null,
+        pensamientos_negativos: null,
+        desinteres_actividades_rutinarias: null
 
     },
     modelReporteComunitario: {
@@ -366,6 +386,9 @@ const getters = {
     },
     modelReporte: state => {
         return state.modelReporte
+    },
+    modelSeguimientoPscologico: state => {
+        return state.modelSeguimientoPscologico
     }
 }
 
