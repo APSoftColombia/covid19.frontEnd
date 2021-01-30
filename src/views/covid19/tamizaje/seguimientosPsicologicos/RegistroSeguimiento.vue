@@ -30,8 +30,11 @@
           <v-col md="6" :offset-md="enlinea ? '0' : '3'">
             <jitsi-meet-button v-if="videollamar" :show="showbuttonmeet" block :tamizaje="tamizaje"
                                @enlinea="val => enlinea = val"></jitsi-meet-button>
-            <datos-personales :abierto="false" :tamizaje="tamizaje"
-                              @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"></datos-personales>
+            <datos-personales
+                :abierto="false"
+                :tamizaje="tamizaje"
+                @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"
+            />
             <ValidationObserver ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }"
                                 autocomplete="off">
               <v-row class="mt-3">

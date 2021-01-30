@@ -593,7 +593,7 @@ export default {
          meta: {
             requiresAuth: true,
             requiresOnLine: false,
-            requiresPermission: 'covid-tomaMuestras',
+            requiresPermission: 'covid-tomaMuestrasIndex',
             avatar: {
                icon: 'mdi-calendar-plus',
                color: 'purple',

@@ -41,7 +41,7 @@ const getters = {
         if (getters.getPermission('covid-nexosVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 24))
         if (getters.getPermission('covid-muestrasVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 26))
         if (getters.getPermission('covid-asignacionMuestras') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 40))
-        if (getters.getPermission('covid-tomaMuestras') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 41))
+        if (getters.getPermission('covid-tomaMuestrasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 41))
         if (getters.getPermission('covid-parametrosVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 25))
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
         if (getters.getPermission('covid-informeEjecutivoTamizajesIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 31))

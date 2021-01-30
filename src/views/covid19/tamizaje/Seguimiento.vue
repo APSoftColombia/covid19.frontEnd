@@ -79,12 +79,12 @@
                   {{ sonNexos ? 'Nexos' : 'Contactos' }}
                   <v-icon>fas fa-people-arrows</v-icon>
                 </v-tab>
-<!--                <v-tab-->
-<!--                    href="#tab-5"-->
-<!--                >-->
-<!--                  Toma Muestas-->
-<!--                  <v-icon>fas fa-vial</v-icon>-->
-<!--                </v-tab>-->
+                <v-tab
+                    href="#tab-5"
+                >
+                  Tomas Muestras
+                  <v-icon>fas fa-vial</v-icon>
+                </v-tab>
                 <v-tab
                     href="#tab-3"
                 >
@@ -146,16 +146,21 @@
                     No tiene permisos para ver ésta sección.
                   </div>
                 </v-tab-item>
-<!--                <v-tab-item-->
-<!--                    value="tab-5"-->
-<!--                >-->
-<!--                  <div v-if="permisos.seguimientoPsicologicoVer">las muestras tomadas</div>-->
-<!--                  <div v-if="!permisos.seguimientoPsicologicoVer"-->
-<!--                       class="font-weight-bold grey&#45;&#45;text text&#45;&#45;lighten-1 text-center mt-10">-->
-<!--                    <v-icon color="primary" large left>mdi-alert-outline</v-icon>-->
-<!--                    No tiene permisos para ver ésta sección.-->
-<!--                  </div>-->
-<!--                </v-tab-item>-->
+                <v-tab-item
+                    value="tab-5"
+                >
+                  <toma-muestras
+                      v-if="permisos.tomaMuestrasIndex"
+                      :tamizaje="tamizaje"
+                      :editable="editable"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></toma-muestras>
+                  <div v-if="!permisos.tomaMuestrasIndex"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="indigo" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
                 <v-tab-item
                     value="tab-6"
                 >
@@ -168,7 +173,7 @@
                   ></seguimientos>
                   <div v-if="!permisos.seguimientoPsicologicoVer"
                        class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                    <v-icon color="primary" large left>mdi-alert-outline</v-icon>
+                    <v-icon color="teal" large left>mdi-alert-outline</v-icon>
                     No tiene permisos para ver ésta sección.
                   </div>
                 </v-tab-item>
@@ -196,7 +201,7 @@
                   right
                   icons-and-text
                   show-arrows
-                  :color="tab === 'tab-1' ? 'warning' : 'error'"
+                  :color="tab === 'tab-1' ? 'warning' : tab === 'tab-2' ? 'error' : 'indigo'"
               >
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab
@@ -204,6 +209,12 @@
                 >
                   {{ sonNexos ? 'Nexos' : 'Contactos' }}
                   <v-icon>fas fa-people-arrows</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-3"
+                >
+                  Tomas Muestras
+                  <v-icon>fas fa-vial</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-2"
@@ -226,6 +237,21 @@
                   ></nexos>
                   <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                     <v-icon color="warning" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-3"
+                >
+                  <toma-muestras
+                      v-if="permisos.tomaMuestrasIndex"
+                      :tamizaje="tamizaje"
+                      :editable="editableNexos"
+                      @change="changeTamizaje(tamizaje.id)"
+                  ></toma-muestras>
+                  <div v-if="!permisos.tomaMuestrasIndex"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="indigo" large left>mdi-alert-outline</v-icon>
                     No tiene permisos para ver ésta sección.
                   </div>
                 </v-tab-item>
@@ -263,9 +289,11 @@ const Aislamientos = () => import('Views/covid19/tamizaje/aislamiento/Aislamient
 const Muestras = () => import('Views/covid19/tamizaje/muestra/Muestras')
 const Nexos = () => import('Views/covid19/tamizaje/nexo/Nexos')
 const Seguimientos = () => import('Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos')
+const TomaMuestras = () => import('Views/covid19/tamizaje/tomaMuestra/TomaMuestras')
 export default {
   name: 'Seguimiento',
   components: {
+    TomaMuestras,
     Seguimientos,
     DatosPersonales,
     DatosTamizaje,

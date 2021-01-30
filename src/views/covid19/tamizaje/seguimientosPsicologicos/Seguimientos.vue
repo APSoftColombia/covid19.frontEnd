@@ -16,7 +16,7 @@
       <template v-if="permisos.seguimientoPsicologicoCrear && editable">
         <v-tooltip top v-if="$vuetify.breakpoint.xsOnly">
           <template v-slot:activator="{on}">
-            <v-btn dark @click="agregarEvolucion" icon color="primary darken-3" v-on="on">
+            <v-btn dark @click="agregarEvolucion" icon color="teal darken-3" v-on="on">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </template>
