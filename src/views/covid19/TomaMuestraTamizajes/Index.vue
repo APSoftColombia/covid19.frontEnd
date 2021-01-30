@@ -11,6 +11,9 @@
         ref="tomadormuestra"
         @guardado="tomaRegistrada"
     />
+    <seguimiento
+        ref="seguimiento"
+    />
   </v-container>
 </template>
 
@@ -18,9 +21,14 @@
 import {mapGetters} from 'vuex'
 import PersonaItemTabla from '../../../components/Tamizaje/PersonaItemTabla'
 import TomarMuestra from "./TomarMuestra";
+import BotonTooltip from "../../../components/Tamizaje/BotonTooltip";
+const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 export default {
   name: 'TomaMuestrasTamizajes',
-  components: {TomarMuestra},
+  components: {
+    TomarMuestra,
+    Seguimiento
+  },
   data: (vm) => ({
     dataTable: {
       advanceFilters: false,
@@ -58,6 +66,37 @@ export default {
             },
             props: ['value']
           }
+        },
+        {
+          text: 'ERP',
+          align: 'center',
+          sortable: false,
+          value: 'id',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value.id
+                  ? createElement(
+                      BotonTooltip,
+                      {
+                        props: {
+                          tooltip: `Ver ERP No. ${context.props.value.id}`,
+                          text: `ERP ${context.props.value.id}`,
+                          color: 'purple',
+                          textColor: 'white',
+                          value: context.props.value
+                        },
+                        on: {
+                          click: (item) => {
+                            vm.verTamizaje(item)
+                          }
+                        }
+                      }
+                  )
+                  : createElement('span', '')
+            }
+          }
+
         },
         {
           text: 'Persona',
@@ -155,7 +194,8 @@ export default {
     ...mapGetters([
       'tiposDocumentoIdentidad',
       'departamentos',
-      'municipiosTotal'
+      'municipiosTotal',
+      'getUser'
     ]),
     permisos () {
       return this.$store.getters.getPermissionModule('covid')
@@ -164,7 +204,10 @@ export default {
   methods: {
     resetOptions(item) {
       item.options = []
-      if(!item.fecha_toma_prueba && this.permisos.tomaMuestraCrear) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
+      if(!item.fecha_toma_prueba && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
+    },
+    verTamizaje (item) {
+      this.$refs.seguimiento.open(item.id)
     },
     tomarmuestra(item) {
       this.$refs.tomadormuestra.open(item)

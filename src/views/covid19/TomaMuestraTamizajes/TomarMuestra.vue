@@ -30,7 +30,7 @@
                   </v-icon>
                   <v-list-item-content class="pa-0">
                     <v-list-item-title class="body-2 text-truncate">
-                      {{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}
+                      {{ [item.nombre].filter(x => x).join(' ') }}
                     </v-list-item-title>
                     <v-list-item-subtitle class="body-2 text-truncate">{{
                         [tiposDocumentoIdentidad && item.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : null, item.identificacion].filter(x => x).join(' ')
@@ -73,7 +73,7 @@
         </v-simple-table>
         <ValidationObserver ref="formToma" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row class="mt-3">
-            <v-col cols="12" class="pb-0">
+            <v-col cols="12" md="6" class="pb-0">
               <c-date
                   v-model="fecha_toma_prueba"
                   rules="required"
@@ -81,6 +81,40 @@
                   name="fecha de toma"
                   :max="moment().format('YYYY-MM-DD')"
               />
+            </v-col>
+            <v-col cols="12" md="6" class="pb-0">
+              <v-menu
+                  ref="menu"
+                  v-model="menuHora"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="hora"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="hora"
+                      label="Hora de toma"
+                      prepend-inner-icon="mdi-clock-time-four-outline"
+                      readonly
+                      outlined
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                    scrollable
+                    v-if="menuHora"
+                    v-model="hora"
+                    full-width
+                    format="24hr"
+                    @click:minute="$refs.menu.save(hora)"
+                ></v-time-picker>
+              </v-menu>
             </v-col>
           </v-row>
         </ValidationObserver>
@@ -107,10 +141,12 @@ import {mapGetters} from 'vuex'
 export default {
   name: 'TomarMuestra',
   data: () => ({
+    menuHora: false,
     dialog: false,
     loading: false,
     muestra: null,
     id: null,
+    hora: null,
     fecha_toma_prueba: null
   }),
   computed: {
@@ -123,8 +159,9 @@ export default {
   methods: {
     open(muestra) {
       this.muestra = this.clone(muestra)
-      this.id = muestra.prueba_id
-      this.fecha_toma_prueba = muestra.fecha_toma_prueba
+      this.id = muestra && muestra.prueba_id ? muestra.prueba_id : null
+      this.fecha_toma_prueba = muestra && muestra.fecha_toma_prueba ? muestra.fecha_toma_prueba : this.moment().format('YYYY-MM-DD')
+      this.hora = muestra && muestra.fecha_toma_prueba ? this.moment(muestra.fecha_toma_prueba).format('HH:mm') : this.moment().format('HH:mm')
       this.dialog = true
     },
     close() {
@@ -133,6 +170,7 @@ export default {
         this.loading = false
         this.muestra = null
         this.id = null
+        this.hora = null
         this.fecha_toma_prueba = null
         this.$refs.formToma.reset()
       }, 400)
@@ -143,7 +181,7 @@ export default {
           this.loading = true
           this.axios.put(`actualizar-pruebas/${this.id}`, {
             id: this.id,
-            fecha_toma_prueba: this.fecha_toma_prueba
+            fecha_toma_prueba: `${this.fecha_toma_prueba} ${this.hora}`
           })
               .then(() => {
                 this.$emit('guardado')
