@@ -160,7 +160,7 @@ export default {
     open(muestra) {
       this.muestra = this.clone(muestra)
       this.id = muestra && muestra.prueba_id ? muestra.prueba_id : null
-      this.fecha_toma_prueba = muestra && muestra.fecha_toma_prueba ? muestra.fecha_toma_prueba : this.moment().format('YYYY-MM-DD')
+      this.fecha_toma_prueba = muestra && muestra.fecha_toma_prueba ? this.moment(muestra.fecha_toma_prueba).format('YYYY-MM-DD') : this.moment().format('YYYY-MM-DD')
       this.hora = muestra && muestra.fecha_toma_prueba ? this.moment(muestra.fecha_toma_prueba).format('HH:mm') : this.moment().format('HH:mm')
       this.dialog = true
     },

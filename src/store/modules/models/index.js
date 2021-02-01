@@ -67,7 +67,6 @@ const state = {
         codIpsBai: null,
         estado_gestacion_lactancia: null,
         edad: null,
-        estado: null,
         ////
         user_id: null,
         signos_alarma: [],
