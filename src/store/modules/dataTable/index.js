@@ -30,7 +30,7 @@ const state = {
         tablaDemandaInducida: 0,
         tablaDemandaInducidaVersion: 9,
         tablaBitacorasRcv: 0,
-        tablaBitacorasRcvVersion: 0,
+        tablaBitacorasRcvVersion: 1,
         tablaTomaMuestrasIPS: 0,
         tablaTomaMuestrasIPSVersion: 2
     }

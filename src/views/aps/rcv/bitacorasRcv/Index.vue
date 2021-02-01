@@ -41,6 +41,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import ItemListDataPaciente from '../componentes/ItemListDataPaciente'
+import AlertaSeguimiento from '../bitacorasRcv/components/AlertaSeguimiento'
 const verBitacoras = () => import('../encuestas/VerBitacoras')
 const Filtros = () => import('../bitacorasRcv/components/FiltrosBitacorasRcv')
 
@@ -136,6 +137,29 @@ export default {
                             )
                         },
                         props: ['value']
+                    }
+                },
+                {
+                    text: 'Alertas',
+                    align: 'left',
+                    sortable: false,
+                    component: {
+                        functional: true,
+                        render: function (createElement, context) {
+                        return context.props.value
+                            ? createElement(
+                                AlertaSeguimiento,
+                                {
+                                    props: {
+                                        fecha_ultima_cita: context.props.value.fecha_ultima_cita,
+                                        fecha_ultimo_lab: context.props.value.fecha_ultimo_lab,
+                                        periodicidad_cita: context.props.value.periodicidad_ultima_cita,
+                                        periodicidad_lab: context.props.value.periodicidad_ultimo_lab
+                                    }
+                                }
+                            )
+                            : createElement('span', '')
+                        }
                     }
                 },
                 {
