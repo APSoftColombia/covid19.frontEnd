@@ -1,5 +1,5 @@
 <template>
-  <v-list-item class="pa-0">
+  <v-list-item class="pa-0" v-if="diasUltimaCita">
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
         <v-icon
@@ -14,7 +14,7 @@
       <span>Dias proxima cita: {{ diasUltimaCita }}</span>
     </v-tooltip>
 
-    <v-tooltip top>
+    <v-tooltip top v-if="diasUltimoLab">
       <template v-slot:activator="{ on, attrs }">
         <v-icon
           class="ml-2"
@@ -68,7 +68,7 @@
                 let days = futureMonth.diff(currentDate, 'days');
                 return days;
               }else {
-                return "-";
+                return null;
               }
           },
           colorIconLab() {
@@ -86,7 +86,7 @@
                 let days = futureMonth.diff(currentDate, 'days');
                 return days;
               }else {
-                return "-";
+                return null;
               }
           }
         }

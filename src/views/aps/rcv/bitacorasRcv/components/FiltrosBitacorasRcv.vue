@@ -9,7 +9,16 @@
             >
             </c-date-range>
         </v-col> -->
-        <v-col class="pb-0" cols="12" sm="12" md="12">
+        <v-col class="pb-0" cols="12" sm="12" md="6">
+            <v-checkbox
+                v-model="filters.models.hasAlert"
+                label="Seguimientos con Alertas"
+                :true-value="true"
+                :false-value="false"
+                @change="aplicaFiltros"
+            ></v-checkbox>
+        </v-col>
+        <v-col class="pb-0" cols="12" sm="12" md="6">
             <c-select-complete
                 v-model="filters.models.tipoSeguimiento"
                 label="Tipo de seguimientos"
@@ -18,7 +27,7 @@
                 item-text="text"
             >
             </c-select-complete>
-      </v-col>
+        </v-col>
     </v-row>
 </template>
 
@@ -42,6 +51,7 @@
                 models: {
                     rango_created_at: [],
                     tipoSeguimiento: null,
+                    hasAlert: false,
                 },
                 data: {
                 }
@@ -56,6 +66,9 @@
                 // }
                 if (this.filters.models.tipoSeguimiento) {
                   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipoSeguimiento]=' + this.filters.models.tipoSeguimiento
+                }
+                if (this.filters.models.hasAlert) {
+                  rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[seguimientoHasAlert]=' + this.filters.models.hasAlert
                 }
                 this.$emit('filtra', rutaTemp)
             }
