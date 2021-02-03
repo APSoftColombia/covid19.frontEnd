@@ -283,6 +283,15 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.semaforo"
+          label="Estado de Atencion"
+          :items="filters.data.semaforos"
+          hide-details
+      >
+      </c-select-complete>
+    </v-col>
   </v-row>
 </template>
 
@@ -334,7 +343,8 @@ export default {
         contesta_encuesta: null,
         seguimientos: null,
         erp_sin_asignar: null,
-        aislamientos: null
+        aislamientos: null,
+        semaforo: null
       },
       data: {
         opcionesLocaliza: [
@@ -365,6 +375,11 @@ export default {
           {text: 'Con Aislamientos Activos', value: 1},
           {text: 'Con Aislamiento Cumplido', value: 2},
           {text: 'Sin Aislamientos', value: 3}
+        ],
+        semaforos: [
+            'Atendido Hoy',
+            'Fallido',
+            'Requiere Seguimiento'
         ]
       }
     }
@@ -458,6 +473,9 @@ export default {
       if (this.filters.models.aislamientos !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[aislamientos]=' + this.filters.models.aislamientos
       }
+      if (this.filters.models.semaforo !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[semaforo]=' + this.filters.models.semaforo
+      }
       this.$emit('filtra', rutaTemp)
     },
     limpiarFiltros(){
@@ -483,6 +501,7 @@ export default {
           this.filters.models.seguimientos = null
           this.filters.models.erp_sin_asignar = null
           this.filters.models.aislamientos = null
+          this.filters.models.semaforo = null
     },
     getComplementos() {
       this.axios.get(`complementos-tamizajes`)
