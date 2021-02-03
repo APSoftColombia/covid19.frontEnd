@@ -3,6 +3,11 @@
     <page-title-bar title="Asignación de Muestras"></page-title-bar>
     <v-row>
       <v-col cols="12">
+        <filtros @filtra="goDatos" :ruta-base="'pruebas-asignacion'"></filtros>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
         <v-card>
           <v-data-table
               v-model="seleccionados"
@@ -62,9 +67,10 @@
 <script>
 import {mapGetters} from 'vuex'
 import AsignarMuestra from 'Views/covid19/AsignacionMuestras/AsignarMuestra'
+const Filtros = () => import('Views/covid19/AsignacionMuestras/filtros.vue')
 export default {
   name: 'AsignacionPruebas',
-  components: {AsignarMuestra},
+  components: {AsignarMuestra, Filtros},
   data: () => ({
     loading: false,
     seleccionados: [],
@@ -86,7 +92,7 @@ export default {
         value: 'direccion'
       }
     ],
-    
+    ruta: 'pruebas-asignacion'
   }),
   computed: {
     ...mapGetters([
@@ -101,7 +107,7 @@ export default {
   methods: {
     getTamizajesPendientes() {
       this.loading = true
-      this.axios.get(`pruebas-asignacion`)
+      this.axios.get(this.ruta)
           .then(response => {
             this.seleccionados = []
             this.muestras = response.data
@@ -111,8 +117,12 @@ export default {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar los registros de tamizajes que requieren pruebas.`, error: error})
           })
-    }
-  }
+      },
+      goDatos(val){
+        this.ruta = val
+        this.getTamizajesPendientes()
+      },
+  },
 }
 </script>
 
