@@ -6,7 +6,17 @@
         v-model="dataTable"
         @resetOption="item => resetOptions(item)"
         @tomarmuestra="item => tomarmuestra(item)"
-    />
+        @apply-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.aplicaFiltros()"
+        @clear-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.limpiarFiltros()"
+    >
+      <filtros
+          slot="filters"
+          v-if="permisos.filtrosTamizaje"
+          ref="filtrosMuestras"
+          :ruta-base="rutaBase"
+          @filtra="val => goDatos(val)"
+      ></filtros>
+    </data-table>
     <tomar-muestra
         ref="tomadormuestra"
         @guardado="tomaRegistrada"
@@ -23,16 +33,19 @@ import PersonaItemTabla from '../../../components/Tamizaje/PersonaItemTabla'
 import TomarMuestra from "./TomarMuestra";
 import BotonTooltip from "../../../components/Tamizaje/BotonTooltip";
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
+const Filtros = () => import('Views/covid19/TomaMuestraTamizajes/filtros.vue')
 export default {
   name: 'TomaMuestrasTamizajes',
   components: {
     TomarMuestra,
-    Seguimiento
+    Seguimiento,
+    Filtros
   },
   data: (vm) => ({
+    rutaBase: 'pruebas-asignacion-user',
     dataTable: {
-      advanceFilters: false,
-      buttonZone: false,
+      advanceFilters: true,
+      buttonZone: true,
       nameItemState: 'tablaTomaMuestrasIPS',
       route: 'pruebas-asignacion-user',
       makeHeaders: [
@@ -205,6 +218,9 @@ export default {
     resetOptions(item) {
       item.options = []
       if(!item.fecha_toma_prueba && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
+    },
+    goDatos(val){
+      this.dataTable.route = val;
     },
     verTamizaje (item) {
       this.$refs.seguimiento.open(item.id)
