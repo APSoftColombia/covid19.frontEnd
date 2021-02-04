@@ -17,11 +17,14 @@
               class="elevation-1"
           >
             <template v-slot:item.identificacion="{ item }">
-              <v-list-item class="pa-0">
+              <v-list-item class="px-0 py-1">
                 <v-icon color="primary" large class="mr-2">{{item.sexo === null ? 'mdi mdi-emoticon-happy' : item.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
                 <v-list-item-content class="pa-0">
                   <v-list-item-title class="body-2 text-truncate">{{[item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ')}}</v-list-item-title>
                   <v-list-item-subtitle class="body-2 text-truncate">{{ [tiposDocumentoIdentidad && item.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : null, item.identificacion].filter(x => x).join(' ') }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="item.nombre_eps">
+                    {{ item.nombre_eps }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </template>

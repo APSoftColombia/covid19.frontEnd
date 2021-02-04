@@ -20,7 +20,7 @@
       </template>
     </v-toolbar>
     <v-card-text class="text-center font-lg" v-if="tamizaje.asignacion_pruebas && !tamizaje.asignacion_pruebas.length">
-      No registra ordenes de aislamiento
+      No registra asignaciones de toma de muestra
     </v-card-text>
     <v-row v-else>
       <v-col cols="12" class="pt-0 ma-0">

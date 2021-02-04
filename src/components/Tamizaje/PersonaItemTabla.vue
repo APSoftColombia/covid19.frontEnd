@@ -22,7 +22,7 @@
               </v-chip>
             </v-card-actions>
           </v-card>
-            <v-list-item-content class="pa-0" v-if="isNotFromNexos">
+            <v-list-item-content class="py-1" v-if="isNotFromNexos">
                 <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">
                   <template v-if="!!(value && value.reporte && value.reporte.tamizaje_id)">
                     <v-btn
@@ -46,9 +46,12 @@
                     </v-tooltip>
                 </v-list-item-title>
                 <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.tipoIdentificacion}} {{this.value.identificacion}}{{this.value.celular ? ', Cel. ' + this.value.celular : ''}}</v-list-item-subtitle>
+              <v-list-item-subtitle v-if="value.nombre_eps">
+                {{ value.nombre_eps }}
+              </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-content class="pa-0" v-if="!isNotFromNexos">
-                <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">{{this.value.nombres}}</v-list-item-title>
+                <v-list-item-title :class="`${colorText}--text body-2 text-truncate`">{{value.nombres}}</v-list-item-title>
                 <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{ [[value.tipo_identificacion && tiposDocumentoIdentidad ? tiposDocumentoIdentidad.find(x => x.id === value.tipo_identificacion).tipo : null, value.identificacion].filter(x => x).join(' '), this.value.celular ? 'Cel: ' + this.value.celular : null, this.value.edad ? "Edad: " + this.value.edad : null].filter(z => z).join(', ') }}</v-list-item-subtitle>
             </v-list-item-content>
 <!--            <template v-if="verAltoCosto">-->

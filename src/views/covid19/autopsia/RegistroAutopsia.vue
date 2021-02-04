@@ -723,7 +723,13 @@
                             this.loading = true
                             let data = new FormData()
                             for (const prop in this.autopsia) {
-                                if (this.autopsia[prop] !== null && typeof this.autopsia.archivo !== 'undefined') data.append(`${prop}`, this.autopsia[prop])
+                                if (this.autopsia[prop] !== null && typeof this.autopsia.archivo !== 'undefined') {
+                                  if (prop === 'fallecido' || prop === 'encuestado') {
+                                    data.append(`${prop}`, JSON.stringify(this.autopsia[prop]))
+                                  } else {
+                                    data.append(`${prop}`, this.autopsia[prop])
+                                  }
+                                }
                             }
                             let request = this.autopsia.id
                                 ? this.axios.post(`autopsias/${this.autopsia.id}`, data)

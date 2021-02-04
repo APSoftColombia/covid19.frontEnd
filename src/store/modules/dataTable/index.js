@@ -32,7 +32,7 @@ const state = {
         tablaBitacorasRcv: 0,
         tablaBitacorasRcvVersion: 1,
         tablaTomaMuestrasIPS: 0,
-        tablaTomaMuestrasIPSVersion: 2
+        tablaTomaMuestrasIPSVersion: 3
     }
 }
 
