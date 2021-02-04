@@ -28,48 +28,48 @@
                         :tamizaje="autopsia.encuestado"
                 ></datos-personales>
                 <datos-autopsia :autopsia="autopsia" class="mt-3"></datos-autopsia>
-                <v-divider></v-divider>
-                <v-tabs
-                        class="mt-3"
-                        v-model="tab"
-                        fixed-tabs
-                        right
-                        icons-and-text
-                        show-arrows
-                        :color="tab === 'tab-2' ? 'warning' : 'error'"
-                >
-                    <v-tabs-slider></v-tabs-slider>
-                    <v-tab
-                            href="#tab-2"
-                    >
-                        Nexos
-                        <v-icon>fas fa-people-arrows</v-icon>
-                    </v-tab>
-                    <v-tab
-                            href="#tab-3"
-                    >
-                        Muestras
-                        <v-icon>fas fa-vials</v-icon>
-                    </v-tab>
-                </v-tabs>
-                <v-tabs-items v-model="tab" class="mt-2" touchless>
-                    <v-tab-item
-                            value="tab-2"
-                    >
-                        <div v-if="!permisos.nexoVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                            <v-icon color="warning" large left>mdi-alert-outline</v-icon>
-                            No tiene permisos para ver ésta sección.
-                        </div>
-                    </v-tab-item>
-                    <v-tab-item
-                            value="tab-3"
-                    >
-                        <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
-                            <v-icon color="error" large left>mdi-alert-outline</v-icon>
-                            No tiene permisos para ver ésta sección.
-                        </div>
-                    </v-tab-item>
-                </v-tabs-items>
+<!--                <v-divider></v-divider>-->
+<!--                <v-tabs-->
+<!--                        class="mt-3"-->
+<!--                        v-model="tab"-->
+<!--                        fixed-tabs-->
+<!--                        right-->
+<!--                        icons-and-text-->
+<!--                        show-arrows-->
+<!--                        :color="tab === 'tab-2' ? 'warning' : 'error'"-->
+<!--                >-->
+<!--                    <v-tabs-slider></v-tabs-slider>-->
+<!--                    <v-tab-->
+<!--                            href="#tab-2"-->
+<!--                    >-->
+<!--                        Nexos-->
+<!--                        <v-icon>fas fa-people-arrows</v-icon>-->
+<!--                    </v-tab>-->
+<!--                    <v-tab-->
+<!--                            href="#tab-3"-->
+<!--                    >-->
+<!--                        Muestras-->
+<!--                        <v-icon>fas fa-vials</v-icon>-->
+<!--                    </v-tab>-->
+<!--                </v-tabs>-->
+<!--                <v-tabs-items v-model="tab" class="mt-2" touchless>-->
+<!--                    <v-tab-item-->
+<!--                            value="tab-2"-->
+<!--                    >-->
+<!--                        <div v-if="!permisos.nexoVer" class="font-weight-bold grey&#45;&#45;text text&#45;&#45;lighten-1 text-center mt-10">-->
+<!--                            <v-icon color="warning" large left>mdi-alert-outline</v-icon>-->
+<!--                            No tiene permisos para ver ésta sección.-->
+<!--                        </div>-->
+<!--                    </v-tab-item>-->
+<!--                    <v-tab-item-->
+<!--                            value="tab-3"-->
+<!--                    >-->
+<!--                        <div v-if="!permisos.muestraVer" class="font-weight-bold grey&#45;&#45;text text&#45;&#45;lighten-1 text-center mt-10">-->
+<!--                            <v-icon color="error" large left>mdi-alert-outline</v-icon>-->
+<!--                            No tiene permisos para ver ésta sección.-->
+<!--                        </div>-->
+<!--                    </v-tab-item>-->
+<!--                </v-tabs-items>-->
             </v-container>
             <app-section-loader :status="loading"></app-section-loader>
         </v-card>
