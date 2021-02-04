@@ -116,7 +116,8 @@ export default {
                             sexo: context.props.value.sexo,
                             tipoIdentificacion: vm.tiposDocumentoIdentidad.find(x => x.id === context.props.value.tipo_identificacion).tipo,
                             identificacion: context.props.value.identificacion,
-                            celular: context.props.value.celular
+                            celular: context.props.value.celular,
+                            eps: context.props.value.nombre_eps
                           }
                         }
                       }
@@ -126,7 +127,7 @@ export default {
           }
         },
         {
-          text: 'Dirección',
+          text: 'Dirección Persona',
           align: 'left',
           sortable: false,
           component: {
@@ -144,6 +145,31 @@ export default {
                           ?  `${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).nombre}, ${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).departamento.nombre}`
                           : ''}
                                                         </v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'IPS',
+          align: 'left',
+          sortable: false,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.prestador ? this.value.prestador.nombre : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-1">${ this.value.prestador ? [this.value.prestador.codigohabilitacion ? 'CH: ' + this.value.prestador.codigohabilitacion : null, this.value.prestador.telefono ? 'Tel: ' + this.value.prestador.telefono : null].filter(x => x).join(', ') : '' }</v-list-item-subtitle>
 													</v-list-item-content>
 												</v-list-item>
 											`
