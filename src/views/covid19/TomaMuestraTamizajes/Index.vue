@@ -117,7 +117,7 @@ export default {
                             tipoIdentificacion: vm.tiposDocumentoIdentidad.find(x => x.id === context.props.value.tipo_identificacion).tipo,
                             identificacion: context.props.value.identificacion,
                             celular: context.props.value.celular,
-                            eps: context.props.value.nombre_eps
+                            nombre_eps: context.props.value.nombre_eps
                           }
                         }
                       }

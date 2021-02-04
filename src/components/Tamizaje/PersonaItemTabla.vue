@@ -46,8 +46,8 @@
                     </v-tooltip>
                 </v-list-item-title>
                 <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.tipoIdentificacion}} {{this.value.identificacion}}{{this.value.celular ? ', Cel. ' + this.value.celular : ''}}</v-list-item-subtitle>
-              <v-list-item-subtitle v-if="value.eps">
-                {{ value.eps }}
+              <v-list-item-subtitle v-if="value.nombre_eps">
+                {{ value.nombre_eps }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-content class="pa-0" v-if="!isNotFromNexos">
