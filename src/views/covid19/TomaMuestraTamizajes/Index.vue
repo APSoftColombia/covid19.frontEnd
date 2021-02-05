@@ -11,7 +11,6 @@
     >
       <filtros
           slot="filters"
-          v-if="permisos.filtrosTamizaje"
           ref="filtrosMuestras"
           :ruta-base="rutaBase"
           @filtra="val => goDatos(val)"
@@ -206,8 +205,8 @@ export default {
                       innerHTML: `
 												<v-list-item style="text-align: center">
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-1">${this.value.fecha_toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : 'Pendiente'}</v-list-item-title>
-														<v-list-item-title class="body-2">${this.value.fecha_toma_prueba && this.value.usuario_prueba ? this.value.usuario_prueba.name : ''}</v-list-item-title>
+														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'Muestra no tomada' : 'Pendiente'}</v-list-item-title>
+														<v-list-item-title class="body-2">${this.value.toma_prueba && this.value.usuario_prueba ? this.value.usuario_prueba.name : !this.value.toma_prueba && this.value.toma_prueba !== null ? this.value.razon_no_toma : ''}</v-list-item-title>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -243,7 +242,7 @@ export default {
   methods: {
     resetOptions(item) {
       item.options = []
-      if(!item.fecha_toma_prueba && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
+      if(!item.toma_prueba && item.toma_prueba === null && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
     },
     goDatos(val){
       this.dataTable.route = val;

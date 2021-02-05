@@ -42,7 +42,8 @@
         data: {
           estados: [
             {value: 1, text: 'Muestra Tomada'},
-            {value: 2, text: 'Muestra Pendiente'},
+            {value: 2, text: 'Muestra no Tomada'},
+            {value: 3, text: 'Muestra Pendiente'},
           ]
         }
       }

@@ -73,48 +73,82 @@
         </v-simple-table>
         <ValidationObserver ref="formToma" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row class="mt-3">
-            <v-col cols="12" md="6" class="pb-0">
-              <c-date
-                  v-model="fecha_toma_prueba"
+            <v-col cols="12">
+              <c-radio
+                  v-model="toma_prueba"
+                  :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
+                  itemValue="value"
+                  itemText="text"
+                  dense
                   rules="required"
-                  label="Fecha de toma"
-                  name="fecha de toma"
-                  :max="moment().format('YYYY-MM-DD')"
-              />
+                  name="toma la muestra"
+                  label="¿Toma la muestra?"
+              ></c-radio>
             </v-col>
-            <v-col cols="12" md="6" class="pb-0">
-              <v-menu
-                  ref="menu"
-                  v-model="menuHora"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  :return-value.sync="hora"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
+            <template v-if="toma_prueba">
+              <v-col cols="12" md="6" class="pb-0">
+                <c-date
+                    v-model="fecha_toma_prueba"
+                    rules="required"
+                    label="Fecha de toma"
+                    name="fecha de toma"
+                    :max="moment().format('YYYY-MM-DD')"
+                />
+              </v-col>
+              <v-col cols="12" md="6" class="pb-0">
+                <v-menu
+                    ref="menu"
+                    v-model="menuHora"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    :return-value.sync="hora"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="hora"
+                        label="Hora de toma"
+                        prepend-inner-icon="mdi-clock-time-four-outline"
+                        readonly
+                        outlined
+                        dense
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                      scrollable
+                      v-if="menuHora"
                       v-model="hora"
-                      label="Hora de toma"
-                      prepend-inner-icon="mdi-clock-time-four-outline"
-                      readonly
-                      outlined
-                      dense
-                      v-bind="attrs"
-                      v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-time-picker
-                    scrollable
-                    v-if="menuHora"
-                    v-model="hora"
-                    full-width
-                    format="24hr"
-                    @click:minute="$refs.menu.save(hora)"
-                ></v-time-picker>
-              </v-menu>
+                      full-width
+                      format="24hr"
+                      @click:minute="$refs.menu.save(hora)"
+                  ></v-time-picker>
+                </v-menu>
+              </v-col>
+            </template>
+            <template v-if="!toma_prueba && toma_prueba !== null">
+              <v-col cols="12" class="pb-0">
+                <c-select-complete
+                    v-model="razon_no_toma"
+                    :items="razones_no_toma_muestra || []"
+                    rules="required"
+                    name="Razon de la no toma de muestra"
+                    dense
+                    label="Razón por la cual no toma la muestra"
+                ></c-select-complete>
+              </v-col>
+            </template>
+            <v-col cols="12" class="pb-0">
+              <c-text-area
+                  v-model="observaciones"
+                  rules="required"
+                  name="Observaciones"
+                  label="Observaciones"
+              ></c-text-area>
             </v-col>
           </v-row>
         </ValidationObserver>
@@ -147,7 +181,11 @@ export default {
     muestra: null,
     id: null,
     hora: null,
-    fecha_toma_prueba: null
+    fecha_toma_prueba: null,
+    toma_prueba: null,
+    razon_no_toma: null,
+    observaciones: null,
+    razones_no_toma_muestra: null
   }),
   computed: {
     ...mapGetters([
@@ -155,6 +193,15 @@ export default {
       'departamentos',
       'municipiosTotal'
     ])
+  },
+  watch: {
+    'toma_prueba': {
+      handler(val){
+        if(!val){
+          this.razon_no_toma = null
+        }
+      }
+    }
   },
   methods: {
     open(muestra) {
@@ -172,6 +219,9 @@ export default {
         this.id = null
         this.hora = null
         this.fecha_toma_prueba = null
+        this.toma_prueba = null
+        this.razon_no_toma = null
+        this.observaciones = null
         this.$refs.formToma.reset()
       }, 400)
     },
@@ -181,7 +231,10 @@ export default {
           this.loading = true
           this.axios.put(`actualizar-pruebas/${this.id}`, {
             id: this.id,
-            fecha_toma_prueba: `${this.fecha_toma_prueba} ${this.hora}`
+            fecha_toma_prueba: this.toma_prueba ? this.fecha_toma_prueba + ' ' + this.hora : null,
+            toma_prueba: this.toma_prueba,
+            razon_no_toma: this.razon_no_toma,
+            observaciones: this.observaciones
           })
               .then(() => {
                 this.$emit('guardado')
@@ -201,7 +254,21 @@ export default {
               })
         }
       })
-    }
+    },
+    getRazonesNoTomaMuestra(){
+      this.axios.get('/ajustes-generales/iniciales').then(response => {
+        this.razones_no_toma_muestra = response.data.parametros.razones_no_toma_muestra
+      }).catch(error => {
+        this.$store.commit('snackbar', {
+          color: 'error',
+          message: `al conseguir parametros`,
+          error: error
+        })
+      })
+    },
+  },
+  created() {
+    this.getRazonesNoTomaMuestra()
   }
 }
 </script>
