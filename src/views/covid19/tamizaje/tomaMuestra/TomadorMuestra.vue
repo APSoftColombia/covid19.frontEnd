@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="420">
+  <v-dialog v-model="dialog" persistent max-width="600">
     <v-card>
       <v-card-title>
         Toma de muestra
@@ -11,7 +11,7 @@
       <v-container fluid>
         <ValidationObserver ref="formToma" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row>
-            <v-col cols="12" class="py-0">
+            <v-col cols="6" class="py-0">
               <c-date
                   v-model="fecha_toma_prueba"
                   rules="required"
@@ -20,7 +20,7 @@
                   :max="moment().format('YYYY-MM-DD')"
               />
             </v-col>
-            <v-col cols="12" class="pb-0">
+            <v-col cols="6" class="py-0">
               <v-menu
                   ref="menu"
                   v-model="menuHora"
@@ -54,6 +54,38 @@
                 ></v-time-picker>
               </v-menu>
             </v-col>
+            <v-col cols="12">
+              <c-radio
+                  v-model="toma_prueba"
+                  :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
+                  itemValue="value"
+                  itemText="text"
+                  dense
+                  rules="required"
+                  name="toma la muestra"
+                  label="¿Toma la muestra?"
+              ></c-radio>
+            </v-col>
+            <template v-if="!toma_prueba && toma_prueba !== null">
+              <v-col cols="12" class="pb-0">
+                <c-select-complete
+                    v-model="razon_no_toma"
+                    :items="razones_no_toma_muestra || []"
+                    rules="required"
+                    name="Razon de la no toma de muestra"
+                    dense
+                    label="Razón por la cual no toma la muestra"
+                ></c-select-complete>
+              </v-col>
+            </template>
+            <v-col cols="12" class="pb-0">
+              <c-text-area
+                  v-model="observaciones"
+                  rules="required"
+                  name="Observaciones"
+                  label="Observaciones"
+              ></c-text-area>
+            </v-col>
           </v-row>
         </ValidationObserver>
         <v-card-actions>
@@ -85,7 +117,11 @@ export default {
     loading: false,
     id: null,
     hora: null,
-    fecha_toma_prueba: null
+    fecha_toma_prueba: null,
+    toma_prueba: null,
+    razon_no_toma: null,
+    observaciones: null,
+    razones_no_toma_muestra: null
   }),
   computed: {
     ...mapGetters([
@@ -109,6 +145,9 @@ export default {
         this.id = null
         this.hora = null
         this.fecha_toma_prueba = null
+        this.toma_prueba = null
+        this.razon_no_toma = null
+        this.observaciones = null
         this.$refs.formToma.reset()
       }, 400)
     },
@@ -120,12 +159,18 @@ export default {
           if (this.id) {
             request = this.axios.put(`actualizar-pruebas/${this.id}`, {
               id: this.id,
-              fecha_toma_prueba: `${this.fecha_toma_prueba} ${this.hora}`
+              fecha_toma_prueba: `${this.fecha_toma_prueba} ${this.hora}`,
+              toma_prueba: this.toma_prueba,
+              razon_no_toma: this.razon_no_toma,
+              observaciones: this.observaciones
             })
           } else {
             request = this.axios.post(`toma-prueba`, {
               fecha_toma_prueba: `${this.fecha_toma_prueba} ${this.hora}`,
-              tamizaje_id: this.tamizaje.id
+              tamizaje_id: this.tamizaje.id,
+              toma_prueba: this.toma_prueba,
+              razon_no_toma: this.razon_no_toma,
+              observaciones: this.observaciones
             })
           }
           request
@@ -147,7 +192,21 @@ export default {
               })
         }
       })
-    }
+    },
+    getRazonesNoTomaMuestra(){
+      this.axios.get('/ajustes-generales/iniciales').then(response => {
+        this.razones_no_toma_muestra = response.data.parametros.razones_no_toma_muestra
+      }).catch(error => {
+        this.$store.commit('snackbar', {
+          color: 'error',
+          message: `al conseguir parametros`,
+          error: error
+        })
+      })
+    },
+  },
+  created() {
+    this.getRazonesNoTomaMuestra()
   }
 }
 </script>

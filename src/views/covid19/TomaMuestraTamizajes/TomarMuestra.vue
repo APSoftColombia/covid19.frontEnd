@@ -73,6 +73,49 @@
         </v-simple-table>
         <ValidationObserver ref="formToma" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <v-row class="mt-3">
+            <v-col cols="12" md="6" class="pb-0">
+              <c-date
+                  v-model="fecha_toma_prueba"
+                  rules="required"
+                  label="Fecha de toma"
+                  name="fecha de toma"
+                  :max="moment().format('YYYY-MM-DD')"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="pb-0">
+              <v-menu
+                  ref="menu"
+                  v-model="menuHora"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  :return-value.sync="hora"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                      v-model="hora"
+                      label="Hora de toma"
+                      prepend-inner-icon="mdi-clock-time-four-outline"
+                      readonly
+                      outlined
+                      dense
+                      v-bind="attrs"
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                    scrollable
+                    v-if="menuHora"
+                    v-model="hora"
+                    full-width
+                    format="24hr"
+                    @click:minute="$refs.menu.save(hora)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
             <v-col cols="12">
               <c-radio
                   v-model="toma_prueba"
@@ -85,51 +128,6 @@
                   label="¿Toma la muestra?"
               ></c-radio>
             </v-col>
-            <template v-if="toma_prueba">
-              <v-col cols="12" md="6" class="pb-0">
-                <c-date
-                    v-model="fecha_toma_prueba"
-                    rules="required"
-                    label="Fecha de toma"
-                    name="fecha de toma"
-                    :max="moment().format('YYYY-MM-DD')"
-                />
-              </v-col>
-              <v-col cols="12" md="6" class="pb-0">
-                <v-menu
-                    ref="menu"
-                    v-model="menuHora"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    :return-value.sync="hora"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        v-model="hora"
-                        label="Hora de toma"
-                        prepend-inner-icon="mdi-clock-time-four-outline"
-                        readonly
-                        outlined
-                        dense
-                        v-bind="attrs"
-                        v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker
-                      scrollable
-                      v-if="menuHora"
-                      v-model="hora"
-                      full-width
-                      format="24hr"
-                      @click:minute="$refs.menu.save(hora)"
-                  ></v-time-picker>
-                </v-menu>
-              </v-col>
-            </template>
             <template v-if="!toma_prueba && toma_prueba !== null">
               <v-col cols="12" class="pb-0">
                 <c-select-complete
@@ -231,7 +229,7 @@ export default {
           this.loading = true
           this.axios.put(`actualizar-pruebas/${this.id}`, {
             id: this.id,
-            fecha_toma_prueba: this.toma_prueba ? this.fecha_toma_prueba + ' ' + this.hora : null,
+            fecha_toma_prueba: this.fecha_toma_prueba + ' ' + this.hora ,
             toma_prueba: this.toma_prueba,
             razon_no_toma: this.razon_no_toma,
             observaciones: this.observaciones
