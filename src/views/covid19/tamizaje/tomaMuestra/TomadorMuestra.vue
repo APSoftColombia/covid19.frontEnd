@@ -123,6 +123,15 @@ export default {
     observaciones: null,
     razones_no_toma_muestra: null
   }),
+  watch: {
+    'toma_prueba': {
+      handler(val){
+        if(!val){
+          this.razon_no_toma = null
+        }
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'tiposDocumentoIdentidad',
