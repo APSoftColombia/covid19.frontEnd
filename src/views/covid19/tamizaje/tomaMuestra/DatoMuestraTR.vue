@@ -34,7 +34,12 @@
       </v-list-item>
     </td>
     <td>
-      {{ toma.fecha_toma_prueba ? moment(toma.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : '' }}
+      <v-list-item class="pa-0" v-if="toma && toma.user_prueba">
+        <v-list-item-content class="pa-0">
+          <v-list-item-title class="body-1">{{toma.toma_prueba ? 'Tomada: ' + this.moment(toma.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !toma.toma_prueba && toma.toma_prueba !== null ? 'No Tomada: ' + this.moment(toma.updated_at).format('DD/MM/YYYY HH:mm') : ''}}</v-list-item-title>
+          <v-list-item-subtitle class="body-2">{{!toma.toma_prueba && toma.toma_prueba !== null ? toma.razon_no_toma : ''}}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
     </td>
     <td>
       <v-tooltip top v-if="puedeCrear && autorizado && !toma.fecha_toma_prueba">

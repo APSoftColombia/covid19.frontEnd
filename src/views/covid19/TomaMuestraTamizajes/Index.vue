@@ -205,8 +205,9 @@ export default {
                       innerHTML: `
 												<v-list-item style="text-align: center">
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'Muestra no tomada' : 'Pendiente'}</v-list-item-title>
+														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'No Tomada: ' + this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : 'Pendiente'}</v-list-item-title>
 														<v-list-item-title class="body-2">${this.value.toma_prueba && this.value.usuario_prueba ? this.value.usuario_prueba.name : !this.value.toma_prueba && this.value.toma_prueba !== null ? this.value.razon_no_toma : ''}</v-list-item-title>
+														<v-list-item-title class="body-2">${ !this.value.toma_prueba && this.value.toma_prueba === 0 ? this.value.usuario_prueba.name : ''}</v-list-item-title>
 													</v-list-item-content>
 												</v-list-item>
 											`
