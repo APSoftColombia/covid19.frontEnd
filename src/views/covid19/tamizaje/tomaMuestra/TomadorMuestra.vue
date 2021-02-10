@@ -81,7 +81,6 @@
             <v-col cols="12" class="pb-0">
               <c-text-area
                   v-model="observaciones"
-                  rules="required"
                   name="Observaciones"
                   label="Observaciones"
               ></c-text-area>
