@@ -218,7 +218,7 @@
             probarSql () {
                 this.loading = true
                 this.axios.post(`test-query`, {query: this.item.query})
-                    .then(response => {
+                    .then(() => {
                         this.$store.commit('snackbar', {color: 'success', message: `La sentencia SQL se ha probado correctamente.`})
                         this.loading = false
                     })
