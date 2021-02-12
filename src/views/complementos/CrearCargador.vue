@@ -191,17 +191,39 @@
                     ></codemirror>
                   </v-card-text>
                   <v-card-actions>
-                    <c-texto
-                        v-model="item.orden"
-                        label="Orden"
-                        name="orden"
-                        rules="required"
-                      >
-                      </c-texto>
-                    <v-spacer></v-spacer>
-                    <v-btn color="error" @click.stop="deleteQuery(item)">
-                      <v-icon dark> mdi-delete </v-icon>
-                    </v-btn>
+                    <v-row>
+                      <v-col class="py-0" cols="6">
+                        <v-checkbox
+                          v-model="item.makeRollback"
+                          label="Query: hace rollback"
+                          :true-value="1"
+                          :false-value="0"
+                        ></v-checkbox>
+                      </v-col>
+                      <v-col class="py-0" cols="6">
+                        <v-checkbox
+                          v-model="item.makeResult"
+                          label="Query: arroja resultado"
+                          :true-value="1"
+                          :false-value="0"
+                        ></v-checkbox>
+                      </v-col>
+                      <v-col cols="8">
+                        <c-texto
+                          v-model="item.orden"
+                          label="Orden"
+                          name="orden"
+                          rules="required"
+                        >
+                        </c-texto>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-btn color="error" @click.stop="deleteQuery(item)">
+                          <v-icon dark> mdi-delete</v-icon>
+                          Borrar query
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-card-actions>
                 </v-card>
               </v-tab-item>
@@ -435,7 +457,10 @@ export default {
     },
     addQuery() {
       let query = {
-        query: "",
+        query: null,
+        orden: null,
+        makeRollback: false,
+        makeResult: false
       };
       this.$emit("addQuery", query);
     },

@@ -94,6 +94,39 @@
       </v-card-text>
     </v-expand-transition>
     <app-section-loader :status="loading"></app-section-loader>
+
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600px"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="headline">Carga exitosa: Resultados del cargador</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-data-table
+              dense
+              :headers="cabecerasResult"
+              :items="successResult"
+              hide-default-footer
+              class="elevation-1"
+            ></v-data-table>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            depressed
+            text
+            @click="dialog = false"
+          >
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -119,10 +152,13 @@ export default {
     },
   },
   data: () => ({
+    dialog: false,
     hover: true,
     loading: false,
     archivo: null,
     errores: [],
+    successResult: [],
+    cabecerasResult: [],
   }),
   watch: {
     archivo: {
@@ -201,18 +237,63 @@ export default {
           this.loading = true;
           let data = new FormData();
           data.append("archivo", this.archivo);
-          this.axios
-            .post(`execute-cargador/${this.idCargador}`, data)
-            .then((response) => {
-              console.log("response", response);
-              this.$store.commit("snackbar", {
-                color: "success",
-                message: `Carga exitosa`,
-              });
+          this.axios({
+              url: `execute-cargador/${this.idCargador}`,
+              method: 'POST',
+              responseType: 'blob',
+              data: data
+              })
+            .then(async (response) => {
+              if (response.status === 201) {
+                let text = await response.data.text();
+                let result = JSON.parse(text).success;
+                if (result.length) {
+                  Object.keys(result[0]).forEach(item => {
+                    this.cabecerasResult.push(
+                      {
+                        text: item,
+                        value: item,
+                        sorteable: false
+                      }
+                    );
+                  });
+                  this.successResult = result;
+                  this.dialog = true;
+                }else {
+                  this.$store.commit("snackbar", {
+                    color: "success",
+                    message: `Carga exitosa`,
+                  });
+                }
+              }else {
+                this.$store.commit("snackbar", {
+                  color: "error",
+                  message: `Carga interrumpida: Revisar archivo de errores.`,
+                });
+
+                const file = new Blob(
+                    [response.data],
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                const fileURL = URL.createObjectURL(file);
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                a.href = fileURL
+                a.download = 'errors.xlsx'
+                a.click();
+              }
+              
               this.loading = false;
             })
             .catch((error) => {
-              console.log("error", error);
+              error.response.data.text().then(text => {
+                let errorText = JSON.parse(text);
+                this.loading = false;
+                this.$store.commit("snackbar", {
+                  color: "error",
+                  message: errorText.message
+                });
+              });
               if (
                 error &&
                 error.response &&
@@ -222,12 +303,6 @@ export default {
               ) {
                 this.errores = error.response.data.errors;
               }
-              this.loading = false;
-              this.$store.commit("snackbar", {
-                color: "error",
-                message: `al procesar el archivo.`,
-                error: error,
-              });
             });
         }
       });
