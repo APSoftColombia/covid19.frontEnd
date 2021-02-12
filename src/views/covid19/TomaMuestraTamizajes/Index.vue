@@ -6,6 +6,7 @@
         v-model="dataTable"
         @resetOption="item => resetOptions(item)"
         @tomarmuestra="item => tomarmuestra(item)"
+        @tomasFallidas="item => tomasFallidas(item)"
         @apply-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.aplicaFiltros()"
         @clear-filters="$refs && $refs.filtrosMuestras && $refs.filtrosMuestras.limpiarFiltros()"
     >
@@ -20,6 +21,10 @@
         ref="tomadormuestra"
         @guardado="tomaRegistrada"
     />
+    <muestras-fallidas
+        ref="muestraFallida"
+        @guardado="tomasFallidas"
+    />
     <seguimiento
         ref="seguimiento"
     />
@@ -30,6 +35,7 @@
 import {mapGetters} from 'vuex'
 import PersonaItemTabla from '../../../components/Tamizaje/PersonaItemTabla'
 import TomarMuestra from "./TomarMuestra";
+import MuestrasFallidas from "./MuestrasFallidas";
 import BotonTooltip from "../../../components/Tamizaje/BotonTooltip";
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const Filtros = () => import('Views/covid19/TomaMuestraTamizajes/filtros.vue')
@@ -38,6 +44,7 @@ export default {
   components: {
     TomarMuestra,
     Seguimiento,
+    MuestrasFallidas,
     Filtros
   },
   data: (vm) => ({
@@ -205,7 +212,7 @@ export default {
                       innerHTML: `
 												<v-list-item style="text-align: center">
 													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'No Tomada: ' + this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : 'Pendiente'}</v-list-item-title>
+														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'No Tomada: ' + this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : this.value.fecha_reprogramacion ? 'Reprogramada: ' + this.moment(this.value.fecha_reprogramacion).format('DD/MM/YYYY') : 'Pendiente'}</v-list-item-title>
 														<v-list-item-title class="body-2">${this.value.toma_prueba && this.value.usuario_prueba ? this.value.usuario_prueba.name : !this.value.toma_prueba && this.value.toma_prueba !== null ? this.value.razon_no_toma : ''}</v-list-item-title>
 														<v-list-item-title class="body-2">${ !this.value.toma_prueba && this.value.toma_prueba === 0 ? this.value.usuario_prueba.name : ''}</v-list-item-title>
 													</v-list-item-content>
@@ -244,6 +251,10 @@ export default {
     resetOptions(item) {
       item.options = []
       if(!item.toma_prueba && item.toma_prueba === null && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
+      if(item.fallidas && item.fallidas.length && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomasFallidas', icon: 'mdi-alert-box-outline', tooltip: 'Tomas Fallidas', color:'warning'})
+    },
+    tomasFallidas(item){
+      this.$refs.muestraFallida.open(item.fallidas)
     },
     goDatos(val){
       this.dataTable.route = val;

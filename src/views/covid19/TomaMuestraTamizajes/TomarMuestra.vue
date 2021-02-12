@@ -139,6 +139,15 @@
                     label="Razón por la cual no toma la muestra"
                 ></c-select-complete>
               </v-col>
+              <v-col cols="12" md="6" class="pb-0 mx-auto" v-if="razon_no_toma == 'Prueba Reprogramada por causa particular'">
+                <c-date
+                    v-model="fecha_reprogramacion"
+                    rules="required"
+                    label="Fecha de reprogramación"
+                    name="fecha de reprogramación"
+                    :min="moment().format('YYYY-MM-DD')"
+                />
+              </v-col>
             </template>
             <v-col cols="12" class="pb-0">
               <c-text-area
@@ -182,7 +191,8 @@ export default {
     toma_prueba: null,
     razon_no_toma: null,
     observaciones: null,
-    razones_no_toma_muestra: null
+    razones_no_toma_muestra: null,
+    fecha_reprogramacion: null
   }),
   computed: {
     ...mapGetters([
@@ -196,6 +206,13 @@ export default {
       handler(val){
         if(!val){
           this.razon_no_toma = null
+        }
+      }
+    },
+    'razon_no_toma': {
+      handler(val){
+        if(val !== 'Prueba Reprogramada por causa particular'){
+          this.fecha_reprogramacion = null
         }
       }
     }
@@ -219,6 +236,7 @@ export default {
         this.toma_prueba = null
         this.razon_no_toma = null
         this.observaciones = null
+        this.fecha_reprogramacion = null
         this.$refs.formToma.reset()
       }, 400)
     },
@@ -231,7 +249,8 @@ export default {
             fecha_toma_prueba: this.fecha_toma_prueba + ' ' + this.hora ,
             toma_prueba: this.toma_prueba,
             razon_no_toma: this.razon_no_toma,
-            observaciones: this.observaciones
+            observaciones: this.observaciones,
+            fecha_reprogramacion: this.fecha_reprogramacion
           })
               .then(() => {
                 this.$emit('guardado')
