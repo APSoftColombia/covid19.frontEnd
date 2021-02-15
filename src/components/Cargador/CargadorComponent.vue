@@ -265,6 +265,7 @@ export default {
                     message: `Carga exitosa`,
                   });
                 }
+                this.loading = false;
               }else {
                 this.$store.commit("snackbar", {
                   color: "error",
