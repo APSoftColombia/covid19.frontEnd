@@ -217,6 +217,7 @@ export default {
       this.$refs.formUsuario.validate().then(result => {
         if (result) {
           this.loading = true
+          this.usuario.eps_id = this.usuario.eps_id ? this.usuario.eps_id : null
           let request = this.usuario.id ? this.axios.put(`user/${this.usuario.id}`, this.usuario) : this.axios.post(`user`, this.usuario)
           request
               .then(response => {
