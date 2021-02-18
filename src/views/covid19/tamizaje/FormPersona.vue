@@ -415,7 +415,7 @@ export default {
             id: 2,
             mensaje: `El documento ${tm0.identificacion} ya tiene ERP activa y está pendiente por Asignación de Caso de Estudio.`
           }
-        } else if (tm0.medico_id && (tm0.evolucion !== 'Mejora Total (Curado)' && tm0.evolucion !== 'Falleció')) {
+        } else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 3,

@@ -154,7 +154,9 @@
                   v-model="observaciones"
                   name="Observaciones"
                   label="Observaciones"
-              ></c-text-area>
+                  name="Observaciones"
+                  :rules="!toma_prueba ? 'required' : ''"
+              />
             </v-col>
           </v-row>
         </ValidationObserver>
