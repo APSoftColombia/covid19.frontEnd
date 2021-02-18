@@ -406,7 +406,7 @@ export default {
         this.$emit('verificado', this.identificacionVerificada)
         let tm0 = response.tamizaje[0]
         let mensaje = null
-        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6') {
+        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
           this.identificacionVerificada = 1
           mensaje = {id: 1, mensaje: 'Se puede continuar con la creación de la ERP.'}
         } else if (tm0.total_riesgo && !tm0.medico_id) {
