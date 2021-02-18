@@ -696,7 +696,7 @@ export default {
         color: 'blue-grey darken-4'
       })
       // if (this.permisos.tamizajeAsignarMedico && item.total_riesgo && !item.medico_id) item.options.push({
-      if (item.total_riesgo && !item.medico_id) item.options.push({
+      if (item.total_riesgo && !item.medico_id && !!(item.localiza_persona && item.contesta_encuesta)) item.options.push({
         event: 'asignarmedico',
         icon: 'fas fa-hand-holding-medical',
         tooltip: `${item.orden_medica_id ? 'Reasignar Médico' : 'Asignar como Caso de Estudio'}`,

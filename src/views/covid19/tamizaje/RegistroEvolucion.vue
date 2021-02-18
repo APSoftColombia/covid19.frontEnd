@@ -743,7 +743,8 @@ export default {
     ]),
     clasificacionesCovidSeleccionables() {
       if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {
-        return this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes(this.tamizaje.positivo_covid ? 'CC' : 'CP')) || x.text === 'NC')
+        let previstos = this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes(this.tamizaje.positivo_covid ? 'CC' : 'CP')) || x.text === 'NC')
+        return previstos
       }
       return []
     },
