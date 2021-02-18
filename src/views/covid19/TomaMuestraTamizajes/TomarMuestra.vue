@@ -152,7 +152,6 @@
             <v-col cols="12" class="pb-0">
               <c-text-area
                   v-model="observaciones"
-                  name="Observaciones"
                   label="Observaciones"
                   name="Observaciones"
                   :rules="!toma_prueba ? 'required' : ''"
