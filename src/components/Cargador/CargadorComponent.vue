@@ -247,7 +247,8 @@ export default {
               if (response.status === 201) {
                 let text = await response.data.text();
                 let result = JSON.parse(text).success;
-                if (result.length) {
+                if (result) {
+                  console.log("result");
                   Object.keys(result[0]).forEach(item => {
                     this.cabecerasResult.push(
                       {
@@ -259,11 +260,13 @@ export default {
                   });
                   this.successResult = result;
                   this.dialog = true;
+                  this.loading = false;
                 }else {
                   this.$store.commit("snackbar", {
                     color: "success",
                     message: `Carga exitosa`,
                   });
+                  this.loading = false;
                 }
                 this.loading = false;
               }else {
