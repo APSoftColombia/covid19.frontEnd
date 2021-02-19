@@ -46,7 +46,19 @@
                                 rules="required"
                             ></c-text-area>
                         </v-col>
-                        <v-col class="pb-0" cols="6">
+                        <v-col class="pb-0" cols="4">
+                            <ValidationProvider name="alerta" rules="required" v-slot="{ errors }">
+                            <v-checkbox
+                                v-model="bitacora.alerta"
+                                label="Alerta"                                
+                                :true-value="1"
+                                :false-value="0"
+                                :error-messages="errors"                                
+                            >
+                            </v-checkbox>
+                            </ValidationProvider>
+                        </v-col>
+                        <v-col class="pb-0" cols="4">
                             <ValidationProvider name="alerta inmediata" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="bitacora.alerta_inmediata"
@@ -58,7 +70,7 @@
                             </v-checkbox>
                             </ValidationProvider>
                         </v-col>
-                        <v-col class="pb-0" cols="6">
+                        <v-col class="pb-0" cols="4">
                             <ValidationProvider name="patologia" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="bitacora.paciente_no_rcv"
@@ -156,9 +168,9 @@
                                     :key="index"
                                     >
                                     <td>{{ complementosRCV ? complementosRCV.ref_tipificaciones.find(x => x.id == item.reftipificacion_id).descripcion: '-' }}</td>
-                                    <td>{{ item.codigo_servicio }}</td>
                                     <td>{{ item.fecha_solicitud }}</td>
                                     <td>{{ item.fecha_prestacion }}</td>
+                                    <td>{{ item.resultado }}</td>
                                     <td>
                                         <v-icon
                                             small
@@ -241,13 +253,14 @@ export default {
             descripcion_alerta_inmediata: null,
             remision_por_calidad: 0,
             remitir_a_aseguramiento: 0,
-            razon_remision_calidad: null
+            razon_remision_calidad: null,
+            alerta: 0
         },
         headers: [
             { text: 'Tipificacion', value: 'reftipificacion_id'},
-            { text: 'Cod. Servicio', value: 'codigo_servicio' },
             { text: 'F. Solicitud', value: 'fecha_solicitud' },
             { text: 'F. Prestacion', value: 'fecha_prestacion' },
+            { text: 'Observaciones', value: 'resultado' },
             { text: 'Opciones', value: 'actions'}
         ],
     }),

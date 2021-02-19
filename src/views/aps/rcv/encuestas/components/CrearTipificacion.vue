@@ -25,7 +25,7 @@
                             >
                             </c-select-complete>
                         </v-col>
-                        <v-col class="pb-0" cols="12" v-if="tipificacion.reftipificacion_id && listTipificaciones.find(x => x.id == tipificacion.reftipificacion_id).pedir_codigo == 'Si'">
+                        <!-- <v-col class="pb-0" cols="12" v-if="tipificacion.reftipificacion_id && listTipificaciones.find(x => x.id == tipificacion.reftipificacion_id).pedir_codigo == 'Si'">
                             <buscador-cups
                                 ref="buscadorcups"
                                 label="Codigo Servicio"
@@ -33,14 +33,13 @@
                                 v-model="tipificacion.codigo_servicio"
                                 rules="required"
                             ></buscador-cups>
-                        </v-col>
+                        </v-col> -->
                         <v-col class="pb-0" cols="6">
                             <c-date
                                 v-model="tipificacion.fecha_solicitud"
                                 placeholder="Fecha de Solicitud"
                                 :max="moment().format('YYYY-MM-DD')"
                                 name="fecha solicitud"
-                                rules="required"
                             >
                             </c-date>
                         </v-col>
@@ -95,7 +94,7 @@
 </template>
 
 <script>
-const BuscadorCups = () => import('Views/aps/rcv/encuestas/components/BuscadorCups')
+// const BuscadorCups = () => import('Views/aps/rcv/encuestas/components/BuscadorCups')
 export default {
     name: "CrearTipificacion",
     props: {
@@ -105,7 +104,7 @@ export default {
         }
     },
     components: {
-        BuscadorCups
+        // BuscadorCups
     },
     data: () => ({
         isEdit: false,
