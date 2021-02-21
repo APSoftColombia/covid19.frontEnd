@@ -10,6 +10,7 @@
                         @resetOption="item => resetOptions(item)"
                         @verBitacoras="item => verBitacoras(item)"
                         @apply-filters="$refs && $refs.filtrosBitacorasRcv && $refs.filtrosBitacorasRcv.aplicaFiltros()"
+                        @clear-filters="$refs && $refs.filtrosBitacorasRcv && $refs.filtrosBitacorasRcv.limpiarFiltros()"
                     >
                     <template slot="top-actions-right">
                         <v-btn
