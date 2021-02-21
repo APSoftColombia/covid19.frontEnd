@@ -2,31 +2,6 @@
 	<v-container fluid>
 		<page-title-bar title="Complementos"></page-title-bar>
 		<v-row>
-      <v-col cols="12" v-if="esSuperAdmin">
-        <v-card>
-          <v-list two-line>
-            <v-list-item>
-              <v-list-item-avatar color="red">
-                <v-icon color="white">mdi-alert-plus</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">Alerta de Actualizaciones</v-list-item-title>
-                <v-list-item-subtitle>Lanzamiento de alerta de actualización de datos y/o desarrollo, para todos los usuarios del proyecto.</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon x-large color="primary" @click.stop="setAlerta" v-on="on" :loading="loadingAlerta">
-                      <v-icon x-large>mdi-reload-alert</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Lanzar Alerta</span>
-                </v-tooltip>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
 			<v-col cols="12">
 				<v-card>
 					<v-list two-line>
@@ -76,29 +51,11 @@
 					</v-list>
 				</v-card>
 			</v-col>
-      <!--
-      <v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
-        <v-card>
-          <v-list two-line>
-            <v-list-item>
-              <v-list-item-avatar color="green">
-                <v-icon color="white">fas fa-file-csv</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title class="font-weight-bold">Carga Masiva de Registros</v-list-item-title>
-                <v-list-item-subtitle>Carga masiva de registros SIVIGILA.</v-list-item-subtitle>
-              </v-list-item-content>
-              <cargador-seguimientos-sivigila></cargador-seguimientos-sivigila>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-      -->
       <v-col cols="12" v-if="datosEmpresa && datosEmpresa.url_pwa">
         <v-card>
           <v-list two-line>
             <v-list-item>
-              <v-list-item-avatar color="warning">
+              <v-list-item-avatar color="purple">
                 <v-icon color="white">mdi-application</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
@@ -135,33 +92,6 @@
           </v-snackbar>
         </v-card>
       </v-col>
-
-      <v-col cols="12">
-				<v-card>
-					<v-list two-line>
-						<v-list-item>
-							<v-list-item-avatar color="primary">
-								<v-icon color="white">mdi-auto-fix</v-icon>
-							</v-list-item-avatar>
-							<v-list-item-content>
-								<v-list-item-title class="font-weight-bold">Creacion y Configuracion de cargadores</v-list-item-title>
-								<v-list-item-subtitle>Crea y configura los elementos necesarios para un Cargador masivo de informacion</v-list-item-subtitle>
-							</v-list-item-content>
-							<v-list-item-action>
-								<v-tooltip left>
-									<template v-slot:activator="{ on }">
-										<v-btn icon x-large color="primary" @click.stop="openConfigCargador" v-on="on">
-											<v-icon>mdi-hexagon-outline</v-icon>
-										</v-btn>
-									</template>
-									<span>Explorar</span>
-								</v-tooltip>
-							</v-list-item-action>
-						</v-list-item>
-					</v-list>
-				</v-card>
-			</v-col>
-      <configuracion-cargador ref="configCargador"></configuracion-cargador>
 		</v-row>
 	</v-container>
 </template>
@@ -169,17 +99,12 @@
 <script>
 	import { mapGetters } from 'vuex'
   const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
-  // const CargadorSeguimientosSivigila = () => import('Views/complementos/CargadorRegistrosSIVIGILA')
-  const ConfiguracionCargador = () => import('Views/complementos/ConfiguracionCargador')
 	export default {
 		components: {
-			CargadorSeguimientos,
-      // CargadorSeguimientosSivigila,
-      ConfiguracionCargador
+			CargadorSeguimientos
 		},
 		data: () => ({
       enlaceCopiado: false,
-      loadingAlerta: false,
 			loadingGenerales: false
 		}),
     computed: {
@@ -200,16 +125,7 @@
 			getAjustesGenerales () {
 				this.loadingGenerales = true
 				this.$store.dispatch('reloadStorage')
-			},
-      setAlerta () {
-				this.loadingAlerta = true
-				this.$store.dispatch('setVersionFirebase').then(() => {
-          this.loadingAlerta = false
-        })
-      },
-      openConfigCargador() {
-        this.$refs.configCargador.open();
-      }
+			}
 		}
 	}
 </script>

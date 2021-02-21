@@ -12,6 +12,8 @@ const Poblacion = () => import('Views/poblacion/Poblacion')
 const Indicadores = () => import('Views/indicadores/Indicadores')
 const Resultados = () => import('Views/encuestas/ResultadoEncuesta')
 const Usuarios = () => import('Views/usuarios/Usuarios')
+const RolesPermisos = () => import('Views/rolesPermisos/RolesPermisos')
+const HerramientasGestion = () => import('Views/herramientasGestion/HerramientasGestion')
 
 const Mapa = () => import('Views/mapa/Mapa')
 
@@ -597,6 +599,34 @@ export default {
             avatar: {
                icon: 'mdi-calendar-plus',
                color: 'purple',
+            }
+         }
+      },
+      {
+         path: 'roles-permisos',
+         name: 'RolesPermisos',
+         component: RolesPermisos,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'rolesPermisos-index',
+            avatar: {
+               icon: 'mdi-account-key',
+               color: 'purple',
+            }
+         }
+      },
+      {
+         path: 'herramientas-gestion',
+         name: 'HerramientasGestion',
+         component: HerramientasGestion,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'herramientasGestion-index',
+            avatar: {
+               icon: 'fas fa-toolbox',
+               color: 'indigo',
             }
          }
       }

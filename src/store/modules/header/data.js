@@ -30,7 +30,7 @@ export const itemsMenu = [
         icon: 'fas fa-users',
         color: 'blue',
         routeName: 'Usuarios',
-        typeRoute: 'general'
+        typeRoute: 'seguridad'
     },
     {
         id: 5,
@@ -118,7 +118,7 @@ export const itemsMenu = [
         icon: 'fas fa-chart-pie',
         color: 'deep-purple',
         routeName: 'IndicadoresCovid',
-        typeRoute: 'covid'
+        typeRoute: 'reportesIndicadoresCovid'
     },
     {
         id: 16,
@@ -126,7 +126,7 @@ export const itemsMenu = [
         icon: 'mdi-file-table',
         color: 'pink',
         routeName: 'ReportesCovid',
-        typeRoute: 'covid'
+        typeRoute: 'reportesIndicadoresCovid'
     },
     {
         id: 17,
@@ -216,7 +216,7 @@ export const itemsMenu = [
         icon: 'mdi-file-table',
         color: 'blue darken-3',
         routeName: 'InformeEjecutivoERP',
-        typeRoute: 'covid'
+        typeRoute: 'reportesIndicadoresCovid'
     },
     {
         id: 32,
@@ -234,7 +234,7 @@ export const itemsMenu = [
         icon: 'mdi-file-table',
         color: 'deep-purple',
         routeName: 'ReportesDeLey',
-        typeRoute: 'covid'
+        typeRoute: 'reportesIndicadoresCovid'
     },
     {
         id: 37,
@@ -243,7 +243,7 @@ export const itemsMenu = [
         icon: 'mdi-file-table',
         color: 'indigo darken-4',
         routeName: 'InformeDePrensa',
-        typeRoute: 'covid'
+        typeRoute: 'reportesIndicadoresCovid'
     },
     // RCV
     {
@@ -260,7 +260,7 @@ export const itemsMenu = [
         icon: 'fas fa-chart-pie',
         color: 'red',
         routeName: 'IndicadoresRCV',
-        typeRoute: 'aps'
+        typeRoute: 'reportesIndicadoresRCV'
     },
     {
         id: 29,
@@ -268,7 +268,7 @@ export const itemsMenu = [
         icon: 'mdi-file-table',
         color: 'blue',
         routeName: 'InformeEjecutivoRcv',
-        typeRoute: 'aps'
+        typeRoute: 'reportesIndicadoresRCV'
     },
     {
         id: 35,
@@ -336,5 +336,23 @@ export const itemsMenu = [
         color: 'purple',
         routeName: 'TomaMuestra',
         typeRoute: 'covid'
+    },
+    {
+        id: 42,
+        title: 'Roles y Permisos',
+        subtitle: 'Gestión de Roles y Permisos',
+        icon: 'mdi-account-key',
+        color: 'purple',
+        routeName: 'RolesPermisos',
+        typeRoute: 'seguridad'
+    },
+    {
+        id: 43,
+        title: 'Herramientas de Gestión',
+        subtitle: 'Gestión y Configuración',
+        icon: 'fas fa-toolbox',
+        color: 'indigo',
+        routeName: 'HerramientasGestion',
+        typeRoute: 'seguridad'
     }
 ]

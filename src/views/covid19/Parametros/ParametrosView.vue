@@ -22,9 +22,6 @@
                 <barrios-veredas></barrios-veredas>
             </v-col>
             <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 1">
-                <roles></roles>
-            </v-col>
-            <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 2">
                 <laboratorios></laboratorios>
             </v-col>
         </v-row>
@@ -34,20 +31,17 @@
 <script>
     const BarriosVeredas = () => import('./Components/BarriosVeredas')
     const Laboratorios = () => import('./Components/Laboratorios')
-    const Roles = () => import('./Components/Roles')
     export default {
         name: "ParametrosView",
         components: {
             BarriosVeredas,
-            Laboratorios,
-            Roles
+            Laboratorios
         },
         data: () => ({
             currentOption: 0,
             options: [
                 {name: 'Barrios y Veredas', value: 0},
-                {name: 'Roles y Permisos', value: 1},
-                {name: 'Laboratorios', value: 2}
+                {name: 'Laboratorios', value: 1}
             ]
         }),
         computed: {

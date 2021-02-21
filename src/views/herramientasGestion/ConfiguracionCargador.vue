@@ -115,7 +115,7 @@
 </template>
 
 <script>
-const CrearCargador = () => import("Views/complementos/CrearCargador");
+const CrearCargador = () => import('Views/herramientasGestion/CrearCargador')
 export default {
   components: {
     CrearCargador,

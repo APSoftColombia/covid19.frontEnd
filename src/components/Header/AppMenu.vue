@@ -18,12 +18,20 @@
         <template v-if="itemsMenu && itemsMenu.length">
           <template v-if="datosEmpresa && [datosEmpresa.covid_activo === '1', datosEmpresa.aps_activo === '1', datosEmpresa.demanda_inducida_activo === '1'].filter(x => x).length > 1">
             <v-card-text v-if="datosEmpresa.covid_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'covid').length">
-              <v-subheader class="font-weight-bold">COVID-19</v-subheader>
+              <v-subheader class="font-weight-bold">ESTRATEGIA PRASS COVID-19</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'covid')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="datosEmpresa.covid_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresCovid').length">
+              <v-subheader class="font-weight-bold">REPORTES E INDICADORES PRASS COVID-19</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresCovid')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
             <v-card-text v-if="datosEmpresa.aps_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'aps').length">
               <v-subheader class="font-weight-bold">RIESGO CARDIOVASCULAR</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'aps')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="datosEmpresa.aps_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresRCV').length">
+              <v-subheader class="font-weight-bold">REPORTES E INDICADORES RIESGO CARDIO VASCULAR</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresRCV')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
             <v-card-text v-if="datosEmpresa.demanda_inducida_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'demandaInducida').length">
               <v-subheader class="font-weight-bold">DEMANDA INDUCIDA</v-subheader>
@@ -36,6 +44,10 @@
 			<v-card-text v-if="datosEmpresa.importadores_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'importadores').length">
               <v-subheader class="font-weight-bold">IMPORTADORES</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'importadores')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
+            <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'seguridad').length">
+              <v-subheader class="font-weight-bold">SEGURIDAD</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'seguridad')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
             <v-card-text v-if="itemsMenu.filter(x => x.typeRoute === 'general').length">
               <v-subheader class="font-weight-bold">GENERAL</v-subheader>

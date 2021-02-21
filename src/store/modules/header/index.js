@@ -43,7 +43,6 @@ const getters = {
         if (getters.getPermission('covid-asignacionMuestras') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 40))
         if (getters.getPermission('covid-tomaMuestrasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 41))
         if (getters.getPermission('covid-parametrosVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 25))
-        if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
         if (getters.getPermission('covid-informeEjecutivoTamizajesIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 31))
         if (getters.getPermission('covid-cetsVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 32))
         if (getters.getPermission('covid-asignacionERPRastreoIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 39))
@@ -54,6 +53,10 @@ const getters = {
         if (getters.getPermission('aps-bitacorasRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 35))
         if (getters.getPermission('covid-reportesDeLeyVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 34))
         if (getters.getPermission('covid-informeDePrensa') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 37))
+        // SEGURIDAD
+        if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
+        if (getters.getPermission('rolesPermisos-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 42))
+        if (getters.getPermission('herramientasGestion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 43))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 11))
