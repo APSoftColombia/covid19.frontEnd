@@ -21,18 +21,39 @@
                 <v-icon color="primary" large class="mr-2">{{item.sexo === null ? 'mdi mdi-emoticon-happy' : item.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
                 <v-list-item-content class="pa-0">
                   <v-list-item-title class="body-2 text-truncate">{{[item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ')}}</v-list-item-title>
-                  <v-list-item-subtitle class="body-2 text-truncate">{{ [tiposDocumentoIdentidad && item.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : null, item.identificacion].filter(x => x).join(' ') }}</v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="item.nombre_eps">
+                  <v-list-item-subtitle class="text-truncate">{{ [tiposDocumentoIdentidad && item.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_identificacion).tipo : null, item.identificacion].filter(x => x).join(' ') }}</v-list-item-subtitle>
+                  <v-list-item-title class="body-2 text-truncate">
+                    <span v-if="item.celular">
+                      <v-icon>mdi-cellphone-settings</v-icon>{{ item.celular }}
+                    </span>
+                    <span v-if="item.email">
+                      <v-icon>mdi-email</v-icon>{{ item.email }}
+                    </span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle v-if="item.nombre_eps" class="body-2 text-truncate">
                     {{ item.nombre_eps }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <template v-slot:item.celular="{ item }">
+            <template v-slot:item.estado="{ item }">
               <v-list-item class="pa-0">
                 <v-list-item-content class="pa-0">
-                  <v-list-item-title class="body-2 text-truncate">Celular: {{ item.celular || '' }}</v-list-item-title>
-                  <v-list-item-subtitle class="body-2 text-truncate">Email: {{ item.email || '' }}</v-list-item-subtitle>
+                  <v-list-item-title v-if="item.prestador" class="body-2 text-truncate">
+                    IPS Asignada: {{item.prestador}}
+                  </v-list-item-title>
+                  <v-list-item-title class="body-2 text-truncate">
+                    {{
+                      item.toma_prueba
+                          ? `Tomada: ${moment(item.fecha_toma_prueba).format('DD/MM/YYYY HH:mm')}`
+                          : !item.toma_prueba && item.toma_prueba !== null
+                          ? `No Tomada: ${moment(item.updated_at).format('DD/MM/YYYY HH:mm')}`
+                          : item.fecha_reprogramacion
+                              ? `Reprogramada: ${moment(item.fecha_reprogramacion).format('DD/MM/YYYY')}`
+                              : 'Pendiente'
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="body-2 text-truncate" v-if="item.razon_no_toma">{{item.razon_no_toma}}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -85,14 +106,14 @@ export default {
         value: 'identificacion'
       },
       {
-        text: 'Contacto',
-        sortable: false,
-        value: 'celular'
-      },
-      {
         text: 'Ubicación',
         sortable: false,
         value: 'direccion'
+      },
+      {
+        text: 'Estado',
+        sortable: false,
+        value: 'estado'
       }
     ],
     ruta: 'pruebas-asignacion'

@@ -251,7 +251,7 @@ export default {
     resetOptions(item) {
       item.options = []
       if((!item.toma_prueba || item.toma_prueba === null) && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomarmuestra', icon: 'mdi-calendar-plus', tooltip: 'Marcar Fecha Toma', color:'red'})
-      if(item.fallidas && item.fallidas.length && this.permisos.tomaMuestraCrear && (item.cod_habilitacion_ips === this.getUser.cod_ips)) item.options.push({event: 'tomasFallidas', icon: 'mdi-alert-box-outline', tooltip: 'Tomas Fallidas', color:'warning'})
+      if(item.fallidas && item.fallidas.length) item.options.push({event: 'tomasFallidas', icon: 'mdi-alert-box-outline', tooltip: 'Tomas Fallidas', color:'warning'})
     },
     tomasFallidas(item){
       this.$refs.muestraFallida.open(item.fallidas)
