@@ -329,7 +329,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Cantidad de Muestras Por Municipios Casanare</p>
+                  <p>Cantidad de Muestras Por Municipios</p>
                 </div>
                 <simple-table
                     :data="dataInforme.muestrasPorMunicipioCasanare"
@@ -350,7 +350,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Cantidad de Muestras Por Municipios Diferentes de Casanare</p>
+                  <p>Cantidad de Muestras Otros Municipios</p>
                 </div>
                 <simple-table
                     :data="dataInforme.muestrasPorMunicipiosDiferenteCasanare"

@@ -18,9 +18,9 @@
         <cargar-registros
             @reloadTable="reloadTable"
         ></cargar-registros>
-        <cargar-negativos
+        <!--<cargar-negativos
             @reloadTable="reloadTable"
-        ></cargar-negativos>
+        ></cargar-negativos>-->
       </template>
       <filtros
           slot="filters"
@@ -51,7 +51,7 @@
   import EstadosCets from "./Componentes/EstadosCets";
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
-  const CargarNegativos = () => import('Views/covid19/Cet/Componentes/CargarNegativos.vue')
+  //const CargarNegativos = () => import('Views/covid19/Cet/Componentes/CargarNegativos.vue')
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   const EditarContacto = () => import('./Componentes/EditarContacto')
   export default {
@@ -235,7 +235,7 @@
       InformacionPersona,
       DescargarReporte,
       EditarContacto,
-      CargarNegativos
+      //CargarNegativos
     },
     methods: {
       resetOptions(item) {
