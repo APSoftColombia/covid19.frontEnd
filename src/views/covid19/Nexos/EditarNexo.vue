@@ -177,6 +177,20 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
+                <v-col cols="12">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                          v-model="reporte.esConviviente"
+                          :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
+                          itemValue="value"
+                          itemText="text"
+                          name="es conviviente"
+                          label="¿Es conviviente?"
+                      ></c-radio>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
                 <v-col class="pb-0" cols="12">
                   <c-text-area
                       v-model="reporte.observaciones"
