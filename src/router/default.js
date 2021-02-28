@@ -39,6 +39,7 @@ const AsignacionRastreo = () => import('Views/covid19/tamizaje/asignacionRastreo
 
 const AsignacionMuestras = () => import('Views/covid19/AsignacionMuestras/Index')
 const RegistroTomaMuestra = () => import('Views/covid19/TomaMuestraTamizajes/Index')
+const Vacunacion = () => import('Views/covid19/vacunacion/Index')
 
 //RCV
 const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
@@ -627,6 +628,20 @@ export default {
             avatar: {
                icon: 'fas fa-toolbox',
                color: 'indigo',
+            }
+         }
+      },
+      {
+         path: 'vacunacion-covid19',
+         name: 'VacunacionCovid19',
+         component: Vacunacion,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'covidVacunacion-index',
+            avatar: {
+               icon: 'fas fa-syringe',
+               color: 'deep-purple',
             }
          }
       }

@@ -354,5 +354,14 @@ export const itemsMenu = [
         color: 'indigo',
         routeName: 'HerramientasGestion',
         typeRoute: 'seguridad'
+    },
+    {
+        id: 44,
+        title: 'Vacunación Covid-19',
+        subtitle: 'Gestión de vacunación Covid-19',
+        icon: 'fas fa-syringe',
+        color: 'deep-purple',
+        routeName: 'VacunacionCovid19',
+        typeRoute: 'covid'
     }
 ]

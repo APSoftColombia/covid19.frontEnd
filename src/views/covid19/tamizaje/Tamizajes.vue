@@ -312,9 +312,7 @@ export default {
                   {
                     domProps: {
                       innerHTML: `
-												<span>
-                                                    ${this.value.eps ? this.value.eps.nombre : ''}
-                                                </span>
+												<span>${this.value.eps ? this.value.eps.nombre : ''}</span>
 											`
                     }
                   }

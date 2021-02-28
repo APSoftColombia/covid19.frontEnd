@@ -20,6 +20,8 @@
                 :loading="loading"
                 @change="val => $emit('change', val)"
                 :return-object="returnObject"
+                persistent-hint
+                :hint="hint"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
               <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
@@ -45,6 +47,8 @@
                 :loading="loading"
                 :return-object="returnObject"
                 @change="val => $emit('change', val)"
+                persistent-hint
+                :hint="hint"
         >
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRefS && itemText ? $refs.theRefS.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
@@ -69,6 +73,10 @@
                 type: String,
                 default: null
             },
+          hint: {
+            type: String,
+            default: null
+          },
             label: {
                 type: String,
                 default: null

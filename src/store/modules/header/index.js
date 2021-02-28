@@ -46,13 +46,14 @@ const getters = {
         if (getters.getPermission('covid-informeEjecutivoTamizajesIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 31))
         if (getters.getPermission('covid-cetsVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 32))
         if (getters.getPermission('covid-asignacionERPRastreoIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 39))
+        if (getters.getPermission('covid-reportesDeLeyVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 34))
+        if (getters.getPermission('covid-informeDePrensa') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 37))
+        if (getters.getPermission('covidVacunacion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 44))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
         if (getters.getPermission('aps-informeEjecutivoRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 29))
         if (getters.getPermission('aps-bitacorasRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 35))
-        if (getters.getPermission('covid-reportesDeLeyVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 34))
-        if (getters.getPermission('covid-informeDePrensa') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 37))
         // SEGURIDAD
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
         if (getters.getPermission('rolesPermisos-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 42))
