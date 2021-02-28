@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Vacunacón">
+    <page-title-bar title="Vacunación">
       <template slot="actions">
         <v-tooltip
             v-if="permisos.crear"
@@ -256,6 +256,7 @@ export default {
     },
     vacunaRegistrada(val) {
       this.verdetalle(val)
+      this.actualizarRegistros()
     },
     actualizarRegistros() {
       this.$store.commit('reloadTable', 'tablaVacunacion')
