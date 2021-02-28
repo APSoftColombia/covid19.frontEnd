@@ -43,14 +43,11 @@
     </data-table>
     <detalle-vacunacion
         ref="detalleVacunacion"
-        @guardado="vacunaRegistrada"
+        @guardado="actualizarRegistros"
     />
     <registro-vacunacion
         ref="registroVacunacion"
-        @guardado="vacunaRegistrada"
-    />
-    <vacunas-fallidas
-        ref="verFallidas"
+        @guardado="val => vacunaRegistrada(val)"
     />
     <seguimiento
         ref="seguimiento"
@@ -64,7 +61,6 @@ import PersonaItemTabla from 'Views/covid19/vacunacion/components/PersonaItemTab
 import BotonTooltip from '../../../components/Tamizaje/BotonTooltip'
 import RegistroVacunacion from 'Views/covid19/vacunacion/components/RegistroVacunacion'
 import DetalleVacunacion from 'Views/covid19/vacunacion/components/DetalleVacunacion'
-import VacunasFallidas from 'Views/covid19/vacunacion/components/VacunasFallidas'
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const Filtros = () => import('Views/covid19/vacunacion/components/filtros')
 export default {
@@ -73,7 +69,6 @@ export default {
     RegistroVacunacion,
     DetalleVacunacion,
     Seguimiento,
-    VacunasFallidas,
     Filtros
   },
   data: (vm) => ({
@@ -244,9 +239,6 @@ export default {
       if(this.permisos.verDetalle) item.options.push({event: 'verdetalle', icon: 'mdi-file-search', tooltip: 'Ver Detalle', color:'green'})
       if(item.fallidas && item.fallidas.length) item.options.push({event: 'vacunasFallidas', icon: 'mdi-alert-box-outline', tooltip: 'Vacunas Fallidas', color:'warning'})
     },
-    vacunasFallidas(item){
-      this.$refs.verFallidas.open(item.fallidas)
-    },
     goDatos(val){
       this.dataTable.route = val;
     },
@@ -262,9 +254,12 @@ export default {
     editarDatos(item) {
       this.$refs.registroVacunacion.open(item)
     },
-    vacunaRegistrada() {
-      this.$store.commit('reloadTable', 'tablaVacunacion')
+    vacunaRegistrada(val) {
+      this.verdetalle(val)
     },
+    actualizarRegistros() {
+      this.$store.commit('reloadTable', 'tablaVacunacion')
+    }
   }
 }
 </script>

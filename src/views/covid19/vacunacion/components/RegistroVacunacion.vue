@@ -263,11 +263,11 @@ export default {
               ? this.axios.put(`vacunaciones/${copiaData.id}`, copiaData)
               : this.axios.post(`vacunaciones`, copiaData)
           request
-              .then(() => {
-                this.$emit('guardado')
+              .then(response => {
+                this.$emit('guardado', response.data)
                 this.$store.commit('snackbar', {
                   color: 'success',
-                  message: `Fecha de toma registrada correctamente.`
+                  message: `Registro guardado correctamente.`
                 })
                 this.close()
               })
@@ -275,7 +275,7 @@ export default {
                 this.loading = false
                 this.$store.commit('snackbar', {
                   color: 'error',
-                  message: `al registrar la fecha de toma de la muestra.`,
+                  message: `al guardar el registro.`,
                   error: error
                 })
               })
