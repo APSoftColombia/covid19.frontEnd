@@ -298,6 +298,7 @@ export default {
       })
     },
     open(vacunacion = null) {
+      this.identificacionVerificada = 0
       if(vacunacion) {
         this.vacunacion = this.getVacunacion(vacunacion.id)
       } else {
