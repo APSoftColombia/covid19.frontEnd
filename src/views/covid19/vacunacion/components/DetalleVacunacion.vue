@@ -19,6 +19,14 @@
                   <v-icon class="white--text">mdi-needle</v-icon>
                 </v-avatar>
                 Dosis aplicadas
+                <v-tooltip top v-if="vacunacion.novacunados && vacunacion.novacunados.length">
+                  <template v-slot:activator="{ on }">
+                    <v-btn elevation="0" icon class="ml-3" v-on="on" @click="fallidas">
+                      <v-icon color="blue">mdi mdi-alert-box-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Dosis Fallidas</span>
+                </v-tooltip>
                 <v-spacer/>
                 <v-tooltip
                     v-if="permisos.vacunar && (vacunacion && vacunacion.dosis && vacunacion.dosis.length)"
@@ -130,6 +138,9 @@
           ref="registroVacuna"
           @guardado="changeVacunacion"
       />
+      <vacunas-fallidas
+          ref="vacunasFallidas"
+      ></vacunas-fallidas>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
   </v-dialog>
@@ -138,11 +149,13 @@
 <script>
 const DatosPersonales = () => import('Views/covid19/vacunacion/components/DatosPersonales')
 import RegistroVacuna from 'Views/covid19/vacunacion/components/RegistroVacuna'
+import VacunasFallidas from 'Views/covid19/vacunacion/components/VacunasFallidas'
 export default {
   name: 'DetalleVacunacion',
   components: {
     DatosPersonales,
-    RegistroVacuna
+    RegistroVacuna,
+    VacunasFallidas
   },
   data: () => ({
     dialog: false,
@@ -174,6 +187,9 @@ export default {
     },
     vacunar() {
       this.$refs.registroVacuna.open()
+    },
+    fallidas(){
+      this.$refs.vacunasFallidas.open(this.vacunacion.novacunados)
     },
     getVacunacion(id) {
       this.loading = true

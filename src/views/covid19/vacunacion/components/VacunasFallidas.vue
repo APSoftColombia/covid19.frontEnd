@@ -2,40 +2,39 @@
   <v-dialog v-model="dialog" persistent max-width="900">
     <v-card>
       <v-card-title>
-        Tomas Fallidas
+        Dosis Fallidas
         <v-spacer/>
         <v-btn icon @click="close">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
-      <v-container fluid class="m-5" v-if="muestrasfallidas && muestrasfallidas.length">
+      <v-container fluid class="m-5" v-if="vacunasFallidas && vacunasFallidas.length">
         <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Fecha Toma</th>
-                <th>Fecha Reprogramacion</th>
+                <th>Fecha</th>
+                <th>Causa</th>
                 <th>Observaciones</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                  v-for="(item, indexItem) in muestrasfallidas"
+                  v-for="(item, indexItem) in vacunasFallidas"
                   :key="indexItem"
               >
                 <td>
                   <v-list-item class="pa-0">
                     <v-list-item-content class="pa-0">
-                      <v-list-item-title class="body-1">{{ item.fecha_toma_prueba ? 'No Tomada: ' + (item.fecha_toma_prueba) : '' }}</v-list-item-title>
+                      <v-list-item-title class="body-1">{{ item.fecha ? (item.fecha) : '' }}</v-list-item-title>
                       <v-list-item-title class="body-2">{{ item.user.name }}</v-list-item-title>
-                      <v-list-item-title class="body-2">{{ item.razon_no_toma }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </td>
                 <td>
                   <v-list-item class="pa-0">
                     <v-list-item-content class="pa-0">
-                      <v-list-item-title class="body-1">{{ fecha(item.fecha_reprogramacion) }}</v-list-item-title>
+                      <v-list-item-title class="body-1">{{ item.causa.descripcion }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </td>
@@ -59,12 +58,12 @@
   export default {
     name: "VacunasFallidas",
     data: () => ({
-      muestrasfallidas: null,
+      vacunasFallidas: null,
       dialog: false
     }),
     methods: {
       open(muestra) {
-        this.muestrasfallidas = this.clone(muestra)
+        this.vacunasFallidas = this.clone(muestra)
         this.dialog = true
       },
       close() {
