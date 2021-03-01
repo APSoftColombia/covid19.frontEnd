@@ -1,6 +1,6 @@
 import {store} from '../store/store'
 window.addEventListener('online', () => {
-    fetch('https://sosaludaps.tk')
+    fetch('https://google.com')
         .then(response => {
             store.commit('onLine', response.ok)
         }).catch(() => {
@@ -9,7 +9,7 @@ window.addEventListener('online', () => {
 }, false)
 
 window.addEventListener('offline', () => {
-    fetch('https://sosaludaps.tk')
+    fetch('https://google.com')
         .then(response => {
             store.commit('onLine', response.ok)
         }).catch(() => {

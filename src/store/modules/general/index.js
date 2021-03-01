@@ -450,7 +450,7 @@ const getters = {
 // actions
 const actions = {
     reloadOnline(context) {
-        fetch('https://sosaludaps.tk')
+        fetch('https://google.com')
             .then(response => {
                 context.commit('onLine', response.ok)
             }).catch(() => {
