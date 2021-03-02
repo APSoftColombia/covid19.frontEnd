@@ -145,7 +145,11 @@ export default {
   watch: {
     'search': {
       handler(val){
-        if(val.length === 0){
+        if(!val){
+          this.search = ''
+          this.getTamizajesPendientes(false)
+        }
+        if(val && val.length === 0){
           this.getTamizajesPendientes(false)
         }
       }
