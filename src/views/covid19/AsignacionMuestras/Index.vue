@@ -9,6 +9,19 @@
     <v-row>
       <v-col cols="12">
         <v-card>
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-text-field
+                v-model="search"
+                label="Buscar"
+                clearable
+                hide-details
+                outlined
+                dense
+                append-icon="search"
+                @keyup.enter="reloadCurrentPage"
+            ></v-text-field>
+          </v-card-title>
           <v-data-table
               v-model="seleccionados"
               :headers="headers"
@@ -116,7 +129,8 @@ export default {
         value: 'estado'
       }
     ],
-    ruta: 'pruebas-asignacion'
+    ruta: 'pruebas-asignacion',
+    search: ''
   }),
   computed: {
     ...mapGetters([
@@ -128,10 +142,21 @@ export default {
   created () {
     this.getTamizajesPendientes()
   },
+  watch: {
+    'search': {
+      handler(val){
+        if(val.length === 0){
+          this.getTamizajesPendientes(false)
+        }
+      }
+    }
+  },
   methods: {
-    getTamizajesPendientes() {
-      this.loading = true
-      this.axios.get(this.ruta)
+    getTamizajesPendientes(loadingP = true) {
+      if (loadingP){
+        this.loading = true
+      }
+      this.axios.get(this.ruta + `?filter[searchAsignacion]=${this.search}`)
           .then(response => {
             this.seleccionados = []
             this.muestras = response.data
@@ -145,6 +170,9 @@ export default {
       goDatos(val){
         this.ruta = val
         this.getTamizajesPendientes()
+      },
+      reloadCurrentPage(){
+        this.getTamizajesPendientes(false)
       },
   },
 }

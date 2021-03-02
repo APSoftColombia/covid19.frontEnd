@@ -8,10 +8,10 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
-      <v-container fluid v-if="seguimiento">
+      <v-container v-if="seguimiento">
         <ValidationObserver ref="formSeguimiento" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-          <v-row class="mt-3">
-            <v-col cols="6">
+          <v-row>
+            <v-col cols="12">
               <c-radio
                   v-model="seguimiento.fue_vacunado"
                   :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
@@ -23,7 +23,7 @@
                   label="¿Fue Vacunado?"
               ></c-radio>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12">
               <c-radio
                   v-model="seguimiento.presento_sintomas"
                   :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
@@ -51,7 +51,7 @@
               <v-col cols="12" class="pb-0" v-if="seguimiento.sintoma == 'Otro'">
                 <c-text-area
                     v-model="seguimiento.otro_sintoma"
-                    label="Especifique"
+                    label="¿Que otro sintoma?"
                     name="otro sintoma"
                     rules="required"
                 />
@@ -66,30 +66,29 @@
                   dense
                   rules="required"
                   name="agendo 2da dosis"
-                  label="¿Se agendo 2da dosis?"
+                  label="¿Se agenda segunda dosis?"
               ></c-radio>
             </v-col>
-            <v-col cols="6" md="6" class="pb-0" v-if="seguimiento.agen_2da_dosis">
+            <v-col cols="12" md="12" class="pb-0" v-if="seguimiento.agen_2da_dosis">
               <c-date
                   v-model="seguimiento.fecha_2da_dosis"
-                  label="Fecha 2da Dosis"
+                  label="Fecha de Segunda Dosis"
                   rules="required"
                   name="fecha"
-                  :max="moment().format('YYYY-MM-DD')"
               />
             </v-col>
             <v-col cols="12" class="pb-0">
-                <c-select-complete
-                    v-model="seguimiento.percepcion"
-                    :items="percepcion"
-                    rules="required"
-                    name="percepcion"
-                    dense
-                    label="Seleccione una opcion de satisfaccion con el proceso de Vacunacion"
-                    item-text="nombre"
-                    item-value="id"
-                />
-              </v-col>
+              <c-select-complete
+                  v-model="seguimiento.percepcion"
+                  :items="percepcion"
+                  rules="required"
+                  name="percepcion"
+                  dense
+                  label="Seleccione una opcion de satisfaccion con el proceso de Vacunacion"
+                  item-text="nombre"
+                  item-value="id"
+              />
+            </v-col>
           </v-row>
         </ValidationObserver>
         <v-card-actions>
