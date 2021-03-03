@@ -255,7 +255,7 @@ export default {
       this.$refs.registroVacunacion.open(item)
     },
     vacunaRegistrada(val) {
-      this.verdetalle(val)
+      if(this.permisos.verDetalle) this.verdetalle(val)
       this.actualizarRegistros()
     },
     actualizarRegistros() {
