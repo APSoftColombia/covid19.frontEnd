@@ -4,7 +4,7 @@
     <v-card class="text-center">
       <v-card-title class="mb-0 pb-0">
         <v-row>
-          <v-col cols="12" sm="12" md="4" lg="4">
+          <v-col cols="12" sm="12" md="3" lg="3">
             <c-date
                 v-model="data.fecha_inicio"
                 label="Fecha Inicial"
@@ -12,7 +12,7 @@
             >
             </c-date>
           </v-col>
-          <v-col cols="12" sm="12" md="4" lg="4">
+          <v-col cols="12" sm="12" md="3" lg="3">
             <c-date
                 v-model="data.fecha_fin"
                 label="Fecha Final"
@@ -20,7 +20,7 @@
             >
             </c-date>
           </v-col>
-          <!-- <v-col cols="12" sm="12" md="3" lg="3">
+          <v-col cols="12" sm="12" md="3" lg="3">
             <c-select-complete
                 v-model="data.departamentos"
                 label="Departamentos"
@@ -30,13 +30,13 @@
                 multiple
             >
             </c-select-complete>
-          </v-col> -->
-          <v-col cols="12" sm="12" md="4" lg="4">
+          </v-col>
+          <v-col cols="12" sm="12" md="2" lg="2">
             <v-btn color="green" class="white--text" @click="getDataInforme" block>
               <span>Filtrar</span>
             </v-btn>
           </v-col>
-          <!-- <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
+          <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
@@ -45,7 +45,7 @@
               </template>
               <span>Generar PDF</span>
             </v-tooltip>
-          </v-col> -->
+          </v-col>
         </v-row>
       </v-card-title>
     </v-card>
@@ -56,34 +56,27 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Consolidado</p>
+                  <p>Muestras Tomadas</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byConsolidado"
-                    :headers="[
-                      {text:'Regional'},
-                      {text:'# muestras procesadas'},
-                      {text:'# casos positivos'},
-                      {text:'Resultado Lab'},
-                      {text:'Tasa de Positividad (%)'},
-                      {text:'Tiempo entre Toma y Result (h)'},
-                      {text:'Tiempo entre Solicitud y Toma (h)'},
-                    ]"
+                    :data="dataInforme.byMuestras"
+                    :headers="[{text:'Regional'}, {text:'Detalle'},{text:'Tipo Muestra'},{text:'Cantidad',align:'right'}]"
                     :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="12" md="12" lg="6">
+          <v-col cols="12" sm="12" md="12" lg="12">
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Tipo de Resultado</p>
+                  <p>Resultados Pacientes</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byTipoResultado"
+                    :data="dataInforme.byResultado"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},{text:'Cantidad',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                     ]"
                     :alignNumbersRight="true"
                 ></simple-table>
@@ -97,9 +90,10 @@
                   <p>Nexos y Convivientes</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byConvivientes"
+                    :data="dataInforme.byNexosConvivientes"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},{text:'Cantidad',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                     ]"
                     :alignNumbersRight="true"
                 ></simple-table>
@@ -110,29 +104,14 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>SGCovid</p>
+                  <p>Llamadas Call Center</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.bySGCovid"
+                    :data="dataInforme.byCallCenter"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},{text:'Cantidad',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                     ]"
-                    :alignNumbersRight="true"
-                ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="12" md="12" lg="6">
-            <v-card>
-              <v-card-text>
-                <div class="font-weight-bold text-center">
-                  <p>Diagnostico SISMUESTRAS</p>
-                </div>
-                <simple-table
-                    :data="dataInforme.byDiagnosticoSismuestras"
-                    :headers="[
-                        {text:'Regional'},{text:'Detalle'},{text:'Cantidad',align:'right'}
-                      ]"
                     :alignNumbersRight="true"
                 ></simple-table>
               </v-card-text>
@@ -142,12 +121,13 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Contactos</p>
+                  <p>Tipo Aislamiento</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byContactos"
+                    :data="dataInforme.byAislamiento"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},{text:'Cantidad',align:'right'}
+                        {text:'Regional'},{text:'Detalle'},
+                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
                       ]"
                     :alignNumbersRight="true"
                 ></simple-table>
