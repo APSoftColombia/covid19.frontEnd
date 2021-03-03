@@ -75,7 +75,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Informe General</p>
+                  <p>Tipos de Resultados</p>
                 </div>
                 <simple-table
                     :data="dataInforme.byTipoResultado"
@@ -139,7 +139,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Diagnosticos SGCOVID</p>
+                  <p>Diagnosticos Sismuestras</p>
                 </div>
                 <simple-table
                     :data="dataInforme.byDiagnosticoSismuestras"
