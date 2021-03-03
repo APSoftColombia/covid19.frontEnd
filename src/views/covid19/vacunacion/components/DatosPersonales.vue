@@ -96,6 +96,14 @@ export default {
       this.datos = []
       this.datos.push(
           {
+            label: 'Fecha Expedición Documento',
+            body: this.vacunacion.fecha_expedicion,
+            icon: 'mdi-calendar-month',
+            iconColor: 'indigo',
+            colmd: '6',
+            collg: '4'
+          },
+          {
             label: 'Fecha Nacimiento',
             body: this.vacunacion.fecha_nacimiento,
             icon: 'mdi-calendar-month',
@@ -112,8 +120,8 @@ export default {
             collg: '4'
           },
           {
-            label: 'Celular',
-            body: [this.vacunacion.telefono].filter(x => x).join(' - '),
+            label: 'Números Telefónicos',
+            body: [this.vacunacion.telefono, this.vacunacion.telefono2].filter(x => x).join(' - '),
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',
             colmd: '6',
@@ -124,14 +132,6 @@ export default {
             body: this.vacunacion.email,
             icon: 'mdi-email',
             iconColor: 'error',
-            colmd: '6',
-            collg: '4'
-          },
-          {
-            label: 'Acudiente',
-            body: this.vacunacion.acudiente,
-            icon: 'mdi-account-child',
-            iconColor: 'green',
             colmd: '6',
             collg: '4'
           },

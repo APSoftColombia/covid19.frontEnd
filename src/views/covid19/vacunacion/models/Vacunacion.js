@@ -19,6 +19,13 @@ const Vacunacion = {
     municipio_id: null,
     departamento_id: null,
     sexo: null,
+    telefono2: null,
+    fecha_expedicion: null,
+    discapacidad: null,
+    cual_discapacidad: null,
+    puede_desplazarse: null,
+    intencion_vacuna: null,
+    porque_no_vacuna: null,
     // objetos
     edad: null,
     eps: null

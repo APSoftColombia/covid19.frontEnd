@@ -9,7 +9,12 @@
         </v-btn>
       </v-card-title>
       <v-container fluid>
-        <ValidationObserver ref="formVacunacion" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+        <ValidationObserver
+            v-if="vacunacion"
+            ref="formVacunacion"
+            v-slot="{ invalid, validated, passes, validate }"
+            autocomplete="off"
+        >
           <v-row>
             <v-col class="pb-0" cols="12" sm="6" md="6">
               <c-identificacion
@@ -36,6 +41,17 @@
               >
               </c-select-complete>
             </v-col>
+            <v-col class="pb-0" cols="12" sm="6" md="6">
+              <c-date
+                  v-model="vacunacion.fecha_expedicion"
+                  label="Expedición Documento"
+                  :max="moment().format('YYYY-MM-DD')"
+                  name="expedición documento"
+                  :disabled="identificacionVerificada < 1"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col class="pb-0" cols="12" sm="6" md="6">
               <c-texto
                   v-model="vacunacion.nombre1"
@@ -111,17 +127,16 @@
               >
               </c-texto>
             </v-col>
-<!--            <v-col class="pb-0" cols="12" sm="12" md="6">-->
-<!--              <c-texto-->
-<!--                  v-model="vacunacion.celular2"-->
-<!--                  label="Celular Opcional"-->
-<!--                  rules="numeric|minlength:10|maxlength:10"-->
-<!--                  name="celular opcional"-->
-<!--                  :disabled="identificacionVerificada < 1"-->
-<!--              >-->
-<!--              </c-texto>-->
-<!--            </v-col>-->
             <v-col class="pb-0" cols="12" sm="12" md="6">
+              <c-texto
+                  v-model="vacunacion.telefono2"
+                  label="Teléfono alterno"
+                  rules="numeric"
+                  name="t{elefono alterno"
+                  :disabled="identificacionVerificada < 1"
+              />
+            </v-col>
+            <v-col class="pb-0" cols="12">
               <c-texto
                   v-model="vacunacion.email"
                   label="Email"
@@ -132,17 +147,17 @@
               >
               </c-texto>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.edad < 18">
-              <c-texto
-                  v-model="vacunacion.acudiente"
-                  label="Acudiente"
-                  :rules="vacunacion.edad < 18 ? 'required' : ''"
-                  name="acudiente"
-                  upper-case
-                  :disabled="identificacionVerificada < 1"
-              >
-              </c-texto>
-            </v-col>
+<!--            <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.edad < 18">-->
+<!--              <c-texto-->
+<!--                  v-model="vacunacion.acudiente"-->
+<!--                  label="Acudiente"-->
+<!--                  :rules="vacunacion.edad < 18 ? 'required' : ''"-->
+<!--                  name="acudiente"-->
+<!--                  upper-case-->
+<!--                  :disabled="identificacionVerificada < 1"-->
+<!--              >-->
+<!--              </c-texto>-->
+<!--            </v-col>-->
             <v-col class="pb-0" cols="12">
               <c-texto
                   v-model="vacunacion.direccion"
@@ -192,8 +207,82 @@
                     item-value="id"
                     item-text="nombre"
                     :disabled="identificacionVerificada < 1"
-                >
-                </c-select-complete>
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="vacunacion.discapacidad"
+                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}]"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="Discapacidad"
+                        label="Discapacidad"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                        @input="vacunacion.cual_discapacidad = null"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col
+                  v-if="vacunacion.discapacidad === 'Si'"
+                  class="pb-0"
+                  cols="12"
+              >
+                <c-texto
+                    v-model="vacunacion.cual_discapacidad"
+                    label="Describir la discapacidad"
+                    rules="required"
+                    name="describir la discapacidad"
+                    :disabled="identificacionVerificada < 1"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="vacunacion.puede_desplazarse"
+                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}]"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="desplazamiento a la ESE/IPS"
+                        label="¿Puede desplazarse a la ESE/IPS?"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="vacunacion.intencion_vacuna"
+                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}]"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="intención de vacunarse"
+                        label="¿Tiene Intención de Vacunarse?"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                        @input="vacunacion.porque_no_vacuna = null"
+                    />
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col
+                  v-if="vacunacion.intencion_vacuna === 'No'"
+                  cols="12"
+                  class="pb-0"
+              >
+                <c-text-area
+                    label="Motivo por el cual no se vacunará"
+                    rules="required"
+                    v-model="vacunacion.porque_no_vacuna"
+                    name="motivo de no vacunación"
+                />
               </v-col>
             </template>
           </v-row>
