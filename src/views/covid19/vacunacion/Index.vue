@@ -58,6 +58,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import PersonaItemTabla from 'Views/covid19/vacunacion/components/PersonaItemTabla'
+import DosisItemTabla from 'Views/covid19/vacunacion/components/DosisItemTabla.vue'
 import BotonTooltip from '../../../components/Tamizaje/BotonTooltip'
 import RegistroVacunacion from 'Views/covid19/vacunacion/components/RegistroVacunacion'
 import DetalleVacunacion from 'Views/covid19/vacunacion/components/DetalleVacunacion'
@@ -74,8 +75,8 @@ export default {
   data: (vm) => ({
     rutaBase: 'vacunaciones',
     dataTable: {
-      advanceFilters: false,
-      buttonZone: false,
+      advanceFilters: true,
+      buttonZone: true,
       nameItemState: 'tablaVacunacion',
       route: 'vacunaciones',
       makeHeaders: [
@@ -126,6 +127,26 @@ export default {
               return context.props.value
                   ? createElement(
                       PersonaItemTabla,
+                      {
+                        props: {
+                          value: context.props.value
+                        }
+                      }
+                  )
+                  : createElement('span', '')
+            }
+          }
+        },
+        {
+          text: 'Vacunas',
+          align: 'left',
+          sortable: false,
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value
+                  ? createElement(
+                      DosisItemTabla,
                       {
                         props: {
                           value: context.props.value

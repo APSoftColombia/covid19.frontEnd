@@ -20,6 +20,24 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <c-date-range
+          v-model="filters.models.rango_dosis1"
+          label="Rango Fecha de Dosis 1"
+          :max="moment().format('YYYY-MM-DD')"
+          hide-details
+      >
+      </c-date-range>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <c-date-range
+          v-model="filters.models.rango_dosis2"
+          label="Rango Fecha de Dosis 2"
+          :max="moment().format('YYYY-MM-DD')"
+          hide-details
+      >
+      </c-date-range>
+    </v-col>
   </v-row>
 </template>
 
@@ -37,14 +55,15 @@
       filters: {
         models: {
           estado: null,
-          ips: null
+          ips: null,
+          rango_dosis1: null,
+          rango_dosis2: null
         },
         data: {
           estados: [
-            {value: 1, text: 'Muestra Tomada'},
-            {value: 2, text: 'Muestra no Tomada'},
-            {value: 3, text: 'Muestra Pendiente'},
-            {value: 4, text: 'Muestras Reprogramadas'},
+            {value: 1, text: 'Sin vacuna'},
+            {value: 2, text: 'Primera Dosis'},
+            {value: 3, text: 'Segunda Dosis'},
           ]
         }
       }
@@ -52,7 +71,7 @@
     methods: {
       getIPSS(){
         this.axios.get('/ajustes-generales/iniciales').then(response => {
-          this.ipss = response.data.parametros.ipss_pruebas
+          this.ipss = response.data.parametros.ipss_vacunas
         }).catch(error => {
           this.$store.commit('snackbar', {
             color: 'error',
@@ -67,13 +86,21 @@
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filters.models.estado
         }
         if (this.filters.models.ips !== null) {
-          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[cod_habilitacion_ips]=' + this.filters.models.ips
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[codhabilitacion_ips]=' + this.filters.models.ips
+        }
+        if (this.filters.models.rango_dosis1 !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[dosis1Between]=' + this.filters.models.rango_dosis1
+        }
+        if (this.filters.models.rango_dosis2 !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[dosis2Between]=' + this.filters.models.rango_dosis2
         }
         this.$emit('filtra', rutaTemp)
       },
       limpiarFiltros(){
         this.filters.models.estado = null
         this.filters.models.ips = null
+        this.filters.models.rango_dosis1 = null
+        this.filters.models.rango_dosis2 = null
       },
     },
     created() {
