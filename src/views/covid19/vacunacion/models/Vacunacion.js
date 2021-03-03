@@ -28,6 +28,7 @@ const Vacunacion = {
     porque_no_vacuna: null,
     barrio_id: null,
     coordenadas: null,
+    mivacuna: null,
     // objetos
     edad: null,
     eps: null
