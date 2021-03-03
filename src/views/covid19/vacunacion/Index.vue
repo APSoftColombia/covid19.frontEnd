@@ -150,7 +150,7 @@ export default {
 												<v-list-item-content style="display: grid !important;">
 														<v-list-item-title class="body-2">${this.value.priorizacion ? this.value.priorizacion.descripcion : ''}</v-list-item-title>
 														<v-list-item-subtitle class="body-1">
-														${[(this.value.priorizacion ? 'Fase:' + this.value.priorizacion.fase : null), (this.value.priorizacion ? 'Etapa:' + this.value.priorizacion.etapa : null)].filter(x => x).join(', ')}
+														${[(this.value.priorizacion ? this.value.priorizacion.fase : null), (this.value.priorizacion ? this.value.priorizacion.etapa : null)].filter(x => x).join(', ')}
                             </v-list-item-subtitle>
 													</v-list-item-content>
 											`
