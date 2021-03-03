@@ -26,6 +26,9 @@ const Vacunacion = {
     puede_desplazarse: null,
     intencion_vacuna: null,
     porque_no_vacuna: null,
+    barrio_id: null,
+    coordenadas: null,
+    mivacuna: null,
     // objetos
     edad: null,
     eps: null

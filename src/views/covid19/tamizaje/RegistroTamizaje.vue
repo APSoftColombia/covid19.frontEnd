@@ -136,8 +136,7 @@
                           v-model="tamizaje.coordenadas"
                           label="Coordenadas"
                           :readonly="true"
-                      >
-                      </c-location>
+                      />
                     </v-col>
                     <v-col cols="12">
                       <v-switch

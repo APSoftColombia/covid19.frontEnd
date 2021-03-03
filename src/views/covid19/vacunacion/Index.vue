@@ -158,6 +158,31 @@ export default {
           }
         },
         {
+          text: 'Priorización',
+          align: 'left',
+          sortable: false,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.priorizacion ? this.value.priorizacion.descripcion : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-1">
+														${[(this.value.priorizacion ? this.value.priorizacion.fase : null), (this.value.priorizacion ? this.value.priorizacion.etapa : null)].filter(x => x).join(', ')}
+                            </v-list-item-subtitle>
+													</v-list-item-content>
+											`
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
           text: 'Dirección',
           align: 'left',
           sortable: false,
