@@ -158,17 +158,6 @@
 <!--              >-->
 <!--              </c-texto>-->
 <!--            </v-col>-->
-            <v-col class="pb-0" cols="12">
-              <c-texto
-                  v-model="vacunacion.direccion"
-                  label="Dirección"
-                  rules="required|minlength:6|direccion"
-                  name="dirección"
-                  upper-case
-                  :disabled="identificacionVerificada < 1"
-              >
-              </c-texto>
-            </v-col>
             <v-col class="pb-0" cols="12" sm="12" md="6">
               <c-select-complete
                   v-model="vacunacion.departamento_id"
@@ -196,6 +185,37 @@
               >
               </c-select-complete>
             </v-col>
+            <v-col class="pb-0" cols="12">
+              <c-select-complete
+                  :disabled="!vacunacion.municipio_id || identificacionVerificada < 1"
+                  v-model="vacunacion.barrio_id"
+                  :loading="loadingBarrios"
+                  label="Barrio"
+                  :items="barrios"
+                  item-text="nombre"
+                  item-value="id"
+              >
+              </c-select-complete>
+            </v-col>
+            <v-col class="pb-0" cols="12">
+              <c-texto
+                  v-model="vacunacion.direccion"
+                  label="Dirección"
+                  rules="required|minlength:6|direccion"
+                  name="dirección"
+                  upper-case
+                  :disabled="identificacionVerificada < 1"
+              >
+              </c-texto>
+            </v-col>
+            <v-col class="pb-0" cols="12" v-if="esMovil">
+              <c-location
+                  v-model="vacunacion.coordenadas"
+                  label="Coordenadas"
+                  :readonly="true"
+                  :disabled="identificacionVerificada < 1"
+              />
+            </v-col>
             <template>
               <v-col class="pb-0" cols="12" sm="12" md="12">
                 <c-select-complete
@@ -222,6 +242,7 @@
                         label="Discapacidad"
                         :column="!$vuetify.breakpoint.smAndUp"
                         @input="vacunacion.cual_discapacidad = null"
+                        :disabled="identificacionVerificada < 1"
                     />
                   </v-card-text>
                 </v-card>
@@ -251,6 +272,7 @@
                         name="desplazamiento a la ESE/IPS"
                         label="¿Puede desplazarse a la ESE/IPS?"
                         :column="!$vuetify.breakpoint.smAndUp"
+                        :disabled="identificacionVerificada < 1"
                     />
                   </v-card-text>
                 </v-card>
@@ -268,6 +290,7 @@
                         label="¿Tiene Intención de Vacunarse?"
                         :column="!$vuetify.breakpoint.smAndUp"
                         @input="vacunacion.porque_no_vacuna = null"
+                        :disabled="identificacionVerificada < 1"
                     />
                   </v-card-text>
                 </v-card>
@@ -282,6 +305,7 @@
                     rules="required"
                     v-model="vacunacion.porque_no_vacuna"
                     name="motivo de no vacunación"
+                    :disabled="identificacionVerificada < 1"
                 />
               </v-col>
             </template>
@@ -312,6 +336,8 @@ export default {
   name: 'RegistroVacunacion',
   data: () => ({
     identificacionVerificada: 0,
+    loadingBarrios: false,
+    barrios: [],
     menuHora: false,
     dialog: false,
     loading: false,
@@ -341,6 +367,18 @@ export default {
       },
       immediate: true
     },
+    'vacunacion.municipio_id': {
+      handler(val) {
+        if (this && this.vacunacion) {
+          this.vacunacion.barrio_id = null
+          this.barrios = []
+          if (val) {
+            this.getBarrios(val)
+          }
+        }
+      },
+      immediate: false
+    }
   },
   methods: {
     guardar() {
@@ -439,7 +477,19 @@ export default {
         this.vacunacion.municipio_id = response.afiliado.centro_poblado_id
         this.vacunacion.eps_id = response.afiliado.eps_id
       }
-    }
+    },
+    getBarrios(municipio_id) {
+      this.loadingBarrios = true
+      this.axios.get(`barrios?municipio_id=${municipio_id}`)
+          .then(response => {
+            this.barrios = response.data
+            this.loadingBarrios = false
+          })
+          .catch(error => {
+            this.loadingBarrios = false
+            this.$store.commit('snackbar', {color: 'error', message: `al recuperar los barrios.`, error: error})
+          })
+    },
   }
 }
 </script>
