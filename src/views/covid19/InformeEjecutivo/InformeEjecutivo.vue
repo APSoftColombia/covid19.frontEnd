@@ -36,7 +36,7 @@
               <span>Filtrar</span>
             </v-btn>
           </v-col>
-          <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
+          <!--<v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
@@ -45,7 +45,7 @@
               </template>
               <span>Generar PDF</span>
             </v-tooltip>
-          </v-col>
+          </v-col>-->
         </v-row>
       </v-card-title>
     </v-card>
@@ -56,61 +56,15 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Muestras Tomadas</p>
+                  <p>INDICADOR TOMA - PROCESAMIENTO Y ENTREGA DE RESULTADO</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byMuestras"
-                    :headers="[{text:'Regional'}, {text:'Detalle'},{text:'Tipo Muestra'},{text:'Cantidad',align:'right'}]"
-                    :alignNumbersRight="true"
-                ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="12" md="12" lg="12">
-            <v-card>
-              <v-card-text>
-                <div class="font-weight-bold text-center">
-                  <p>Resultados Pacientes</p>
-                </div>
-                <simple-table
-                    :data="dataInforme.byResultado"
+                    :data="dataInforme.byConsolidado"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},
-                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
-                    ]"
-                    :alignNumbersRight="true"
-                ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="12" md="6" lg="6">
-            <v-card>
-              <v-card-text>
-                <div class="font-weight-bold text-center">
-                  <p>Nexos y Convivientes</p>
-                </div>
-                <simple-table
-                    :data="dataInforme.byNexosConvivientes"
-                    :headers="[
-                        {text:'Regional'},{text:'Detalle'},
-                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
-                    ]"
-                    :alignNumbersRight="true"
-                ></simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="12" md="6" lg="6">
-            <v-card>
-              <v-card-text>
-                <div class="font-weight-bold text-center">
-                  <p>Llamadas Call Center</p>
-                </div>
-                <simple-table
-                    :data="dataInforme.byCallCenter"
-                    :headers="[
-                        {text:'Regional'},{text:'Detalle'},
-                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
+                        {text:'Departamento'},
+                        {text:'Casos positivos',align:'right'}, {text:'Muestras no procesadas',align:'right'},
+                        {text:'Resultados laboratorios',align:'right'}, {text:'Tiempo entre solicitud y Toma (h)',align:'right'},
+                        {text:'Tiempo entre toma y resultado (h)',align:'right'},{text:'% Tasa positividad'}
                     ]"
                     :alignNumbersRight="true"
                 ></simple-table>
@@ -121,13 +75,76 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Tipo Aislamiento</p>
+                  <p>Informe General</p>
                 </div>
                 <simple-table
-                    :data="dataInforme.byAislamiento"
+                    :data="dataInforme.byTipoResultado"
                     :headers="[
-                        {text:'Regional'},{text:'Detalle'},
-                        {text:'Tipo Muestra'},{text:'Cantidad',align:'right'}
+                        {text:'Regional'}, {text:'Detalle'}, {text:'Cantidad',align:'right'}
+                    ]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Contactos</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.byContactos"
+                    :headers="[
+                        {text:'Regional'}, {text:'Detalle'}, {text:'Cantidad',align:'right'}
+                    ]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Convivientes</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.byConvivientes"
+                    :headers="[
+                        {text:'Regional'}, {text:'Detalle'}, {text:'Cantidad',align:'right'}
+                    ]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Sección SGCOVID</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.bySGCovid"
+                    :headers="[
+                        {text:'Regional'}, {text:'Detalle'}, {text:'Cantidad',align:'right'}
+                      ]"
+                    :alignNumbersRight="true"
+                ></simple-table>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" lg="12">
+            <v-card>
+              <v-card-text>
+                <div class="font-weight-bold text-center">
+                  <p>Diagnosticos SGCOVID</p>
+                </div>
+                <simple-table
+                    :data="dataInforme.byDiagnosticoSismuestras"
+                    :headers="[
+                        {text:'Regional'}, {text:'Detalle'}, {text:'Cantidad',align:'right'}
                       ]"
                     :alignNumbersRight="true"
                 ></simple-table>
