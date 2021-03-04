@@ -38,6 +38,16 @@
       >
       </c-date-range>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.priorizacion"
+          label="Tipo de Priorizacion"
+          :items="priorizaciones"
+          item-text="descripcion"
+          item-value="id"
+      >
+      </c-select-complete>
+    </v-col>
   </v-row>
 </template>
 
@@ -52,10 +62,12 @@
     },
     data: () => ({
       ipss: [],
+      priorizaciones: [],
       filters: {
         models: {
           estado: null,
           ips: null,
+          priorizacion: null,
           rango_dosis1: null,
           rango_dosis2: null
         },
@@ -71,7 +83,8 @@
     methods: {
       getIPSS(){
         this.axios.get('/ajustes-generales/iniciales').then(response => {
-          this.ipss = response.data.parametros.ipss_vacunas
+          this.ipss = response.data.parametros.ipss_vacunas,
+          this.priorizaciones = response.data.parametros.priorizaciones_vacunas
         }).catch(error => {
           this.$store.commit('snackbar', {
             color: 'error',
@@ -93,6 +106,9 @@
         }
         if (this.filters.models.rango_dosis2 !== null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[dosis2Between]=' + this.filters.models.rango_dosis2
+        }
+        if (this.filters.models.priorizacion !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[priorizacion]=' + this.filters.models.priorizacion
         }
         this.$emit('filtra', rutaTemp)
       },
