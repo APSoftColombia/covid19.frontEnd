@@ -121,7 +121,6 @@
       },
       value: {
         handler(val) {
-          console.log('eeeeee', val)
           this.model = ((typeof val !== 'undefined') && this.moment(val).isValid() ? val : null)
         },
         immediate: true

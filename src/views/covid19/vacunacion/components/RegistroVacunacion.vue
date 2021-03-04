@@ -183,6 +183,7 @@
                   :items="departamentos.length && vacunacion.departamento_id && departamentos.find(x => x.id === vacunacion.departamento_id) ? departamentos.find(x => x.id === vacunacion.departamento_id).municipios : []"
                   item-text="nombre"
                   item-value="id"
+                  @input="vacunacion.barrio_id = null"
               >
               </c-select-complete>
             </v-col>
@@ -362,10 +363,7 @@ export default {
     dialog: false,
     loading: false,
     vacunacion: null,
-    edad: null,
-    complementos: {
-
-    }
+    edad: null
   }),
   computed: {
     ...mapGetters([
@@ -390,7 +388,6 @@ export default {
     'vacunacion.municipio_id': {
       handler(val) {
         if (this && this.vacunacion) {
-          this.vacunacion.barrio_id = null
           this.barrios = []
           if (val) {
             this.getBarrios(val)

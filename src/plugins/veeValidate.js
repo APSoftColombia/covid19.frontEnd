@@ -54,7 +54,6 @@ extend('integridadSQL', {
 
 extend('dateValid', {
     validate(value) {
-        console.log('valuevalue', value)
         return moment(value, 'DD/MM/YYYY').isValid() ? true : false
     },
     message: 'La fecha no es válida'
