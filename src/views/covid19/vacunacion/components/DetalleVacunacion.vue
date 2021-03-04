@@ -16,7 +16,7 @@
             <v-card>
               <v-list dense>
                 <v-list-item @click="click = false">
-                  <v-list-item-avatar class="white--text font-weight-bold" :color="vacunacion.discapacidad ? 'teal' : 'grey lighten-2'">
+                  <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.discapacidad ? 'teal' : 'grey lighten-2'">
                     {{ vacunacion.discapacidad || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -25,7 +25,7 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click="click = false">
-                  <v-list-item-avatar class="white--text font-weight-bold" :color="vacunacion.puede_desplazarse ? 'teal' : 'grey lighten-2'">
+                  <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.puede_desplazarse ? 'teal' : 'grey lighten-2'">
                     {{ vacunacion.puede_desplazarse || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -33,12 +33,20 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click="click = false">
-                  <v-list-item-avatar class="white--text font-weight-bold" :color="vacunacion.intencion_vacuna ? 'teal' : 'grey lighten-2'">
+                  <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.intencion_vacuna ? 'teal' : 'grey lighten-2'">
                     {{ vacunacion.intencion_vacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title class="title py-1">Tiene Intención de Vacunarse</v-list-item-title>
                     <p class="ma-0 subtitle-1">{{ vacunacion.porque_no_vacuna }}</p>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="click = false">
+                  <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.mivacuna ? 'teal' : 'grey lighten-2'">
+                    {{ vacunacion.mivacuna || '' }}
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title class="title py-1">Está Registrado en Mi Vacuna</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
