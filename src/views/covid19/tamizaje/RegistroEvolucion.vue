@@ -534,9 +534,10 @@
                         hide-details
                     ></v-switch>
                   </v-col>
-                  <v-col cols="12" v-if="verFormAislamiento">
+                  <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
                     <v-switch
                         label="Crear Orden de Aislamiento"
+                        :readonly="evolucion.obligaAislamiento"
                         v-model="verFormularioAislamiento"
                         :false-value="0"
                         :true-value="1"
@@ -743,7 +744,10 @@ export default {
     ]),
     clasificacionesCovidSeleccionables() {
       if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {
-        let previstos = this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes(this.tamizaje.positivo_covid ? 'CC' : 'CP')) || x.text === 'NC')
+        let previstos = []
+        previstos = this.tamizaje.positivo_covid
+            ? this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes('CC')))
+            : this.clasificacionesCovid.filter(x => (x.selectable && x.text.includes('CP')) || x.text === 'NC')
         return previstos
       }
       return []
@@ -756,11 +760,16 @@ export default {
           if(!this.enEdicion) {
             if (this.evolucion) {
               if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
-              else if (this.evolucion.clasificacion === '5') listado = this.estadosAfectacion.filter(x => x !== 'Fallecido')
-              // else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
               else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x === 'Ninguno')
-              else listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
+              else {
+                if(this.tamizaje.positivo_covid) {
+                  listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
+                } else {
+                  listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno' && x !== 'Reinfectado' && x !== 'Recuperado')
+                }
+              }
             }
+            // else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
             // if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
           }
         }
@@ -965,6 +974,8 @@ export default {
         }
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
         this.evolucion.tipo = 'Seguimiento Médico'
+        this.evolucion.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
+        if(this.evolucion.obligaAislamiento) this.verFormularioAislamiento = 1
         this.verificaInfoPaciente()
       }
       this.dialog = true

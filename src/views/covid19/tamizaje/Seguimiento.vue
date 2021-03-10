@@ -33,20 +33,32 @@
         <datos-personales :tamizaje="tamizaje" @actualizarTamizaje="val => changeTamizaje(val.id)"></datos-personales>
         <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
+<!--          <v-alert-->
+<!--              v-if="tamizaje.medico"-->
+<!--              class="mt-3"-->
+<!--              v-model="alertPurebas"-->
+<!--              dismissible-->
+<!--              close-icon="mdi-delete"-->
+<!--              color="orange"-->
+<!--              border="left"-->
+<!--              elevation="2"-->
+<!--              colored-border-->
+<!--              icon="mdi-alert"-->
+<!--          >-->
+<!--            Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se-->
+<!--            relacionen correctamente.-->
+<!--          </v-alert>-->
           <v-alert
-              v-if="tamizaje.medico"
+              v-if="verAlertAislamiento"
+              dark
               class="mt-3"
-              v-model="alertPurebas"
-              dismissible
-              close-icon="mdi-delete"
-              color="orange"
+              :value="true"
+              color="error"
               border="left"
               elevation="2"
-              colored-border
               icon="mdi-alert"
           >
-            Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se
-            relacionen correctamente.
+            Este caso aún no registra aislamientos
           </v-alert>
           <template v-if="tamizaje && tamizaje.id">
             <template v-if="tamizaje.medico">
@@ -64,37 +76,79 @@
                 <v-tab
                     href="#tab-1"
                 >
-                  Seguimientos
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-1' ? 'primary' : 'grey'"
+                      :content="String(tamizaje.evoluciones.length)"
+                      :class="tab === 'tab-1' ? 'primary--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Seguimientos</span>
+                  </v-badge>
                   <v-icon>fas fa-chart-line</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-4"
                 >
-                  Aislamientos
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-4' ? 'deep-purple' : 'grey'"
+                      :content="String(tamizaje.aislamientos.length)"
+                      :class="tab === 'tab-4' ? 'deep-purple--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Aislamientos</span>
+                  </v-badge>
                   <v-icon>mdi-door-closed-lock</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-2"
                 >
-                  {{ sonNexos ? 'Nexos' : 'Contactos' }}
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-2' ? 'warning' : 'grey'"
+                      :content="String(tamizaje.nexos.length)"
+                      :class="tab === 'tab-2' ? 'warning--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">{{ sonNexos ? 'Nexos' : 'Contactos' }}</span>
+                  </v-badge>
                   <v-icon>fas fa-people-arrows</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-5"
                 >
-                  Tomas Muestras
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-5' ? 'indigo' : 'grey'"
+                      :content="String(tamizaje.asignacion_pruebas.length)"
+                      :class="tab === 'tab-5' ? 'indigo--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Tomas Muestras</span>
+                  </v-badge>
                   <v-icon>fas fa-vial</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-3"
                 >
-                  SISMUESTRAS
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-3' ? 'error' : 'grey'"
+                      :content="String(tamizaje.muestras.length)"
+                      :class="tab === 'tab-3' ? 'error--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">SISMUESTRAS</span>
+                  </v-badge>
                   <v-icon>fas fa-vials</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-6"
                 >
-                  Psicología
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-6' ? 'teal' : 'grey'"
+                      :content="String(tamizaje.seguimientos_psicologicos.length)"
+                      :class="tab === 'tab-6' ? 'teal--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Psicología</span>
+                  </v-badge>
                   <v-icon>fas fa-street-view</v-icon>
                 </v-tab>
               </v-tabs>
@@ -207,19 +261,40 @@
                 <v-tab
                     href="#tab-1"
                 >
-                  {{ sonNexos ? 'Nexos' : 'Contactos' }}
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-1' ? 'warning' : 'grey'"
+                      :content="String(tamizaje.nexos.length)"
+                      :class="tab === 'tab-1' ? 'warning--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">{{ sonNexos ? 'Nexos' : 'Contactos' }}</span>
+                  </v-badge>
                   <v-icon>fas fa-people-arrows</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-3"
                 >
-                  Tomas Muestras
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-3' ? 'indigo' : 'grey'"
+                      :content="String(tamizaje.asignacion_pruebas.length)"
+                      :class="tab === 'tab-3' ? 'indigo--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Tomas Muestras</span>
+                  </v-badge>
                   <v-icon>fas fa-vial</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-2"
                 >
-                  SISMUESTRAS
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-2' ? 'error' : 'grey'"
+                      :content="String(tamizaje.muestras.length)"
+                      :class="tab === 'tab-2' ? 'error--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">SISMUESTRAS</span>
+                  </v-badge>
                   <v-icon>fas fa-vials</v-icon>
                 </v-tab>
               </v-tabs>
@@ -314,15 +389,21 @@ export default {
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },
+    verAlertAislamiento() {
+      if (this && this.tamizaje && (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.filter(x => !x.fallida).length) && (this.tamizaje.aislamientos && !this.tamizaje.aislamientos.length)) {
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+      }
+      return false
+    },
     editable() {
       if (this && this.tamizaje && this.tamizaje.medico_id) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
       }
       return false
     },
     editableNexos() {
       if (this && this.tamizaje) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
       }
       return false
     },

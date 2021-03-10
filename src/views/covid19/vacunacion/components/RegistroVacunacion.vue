@@ -47,6 +47,7 @@
                   label="Expedición Documento"
                   :max="moment().format('YYYY-MM-DD')"
                   name="expedición documento"
+                  rules="required"
                   :disabled="identificacionVerificada < 1"
               />
             </v-col>
@@ -122,7 +123,7 @@
                   v-model="vacunacion.telefono"
                   label="Celular"
                   rules="required|numeric|minlength:10|maxlength:10"
-                  name="celular principal"
+                  name="celular"
                   :disabled="identificacionVerificada < 1"
               >
               </c-texto>
@@ -182,6 +183,7 @@
                   :items="departamentos.length && vacunacion.departamento_id && departamentos.find(x => x.id === vacunacion.departamento_id) ? departamentos.find(x => x.id === vacunacion.departamento_id).municipios : []"
                   item-text="nombre"
                   item-value="id"
+                  @input="vacunacion.barrio_id = null"
               >
               </c-select-complete>
             </v-col>
@@ -191,6 +193,8 @@
                   v-model="vacunacion.barrio_id"
                   :loading="loadingBarrios"
                   label="Barrio"
+                  name="barrio"
+                  rules="required"
                   :items="barrios"
                   item-text="nombre"
                   item-value="id"
@@ -282,7 +286,7 @@
                   <v-card-text>
                     <c-radio
                         v-model="vacunacion.intencion_vacuna"
-                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}]"
+                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                         itemValue="value"
                         itemText="text"
                         rules="required"
@@ -313,7 +317,7 @@
                   <v-card-text>
                     <c-radio
                         v-model="vacunacion.mivacuna"
-                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}]"
+                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                         itemValue="value"
                         itemText="text"
                         rules="required"
@@ -359,10 +363,7 @@ export default {
     dialog: false,
     loading: false,
     vacunacion: null,
-    edad: null,
-    complementos: {
-
-    }
+    edad: null
   }),
   computed: {
     ...mapGetters([
@@ -387,7 +388,6 @@ export default {
     'vacunacion.municipio_id': {
       handler(val) {
         if (this && this.vacunacion) {
-          this.vacunacion.barrio_id = null
           this.barrios = []
           if (val) {
             this.getBarrios(val)

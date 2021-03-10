@@ -652,8 +652,7 @@ export default {
       this.$refs.seguimiento.open(item.id)
     },
     tamizajeGuardado(tamizaje) {
-      console.log('tamizaje', tamizaje)
-      this.verSeguimiento(tamizaje)
+      if(tamizaje) this.verSeguimiento(tamizaje)
       this.$store.commit('reloadTable', 'tablaTamizajes')
     },
     resetOptions(item) {
@@ -664,7 +663,7 @@ export default {
       item.colortrrgba = item.total_riesgo > 0 ? `254,0,0, ${item.total_riesgo / 100}` : ''
       item.colortext = item.total_riesgo > 50 ? 'white' : ''
       item.options = []
-      if (this.permisos.tamizajeEditar && !item.medico_id && !!(item.localiza_persona && item.contesta_encuesta)) item.options.push({
+      if ((this.permisos.tamizajeEditar && !item.medico_id && !!(item.localiza_persona && item.contesta_encuesta)) || this.esSuperAdmin) item.options.push({
         event: 'actualizar',
         icon: 'mdi-file-document-edit',
         tooltip: 'Actualizar tamizaje',
