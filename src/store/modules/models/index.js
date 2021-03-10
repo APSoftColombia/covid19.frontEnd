@@ -230,7 +230,8 @@ const state = {
         linfocitos: null,
         ldh: null,
         fecha_seguimiento: null,
-        lugar_toma_muestra: null
+        lugar_toma_muestra: null,
+        obligaAislamiento: null
 
     },
     modelSeguimientoPscologico: {

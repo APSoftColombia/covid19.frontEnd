@@ -652,8 +652,7 @@ export default {
       this.$refs.seguimiento.open(item.id)
     },
     tamizajeGuardado(tamizaje) {
-      console.log('tamizaje', tamizaje)
-      this.verSeguimiento(tamizaje)
+      if(tamizaje) this.verSeguimiento(tamizaje)
       this.$store.commit('reloadTable', 'tablaTamizajes')
     },
     resetOptions(item) {
