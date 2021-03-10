@@ -117,6 +117,7 @@
         this.filters.models.ips = null
         this.filters.models.rango_dosis1 = null
         this.filters.models.rango_dosis2 = null
+        this.filters.models.priorizacion = null
       },
     },
     created() {
