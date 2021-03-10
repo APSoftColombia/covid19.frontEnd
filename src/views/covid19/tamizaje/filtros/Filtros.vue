@@ -368,8 +368,9 @@ export default {
         ],
         estadoPrueba: [
           'Requiere Muestra',
-          'Con Resultado',
-          'Sin Resultado'
+          'Muestra Tomada',
+          'No Tomada',
+          'Con Resultado'
         ],
         aislamientosOptions: [
           {text: 'Con Aislamientos Activos', value: 1},
