@@ -60,8 +60,11 @@
                         </v-list-item-title>
                       </v-list-item-content>
                       <v-list-item-action>
-                        <registro-fallecido :fallecido="autopsia.fallecido"
-                                            @guardar="val => autopsia.fallecido = val"></registro-fallecido>
+                        <registro-fallecido
+                            v-if="dialog"
+                            :fallecido="autopsia.fallecido"
+                            @guardar="val => autopsia.fallecido = val"
+                        />
                       </v-list-item-action>
                     </v-list-item>
                     <v-list-item @click="click = null" style="border-bottom: none !important;">
@@ -89,8 +92,11 @@
                         </v-list-item-title>
                       </v-list-item-content>
                       <v-list-item-action>
-                        <registro-encuestado :encuestado="autopsia.encuestado"
-                                             @guardar="val => autopsia.encuestado = val"></registro-encuestado>
+                        <registro-encuestado
+                            v-if="dialog"
+                            :encuestado="autopsia.encuestado"
+                            @guardar="val => autopsia.encuestado = val"
+                        />
                       </v-list-item-action>
                     </v-list-item>
                   </v-list>
@@ -673,19 +679,6 @@ export default {
     }
   },
   watch: {
-    // 'autopsia.archivo': {
-    //   async handler(val) {
-    //     console.log('el archivo', val)
-    //     let xx = await new Promise((resolve, reject) => {
-    //       const reader = new FileReader()
-    //       reader.readAsDataURL(val)
-    //       reader.onload = () => resolve(reader.result)
-    //       reader.onerror = error => reject(error)
-    //     })
-    //     console.log('el archivo xxxx', xx)
-    //   },
-    //   immediate: false
-    // },
     'autopsia.fallecido': {
       handler(val) {
         val && (this.okFallecido = 1)
@@ -756,17 +749,6 @@ export default {
                 reader.onerror = error => reject(error)
               })
             }
-            // let data = new FormData()
-            // for (const prop in this.autopsia) {
-            //   if (this.autopsia[prop] !== null && typeof this.autopsia.archivo !== 'undefined') {
-            //     if (prop === 'fallecido' || prop === 'encuestado') {
-            //       data.append(`${prop}`, JSON.stringify(this.autopsia[prop]))
-            //     } else {
-            //       data.append(`${prop}`, this.autopsia[prop])
-            //     }
-            //   }
-            // }
-
             let request = dataCopia.id
                 ? this.axios.put(`autopsias/${dataCopia.id}`, dataCopia)
                 : this.axios.post(`autopsias`, dataCopia)
