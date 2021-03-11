@@ -785,6 +785,18 @@ export default {
       this.axios.get(`autopsias/${idAutopsia}`)
           .then(response => {
             console.log('response get Autopsia', response)
+            if (response.data && response.data.sintomas && response.data.sintomas.length) {
+              response.data.sintomas = response.data.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
+            }
+            if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
+              response.data.comorbilidades = response.data.comorbilidades.map(x => x.id)
+            }
+            if(response.data && response.data.fallecido) {
+              response.data.fallecido.si_eps = response.data.fallecido.eps_id ? 1 : 0
+            }
+            if(response.data && response.data.encuestado) {
+              response.data.encuestado.si_eps = response.data.encuestado.eps_id ? 1 : 0
+            }
             this.autopsia = response.data
             this.loading = false
           })
