@@ -769,8 +769,6 @@ export default {
                 }
               }
             }
-            // else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x !== 'Reinfectado')
-            // if(this.tamizaje && ((this.tamizaje.muestras.length && this.tamizaje.muestras.find(x => x.resultado !== 1)) || !this.tamizaje.muestras.length)) listado = listado.filter(x => x !== 'Recuperado')
           }
         }
       }

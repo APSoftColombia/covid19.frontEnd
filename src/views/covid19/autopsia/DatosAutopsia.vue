@@ -5,7 +5,7 @@
                 <span class="title">Datos de la Encuesta</span>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                <v-divider class="ma-0"></v-divider>
+                <v-divider class="ma-0"/>
                 <v-row>
                     <v-col cols="12">
                         <v-list class="notification-wrap" subheader>

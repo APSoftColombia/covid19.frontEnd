@@ -1,16 +1,13 @@
 <template>
   <v-row>
     <v-col class="pb-0" cols="12" sm="6" md="6">
-      <c-identificacion
-          ref="cIdentificacion"
+      <c-texto
           v-model="persona.identificacion"
           label="Identificación"
           rules="required|numeric"
           name="identificación"
-          @responsepersona="val => resultAfiliado(val)"
-          @keyup="identificacionVerificada = 0"
       >
-      </c-identificacion>
+      </c-texto>
     </v-col>
     <v-col class="pb-0" cols="12" sm="6" md="6">
       <c-select-complete
@@ -247,14 +244,6 @@ export default {
     tipo: {
       type: String,
       default: 'tamizaje'
-    },
-    verificarAfiliado: {
-      type: Boolean,
-      default: false
-    },
-    remplazarAfiliadoNull: {
-      type: Boolean,
-      default: true
     }
   },
   data: () => ({
@@ -346,18 +335,22 @@ export default {
       },
       immediate: false
     }
+    // 'value.tamizador_id': {
+    //     handler(val) {
+    //         if (val) {
+    //             this.persona.barrio_id = null
+    //         }
+    //     },
+    //     immediate: false
+    // }
   },
   created() {
     this.assignPerson()
-    if (this.verificarAfiliado) {
-      setTimeout(() => {
-        if (this.$refs.cIdentificacion) this.$refs.cIdentificacion.enter()
-      }, 500)
-    }
   },
   methods: {
     assignPerson() {
       if (this.value) {
+        console.log('this.value', this.value)
         this.value.departamento_id = (this.departamentos && this.value.departamento_id && this.departamentos.find(x => x.id === this.value.departamento_id)) ? this.value.departamento_id : null
         this.value.municipio_id = (this.municipiosTotal && this.value.municipio_id && this.municipiosTotal.find(x => x.id === this.value.municipio_id)) ? this.value.municipio_id : null
         this.persona = this.value
@@ -383,47 +376,45 @@ export default {
       this.$emit('responsetamizaje', null)
       this.identificacionVerificada = 1
       this.$emit('verificado', this.identificacionVerificada)
-      if ((this.remplazarAfiliadoNull && response.afiliado === null) || response.afiliado !== null) {
-        this.persona.tipo_identificacion = null
-        this.persona.nombre1 = null
-        this.persona.nombre2 = null
-        this.persona.apellido1 = null
-        this.persona.apellido2 = null
-        this.persona.fecha_nacimiento = null
-        this.persona.sexo = null
-        this.persona.celular = null
-        this.persona.email = null
-        this.persona.direccion = null
-        this.persona.departamento_id = null
-        this.persona.municipio_id = null
-        this.persona.barrio_id = null
-        this.persona.si_eps = 1
-        this.persona.eps_id = null
-        this.persona.tipo_afiliacion = null
-      }
+      this.persona.tipo_identificacion = null
+      this.persona.nombre1 = null
+      this.persona.nombre2 = null
+      this.persona.apellido1 = null
+      this.persona.apellido2 = null
+      this.persona.fecha_nacimiento = null
+      this.persona.sexo = null
+      this.persona.celular = null
+      this.persona.email = null
+      this.persona.direccion = null
+      this.persona.departamento_id = null
+      this.persona.municipio_id = null
+      this.persona.barrio_id = null
+      this.persona.si_eps = 1
+      this.persona.eps_id = null
+      this.persona.tipo_afiliacion = null
       if (response && response.tamizaje && response.tamizaje.length) {
         this.identificacionVerificada = 0
         this.$emit('verificado', this.identificacionVerificada)
         let tm0 = response.tamizaje[0]
         let mensaje = null
-        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
+        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6') {
           this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
+          mensaje = {id: 1, mensaje: 'Se puede continuar con la creación de la ERP.'}
         } else if (tm0.total_riesgo && !tm0.medico_id) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 2,
             mensaje: `El documento ${tm0.identificacion} ya tiene ERP activa y está pendiente por Asignación de Caso de Estudio.`
           }
-        } else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
+        } else if (tm0.medico_id && (tm0.evolucion !== 'Mejora Total (Curado)' && tm0.evolucion !== 'Falleció')) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 3,
-            mensaje: `El documento ${tm0.identificacion} tiene un Caso de Estudio Asignado y no se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
+            mensaje: `El documento ${tm0.identificacion} ya tiene un Caso de Estudio Asignado y no se puede continuar con la creación de la ERP.`
           }
         } else {
           this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con la creación de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
+          mensaje = {id: 1, mensaje: 'Se puede continuar con la creación de la ERP.'}
         }
         this.$emit('responsetamizaje', {tamizajes: response.tamizaje, mensaje: mensaje})
       }

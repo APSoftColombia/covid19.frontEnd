@@ -12,7 +12,7 @@
           small
           v-bind="attrs"
           v-on="on"
-          @click.stop="assign(tamizajeOrigen)"
+          @click.stop="assign(personaOrigen)"
       >
         <v-icon>mdi-account-edit</v-icon>
         {{ $vuetify.breakpoint.smAndDown ? '' : 'Editar' }}
@@ -35,8 +35,8 @@
       <v-card-text class="pt-3">
         <ValidationObserver ref="formPaciente">
           <form-paciente
-              v-if="tamizaje"
-              v-model="tamizaje"
+              v-if="persona"
+              v-model="persona"
           />
         </ValidationObserver>
       </v-card-text>
@@ -62,9 +62,9 @@
 </template>
 
 <script>
-import FormPaciente from 'Views/covid19/tamizaje/paciente/FormPaciente'
+import FormPaciente from 'Views/covid19/autopsia/paciente/FormPaciente'
 export default {
-  name: 'ModalPersona',
+  name: 'ModalPaciente',
   components: {
     FormPaciente
   },
@@ -73,26 +73,42 @@ export default {
       type: Object,
       default: null
     },
-    tamizajeOrigen: {
+    autopsia: {
+      type: Object,
+      default: null
+    },
+    personaOrigen: {
       type: Object,
       default: null
     },
     btnVisible: {
       type: Boolean,
       default: false
-    }
+    },
+    tipo: {
+      type: String,
+      default: 'fallecido'
+    },
   },
   data: () => ({
     loading: false,
     dialog: false,
-    tamizaje: null
+    persona: null
   }),
   methods: {
     guardar() {
       this.$refs.formPaciente.validate().then(async result => {
         if (result) {
           this.loading = true
-          this.axios.put(`tamizajes/${this.tamizaje.id}`, this.tamizaje)
+          let inAutopsia = this.clone(this.autopsia)
+          if (inAutopsia && inAutopsia.sintomas && inAutopsia.sintomas.length) {
+            inAutopsia.sintomas = inAutopsia.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
+          }
+          if (inAutopsia && inAutopsia.comorbilidades && inAutopsia.comorbilidades.length) {
+            inAutopsia.comorbilidades = inAutopsia.comorbilidades.map(x => x.id)
+          }
+          inAutopsia[this.tipo] = this.persona
+          this.axios.put(`autopsias/${inAutopsia.id}`, inAutopsia)
               .then(response => {
                 this.$emit('actualizado', response.data)
                 this.$store.commit('snackbar', {color: 'success', message: `La información del paciente se actualizó correctamente.`})
@@ -109,28 +125,20 @@ export default {
       this.loading = false
       this.dialog = false
       setTimeout(() => {
-        this.tamizaje = null
+        this.persona = null
       }, 400)
     },
-    assign(tamizaje) {
-      let elTamizaje = this.clone(tamizaje)
-      if (elTamizaje && elTamizaje.sintomas && elTamizaje.sintomas.length) {
-        let copySintomas = this.clone(elTamizaje.sintomas)
-        elTamizaje.sintomas = elTamizaje.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
-        elTamizaje.signos_alarma = copySintomas.filter(b => b.aplica_covid && !b.solicita_fecha).map(x => x.id)
-      }
-      if (elTamizaje && elTamizaje.comorbilidades && elTamizaje.comorbilidades.length) {
-        elTamizaje.comorbilidades = elTamizaje.comorbilidades.map(x => x.codigo)
-      }
-      elTamizaje.si_eps = elTamizaje.eps_id ? 1 : 0
-      this.tamizaje = elTamizaje
+    assign(persona) {
+      let elpersona = this.clone(persona)
+      elpersona.si_eps = elpersona.eps_id ? 1 : 0
+      this.persona = elpersona
       setTimeout(() => {
         this.$refs.formPaciente.validate()
       }, 600)
     },
-    open(tamizaje) {
-      this.tamizaje = null
-      this.assign(tamizaje)
+    open(persona) {
+      this.persona = null
+      this.assign(persona)
       this.dialog = true
     }
   }

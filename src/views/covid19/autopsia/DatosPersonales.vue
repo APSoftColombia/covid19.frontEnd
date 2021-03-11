@@ -4,23 +4,23 @@
       <v-expansion-panel-header class="py-1 pl-0">
         <v-list-item>
           <v-list-item-avatar>
-            <v-icon color="teal" large>{{ tamizaje.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
+            <v-icon color="teal" large>{{ persona.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content class="pa-0">
             <v-list-item-title v-if="tipo"><h6 class="mb-0">{{ tipo }}</h6></v-list-item-title>
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
-                {{ [tamizaje.nombre1, tamizaje.nombre2, tamizaje.apellido1, tamizaje.apellido2].filter(x => x).join(' ') }}
+                {{ [persona.nombre1, persona.nombre2, persona.apellido1, persona.apellido2].filter(x => x).join(' ') }}
               </h4>
             </v-list-item-title>
             <v-list-item-title>
               <h6 class="mb-0">
-              {{ tiposDocumentoIdentidad && tamizaje.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === tamizaje.tipo_identificacion).tipo : '' }}
-              {{ tamizaje.identificacion }}
+              {{ tiposDocumentoIdentidad && persona.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === persona.tipo_identificacion).tipo : '' }}
+              {{ persona.identificacion }}
               </h6>
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{calculaEdad(tamizaje && tamizaje.fecha_nacimiento).stringDate}}
+              {{calculaEdad(persona && persona.fecha_nacimiento).stringDate}}
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
@@ -28,8 +28,10 @@
                 v-if="permisos.datosPacienteEditar"
                 btn-visible
                 ref="modalPaciente"
-                :tamizaje-origen="tamizaje"
-                @actualizado="val => $emit('actualizarTamizaje', val)"
+                :persona-origen="persona"
+                :autopsia="autopsia"
+                @actualizado="val => $emit('actualizado', val)"
+                :tipo="tipo === 'Informante' ? 'encuestado' : 'fallecido'"
             />
           </v-list-item-action>
         </v-list-item>
@@ -62,12 +64,16 @@
 </template>
 
 <script>
-import ModalPaciente from 'Views/covid19/tamizaje/paciente/ModalPaciente'
+import ModalPaciente from 'Views/covid19/autopsia/paciente/ModalPaciente'
 import {mapGetters} from 'vuex'
 export default {
   name: 'DatosPersonales',
   props: {
-    tamizaje: {
+    persona: {
+      type: Object,
+      default: null
+    },
+    autopsia: {
       type: Object,
       default: null
     },
@@ -96,7 +102,7 @@ export default {
       },
       immediate: true
     },
-    tamizaje: {
+    persona: {
       handler(val) {
         val && this.assign()
       },
@@ -118,7 +124,7 @@ export default {
       this.datos.push(
           {
             label: 'Fecha Nacimiento',
-            body: this.tamizaje.fecha_nacimiento,
+            body: this.persona.fecha_nacimiento,
             icon: 'mdi-calendar-month',
             iconColor: 'warning',
             colmd: '6',
@@ -126,7 +132,7 @@ export default {
           },
           {
             label: 'Sexo',
-            body: this.tamizaje.sexo ? this.tamizaje.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
+            body: this.persona.sexo ? this.persona.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
             icon: 'mdi-human-male-female',
             iconColor: 'primary',
             colmd: '6',
@@ -134,7 +140,7 @@ export default {
           },
           {
             label: 'Celular',
-            body: [this.tamizaje.celular, this.tamizaje.celular2].filter(x => x).join(' - '),
+            body: [this.persona.celular, this.persona.celular2].filter(x => x).join(' - '),
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',
             colmd: '6',
@@ -142,7 +148,7 @@ export default {
           },
           {
             label: 'Email',
-            body: this.tamizaje.email,
+            body: this.persona.email,
             icon: 'mdi-email',
             iconColor: 'error',
             colmd: '6',
@@ -150,7 +156,7 @@ export default {
           },
           {
             label: 'Acudiente',
-            body: this.tamizaje.acudiente,
+            body: this.persona.acudiente,
             icon: 'mdi-account-child',
             iconColor: 'green',
             colmd: '6',
@@ -158,7 +164,7 @@ export default {
           },
           {
             label: 'Dirección',
-            body: `${this.tamizaje.direccion}${this.tamizaje.barrio_id && this.tamizaje.barrio ? ` - ${this.tamizaje.barrio.tipo === 'Barrio' ? 'Barrio' : 'Vereda'} ` + this.tamizaje.barrio.nombre : ''}`,
+            body: `${this.persona.direccion}${this.persona.barrio_id && this.persona.barrio ? ` - ${this.persona.barrio.tipo === 'Barrio' ? 'Barrio' : 'Vereda'} ` + this.persona.barrio.nombre : ''}`,
             icon: 'fas fa-map-signs',
             iconColor: 'purple',
             colmd: '6',
@@ -166,7 +172,7 @@ export default {
           },
           {
             label: 'Municipio',
-            body: this.tamizaje.municipio ? `${this.tamizaje.municipio.nombre}, ${this.tamizaje.municipio.departamento.nombre}` : '',
+            body: this.persona.municipio ? `${this.persona.municipio.nombre}, ${this.persona.municipio.departamento.nombre}` : '',
             icon: 'mdi-map-marker-radius',
             iconColor: 'blue',
             colmd: '6',
@@ -174,7 +180,7 @@ export default {
           },
           {
             label: 'EPS',
-            body: this.tamizaje.eps ? this.tamizaje.eps.nombre : '',
+            body: this.persona.eps ? this.persona.eps.nombre : '',
             icon: 'fas fa-hospital',
             iconColor: 'pink',
             colmd: '6',
@@ -182,14 +188,14 @@ export default {
           },
           {
             label: 'Régimen',
-            body: [this.tamizaje.tipo_afiliacion, this.tamizaje.regimen_especial].filter(x => x).join(' - '),
+            body: [this.persona.tipo_afiliacion, this.persona.regimen_especial].filter(x => x).join(' - '),
             icon: 'mdi-medical-bag',
             iconColor: 'indigo',
             colmd: '6',
             collg: '4'
           }
       )
-      // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)
+      // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.persona)
     }
   }
 }
