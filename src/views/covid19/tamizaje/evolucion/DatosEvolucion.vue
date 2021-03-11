@@ -327,6 +327,19 @@
                                 <v-list-item-title><h6 class="mb-0 text-justify">{{evolucion.solicitud_prueba ? 'SI' : 'NO'}}</h6></v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                      <v-list-item
+                          flat
+                          style="border-bottom: none !important;"
+                          @click="click = null"
+                      >
+                        <v-list-item-avatar class="my-1">
+                          <v-icon color="pink">mdi-medical-bag</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="pa-0">
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">Requiere Tratamiento</v-list-item-subtitle>
+                          <v-list-item-title><h6 class="mb-0 text-justify">{{evolucion.requiere_tratamiento !== null ? evolucion.requiere_tratamiento ? 'SI' : 'NO' : ''}}</h6></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
                     </v-list>
                 </v-col>
                 <v-col cols="12" v-if="evolucion.lugar_evolucion">

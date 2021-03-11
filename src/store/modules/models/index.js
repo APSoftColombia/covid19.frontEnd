@@ -231,7 +231,8 @@ const state = {
         ldh: null,
         fecha_seguimiento: null,
         lugar_toma_muestra: null,
-        obligaAislamiento: null
+        obligaAislamiento: null,
+        requiere_tratamiento: 0
 
     },
     modelSeguimientoPscologico: {

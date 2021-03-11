@@ -534,6 +534,17 @@
                         hide-details
                     ></v-switch>
                   </v-col>
+                  <v-col cols="12" v-if="(evolucion.clasificacion !== '6') && (evolucion.clasificacion !== '4')">
+                    <v-switch
+                        label="Requiere Tratamiento"
+                        v-model="evolucion.requiere_tratamiento"
+                        :false-value="0"
+                        :true-value="1"
+                        class="mt-0"
+                        color="primary"
+                        hide-details
+                    ></v-switch>
+                  </v-col>
                   <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
                     <v-switch
                         label="Crear Orden de Aislamiento"
@@ -1072,6 +1083,7 @@ export default {
       newEvolution.orden_medica_id = evolucionCopiada.orden_medica_id
       newEvolution.linfocitos = evolucionCopiada.linfocitos
       newEvolution.ldh = evolucionCopiada.ldh
+      newEvolution.requiere_tratamiento = evolucionCopiada.requiere_tratamiento
       // newEvolution.clasificacion = evolucionCopiada.clasificacion
       // newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
       newEvolution.duracion = evolucionActual.duracion
