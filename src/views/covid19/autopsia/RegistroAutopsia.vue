@@ -237,7 +237,7 @@
                                                 <c-check
                                                         v-model="autopsia.sintomas"
                                                         label="SÍNTOMAS"
-                                                        rules="required"
+                                                        :rules="autopsia.presenta_sintomas !== 'SI' ? '' : 'required'"
                                                         name="síntomas"
                                                         :items="sintomasAutopsia"
                                                         item-text="descripcion"
@@ -331,7 +331,7 @@
                                                 <c-check
                                                         v-model="autopsia.comorbilidades"
                                                         label="Enfermedades"
-                                                        rules="required"
+                                                        :rules="autopsia.tenia_comorbilidades !== 'SI' ? '' : 'required'"
                                                         name="enfermedades"
                                                         :items="comorbAutopsias"
                                                         item-text="descripcion"
