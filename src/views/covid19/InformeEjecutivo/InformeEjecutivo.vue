@@ -36,7 +36,7 @@
               <span>Filtrar</span>
             </v-btn>
           </v-col>
-          <!--<v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
+          <v-col class="ml-0 pl-0" cols="12" sm="12" md="1" lg="1">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn color="red" icon v-on="on" :disabled="loadingPDF" :loading="loadingPDF" @click="descargarPDF">
@@ -45,7 +45,7 @@
               </template>
               <span>Generar PDF</span>
             </v-tooltip>
-          </v-col>-->
+          </v-col>
         </v-row>
       </v-card-title>
     </v-card>
@@ -75,7 +75,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Informe General</p>
+                  <p>Tipos de Resultados</p>
                 </div>
                 <simple-table
                     :data="dataInforme.byTipoResultado"
@@ -139,7 +139,7 @@
             <v-card>
               <v-card-text>
                 <div class="font-weight-bold text-center">
-                  <p>Diagnosticos SGCOVID</p>
+                  <p>Diagnosticos Sismuestras</p>
                 </div>
                 <simple-table
                     :data="dataInforme.byDiagnosticoSismuestras"
