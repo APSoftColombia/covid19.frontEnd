@@ -233,6 +233,29 @@
                             props: ['value']
                         }
                     },
+                  {
+                    text: 'Estado',
+                    align: 'left',
+                    sortable: false,
+                    visibleColumn: true,
+                    value: 'observaciones',
+                    component: {
+                      render: function (createElement) {
+                        return createElement(
+                            `div`,{
+                              domProps: {
+                                innerHTML: `
+												<div style="white-space: initial !important; min-width: 220px !important;">
+													${ !this.value.tamizaje_id ? 'Pendiente de ERP' : (this.value.tamizaje_id && !this.value.tamizaje.medico_id) ? 'ERP, pendiente de caso de estudio' : (this.value.tamizaje_id && this.value.tamizaje.medico_id) ? 'ERP con caso de estudio' : ''  }
+												</div>
+											`
+                              }
+                            }
+                        )
+                      },
+                      props: ['value']
+                    }
+                  },
                     {
                         text: 'Observaciones',
                         align: 'left',
@@ -341,7 +364,8 @@
             },
             resetOptions(item) {
                 item.options = []
-                if (this.permisos.tamizajeCrear && !item.tamizaje) item.options.push({event: 'crearTamizaje', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
+                // && !item.tamizaje
+                if (this.permisos.tamizajeCrear) item.options.push({event: 'crearTamizaje', icon: 'fas fa-file-medical', tooltip: 'Crear ERP'})
                 item.options.push({event: 'verReporte', icon: 'mdi-file-find', tooltip: 'Detalle Reporte', color: 'success'})
                 if (this.permisos.tamizajeVer && item.tamizaje) {
                   if (item.tamizaje.medico_id) item.options.push({event: 'seguimiento', icon: 'fas fa-file-medical-alt', tooltip: 'Caso de Estudio'})
