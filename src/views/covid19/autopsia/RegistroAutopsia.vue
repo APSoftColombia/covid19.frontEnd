@@ -597,10 +597,10 @@
                     >
                     </c-text-area>
                   </v-col>
-                  <v-col class="pb-0" cols="12" sm="12">
+                  <v-col class="pb-0" :cols="autopsia.autopsia_path && !autopsia.archivo ? '10' : '12'" :sm="autopsia.autopsia_path && !autopsia.archivo ? '10' : '12'">
                     <v-file-input
                         v-model="autopsia.archivo"
-                        :hint="autopsia.path_autopsia && !autopsia.archivo ? `Cargado actualmente: ${autopsia.path_autopsia.split('/')[1]}` : ''"
+                        :hint="autopsia.autopsia_path && !autopsia.archivo ? `Cargado actualmente: ${autopsia.autopsia_path.split('/')[1]}` : ''"
                         label="Certificado de Defunción"
                         prepend-icon="mdi-file-pdf"
                         accept=".pdf"
@@ -609,6 +609,19 @@
                         persistent-hint
                         :truncate-length="$vuetify.breakpoint.xsOnly ? 22 : 44"
                     ></v-file-input>
+                  </v-col>
+                  <v-col cols="2" v-if="autopsia.autopsia_path && !autopsia.archivo">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn class="red" dark v-on="on" icon
+                               :disabled="loadingButton"
+                               :loading="loadingButton" @click="descargarDocumento"
+                        >
+                          <v-icon>fas fa-file-download</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Descargar Documento</span>
+                    </v-tooltip>
                   </v-col>
                 </template>
               </v-row>
@@ -659,6 +672,7 @@ export default {
     autopsia: null,
     okFallecido: null,
     okEncuestado: null,
+    loadingButton: null,
     siNoNs: [{value: 'SI', text: 'SI'}, {value: 'NO', text: 'NO'}, {value: 'NS', text: 'NS'}]
   }),
   computed: {
@@ -803,6 +817,26 @@ export default {
           .catch(error => {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar la autopsia.`, error: error})
+          })
+    },
+    descargarDocumento() {
+      const apiAxios = this.axios.create()
+      apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
+      apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
+      this.loadingButton = true
+      this.axios({
+        url: `download_documento_autopsia/${this.autopsia.id}`,
+        method: 'GET',
+        responseType: 'blob'
+      })
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}))
+            window.open(url, '_blank')
+            this.loadingButton = false
+          })
+          .catch((error) => {
+            this.loadingButton = false
+            this.$store.commit('snackbar', {color: 'error', message: `al descargar el archivo.`, error: error})
           })
     }
   }
