@@ -90,7 +90,7 @@
                     label="IPS que Aplica"
                     item-text="nombre"
                     item-value="codigohabilitacion"
-                    :hint="(vacuna.codhabilitacion_ips && complementos.prestadores_vacunas && complementos.prestadores_vacunas.length && complementos.prestadores_vacunas.find(x => x.codigohabilitacion === vacuna.codhabilitacion_ips)) ? `Cod: ${complementos.prestadores_vacunas.find(x => x.codigohabilitacion === vacuna.codhabilitacion_ips).codigohabilitacion}` : ''"
+                    :hint="(vacuna.codhabilitacion_ips && complementos.prestadores_vacunas && complementos.prestadores_vacunas.length && complementos.prestadores_vacunas.find(x => x.codigohabilitacion === vacuna.codhabilitacion_ips)) ? `Cód: ${complementos.prestadores_vacunas.find(x => x.codigohabilitacion === vacuna.codhabilitacion_ips).codigohabilitacion}` : ''"
                 />
               </v-col>
               <v-col class="pb-0" cols="12">
@@ -140,7 +140,7 @@
           </v-btn>
         </v-card-actions>
       </v-container>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
 </template>

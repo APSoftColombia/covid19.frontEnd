@@ -53,6 +53,12 @@
             </v-card>
           </v-col>
           <v-col cols="12">
+            <asignaciones-mivacuna
+                :vacunacion="vacunacion"
+                @actualizado="changeVacunacion"
+            />
+          </v-col>
+          <v-col cols="12">
             <v-tabs
               class="mt-3"
               id="tabsSeguimiento"
@@ -321,12 +327,14 @@
 
 <script>
 const DatosPersonales = () => import('Views/covid19/vacunacion/components/DatosPersonales')
+import AsignacionesMivacuna from 'Views/covid19/vacunacion/components/detalleVacunacion/AsignacionesMivacuna'
 import RegistroVacuna from 'Views/covid19/vacunacion/components/RegistroVacuna'
 import RegistroSeguimiento from 'Views/covid19/vacunacion/components/RegistroSeguimiento'
 import VacunasFallidas from 'Views/covid19/vacunacion/components/VacunasFallidas'
 export default {
   name: 'DetalleVacunacion',
   components: {
+    AsignacionesMivacuna,
     DatosPersonales,
     RegistroVacuna,
     VacunasFallidas,
