@@ -598,17 +598,21 @@
                     </c-text-area>
                   </v-col>
                   <v-col class="pb-0" :cols="autopsia.autopsia_path && !autopsia.archivo ? '10' : '12'" :sm="autopsia.autopsia_path && !autopsia.archivo ? '10' : '12'">
-                    <v-file-input
-                        v-model="autopsia.archivo"
-                        :hint="autopsia.autopsia_path && !autopsia.archivo ? `Cargado actualmente: ${autopsia.autopsia_path.split('/')[1]}` : ''"
-                        label="Certificado de Defunción"
-                        prepend-icon="mdi-file-pdf"
-                        accept=".pdf"
-                        outlined
-                        dense
-                        persistent-hint
-                        :truncate-length="$vuetify.breakpoint.xsOnly ? 22 : 44"
-                    ></v-file-input>
+                    <ValidationProvider name="archivo" rules="size:600" v-slot="{ errors, validate }">
+                      <v-file-input
+                          v-model="autopsia.archivo"
+                          :error-messages="errors"
+                          :hint="autopsia.autopsia_path && !autopsia.archivo ? `Cargado actualmente: ${autopsia.autopsia_path.split('/')[1]}` : ''"
+                          label="Certificado de Defunción"
+                          prepend-icon="mdi-file-pdf"
+                          accept=".pdf"
+                          outlined
+                          dense
+                          persistent-hint
+                          show-size
+                          :truncate-length="$vuetify.breakpoint.xsOnly ? 22 : 44"
+                      />
+                    </ValidationProvider>
                   </v-col>
                   <v-col cols="2" v-if="autopsia.autopsia_path && !autopsia.archivo">
                     <v-tooltip top>
