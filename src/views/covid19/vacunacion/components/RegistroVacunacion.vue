@@ -321,8 +321,8 @@
                         itemValue="value"
                         itemText="text"
                         rules="required"
-                        name="registrado en Mi Vacuna"
-                        label="¿Está Registrado en Mi Vacuna?"
+                        name="registrado en MiVacuna"
+                        label="¿Está Registrado en MiVacuna?"
                         :column="!$vuetify.breakpoint.smAndUp"
                         :disabled="identificacionVerificada < 1"
                     />

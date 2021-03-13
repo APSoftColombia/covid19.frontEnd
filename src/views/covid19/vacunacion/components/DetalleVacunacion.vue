@@ -46,7 +46,7 @@
                     {{ vacunacion.mivacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title class="title py-1">Está Registrado en Mi Vacuna</v-list-item-title>
+                    <v-list-item-title class="title py-1">Está Registrado en MiVacuna</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -213,7 +213,7 @@
                     <v-avatar color="warning" size="40" class="mr-2">
                       <v-icon class="white--text">fas fa-notes-medical</v-icon>
                     </v-avatar>
-                    Seguimientos vacunacion
+                    Seguimientos vacunación
                     <v-spacer/>
                     <v-tooltip
                       v-if="permisos.vacunar && (vacunacion && vacunacion.dosis && vacunacion.dosis.length)"
