@@ -17,7 +17,7 @@
                 class="white--text"
             >
               <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-account-plus</v-icon>
-              {{$vuetify.breakpoint.smAndUp ? 'Nuevo Registro' : ''}}
+              {{ $vuetify.breakpoint.smAndUp ? 'Nuevo Registro' : '' }}
             </v-btn>
           </template>
           <span>Nuevo Registro</span>
@@ -30,7 +30,7 @@
         @resetOption="item => resetOptions(item)"
         @verdetalle="item => verdetalle(item)"
         @editar="item => editarDatos(item)"
-        @vacunasFallidas="item => vacunasFallidas(item)"
+        @asignarMivacuna="item => asignarMivacuna(item)"
         @apply-filters="$refs && $refs.filtrosVacunas && $refs.filtrosVacunas.aplicaFiltros()"
         @clear-filters="$refs && $refs.filtrosVacunas && $refs.filtrosVacunas.limpiarFiltros()"
     >
@@ -49,6 +49,10 @@
         ref="registroVacunacion"
         @guardado="val => vacunaRegistrada(val)"
     />
+    <asignacion-mivacuna
+        ref="asignacionMivacuna"
+        @guardado="val => actualizarRegistros(val)"
+    />
     <seguimiento
         ref="seguimiento"
     />
@@ -58,15 +62,18 @@
 <script>
 import {mapGetters} from 'vuex'
 import PersonaItemTabla from 'Views/covid19/vacunacion/components/PersonaItemTabla'
+import AsignacionMivacuna from 'Views/covid19/vacunacion/components/AsignacionMivacuna'
 import DosisItemTabla from 'Views/covid19/vacunacion/components/DosisItemTabla.vue'
 import BotonTooltip from '../../../components/Tamizaje/BotonTooltip'
 import RegistroVacunacion from 'Views/covid19/vacunacion/components/RegistroVacunacion'
 import DetalleVacunacion from 'Views/covid19/vacunacion/components/DetalleVacunacion'
+
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 const Filtros = () => import('Views/covid19/vacunacion/components/filtros')
 export default {
   name: 'Vacunacion',
   components: {
+    AsignacionMivacuna,
     RegistroVacunacion,
     DetalleVacunacion,
     Seguimiento,
@@ -198,7 +205,7 @@ export default {
 														<v-list-item-title class="body-2">${this.value.direccion || ''}</v-list-item-title>
 														<v-list-item-subtitle class="body-1">
 														${vm.municipiosTotal && vm.municipiosTotal.length && this.value.municipio_id && vm.municipiosTotal.find(x => x.id === this.value.municipio_id)
-                          ?  `${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).nombre}, ${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).departamento.nombre}`
+                          ? `${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).nombre}, ${vm.municipiosTotal.find(x => x.id === this.value.municipio_id).departamento.nombre}`
                           : ''}
                             </v-list-item-subtitle>
 													</v-list-item-content>
@@ -229,6 +236,46 @@ export default {
                     }
                   }
               )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Asignación MiVacuna',
+          align: 'left',
+          sortable: false,
+          visibleColumn: true,
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value.asignacion
+                  ? createElement(
+                  `div`,
+                  {
+                    domProps: {
+                      innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+													<v-list-item-subtitle class="body-2">ID: ${context.props.value.asignacion.ID}, Fecha: ${context.props.value.asignacion.FechaRegistro}</v-list-item-subtitle>
+														<v-list-item-title class="body-2">${context.props.value.asignacion.prestador ? context.props.value.asignacion.prestador.nombre : ''}</v-list-item-title>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                    }
+                  }
+              )
+                  : createElement(
+                      `div`,
+                      {
+                        class: ['white-space-normal']
+                      },
+                      !context.props.value.eps_id
+                          ? 'La persona no está vinculada a una EPS.'
+                          : !vm.getUser.eps_id
+                          ? 'El usuario no está vinculado a una EPS.'
+                          : !(vm.getUser.eps_id === context.props.value.eps_id)
+                              ? 'La Eps de la persona no corresponde a la EPS del usuario.' : 'Pendiente'
+                  )
             },
             props: ['value']
           }
@@ -268,27 +315,44 @@ export default {
         }
       ]
     }
-    
+
   }),
   computed: {
     ...mapGetters([
-      'municipiosTotal'
+      'municipiosTotal',
+      'getUser'
     ]),
-    permisos () {
+    permisos() {
       return this.$store.getters.getPermissionModule('covidVacunacion')
     }
   },
   methods: {
     resetOptions(item) {
       item.options = []
-      if(this.permisos.editar) item.options.push({event: 'editar', icon: 'mdi-pencil', tooltip: 'Editar Datos', color:'warning'})
-      if(this.permisos.verDetalle) item.options.push({event: 'verdetalle', icon: 'mdi-file-search', tooltip: 'Ver Detalle', color:'green'})
-      if(item.fallidas && item.fallidas.length) item.options.push({event: 'vacunasFallidas', icon: 'mdi-alert-box-outline', tooltip: 'Vacunas Fallidas', color:'warning'})
+      if (this.permisos.editar) item.options.push({
+        event: 'editar',
+        icon: 'mdi-pencil',
+        tooltip: 'Editar Datos',
+        color: 'warning'
+      })
+      if (this.permisos.verDetalle) item.options.push({
+        event: 'verdetalle',
+        icon: 'mdi-file-search',
+        tooltip: 'Ver Detalle',
+        color: 'green'
+      })
+      // if (this.permisos.gestionarMivacuna && item.eps_id && this.getUser.eps_id && (this.getUser.eps_id === item.eps_id)) item.options.push({
+      if (this.permisos.gestionarMivacuna && item.eps_id && this.getUser.eps_id && (this.getUser.eps_id === item.eps_id) && !item.asignacion) item.options.push({
+        event: 'asignarMivacuna',
+        icon: 'fas fa-hospital-user',
+        tooltip: 'Asignar IPS MiVacuna',
+        color: 'deep-purple'
+      })
     },
-    goDatos(val){
+    goDatos(val) {
       this.dataTable.route = val;
     },
-    verTamizaje (id) {
+    verTamizaje(id) {
       this.$refs.seguimiento.open(id)
     },
     verdetalle(item) {
@@ -300,8 +364,11 @@ export default {
     editarDatos(item) {
       this.$refs.registroVacunacion.open(item)
     },
+    asignarMivacuna(item) {
+      this.$refs.asignacionMivacuna.open(item)
+    },
     vacunaRegistrada(val) {
-      if(this.permisos.verDetalle) this.verdetalle(val)
+      if (this.permisos.verDetalle) this.verdetalle(val)
       this.actualizarRegistros()
     },
     actualizarRegistros() {

@@ -46,11 +46,17 @@
                     {{ vacunacion.mivacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title class="title py-1">Está Registrado en Mi Vacuna</v-list-item-title>
+                    <v-list-item-title class="title py-1">Está Registrado en MiVacuna</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
             </v-card>
+          </v-col>
+          <v-col cols="12">
+            <asignaciones-mivacuna
+                :vacunacion="vacunacion"
+                @actualizado="changeVacunacion"
+            />
           </v-col>
           <v-col cols="12">
             <v-tabs
@@ -207,7 +213,7 @@
                     <v-avatar color="warning" size="40" class="mr-2">
                       <v-icon class="white--text">fas fa-notes-medical</v-icon>
                     </v-avatar>
-                    Seguimientos vacunacion
+                    Seguimientos vacunación
                     <v-spacer/>
                     <v-tooltip
                       v-if="permisos.vacunar && (vacunacion && vacunacion.dosis && vacunacion.dosis.length)"
@@ -321,12 +327,14 @@
 
 <script>
 const DatosPersonales = () => import('Views/covid19/vacunacion/components/DatosPersonales')
+import AsignacionesMivacuna from 'Views/covid19/vacunacion/components/detalleVacunacion/AsignacionesMivacuna'
 import RegistroVacuna from 'Views/covid19/vacunacion/components/RegistroVacuna'
 import RegistroSeguimiento from 'Views/covid19/vacunacion/components/RegistroSeguimiento'
 import VacunasFallidas from 'Views/covid19/vacunacion/components/VacunasFallidas'
 export default {
   name: 'DetalleVacunacion',
   components: {
+    AsignacionesMivacuna,
     DatosPersonales,
     RegistroVacuna,
     VacunasFallidas,
