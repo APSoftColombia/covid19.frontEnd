@@ -62,7 +62,7 @@
             aplicaFiltros () {
                 let rutaTemp = this.rutaBase
                 if (this.filters.models.municipio_id !== null) {
-                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[municipio_id]=' + this.filters.models.municipio_id
+                    rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[municipio]=' + this.filters.models.municipio_id
                 }
               if (this.filters.models.erp !== null) {
                 rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estadoErp]=' + this.filters.models.erp
