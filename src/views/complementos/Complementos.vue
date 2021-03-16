@@ -92,6 +92,22 @@
           </v-snackbar>
         </v-card>
       </v-col>
+			<v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
+				<v-card>
+					<v-list two-line>
+						<v-list-item>
+							<v-list-item-avatar color="blue">
+								<v-icon color="white">fas fa-file-archive</v-icon>
+							</v-list-item-avatar>
+							<v-list-item-content>
+								<v-list-item-title class="font-weight-bold">Carga Masiva Sismuestras</v-list-item-title>
+								<v-list-item-subtitle>Carga masiva de registros de archivo Sismuestras Comprimido</v-list-item-subtitle>
+							</v-list-item-content>
+							<cargador-sismuestras></cargador-sismuestras>
+						</v-list-item>
+					</v-list>
+				</v-card>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
@@ -99,9 +115,11 @@
 <script>
 	import { mapGetters } from 'vuex'
   const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
+  const CargadorSismuestras = () => import('Views/complementos/CargadorSismuestras')
 	export default {
 		components: {
-			CargadorSeguimientos
+			CargadorSeguimientos,
+			CargadorSismuestras
 		},
 		data: () => ({
       enlaceCopiado: false,
