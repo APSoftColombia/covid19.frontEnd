@@ -40,6 +40,7 @@
                                 placeholder="Fecha de Solicitud"
                                 :max="moment().format('YYYY-MM-DD')"
                                 name="fecha solicitud"
+                                rules="required"
                             >
                             </c-date>
                         </v-col>
