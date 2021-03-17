@@ -132,7 +132,7 @@
               <c-texto
                   v-model="vacunacion.telefono2"
                   label="Teléfono alterno"
-                  rules="numeric"
+                  rules="numeric|maxlength:10"
                   name="t{elefono alterno"
                   :disabled="identificacionVerificada < 1"
               />

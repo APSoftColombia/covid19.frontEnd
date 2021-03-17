@@ -80,6 +80,11 @@ export default {
         text: 'Observaciones',
         sortable: false,
         value: 'observaciones'
+      },
+      {
+        text: 'Fecha de creacion',
+        sortable: false,
+        value: 'created_at'
       }
     ],
     items: []
