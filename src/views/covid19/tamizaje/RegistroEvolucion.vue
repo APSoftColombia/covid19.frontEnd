@@ -791,7 +791,8 @@ export default {
       return this && this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length ? this.tamizaje.aislamientos[0] : null
     },
     verFormAislamiento() {
-      return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion && (this.evolucion.estado_afectacion !== 'Recuperado' && this.evolucion.estado_afectacion !== 'Fallecido' && this.evolucion.estado_afectacion !== 'Ninguno')
+      // return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion && (this.evolucion.estado_afectacion !== 'Recuperado' && this.evolucion.estado_afectacion !== 'Fallecido' && this.evolucion.estado_afectacion !== 'Ninguno')
+      return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion
     },
     verFormSeguimientoAislamiento() {
       return !this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso
