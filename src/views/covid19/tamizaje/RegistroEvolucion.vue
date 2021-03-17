@@ -1054,6 +1054,9 @@ export default {
             if (response.data && response.data.sintomas && response.data.sintomas.length) {
               response.data.sintomas = response.data.sintomas.map(x => x.id)
             }
+            if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
+              response.data.comorbilidades = response.data.comorbilidades.map(x => x.codigo)
+            }
             this.activaPR = response.data.frecuencia_pulso !== null
             this.activaSPO2 = response.data.saturacion_oxigeno !== null
             this.activaTemperatura = response.data.temperatura !== null
