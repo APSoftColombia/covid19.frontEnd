@@ -545,7 +545,7 @@
                         hide-details
                     ></v-switch>
                   </v-col>
-                  <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
+                  <v-col cols="12" v-if="(verFormAislamiento || evolucion.obligaAislamiento) && verFormAislamiento">
                     <v-switch
                         label="Crear Orden de Aislamiento"
                         :readonly="evolucion.obligaAislamiento"
@@ -573,6 +573,7 @@
                       </v-col>
                     </v-row>
                     <form-aislamiento
+                        v-if="evolucion && evolucion.aislamiento && evolucion.seguimiento_aislamiento"
                         :tamizaje="tamizaje"
                         :aislamiento="evolucion.aislamiento"
                         :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
@@ -593,6 +594,7 @@
                     </v-col>
                   </v-row>
                   <form-seguimiento-aislamiento
+                      v-if="evolucion && evolucion.seguimiento_aislamiento"
                       :aislamiento="aislamientoFinal"
                       :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
                   >
@@ -789,7 +791,7 @@ export default {
       return this && this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length ? this.tamizaje.aislamientos[0] : null
     },
     verFormAislamiento() {
-      return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion && (this.evolucion.estado_afectacion !== 'Recuperado' && this.evolucion.estado_afectacion !== 'Fallecido')
+      return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion && (this.evolucion.estado_afectacion !== 'Recuperado' && this.evolucion.estado_afectacion !== 'Fallecido' && this.evolucion.estado_afectacion !== 'Ninguno')
     },
     verFormSeguimientoAislamiento() {
       return !this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso
@@ -845,6 +847,23 @@ export default {
       },
       immediate: false
     },
+    verFormAislamiento: {
+      handler(val) {
+        if (val && this.verFormularioAislamiento) {
+          this.evolucion.aislamiento = this.clone(this.modelAislamiento)
+          this.evolucion.aislamiento.tamizaje_id = this.evolucion.tamizaje_id
+          ///////
+          this.evolucion.seguimiento_aislamiento = this.clone(this.modelSeguimientoAislamiento)
+          this.evolucion.seguimiento_aislamiento.aislamiento_id = this.aislamientoFinal ? this.aislamientoFinal.id : null
+          this.evolucion.seguimiento_aislamiento.evolucion_id = this.evolucion.id
+          this.evolucion.seguimiento_aislamiento.fecha = this.moment().format('YYYY-MM-DD')
+        } else {
+          this.evolucion.aislamiento = null
+          this.evolucion.seguimiento_aislamiento = null
+        }
+      },
+      immediate: false
+    },
     'verFormSeguimientoAislamiento': {
       handler(val) {
         if (val) {
@@ -853,7 +872,7 @@ export default {
           this.evolucion.seguimiento_aislamiento.evolucion_id = this.evolucion.id
           this.evolucion.seguimiento_aislamiento.fecha = this.moment().format('YYYY-MM-DD')
         } else {
-          this.evolucion.seguimiento_aislamiento = null
+          if(!this.verFormularioAislamiento) this.evolucion.seguimiento_aislamiento = null
         }
       },
       immediate: false
@@ -938,7 +957,6 @@ export default {
         evolution.sintomas = coso
         evolution.cumplimiento_protocolos_bioseguridad = protocolos
         evolution.alteraciones_emocionales = alteraciones
-        console.log('llega', this.aplicaCierre(evolution))
         await this.aplicaCierre(evolution) ? this.lanzarModalCierre(evolution) : this.enviarSeguimiento(evolution)
       }
     },
@@ -970,21 +988,23 @@ export default {
     open(idEvolucion = null) {
       if (idEvolucion) this.getEvolucion(idEvolucion)
       else if (this.tamizaje) {
+        let evolucion = this.clone(this.modelEvolucion)
         this.activaPR = true
         this.activaSPO2 = true
         this.activaTemperatura = true
         // this.tamizaje = tamizaje
-        this.evolucion.tamizaje_id = this.tamizaje.id
-        this.evolucion.lugar_atencion = this.tamizaje.orden_medica_id
-        this.evolucion.orden_medica_id = this.tamizaje.orden_medica_id
-        this.evolucion.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
+        evolucion.tamizaje_id = this.tamizaje.id
+        evolucion.lugar_atencion = this.tamizaje.orden_medica_id
+        evolucion.orden_medica_id = this.tamizaje.orden_medica_id
+        evolucion.seguimiento_telefonico = evolucion.lugar_atencion === 1 ? 1 : 0
         if (this.tamizaje.evoluciones && ((this.tamizaje.evoluciones.length === 0) || (this.tamizaje.evoluciones.filter(x => !x.fallida).length === 0))) {
-          this.evolucion.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
+          evolucion.comorbilidades = (this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) ? this.tamizaje.comorbilidades.map(x => x.codigo) : []
         }
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
-        this.evolucion.tipo = 'Seguimiento Médico'
-        this.evolucion.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
-        if(this.evolucion.obligaAislamiento) this.verFormularioAislamiento = 1
+        evolucion.tipo = 'Seguimiento Médico'
+        evolucion.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
+        if(evolucion.obligaAislamiento) this.verFormularioAislamiento = 1
+        this.evolucion = evolucion
         this.verificaInfoPaciente()
       }
       this.dialog = true
@@ -1031,7 +1051,6 @@ export default {
       this.loading = true
       this.axios.get(`evoluciones/${idEvolucion}`)
           .then(response => {
-            console.log('response get evolucion', response)
             if (response.data && response.data.sintomas && response.data.sintomas.length) {
               response.data.sintomas = response.data.sintomas.map(x => x.id)
             }
