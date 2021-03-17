@@ -1111,6 +1111,9 @@ export default {
       // newEvolution.estado_afectacion = evolucionCopiada.estado_afectacion
       newEvolution.duracion = evolucionActual.duracion
       newEvolution.tipo = 'Seguimiento Médico'
+      newEvolution.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
+      if(newEvolution.obligaAislamiento) this.verFormularioAislamiento = 1
+
       this.evolucion = newEvolution
       this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       newEvolution.signos_alarma = this.clone(evolucionCopiada.sintomas.filter(z => !z.solicita_fecha)).map(x => x.id)
@@ -1124,7 +1127,7 @@ export default {
       })
       setTimeout(() => {
         this.$refs.sintomasFecha.assign(sintomasAsignar)
-        this.verFormularioAislamiento = 0
+        // this.verFormularioAislamiento = 0
         this.loading = false
       }, 500)
       this.solicitaUltimo = true
