@@ -344,7 +344,7 @@
       parentescosData: null,
       productoFinancieroData: [{text: 'No', value: 0}, {text: 'Si', value: 1}],
       tipoBusqueda: false,
-      ruta: 'buscar-cets'
+      ruta: 'buscar-cets',
     }),
     computed: {
       ...mapGetters([
@@ -370,10 +370,17 @@
       'afiliadoOriginal': {
         handler(val) {
           if(val) {
-            this.afiliado.nombre1 = val.nombre1
-            this.afiliado.nombre2 = val.nombre2
-            this.afiliado.apellido1 = val.apellido1
-            this.afiliado.apellido2 = val.apellido2
+            if(this.ruta !== 'buscar-cets'){
+              this.afiliado.nombre1 = val.nombre1
+              this.afiliado.nombre2 = val.nombre2
+              this.afiliado.apellido1 = val.apellido1
+              this.afiliado.apellido2 = val.apellido2
+            }else{
+              this.afiliado.nombre1 = val.apellido1
+              this.afiliado.nombre2 = val.apellido2
+              this.afiliado.apellido1 = val.nombre1
+              this.afiliado.apellido2 = val.nombre2
+            }
             this.afiliado.tipoid = val.tipo_doc ? val.tipo_doc : val.tipoid
             this.afiliado.identificacion = val.numero_documento_identidad ? val.numero_documento_identidad : val.identificacion
             this.afiliado.fecha_nacimiento = val.fecha_nacimiento
