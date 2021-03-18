@@ -185,6 +185,7 @@
                           :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
                           itemValue="value"
                           itemText="text"
+                          rules="required"
                           name="es conviviente"
                           label="¿Es conviviente?"
                       ></c-radio>

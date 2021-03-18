@@ -86,7 +86,20 @@
                   <v-list-item-subtitle class="grey--text fs-12 fw-normal">Presupuesto Comun</v-list-item-subtitle>
                   <v-list-item-title>
                     <h6 class="mb-0">
-                      {{ reporteComunitario.PresupuestoComun ? reporteComunitario.PresupuestoComun === 1 ? 'Si' : 'No' : '' }}
+                      {{ reporteComunitario.PresupuestoComun !== null ? reporteComunitario.PresupuestoComun === 1 ? 'Si' : 'No' : '' }}
+                    </h6>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="click = null" style="border-bottom: none !important;">
+                <v-list-item-avatar class="my-1 align-self-center">
+                  <v-icon color="primary">fas fa-house-user</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="grey--text fs-12 fw-normal">Es Conviviente</v-list-item-subtitle>
+                  <v-list-item-title>
+                    <h6 class="mb-0">
+                      {{ reporteComunitario.esConviviente !== null ? reporteComunitario.esConviviente === 1 ? 'Si' : 'No' : '' }}
                     </h6>
                   </v-list-item-title>
                 </v-list-item-content>

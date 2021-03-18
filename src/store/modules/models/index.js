@@ -281,7 +281,9 @@ const state = {
         tipo_reporte: null,
         llamada_entrante: null,
         eps_id: null,
-        PresupuestoComun: null
+        PresupuestoComun: null,
+        esConviviente: null,
+        parentesco_id: null
     },
     modelViajero: {
         id: null,
