@@ -3,20 +3,19 @@
       v-model="dialog"
       persistent
       :fullscreen="!tamizaje"
-      :hide-overlay="!tamizaje"
-      :transition="!tamizaje ? 'dialog-bottom-transition' : ''"
+      :transition="!tamizaje ? 'dialog-bottom-transition' : 'dialog-transition'"
       :max-width="tamizaje ? 720 : null"
   >
     <v-card>
-      <v-chip
-          v-if="reporte.tipo_reporte === 'telefónico' && !tamizaje"
-          :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"
-          color="primary darken-3"
-          label
-      >
-        <v-icon left>mdi-timer</v-icon>
-        {{ time }}
-      </v-chip>
+<!--      <v-chip-->
+<!--          v-if="reporte.tipo_reporte === 'telefónico' && !tamizaje"-->
+<!--          :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"-->
+<!--          color="primary darken-3"-->
+<!--          label-->
+<!--      >-->
+<!--        <v-icon left>mdi-timer</v-icon>-->
+<!--        {{ time }}-->
+<!--      </v-chip>-->
       <v-toolbar dark :color="tamizaje ? 'warning' : 'primary'">
         <v-icon left>fas fa-{{ tamizaje ? 'people-arrows' : 'file-prescription' }}</v-icon>
         <v-toolbar-title>
@@ -190,67 +189,72 @@
                   >
                   </c-select-complete>
                 </v-col>
-                <v-col class="pb-0" cols="12" v-if="tamizaje">
-                  <v-autocomplete
-                      label="EPS"
-                      v-model="reporte.eps_id"
-                      :items="epss"
-                      outlined
-                      dense
-                      :filter="filterEpsReporte"
-                      item-value="id"
-                      persistent-hint
-                      clearable
-                      :hint="reporte.eps_id && epss && epss.length && epss.find(x => x.id === reporte.eps_id) ? `Código: ${epss.find(x => x.id === reporte.eps_id).codigo}` : '' "
-                  >
-                    <template v-slot:selection="{ item, index }">
-                      <div class="pa-0 text-truncate" style="width: 100% !important;">
-                        {{item.nombre}}
-                      </div>
-                    </template>
-                    <template v-slot:item="{ item, index }">
-                      <template>
-                        <v-list-item-content class="pa-0">
-                          <v-list-item-title>{{item.nombre}}</v-list-item-title>
-                          <v-list-item-subtitle>{{item.codigo ? `Código: ${item.codigo}` : ''}}</v-list-item-subtitle>
-                        </v-list-item-content>
+                <template v-if="tamizaje">
+                  <v-col class="pb-0" cols="12">
+                    <v-autocomplete
+                        label="EPS"
+                        v-model="reporte.eps_id"
+                        :items="epss"
+                        outlined
+                        dense
+                        :filter="filterEpsReporte"
+                        item-value="id"
+                        persistent-hint
+                        clearable
+                        :hint="reporte.eps_id && epss && epss.length && epss.find(x => x.id === reporte.eps_id) ? `Código: ${epss.find(x => x.id === reporte.eps_id).codigo}` : '' "
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <div class="pa-0 text-truncate" style="width: 100% !important;">
+                          {{item.nombre}}
+                        </div>
                       </template>
-                    </template>
-                  </v-autocomplete>
-                </v-col>
-                <v-col cols="12" v-if="tamizaje">
-                  <v-card outlined tile>
-                    <v-card-text>
-                      <c-radio
-                          v-model="reporte.PresupuestoComun"
-                          label="¿Presupuesto Común?"
-                          rules="required"
-                          name="presupuesto común"
-                          :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                          item-text="text"
-                          item-value="value"
-                      >
-                      </c-radio>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-                <!--<v-col cols="12">
-                  <c-radio
-                      v-model="reporte.esConviviente"
-                      :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
-                      itemValue="value"
-                      itemText="text"
-                      dense
-                      name="es conviviente"
-                      label="¿Es conviviente?"
-                  ></c-radio>
-                </v-col>-->
+                      <template v-slot:item="{ item, index }">
+                        <template>
+                          <v-list-item-content class="pa-0">
+                            <v-list-item-title>{{item.nombre}}</v-list-item-title>
+                            <v-list-item-subtitle>{{item.codigo ? `Código: ${item.codigo}` : ''}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="reporte.PresupuestoComun"
+                            label="¿Presupuesto Común?"
+                            rules="required"
+                            name="presupuesto común"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
+                        >
+                        </c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="reporte.esConviviente"
+                            :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
+                            itemValue="value"
+                            itemText="text"
+                            rules="required"
+                            name="es conviviente"
+                            label="¿Es conviviente?"
+                        ></c-radio>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </template>
                 <v-col class="pb-0" cols="12">
                   <c-text-area
                       v-model="reporte.observaciones"
                       label="Observaciones"
-                  >
-                  </c-text-area>
+                  />
                 </v-col>
               </v-row>
             </ValidationObserver>
@@ -358,7 +362,6 @@ export default {
       },
       immediate: false
     }
-
   },
   created() {
     this.reporte = this.clone(this.modelReporteComunitario)
@@ -392,12 +395,12 @@ export default {
       })
     },
     open(reporte = null, tamizaje = null, llamada = null) {
+      this.tamizaje = tamizaje
+      this.dialog = true
       this.watcher = false
       if (reporte) {
         this.reporte = this.clone(reporte)
-        this.tamizaje = tamizaje
       } else if (tamizaje) {
-        this.tamizaje = tamizaje
         this.reporte.tamizaje_id = this.tamizaje.id
         this.reporte.nombre_reportante = [this.tamizaje.nombre1, this.tamizaje.nombre2, this.tamizaje.apellido1, this.tamizaje.apellido2].filter(x => x).join(' ')
         this.reporte.celular_reportante = this.tamizaje.celular
@@ -407,7 +410,6 @@ export default {
         this.reporte.llamada_entrante = this.llamada.tipo === 'entrante' ? 1 : 0
         this.reporte.duracion = this.llamada.duracion
       }
-      this.dialog = true
       setTimeout(() => {
         this.watcher = true
       }, 500)
@@ -417,9 +419,11 @@ export default {
       this.dialog = false
       this.loading = false
       this.reporte = this.clone(this.modelReporteComunitario)
-      this.tamizaje = null
-      this.llamada = null
-      clearInterval(this.interval)
+      setTimeout(() => {
+        this.tamizaje = null
+        this.llamada = null
+        clearInterval(this.interval)
+      }, 400)
     },
     goDuracion() {
       this.interval = setInterval(() => {
