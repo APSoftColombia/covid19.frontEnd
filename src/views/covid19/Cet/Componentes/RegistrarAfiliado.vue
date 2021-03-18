@@ -153,7 +153,7 @@
                 <c-texto
                     label="Celular"
                     name="celular"
-                    rules="required|minlength:10"
+                    rules="required|numeric|minlength:10"
                     v-model="afiliado.celular"
                 ></c-texto>
               </v-col>
@@ -161,7 +161,7 @@
                 <c-texto
                     label="Telefono Fijo"
                     name="telefono fijo"
-                    rules="numeric|minlength:7"
+                    rules="numeric|numeric|minlength:7"
                     v-model="afiliado.telefono_fijo"
                 ></c-texto>
               </v-col>
