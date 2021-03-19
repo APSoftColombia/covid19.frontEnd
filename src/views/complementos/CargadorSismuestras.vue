@@ -173,6 +173,7 @@ export default {
           data.append('archivo', this.archivo)
           this.axios.post(`import-sismuestras`, data)
               .then(response => {
+                this.loading = false
                 this.enableSismuestras = false;
                 this.enableAntigenos = true;
                 console.log('response', response)
@@ -198,6 +199,7 @@ export default {
           data.append('archivo', this.antigenos)
           this.axios.post(`import-antigenos`, data)
               .then(response => {
+                this.loading = false
                 this.enableAntigenos = false;
                 this.enableQuerys = true;
                 console.log('response', response)
