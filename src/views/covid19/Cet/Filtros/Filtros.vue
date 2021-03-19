@@ -45,6 +45,16 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="4">
+      <c-select-complete
+          v-model="filters.models.tipo"
+          label="Tipo Registro"
+          :items="filters.data.tiposRegistros"
+          item-text="text"
+          item-value="value"
+      >
+      </c-select-complete>
+    </v-col>
   </v-row>
 </template>
 
@@ -62,7 +72,8 @@
         models: {
           covid_contacto: null,
           cet_id: '',
-          estado: null
+          estado: null,
+          tipo: null
         },
         data: {
           tipos: [
@@ -74,6 +85,10 @@
             {text: 'Validados', value: 2},
             {text: 'Sin Estado', value: 3}
           ],
+          tiposRegistros: [
+            {text: 'Registros completados', value: 1},
+            {text: 'Registros sin completar', value: 2}
+          ]
         }
       },
       cets: []
@@ -89,6 +104,9 @@
         }
         if (this.filters.models.estado != null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filters.models.estado
+        }
+        if (this.filters.models.tipo != null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo]=' + this.filters.models.tipo + `,${this.filters.models.cet_id ? this.filters.models.cet_id : ''}`
         }
         this.$emit('filtra', rutaTemp)
       },
