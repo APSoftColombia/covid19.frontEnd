@@ -17,13 +17,13 @@
       </v-tooltip>
     </template>
     <v-card>
-      <v-card-title class="headline">Carga masiva de registros SISMUESTRAS</v-card-title>
+      <v-card-title class="headline">Carga masiva de registros SISMUESTRAS y ANTIGENOS</v-card-title>
       <v-card-text>
         <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
             <v-file-input
                 v-model="archivo"
-                placeholder="Archivo comprimido"
+                placeholder="Archivo comprimido SISMUESTRAS"
                 prepend-icon="fas fa-file-archive"
                 accept=".zip,.rar"
                 outlined
@@ -31,12 +31,13 @@
                 hint="Extensiones permitidas: .zip, .rar"
                 persistent-hint
                 :error-messages="errors"
+                :disabled="!enableSismuestras"
             >
               <template v-slot:append-outer>
-                <v-btn x-large color="green darken-1" v-if="$vuetify.breakpoint.xsOnly" icon @click="cargarArchivo" style="top: -4px !important;">
+                <v-btn :disabled="!enableSismuestras" x-large color="green darken-1" v-if="$vuetify.breakpoint.xsOnly" icon @click="cargarArchivo" style="top: -4px !important;">
                   <v-icon>mdi-file-upload</v-icon>
                 </v-btn>
-                <v-btn v-else large color="green darken-1" text @click="cargarArchivo" style="top: -10px !important;">
+                <v-btn v-else large color="green darken-1" text @click="cargarArchivo" style="top: -10px !important;" :disabled="!enableSismuestras">
                   <v-icon left large>mdi-file-upload</v-icon>
                   Cargar Archivo
                 </v-btn>
@@ -44,6 +45,54 @@
             </v-file-input>
           </ValidationProvider>
         </ValidationObserver>
+      </v-card-text>
+      <v-card-text>
+        <ValidationObserver ref="formAntigenos" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+          <ValidationProvider name="antigenos" rules="required" v-slot="{ errors, valid }">
+            <v-file-input
+                v-model="antigenos"
+                placeholder="Archivo comprimido ANTIGENOS"
+                prepend-icon="fas fa-file-archive"
+                accept=".zip,.rar"
+                outlined
+                dense
+                hint="Extensiones permitidas: .zip, .rar"
+                persistent-hint
+                :error-messages="errors"
+                :disabled="!enableAntigenos"
+            >
+              <template v-slot:append-outer>
+                <v-btn :disabled="!enableAntigenos" x-large color="green darken-1" v-if="$vuetify.breakpoint.xsOnly" icon @click="cargarArchivoAntigenos" style="top: -4px !important;">
+                  <v-icon>mdi-file-upload</v-icon>
+                </v-btn>
+                <v-btn :disabled="!enableAntigenos" v-else large color="green darken-1" text @click="cargarArchivoAntigenos" style="top: -10px !important;">
+                  <v-icon left large>mdi-file-upload</v-icon>
+                  Cargar Archivo
+                </v-btn>
+              </template>
+            </v-file-input>
+          </ValidationProvider>
+        </ValidationObserver>
+      </v-card-text>
+      <v-card-text>
+        <v-row>
+          <v-col cols="10" align-self="center">
+            <v-btn block class="primary" @click="executeQuerys" :disabled="!enableQuerys">
+              Ejecutar Querys
+            </v-btn>
+
+          </v-col>
+          <v-col cols="2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-btn icon x-large color="green" v-on="on" @click="downloadResultado" :disabled="!enableReporte">
+                  <v-icon>mdi-file-table</v-icon>
+                </v-btn>
+              </template>
+              <span>Descargar resultados</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-expand-transition>
         <v-card-text v-if="errores && errores.length">
@@ -92,11 +141,22 @@ export default {
     hover: true,
     loading: false,
     dialog: false,
+    enableSismuestras: true,
     archivo: null,
+    enableAntigenos: false,
+    antigenos: null,
+    enableQuerys: false,
+    enableReporte: false,
     errores: []
   }),
   watch: {
     'archivo': {
+      handler () {
+        this.errores = []
+      },
+      immediate: false
+    },
+    'antigenos': {
       handler () {
         this.errores = []
       },
@@ -113,9 +173,10 @@ export default {
           data.append('archivo', this.archivo)
           this.axios.post(`import-sismuestras`, data)
               .then(response => {
+                this.enableSismuestras = false;
+                this.enableAntigenos = true;
                 console.log('response', response)
                 this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})
-                this.close()
               })
               .catch(error => {
                 console.log('error', error)
@@ -128,12 +189,81 @@ export default {
         }
       })
     },
+    cargarArchivoAntigenos() {
+      this.$refs.formAntigenos.validate().then(result => {
+        if (result) {
+          this.errores = []
+          this.loading = true
+          let data = new FormData()
+          data.append('archivo', this.antigenos)
+          this.axios.post(`import-antigenos`, data)
+              .then(response => {
+                this.enableAntigenos = false;
+                this.enableQuerys = true;
+                console.log('response', response)
+                this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})
+              })
+              .catch(error => {
+                console.log('error', error)
+                if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
+                  this.errores = error.response.data.errors
+                }
+                this.loading = false
+                this.$store.commit('snackbar', {color: 'error', message: `al procesar el archivo.`, error: error})
+              })
+        }
+      })
+    },
+    executeQuerys() {
+      this.loading = true;
+      this.axios.get('execute-querys').then(response => {
+        console.log(response);
+        this.loading = false;
+        this.enableQuerys = false;
+        this.enableReporte = true;
+        this.$store.commit('snackbar', {color: 'success', message: `Querys ejecutadas correctamente`})
+      }).catch(error => {
+        console.log('error', error)
+        if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
+          this.errores = error.response.data.errors
+        }
+        this.loading = false
+        this.$store.commit('snackbar', {color: 'error', message: `al ejecutar las querys`, error: error})
+      })
+    },
+    downloadResultado() {
+      this.axios({
+        url: 'reporte-cargue-sismuestras',
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then(response => {
+        const file = new Blob(
+            [response.data],
+            {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const fileURL = URL.createObjectURL(file);
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = fileURL
+        a.download = 'ResultadoSismuestraAntigenos.xlsx'
+        a.click();
+      }).catch(error => {
+        console.log('error', error)
+        if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
+          this.errores = error.response.data.errors
+        }
+        this.loading = false
+        this.$store.commit('snackbar', {color: 'error', message: `al obtener el reporte`, error: error})
+      })
+    },
     close () {
       this.$refs.formArchivo.reset()
+      this.$refs.formAntigenos.reset()
       this.errores = []
       this.dialog = false
       this.loading = false
       this.archivo = null
+      this.antigenos = null
     }
   }
 }
