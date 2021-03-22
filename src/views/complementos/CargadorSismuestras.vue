@@ -17,7 +17,7 @@
       </v-tooltip>
     </template>
     <v-card>
-      <v-card-title class="headline">Carga masiva de registros SISMUESTRAS y ANTIGENOS</v-card-title>
+      <v-card-title class="headline">Cargue masivo Sismuestras PCR y Antigenos</v-card-title>
       <v-card-text>
         <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
