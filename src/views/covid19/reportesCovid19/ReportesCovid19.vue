@@ -47,7 +47,7 @@
                   <v-list-item-avatar class="my-1 align-self-center">{{reporte.id}}</v-list-item-avatar>
                   <v-list-item-content class="pa-0">
                     <v-list-item-title><h5 class="mb-0 text-truncate">{{reporte.nombre}}</h5></v-list-item-title>
-                    <v-list-item-subtitle class="grey--text fs-12 fw-normal text-truncate">{{reporte.descripcion}}</v-list-item-subtitle>
+                    <p class="grey--text fs-12 fw-normal ma-0">{{reporte.descripcion}}</p>
                     <v-list-item-subtitle class="green--text" v-if="reporte.variables && !reporte.variables.length">
                       <v-icon color="green">mdi-arrow-down-bold-circle-outline</v-icon>
                       Descarga directa
