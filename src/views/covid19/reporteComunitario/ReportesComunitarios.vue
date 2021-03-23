@@ -151,20 +151,21 @@
                         text: 'Nexo de',
                         align: 'center',
                         sortable: false,
+                        visibleColumn: false,
                         value: 'tamizaje_id',
                         component: {
                             functional: true,
                             render: function (createElement, context) {
-                                return context.props.value.tamizaje_id
+                                return context.props.value.tamizaje_origen
                                     ? createElement(
                                         BotonTooltip,
                                         {
                                             props: {
-                                                tooltip: `Ver Encuesta de Riesgo Poblacional No. ${context.props.value.tamizaje_id}`,
-                                                text: `ERP ${context.props.value.tamizaje_id}`,
+                                                tooltip: `Ver Encuesta de Riesgo Poblacional No. ${context.props.value.tamizaje_origen.id}`,
+                                                text: `ERP ${context.props.value.tamizaje_origen.id}`,
                                                 color: 'purple',
                                                 textColor: 'white',
-                                                value: context.props.value
+                                                value: context.props.value.tamizaje_origen
                                             },
                                             on: {
                                                 click: (item) => {
@@ -238,7 +239,7 @@
                     align: 'left',
                     sortable: false,
                     visibleColumn: true,
-                    value: 'observaciones',
+                    value: 'estado',
                     component: {
                       render: function (createElement) {
                         return createElement(
@@ -246,7 +247,7 @@
                               domProps: {
                                 innerHTML: `
 												<div style="white-space: initial !important; min-width: 220px !important;">
-													${ !this.value.tamizaje_id ? 'Pendiente de ERP' : (this.value.tamizaje_id && !this.value.tamizaje.medico_id) ? 'ERP, pendiente de caso de estudio' : (this.value.tamizaje_id && this.value.tamizaje.medico_id) ? 'ERP con caso de estudio' : ''  }
+													${ !this.value.tamizaje ? 'Pendiente de ERP' : !this.value.tamizaje.medico_id ? 'ERP, pendiente de caso de estudio' : 'ERP con caso de estudio' }
 												</div>
 											`
                               }
@@ -331,7 +332,7 @@
                 }
             },
             verTamizaje (item) {
-                this.$refs.seguimiento.open(item.tamizaje_id)
+                this.$refs.seguimiento.open(item.id)
             },
             verSeguimiento (item) {
               if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)

@@ -6,7 +6,7 @@ const state = {
         tablaTamizajesLight: 0,
         tablaTamizajesLightVersion: 5,
         tablaReportesComunitarios: 0,
-        tablaReportesComunitariosVersion: 5,
+        tablaReportesComunitariosVersion: 6,
         tablaLlamadas: 0,
         tablaLlamadasVersion: 2,
         tablaAutopsias: 0,
