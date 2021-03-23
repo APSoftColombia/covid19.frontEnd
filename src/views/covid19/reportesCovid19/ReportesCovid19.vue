@@ -62,6 +62,7 @@
               </v-hover>
             </template>
 					</v-list>
+          <app-section-loader :status="loading"/>
 				</v-card>
 			</v-col>
 			<v-col cols="12" sm="12" md="7">
@@ -72,7 +73,6 @@
 			</v-col>
 		</v-row>
 		<registro-reporte ref="registroReporte" @guardado="getReportes"/>
-		<app-section-loader :status="loading"/>
 	</v-container>
 </template>
 
