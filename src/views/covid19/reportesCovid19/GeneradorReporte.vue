@@ -7,15 +7,15 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="mb-0"><h6 class="title mb-0">{{ reporte.nombre }}</h6></v-list-item-title>
-          <v-list-item-subtitle>
-            {{ reporte.descripcion }}
-          </v-list-item-subtitle>
         </v-list-item-content>
         <v-spacer/>
         <v-btn large icon @click="close">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
+      <v-card-text class="py-0">
+        {{ reporte.descripcion }}
+      </v-card-text>
       <ValidationObserver ref="formVariables" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
         <v-container v-if="reporte.variables && reporte.variables.length">
           <v-row justify="center" align="center">
