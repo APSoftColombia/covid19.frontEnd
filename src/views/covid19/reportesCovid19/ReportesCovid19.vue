@@ -106,7 +106,8 @@
 		},
 		methods: {
 			buscarReportes: lodash.debounce(function () {
-				this.reportesFiltrados = this.search ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1)) : this.reportesFull
+				this.reportesFiltrados = this.search
+            ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1)) : this.clone(this.reportesFull)
 			}, 200),
 			crearReporte () {
 				this.$refs.registroReporte.open()
