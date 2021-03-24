@@ -77,6 +77,15 @@
                       v-model="dataContacto.direccion"
                   ></c-texto>
                 </v-col>
+                <v-col cols="12" sm="12" md="12" lg="12">
+                  <c-date
+                      v-model="dataContacto.fecha_nacimiento"
+                      label="Fecha de Nacimiento"
+                      name="Fecha de Nacimiento"
+                      :max="moment().format('YYYY-MM-DD')"
+                  >
+                  </c-date>
+                </v-col>
                 <v-col class="pb-0" cols="12" sm="12">
                   <c-select-complete
                       v-model="dataContacto.codigo_departamento"
