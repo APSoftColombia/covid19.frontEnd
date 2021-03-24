@@ -35,6 +35,7 @@
                   <tr>
                     <th class="text-left">ID</th>
                     <th class="text-left">Persona</th>
+                    <th class="text-left">Parentesco</th>
                     <th class="text-left">Fecha Nacimiento</th>
                     <th class="text-left">Número</th>
                     <th class="text-left">Opciones</th>
@@ -58,11 +59,12 @@
                         <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
                         <v-list-item-content style="display: grid !important;">
-                          <v-list-item-title class="body-2">{{ [contacto.nombre1, contacto.nombre2, contacto.apellido1, contacto.apellido2].filter(x => x).join(' ') }}</v-list-item-title>
+                          <v-list-item-title class="body-2">{{ [contacto.apellido1, contacto.apellido2, contacto.nombre1, contacto.nombre2].filter(x => x).join(' ') }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">{{contacto.tipoid}} {{contacto.identificacion}}</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                     </td>
+                    <td>{{ getParentesco(contacto) }}</td>
                     <td>{{ contacto.fecha_nacimiento }}</td>
                     <td>
                       <v-list-item>
@@ -224,6 +226,7 @@
 
 <script>
   import InformacionPersona from "../InformacionPersona";
+  import {mapGetters} from "vuex";
   const DesvincularAfiliado = () => import('./DesvincularAfiliado')
   const EditarContacto = () => import('./EditarContacto')
   const RegistrarAfiliado = () => import('./RegistrarAfiliado')
@@ -289,7 +292,10 @@
       },
       hasContactos(){
         return this.afiliado.confirmado.contactos
-      }
+      },
+      ...mapGetters([
+        "parentescos",
+      ])
     },
     components: {
       DesvincularAfiliado,
@@ -332,6 +338,10 @@
           contacto.loading = false
           this.$store.commit('snackbar', {color: 'success', message: ` al vincular contacto`, error:error})
         })
+      },
+      getParentesco(contacto){
+        return this.parentescos && this.parentescos.length && this.parentescos.find(x => x.id === contacto.parentesco_id)
+            ? this.parentescos.find(x => x.id === contacto.parentesco_id).descripcion : ''
       }
     }
   }
