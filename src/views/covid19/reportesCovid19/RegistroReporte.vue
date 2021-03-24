@@ -127,7 +127,7 @@
                                     label="Roles que visualizan"
                                     rules="required"
                                     name="roles que visualizan"
-                                    :items="roles"
+                                    :items="rolesIn"
                                     item-text="nombre"
                                     item-value="id"
                                     multiple
@@ -196,7 +196,7 @@
             loading: false,
             dialog: false,
             item: null,
-            roles: []
+            rolesIn: []
         }),
         computed: {
             ...mapGetters([
@@ -275,7 +275,7 @@
                 })
             },
             open (idReporte = null) {
-                if (!this.roles.length) this.getRoles()
+                if (!this.rolesIn.length) this.getRoles()
                 if (idReporte) {
                     this.getReporte(idReporte)
                 }
@@ -309,7 +309,7 @@
             getRoles () {
                 this.axios.get('user/new')
                     .then(response => {
-                        this.roles = response.data.roles
+                        this.rolesIn = response.data.roles
                     })
                     .catch(error => {
                         this.$store.commit('snackbar', {color: 'error', message: `al solicitar los roles disponibles.`, error: error})
