@@ -114,12 +114,9 @@ export default {
   },
   methods: {
     buscarReportes: lodash.debounce(function () {
-      console.log('this.search', this.search)
       this.reportesFiltrados = this.search
           ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1))
           : this.clone(this.reportesFull)
-      console.log('this.reportesFiltrados', this.reportesFiltrados)
-      console.log('this.reportesFull', this.reportesFull)
     }, 200),
     crearReporte() {
       this.$refs.registroReporte.open()
