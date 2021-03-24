@@ -35,16 +35,17 @@
         <registro-tamizaje
                 v-if="permisos.tamizajeCrear"
                 ref="registroTamizaje"
-                @guardado="val => tamizajeGuardado(val)"
-        ></registro-tamizaje>
+                @guardado="tamizajeGuardado"
+        />
         <seguimiento
                 ref="seguimiento"
-        ></seguimiento>
-        <detalle-reporte-comunitario ref="detalleReporteComunitario"></detalle-reporte-comunitario>
+                @change="tamizajeGuardado"
+        />
+        <detalle-reporte-comunitario ref="detalleReporteComunitario"/>
       <eliminar-reporte-comunitario
           ref="eliminarReporteComunitario"
           @reporteEliminado="reloadTable()"
-      ></eliminar-reporte-comunitario>
+      />
     </div>
 </template>
 
@@ -247,7 +248,19 @@
                               domProps: {
                                 innerHTML: `
 												<div style="white-space: initial !important; min-width: 220px !important;">
-													${ !this.value.tamizaje ? 'Pendiente de ERP' : !this.value.tamizaje.medico_id ? 'ERP, pendiente de caso de estudio' : 'ERP con caso de estudio' }
+													${
+                                  !this.value.tamizaje
+                                      ? 'Pendiente de ERP'
+                                      : (!this.value.tamizaje.localiza_persona || !this.value.tamizaje.contesta_encuesta)
+                                      ? 'ERP Fallida'
+                                      : !this.value.tamizaje.total_riesgo
+                                          ? 'ERP sin riesgo'
+                                          : !this.value.tamizaje.medico_id
+                                              ? 'ERP, pendiente de caso de estudio'
+                                              : !(this.value.tamizaje.estado_afectacion === 'Fallecido' || this.value.tamizaje.estado_afectacion === 'Recuperado' || this.value.tamizaje.clasificacion === '4' || this.value.tamizaje.clasificacion === '6')
+                                                  ? 'ERP con caso de estudio Activo'
+                                                  : `ERP con caso de estudio Cerrado ${(this.value.tamizaje.estado_afectacion === 'Fallecido' || this.value.tamizaje.clasificacion === '4') ? '(Fallecido)' : this.value.tamizaje.estado_afectacion === 'Recuperado' ? '(Recuperado)' : this.value.tamizaje.clasificacion === '6' ? '(Sin Clasificación)' : ''}`
+                                }
 												</div>
 											`
                               }
@@ -324,8 +337,7 @@
                 console.log('reporte', reporte)
                 this.$store.commit('reloadTable', 'tablaReportesComunitarios')
             },
-            tamizajeGuardado (tamizaje) {
-                console.log('tamizaje', tamizaje)
+            tamizajeGuardado () {
                 this.$store.commit('reloadTable', 'tablaReportesComunitarios')
                 if (this.$refs && this.$refs.tablaTamizajes) {
                     this.$store.commit('reloadTable', 'tablaTamizajes')

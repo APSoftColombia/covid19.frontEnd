@@ -450,6 +450,7 @@ export default {
       }, 500)
     },
     changeTamizaje(idTamizaje) {
+      this.$emit('change')
       this.getTamizaje(idTamizaje)
       this.$store.commit('reloadTable', 'tablaTamizajes')
     },

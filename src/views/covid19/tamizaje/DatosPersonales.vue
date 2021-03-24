@@ -1,64 +1,73 @@
 <template>
-  <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">
-    <v-expansion-panel>
-      <v-expansion-panel-header class="py-1 pl-0">
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-icon color="teal" large>{{ tamizaje.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content class="pa-0">
-            <v-list-item-title v-if="tipo"><h6 class="mb-0">{{ tipo }}</h6></v-list-item-title>
-            <v-list-item-title class="grey--text fs-12 fw-normal">
-              <h4 class="ma-0">
-                {{ [tamizaje.nombre1, tamizaje.nombre2, tamizaje.apellido1, tamizaje.apellido2].filter(x => x).join(' ') }}
-              </h4>
-            </v-list-item-title>
-            <v-list-item-title>
-              <h6 class="mb-0">
+  <v-card>
+    <v-list two-line class="notification-wrap">
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-icon color="teal" large>{{ tamizaje.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content class="pa-0">
+          <v-list-item-title v-if="tipo"><h6 class="mb-0">{{ tipo }}</h6></v-list-item-title>
+          <v-list-item-title class="grey--text fs-12 fw-normal">
+            <h4 class="ma-0">
+              {{ [tamizaje.nombre1, tamizaje.nombre2, tamizaje.apellido1, tamizaje.apellido2].filter(x => x).join(' ') }}
+            </h4>
+          </v-list-item-title>
+          <v-list-item-title>
+            <h6 class="mb-0">
               {{ tiposDocumentoIdentidad && tamizaje.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === tamizaje.tipo_identificacion).tipo : '' }}
               {{ tamizaje.identificacion }}
-              </h6>
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{calculaEdad(tamizaje && tamizaje.fecha_nacimiento).stringDate}}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <modal-paciente
-                v-if="permisos.datosPacienteEditar"
-                btn-visible
-                ref="modalPaciente"
-                :tamizaje-origen="tamizaje"
-                @actualizado="val => $emit('actualizarTamizaje', val)"
-            />
-          </v-list-item-action>
-        </v-list-item>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-divider class="ma-0"></v-divider>
-        <v-row no-gutters>
-          <template v-for="(item, indexItem) in datos">
-            <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
-              <v-list two-line class="notification-wrap">
-                <v-list-item>
-                  <v-list-item-avatar class="my-1">
-                    <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-content class="pa-0">
-                    <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
-                    <v-list-item-title><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-action v-if="item.action">
-                    <v-list-item-action-text>{{ item.action }}</v-list-item-action-text>
-                  </v-list-item-action>
-                </v-list-item>
-              </v-list>
-            </v-col>
-          </template>
-        </v-row>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+            </h6>
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{calculaEdad(tamizaje && tamizaje.fecha_nacimiento).stringDate}}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-action-text>
+          <modal-paciente
+              v-if="permisos.datosPacienteEditar"
+              btn-visible
+              ref="modalPaciente"
+              :tamizaje-origen="tamizaje"
+              @ ="val => $emit('actualizarTamizaje', val)"
+          />
+          <v-btn
+              class="ml-2"
+              icon
+              @click="panel = panel.length ? [] : [0]"
+          >
+            <v-icon>mdi-chevron-{{panel.length ? 'up' : 'down'}}</v-icon>
+          </v-btn>
+        </v-list-item-action-text>
+      </v-list-item>
+    </v-list>
+    <v-expansion-panels class="elevation-0" v-model="panel" multiple style="z-index: 0 !important;">
+      <v-expansion-panel>
+        <v-expansion-panel-content>
+<!--          <v-divider class="ma-0"></v-divider>-->
+          <v-row no-gutters>
+            <template v-for="(item, indexItem) in datos">
+              <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
+                <v-list two-line class="notification-wrap">
+                  <v-list-item>
+                    <v-list-item-avatar class="my-1">
+                      <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content class="pa-0">
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
+                      <v-list-item-title><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action v-if="item.action">
+                      <v-list-item-action-text>{{ item.action }}</v-list-item-action-text>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-col>
+            </template>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-card>
 </template>
 
 <script>
