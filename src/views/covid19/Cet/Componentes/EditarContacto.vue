@@ -295,6 +295,7 @@
       open(contacto, setNoToAuthEPS, hasContactos, fromMainForm){
         this.fromMainForm = fromMainForm
         this.dataContacto = {...contacto}
+        this.dataContacto.fecha_nacimiento = this.dataContacto.fecha_nacimiento ? this.moment(this.dataContacto.fecha_nacimiento, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
         this.parentescosData = this.parentescos.filter(x => x.id <= 7)
         this.dialog = true
         this.contacto = {...contacto}
