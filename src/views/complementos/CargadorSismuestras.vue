@@ -78,7 +78,7 @@
         <v-row>
           <v-col cols="10" align-self="center">
             <v-btn block class="primary" @click="executeQuerys" :disabled="!enableQuerys">
-              Ejecutar Querys
+              Crear ERPs
             </v-btn>
 
           </v-col>
@@ -239,16 +239,22 @@ export default {
         method: 'GET',
         responseType: 'blob', // important
       }).then(response => {
-        const file = new Blob(
-            [response.data],
-            {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        const fileURL = URL.createObjectURL(file);
-        const a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        a.href = fileURL
-        a.download = 'ResultadoSismuestraAntigenos.xlsx'
-        a.click();
+        if (response.status === 201) {
+          this.loading = false
+          this.$store.commit('snackbar', {color: 'warning', message: "no hay resultados para mostrar"})
+        }else {
+          const file = new Blob(
+              [response.data],
+              {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+          const fileURL = URL.createObjectURL(file);
+          const a = document.createElement("a");
+          document.body.appendChild(a);
+          a.style = "display: none";
+          a.href = fileURL
+          a.download = 'ResultadoSismuestraAntigenos.xlsx'
+          a.click();
+          this.loading = false
+        }
       }).catch(error => {
         console.log('error', error)
         if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
