@@ -112,15 +112,6 @@ export default {
 			screenfull.toggle()
 			}
 		},
-    returnInformeDePrensa(modulo){
-      if (this.datosEmpresa.user && this.datosEmpresa.permisos && this.datosEmpresa.permisos.length) {
-        return this.datosEmpresa.permisos.filter(x => x.nombre.toString().toLowerCase().indexOf(modulo.toString().toLowerCase()) > -1).map(x => x.nombre.split(`${modulo}-`)[1]).reduce((value, key) => {
-          value[key] = value[key] || true
-          if(value['informeDePrensa'])
-          return value
-        }, {})
-      }
-    },
 		toggleSearchForm() {
 			this.$store.dispatch('toggleSearchForm')
 		},
