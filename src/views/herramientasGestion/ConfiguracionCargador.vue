@@ -4,6 +4,7 @@
       v-model="dialog"
       fullscreen
       hide-overlay
+      persistent
       transition="dialog-bottom-transition"
     >
       <v-card>
@@ -143,6 +144,7 @@ export default {
       separator: null,
       cabeceras: [],
       querys: [],
+      roles: []
     },
     stateCrearCargador: false,
   }),
@@ -168,8 +170,9 @@ export default {
           nombre_table_temp: this.copyCargador.nombre_table_temp,
           separator: this.copyCargador.separator,
           delete_temp: this.copyCargador.delete_temp,
-          like_table: this.copyCargador.like_table
+          like_table: this.copyCargador.like_table,
         },
+        roles: this.copyCargador.roles.map(x => x.uuid ? x.id : x),
         cabeceras : this.copyCargador.cabeceras.map(x => {
           return {
             header: x.header,
@@ -218,6 +221,7 @@ export default {
           delete_temp: this.copyCargador.delete_temp,
           like_table: this.copyCargador.like_table
         },
+        roles: this.copyCargador.roles,
         cabeceras : this.copyCargador.cabeceras,
         querys: this.copyCargador.querys.map(a => { 
           return {
