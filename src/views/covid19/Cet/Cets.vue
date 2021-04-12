@@ -21,6 +21,10 @@
         <cargar-negativos
             @reloadTable="reloadTable"
         ></cargar-negativos>
+        <duplicar-registros-nuevo-cet
+            @reloadTable="reloadTable"
+            v-if="permisos.cetsMigrarRegistros"
+        ></duplicar-registros-nuevo-cet>
       </template>
       <filtros
           slot="filters"
@@ -54,6 +58,7 @@
   const CargarNegativos = () => import('Views/covid19/Cet/Componentes/CargarNegativos.vue')
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   const EditarContacto = () => import('./Componentes/EditarContacto')
+  const DuplicarRegistrosNuevoCet = () => import('./Componentes/DuplicarRegistrosNuevoCet')
   export default {
     name: "Cets",
     data: (vm) => ({
@@ -235,7 +240,8 @@
       InformacionPersona,
       DescargarReporte,
       EditarContacto,
-      CargarNegativos
+      CargarNegativos,
+      DuplicarRegistrosNuevoCet
     },
     methods: {
       resetOptions(item) {
