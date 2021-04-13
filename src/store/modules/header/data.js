@@ -363,5 +363,13 @@ export const itemsMenu = [
         color: 'deep-purple',
         routeName: 'VacunacionCovid19',
         typeRoute: 'covid'
-    }
+    },
+    {
+        id: 45,
+        title: 'Cuenta Alto Costo',
+        icon: 'fas fa-book',
+        color: 'red',
+        routeName: 'CuentaAltoCosto',
+        typeRoute: 'aps'
+    },
 ]

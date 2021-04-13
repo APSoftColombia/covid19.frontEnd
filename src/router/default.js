@@ -46,6 +46,7 @@ const EncuestasViewRCV = () => import('Views/aps/rcv/encuestas/EncuestasView')
 const IndicadoresViewRCV = () => import('Views/aps/rcv/IndicadoresRCV/IndicadoresView')
 const InformeEjecutivo = () => import('Views/aps/rcv/InformeEjecutivo/InformeEjecutivo')
 const BitacorasRCV = () => import('Views/aps/rcv/bitacorasRcv/Index')
+const CuentaAltoCosto = () => import('Views/aps/rcv/cuentaAltoCosto/index')
 
 export default {
    path: '/',
@@ -644,6 +645,20 @@ export default {
                color: 'deep-purple',
             }
          }
-      }
+      },
+      {
+         path: 'cuenta-alto-costo',
+         name: 'CuentaAltoCosto',
+         component: CuentaAltoCosto,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'aps-cuentaAltoCostoIndex',
+            avatar: {
+               icon: 'fas fa-book',
+               color: 'red',
+            }
+         }
+      },
    ]
 }
