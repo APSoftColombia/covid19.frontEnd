@@ -9,7 +9,7 @@
     <v-card>
         <v-toolbar dark color="primary">
             <v-icon left>far fa-clipboard</v-icon>
-            <v-toolbar-title id="inicio">Detalle Cuenta alto costo</v-toolbar-title>
+            <v-toolbar-title id="inicio">Detalle {{ estadoAfiliado.id }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>
@@ -56,23 +56,27 @@
             <v-tabs-items v-model="tab" class="mt-2" touchless>
                 <v-tab-item
                     value="tab-1"
+                    class="text-center"
                 >
-                  <span>Sin Seguimientos</span>
+                  <span>Sin seguimientos</span>
                 </v-tab-item>
                 <v-tab-item
                     value="tab-2"
+                    class="text-center"
                 >
                   <span>Sin resultados de examenes</span>
                 </v-tab-item>
                 <v-tab-item
                     value="tab-3"
+                    class="text-center"
                 >
                   <span>Sin controles de tension</span>
                 </v-tab-item>
                 <v-tab-item
                     value="tab-4"
+                    class="text-center"
                 >
-                  <span>Sin consultas Ac</span>
+                  <span>Sin consultas AC</span>
                 </v-tab-item>
               </v-tabs-items>
         </v-container>
@@ -128,7 +132,7 @@ export default {
             this.loading = true
             this.axios.get(`cuenta-alto-costo/${id_afiliado}`)
                 .then(response => {
-                    console.log('response get encuesta', response)
+                    //console.log('response get encuesta', response)
                     this.loadingTable = false
                     this.estadoAfiliado = response.data
                     this.loading = false

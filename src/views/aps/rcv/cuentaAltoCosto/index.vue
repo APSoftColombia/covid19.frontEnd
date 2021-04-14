@@ -42,7 +42,7 @@ export default {
             total: null,
             makeHeaders: [
                 {
-                    text: 'Identificador',
+                    text: 'ID',
                     align: 'left',
                     sortable: false,
                     visibleColumn: true,
