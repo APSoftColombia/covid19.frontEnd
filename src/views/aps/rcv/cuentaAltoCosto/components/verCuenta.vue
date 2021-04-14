@@ -17,35 +17,66 @@
         </v-toolbar>
         <v-container fluid>
             <datos-afiliado :afiliado="estadoAfiliado" :abierto="datosAbierto"></datos-afiliado>
-            <v-tabs
-                class="mt-3"
-                id="tabsAltoCosto"
-                v-model="tab"
-                fixed-tabs
-                icons-and-text
-                show-arrows
-                :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : tab === 'tab-4' ? 'deep-purple' : 'teal'"
+            <v-data-table
+                :headers="headers"
+                :items="estadoAfiliado.seguimientos"
+                class="elevation-1 mt-4"
+                :loading="loadingTable"
+                loading-text="Cargando... por favor espere"
             >
-                <v-tabs-slider></v-tabs-slider>
-                <v-tab
-                    href="#tab-1"
+                <template v-slot:progress>
+                    <v-progress-linear color="purple" :height="5" indeterminate></v-progress-linear>
+                </template>
+                <template v-slot:top>
+                <v-toolbar
+                    flat
                 >
-                  Seguimientos
-                  <v-icon>fas fa-chart-line</v-icon>
-                </v-tab>
-            </v-tabs>
-            <v-tabs-items v-model="tab" class="mt-2" touchless>
-                <v-tab-item
-                    value="tab-1"
-                    class="text-center"
+                    <v-toolbar-title>Listado de Seguimientos</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                    color="primary"
+                    dark
+                    class="mb-2"
+                    @click="crearNuevoSeguimiento"
+                    >
+                        Nuevo Seguimiento
+                    </v-btn>
+                </v-toolbar>
+                </template>
+                <template v-slot:item.examenes="{ item }">
+                    <template v-for="(examen, index) in item.examenes">
+                        <v-chip-group
+                            :key="index"
+                            column
+                            multiple
+                        >
+                            <v-chip x-small label class="white--text" color="indigo">
+                                <span class="text-truncate">{{ examen.examen.prueba }}</span>
+                            </v-chip>
+                        </v-chip-group>
+                    </template>
+                    <span v-if="item.examenes && !item.examenes.length">Sin examenes</span>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                <v-icon
+                    small
+                    class="mr-2"
+                    @click="editItem(item)"
                 >
-                  <span>Sin seguimientos</span>
-                </v-tab-item>
-              </v-tabs-items>
+                    mdi-pencil
+                </v-icon>
+                <v-icon
+                    small
+                    @click="deleteItem(item)"
+                >
+                    mdi-delete
+                </v-icon>
+                </template>
+                <template v-slot:no-data>
+                    <div class="title grey--text text-center pa-4">No hay registros para mostrar</div>
+                </template>
+            </v-data-table>
         </v-container>
-      <detalle-seguimiento
-          ref="detalleSeguimiento"
-      ></detalle-seguimiento>
     </v-card>
   </v-dialog>
 </template>
@@ -53,12 +84,10 @@
 <script>
 import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
-const DetalleSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/DetalleSeguimiento')
 export default {
     name: "verCuentaAltoCosto",
     components: {
-        DatosAfiliado,
-        DetalleSeguimiento
+        DatosAfiliado
     },
     data: () => ({
         loading: false,
@@ -68,11 +97,12 @@ export default {
         datosAbierto: false,
         estadoAfiliado: {},
         headers: [
-            { text: 'Identificador', value: 'id'},
-            { text: 'Fecha Creacion', value: 'fecha' },
-            { text: 'Periodicidad (meses)', value: 'periodicidad_seguimientos' },
-            { text: 'Alerta inmediata', value: 'alerta_inmediata' },
-            { text: 'Tipifica. Pendientes', value: 'tipificaciones' },
+            { text: 'Id.', value: 'id'},
+            { text: 'Ingreso Nefro.', value: 'ingreso_nefroproteccion' },
+            { text: 'Clasf. IMC', value: 'clasificacion_imc' },
+            { text: 'Clasf. RCV', value: 'clasificacion_rcv' },
+            { text: 'Examenes', value: 'examenes' },
+            { text: 'Observaciones', value: 'observaciones' },
             { text: 'Opciones', value: 'actions'}
         ],
         loadingTable: false,
@@ -89,14 +119,20 @@ export default {
             this.datosAbierto = abierto
             if(item && item.id) this.getAfiliado(item.id)
         },
-        informacionSeguimiento(){
-          this.$refs.detalleSeguimiento.open(this.estadoAfiliado.seguimientos[1].id)
-        },
         close(){
             this.datosAbierto = false
             this.dialog = false
             this.loading = false
             this.$emit('close')
+        },
+        crearNuevoSeguimiento() {
+            console.log("create");
+        },
+        editItem(item) {
+            console.log("edit", item);
+        },
+        deleteItem(item) {
+            console.log("delete", item);
         },
         getAfiliado(id_afiliado) {
             this.loadingTable = true
