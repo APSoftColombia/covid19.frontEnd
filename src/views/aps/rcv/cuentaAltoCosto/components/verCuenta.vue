@@ -33,24 +33,6 @@
                   Seguimientos
                   <v-icon>fas fa-chart-line</v-icon>
                 </v-tab>
-                <!--<v-tab
-                    href="#tab-2"
-                >
-                  Examenes
-                  <v-icon>fas fa-folder-open</v-icon>
-                </v-tab>
-                <v-tab
-                    href="#tab-3"
-                >
-                    Control Tension
-                  <v-icon>fas fa-heartbeat</v-icon>
-                </v-tab>
-                <v-tab
-                    href="#tab-4"
-                >
-                  Consultas AC
-                  <v-icon>fas fa-clipboard-list</v-icon>
-                </v-tab>-->
             </v-tabs>
             <v-tabs-items v-model="tab" class="mt-2" touchless>
                 <v-tab-item
@@ -59,26 +41,11 @@
                 >
                   <span>Sin seguimientos</span>
                 </v-tab-item>
-                <!--<v-tab-item
-                    value="tab-2"
-                    class="text-center"
-                >
-                  <span>Sin resultados de examenes</span>
-                </v-tab-item>
-                <v-tab-item
-                    value="tab-3"
-                    class="text-center"
-                >
-                  <span>Sin controles de tension</span>
-                </v-tab-item>
-                <v-tab-item
-                    value="tab-4"
-                    class="text-center"
-                >
-                  <span>Sin consultas AC</span>
-                </v-tab-item>-->
               </v-tabs-items>
         </v-container>
+      <detalle-seguimiento
+          ref="detalleSeguimiento"
+      ></detalle-seguimiento>
     </v-card>
   </v-dialog>
 </template>
@@ -86,10 +53,12 @@
 <script>
 import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
+const DetalleSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/DetalleSeguimiento')
 export default {
     name: "verCuentaAltoCosto",
     components: {
-        DatosAfiliado
+        DatosAfiliado,
+        DetalleSeguimiento
     },
     data: () => ({
         loading: false,
@@ -119,6 +88,9 @@ export default {
             this.dialog = true
             this.datosAbierto = abierto
             if(item && item.id) this.getAfiliado(item.id)
+        },
+        informacionSeguimiento(){
+          this.$refs.detalleSeguimiento.open(this.estadoAfiliado.seguimientos[1].id)
         },
         close(){
             this.datosAbierto = false

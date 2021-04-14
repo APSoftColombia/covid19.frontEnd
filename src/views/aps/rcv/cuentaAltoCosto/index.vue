@@ -4,15 +4,15 @@
 		<v-row>
 			<v-col cols="12">
 				<v-card>
-                    <data-table
-                        ref="tablaCuentaAltoCosto"
-                        v-model="dataTable"
-                        @resetOption="item => resetOptions(item)"
-                        @verCuentaAltoCosto="item => verCuentaAltoCosto(item)"
-                    >
-                    </data-table>
-                    <ver-cuenta-alto-costo ref="verCuentaAltoCosto" @close="loading = false"></ver-cuenta-alto-costo>
-                    <app-section-loader :status="loading"></app-section-loader>.
+            <data-table
+                ref="tablaCuentaAltoCosto"
+                v-model="dataTable"
+                @resetOption="item => resetOptions(item)"
+                @verCuentaAltoCosto="item => verCuentaAltoCosto(item)"
+            >
+            </data-table>
+            <ver-cuenta-alto-costo ref="verCuentaAltoCosto" @close="loading = false"></ver-cuenta-alto-costo>
+            <app-section-loader :status="loading"></app-section-loader>
 				</v-card>
 			</v-col>
 		</v-row>
