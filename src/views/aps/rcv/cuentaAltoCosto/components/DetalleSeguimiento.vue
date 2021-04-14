@@ -37,17 +37,29 @@
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" class="mt-2" touchless>
-            <v-tab-item value="tab-1">
-              <detalle-examenes
+            <v-tab-item value="tab-1" class="text-center">
+              <examenes
                   :examenes="seguimiento.examenes"
-              ></detalle-examenes>
-              <!--<span class="font-weight-bold">Sin resultados de examenes</span>-->
+              ></examenes>
+              <span class="font-weight-bold"
+                    v-if="seguimiento && seguimiento.examenes && !seguimiento.examenes.length"
+              >Sin resultados de examenes</span>
             </v-tab-item>
             <v-tab-item value="tab-2" class="text-center">
-              <span class="font-weight-bold">Sin controles de tension</span>
+              <controles
+                  :controles="seguimiento.controles"
+              ></controles>
+              <span class="font-weight-bold"
+                    v-if="seguimiento && seguimiento.controles && !seguimiento.controles.length"
+              >Sin controles de tension</span>
             </v-tab-item>
             <v-tab-item value="tab-3" class="text-center">
-              <span class="font-weight-bold">Sin consultas AC</span>
+              <consultas-a-c
+                  :consultas="seguimiento.consultas"
+              ></consultas-a-c>
+              <span class="font-weight-bold"
+                    v-if="seguimiento && seguimiento.consultas && !seguimiento.consultas.length"
+              >Sin consultas AC</span>
             </v-tab-item>
           </v-tabs-items>
         </v-container>
@@ -61,11 +73,15 @@
 </template>
 
 <script>
-const DetalleExamenes = () => import('./DetalleExamenes')
+const Examenes = () => import('./Examenes')
+const Controles = () => import('./Controles')
+const ConsultasAC = () => import('./ConsultasAC')
 export default {
   name: "DetalleSeguimiento",
   components: {
-    DetalleExamenes
+    Examenes,
+    Controles,
+    ConsultasAC
   },
   data: () => ({
     dialog: false,

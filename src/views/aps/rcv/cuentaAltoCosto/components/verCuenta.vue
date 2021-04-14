@@ -67,16 +67,26 @@
                 </v-icon>
                 <v-icon
                     small
+                    class="mr-2"
                     @click="deleteItem(item)"
                 >
                     mdi-delete
                 </v-icon>
+                  <v-icon
+                      small
+                      @click="openInfo(item.id)"
+                  >
+                    fas fa-info-circle
+                  </v-icon>
                 </template>
                 <template v-slot:no-data>
                     <div class="title grey--text text-center pa-4">No hay registros para mostrar</div>
                 </template>
             </v-data-table>
         </v-container>
+      <detalle-seguimiento
+          ref="detalleSeguimiento"
+      ></detalle-seguimiento>
     </v-card>
   </v-dialog>
 </template>
@@ -84,10 +94,12 @@
 <script>
 import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
+const DetalleSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/DetalleSeguimiento.vue')
 export default {
     name: "verCuentaAltoCosto",
     components: {
-        DatosAfiliado
+        DatosAfiliado,
+        DetalleSeguimiento
     },
     data: () => ({
         loading: false,
@@ -118,6 +130,9 @@ export default {
             this.dialog = true
             this.datosAbierto = abierto
             if(item && item.id) this.getAfiliado(item.id)
+        },
+        openInfo(seguimiento_id){
+            this.$refs.detalleSeguimiento.open(seguimiento_id)
         },
         close(){
             this.datosAbierto = false
