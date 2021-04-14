@@ -22,7 +22,6 @@
                 id="tabsAltoCosto"
                 v-model="tab"
                 fixed-tabs
-                right
                 icons-and-text
                 show-arrows
                 :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : tab === 'tab-4' ? 'deep-purple' : 'teal'"
@@ -34,7 +33,7 @@
                   Seguimientos
                   <v-icon>fas fa-chart-line</v-icon>
                 </v-tab>
-                <v-tab
+                <!--<v-tab
                     href="#tab-2"
                 >
                   Examenes
@@ -51,7 +50,7 @@
                 >
                   Consultas AC
                   <v-icon>fas fa-clipboard-list</v-icon>
-                </v-tab>
+                </v-tab>-->
             </v-tabs>
             <v-tabs-items v-model="tab" class="mt-2" touchless>
                 <v-tab-item
@@ -60,7 +59,7 @@
                 >
                   <span>Sin seguimientos</span>
                 </v-tab-item>
-                <v-tab-item
+                <!--<v-tab-item
                     value="tab-2"
                     class="text-center"
                 >
@@ -77,7 +76,7 @@
                     class="text-center"
                 >
                   <span>Sin consultas AC</span>
-                </v-tab-item>
+                </v-tab-item>-->
               </v-tabs-items>
         </v-container>
     </v-card>
