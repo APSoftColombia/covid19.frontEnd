@@ -2,7 +2,7 @@
   <v-card flat>
     <v-card-title>
       <v-spacer></v-spacer>
-      <v-btn class="warning white--text">
+      <v-btn class="warning white--text" @click="openForm(null)">
         <v-icon left>fas fa-plus</v-icon>
         Nuevo Control
       </v-btn>
@@ -35,7 +35,7 @@
               </v-list-item>
             </td>
             <td>
-              <v-btn icon small text>
+              <v-btn icon small text @click="openForm(control)">
                 <v-icon small color="warning">fas fa-pen</v-icon>
               </v-btn>
             </td>
@@ -44,16 +44,32 @@
         </template>
       </v-simple-table>
     </v-card-text>
+    <form-control-tension
+        ref="formControlTension"
+    ></form-control-tension>
   </v-card>
 </template>
 
 <script>
+const FormControlTension = () => import('./FormControlTension')
 export default {
   name: "DetalleControles",
   props: {
     controles: {
       type: [Object, Array],
       default: null
+    },
+    seguimiento: {
+      type: [Array, Object],
+      default: null
+    }
+  },
+  components: {
+    FormControlTension
+  },
+  methods: {
+    openForm(control){
+      this.$refs.formControlTension.open(control, this.seguimiento.seguimiento_id, this.seguimiento.afiliado_id)
     }
   }
 }

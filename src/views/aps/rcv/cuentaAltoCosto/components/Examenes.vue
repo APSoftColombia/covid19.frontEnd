@@ -2,7 +2,7 @@
   <v-card flat>
     <v-card-title>
       <v-spacer></v-spacer>
-      <v-btn class="primary white--text">
+      <v-btn class="primary white--text" @click="openForm(null)">
         <v-icon left>fas fa-plus</v-icon>
         Nuevo examen
       </v-btn>
@@ -32,11 +32,9 @@
                 </v-list-item-content>
               </v-list-item>
             </td>
+            <td>{{ examen.resultado }}</td>
             <td>
-              {{ examen.resultado }}
-            </td>
-            <td>
-              <v-btn icon small text>
+              <v-btn icon small text @click="openForm(examen)">
                 <v-icon small color="primary">fas fa-pen</v-icon>
               </v-btn>
             </td>
@@ -45,16 +43,32 @@
         </template>
       </v-simple-table>
     </v-card-text>
+    <form-examenes
+        ref="formExamenes"
+    ></form-examenes>
   </v-card>
 </template>
 
 <script>
+const FormExamenes = () => import('./FormExamenes')
 export default {
   name: "DetalleExamenes",
   props: {
     examenes: {
       type: [Object, Array],
       default: null
+    },
+    seguimiento: {
+      type: [Array, Object],
+      default: null
+    }
+  },
+  components: {
+    FormExamenes
+  },
+  methods: {
+    openForm(examen){
+      this.$refs.formExamenes.open(examen, this.seguimiento.seguimiento_id, this.seguimiento.afiliado_id)
     }
   }
 }

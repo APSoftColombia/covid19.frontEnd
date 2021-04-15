@@ -40,6 +40,7 @@
             <v-tab-item value="tab-1" class="text-center">
               <examenes
                   :examenes="seguimiento.examenes"
+                  :seguimiento="{seguimiento_id: seguimiento.id, afilido_id: seguimiento.afilido_id}"
               ></examenes>
               <span class="font-weight-bold"
                     v-if="seguimiento && seguimiento.examenes && !seguimiento.examenes.length"
@@ -48,6 +49,7 @@
             <v-tab-item value="tab-2" class="text-center">
               <controles
                   :controles="seguimiento.controles"
+                  :seguimiento="{seguimiento_id: seguimiento.id, afilido_id: seguimiento.afilido_id}"
               ></controles>
               <span class="font-weight-bold"
                     v-if="seguimiento && seguimiento.controles && !seguimiento.controles.length"
