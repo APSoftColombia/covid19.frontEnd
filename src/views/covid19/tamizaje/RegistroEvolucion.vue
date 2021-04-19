@@ -770,16 +770,14 @@ export default {
       if (this) {
         if (this.estadosAfectacion) {
           listado = this.estadosAfectacion
-          if(!this.enEdicion) {
-            if (this.evolucion) {
-              if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
-              else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x === 'Ninguno')
-              else {
-                if(this.tamizaje.positivo_covid) {
-                  listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
-                } else {
-                  listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno' && x !== 'Reinfectado' && x !== 'Recuperado')
-                }
+          if (this.evolucion) {
+            if (this.evolucion.clasificacion === '4') listado = this.estadosAfectacion.filter(x => x === 'Fallecido')
+            else if (this.evolucion.clasificacion === '6') listado = this.estadosAfectacion.filter(x => x === 'Ninguno')
+            else {
+              if(this.tamizaje.positivo_covid) {
+                listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno')
+              } else {
+                listado = this.estadosAfectacion.filter(x => x !== 'Fallecido' && x !== 'Ninguno' && x !== 'Reinfectado' && x !== 'Recuperado')
               }
             }
           }
