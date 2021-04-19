@@ -27,7 +27,7 @@
 			</div>
 			<v-spacer></v-spacer>
 			<div class="d-custom-flex align-items-center navbar-right pa-0">
-        <v-tooltip left v-if="permisos.generarReporteDePrensa">
+        <v-tooltip left v-if="permisos.generarReporteDePrensa && datosEmpresa['covid-informeDePrensa'] === '1'">
           <template v-slot:activator="{ on }">
             <v-btn color="red" icon v-on="on" :disabled="loadingPDF1" :loading="loadingPDF1" @click="descargarPDF('generar-pdf-reporte-de-prensa')">
               <v-icon>far fa-file-pdf</v-icon>
@@ -35,7 +35,7 @@
           </template>
           <span>Generar informe de corte diario</span>
         </v-tooltip>
-        <v-tooltip left v-if="permisos.informeDePrensaSucre">
+        <v-tooltip left v-if="permisos.informeDePrensaSucre && datosEmpresa['covid-informeDePrensa'] === '2'">
           <template v-slot:activator="{ on }">
             <v-btn color="orange" icon v-on="on" :disabled="loadingPDF2" :loading="loadingPDF2" @click="descargarPDF('generar-pdf-reporte-de-prensa-sucre')">
               <v-icon>far fa-file-pdf</v-icon>
@@ -99,7 +99,8 @@ export default {
 			'rtlLayout',
 			'activeHeaderFilter',
 			'appVersion',
-			'onLine'
+			'onLine',
+      'datosEmpresa'
 		]),
     permisos() {
       return this.$store.getters.getPermissionModule('covid')

@@ -276,6 +276,19 @@
               </v-expansion-panel>
             </v-expansion-panels> -->
           </v-col>
+          <v-col class="pb-0" cols="12">
+            <c-select-complete
+                    v-model="cargador.roles"
+                    label="Roles que visualizan"
+                    rules="required"
+                    name="roles que visualizan"
+                    :items="rolesIn"
+                    item-text="nombre"
+                    item-value="id"
+                    multiple
+            >
+            </c-select-complete>
+          </v-col>
         </v-row>
       </ValidationObserver>
       <v-divider></v-divider>
@@ -435,6 +448,7 @@ export default {
       length: 0,
     },
     isEdit: false,
+    rolesIn: []
   }),
   watch: {
     "cabecera.type": {
@@ -449,6 +463,9 @@ export default {
         value ? this.cargador.cabeceras = [] : this.cargador.like_table = null
       }
     }
+  },
+  mounted() {
+    this.getRoles();
   },
   methods: {
     close() {
@@ -542,6 +559,15 @@ export default {
           this.loading = false;
         });
     },
+    getRoles () {
+      this.axios.get('user/new')
+        .then(response => {
+            this.rolesIn = response.data.roles
+        })
+        .catch(error => {
+            this.$store.commit('snackbar', {color: 'error', message: `al solicitar los roles disponibles.`, error: error})
+        })
+    }
   },
 };
 </script>

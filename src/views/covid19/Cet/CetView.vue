@@ -27,6 +27,14 @@
             </template>
             <span>Este confirmado tiene tamizaje con contactos vinculados</span>
           </v-tooltip>
+          <v-tooltip top v-if="hasContactosERPC && contactosIDS.tamizaje_id">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon text @click="goToTamizaje()">
+                <v-icon color="info">fas fa-file-medical-alt</v-icon>
+              </v-btn>
+            </template>
+            <span>Ir a ERP</span>
+          </v-tooltip>
         </v-row>
         <v-row no-gutters>
           <contactos-tables
@@ -34,6 +42,9 @@
               :afiliado="data"
               @refreshAfiliado="getInfoAfiliado"
           ></contactos-tables>
+          <seguimiento
+              ref="seguimiento"
+          ></seguimiento>
         </v-row>
         <v-dialog v-model="dialogContactosTamizajes" max-width="550px">
           <v-card>
@@ -67,11 +78,13 @@
 </template>
 
 <script>
+  const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
   const ContactosTables = () => import('./Componentes/ContactosTables')
   export default {
     name: "AñadirContactos",
     components: {
-      ContactosTables
+      ContactosTables,
+      Seguimiento
     },
     data: () => ({
       dialog: false,
@@ -95,6 +108,9 @@
           this.getInfoAfiliado(id)
         }
       },
+      goToTamizaje(){
+        this.$refs.seguimiento.open(this.contactosIDS.tamizaje_id)
+      },
       close(){
         this.$emit('reloadTable')
         this.dialog = false
@@ -114,7 +130,7 @@
       getTieneTamizajeConContactos(id){
         this.axios.get(`tiene-tamizaje-con-contactos/${id}`).then(response => {
           this.contactosIDS = response.data
-          if(this.contactosIDS.length){
+          if(this.contactosIDS && this.contactosIDS.ids && this.contactosIDS.ids.length){
             this.hasContactosERP = true
           }else{
             this.hasContactosERP = false
@@ -126,7 +142,7 @@
       crearContactos(){
         this.loadingBtn = true
         if(this.data.confirmado.producto_financiero !== null){
-          this.axios.post(`crear-contactos-from-tamizajes/${this.data.confirmado.id}`, this.contactosIDS).then(response => {
+          this.axios.post(`crear-contactos-from-tamizajes/${this.data.confirmado.id}`, this.contactosIDS.ids).then(response => {
             this.$store.commit('snackbar', {
               color: 'success',
               message: response.data.message,

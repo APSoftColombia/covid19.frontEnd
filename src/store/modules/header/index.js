@@ -54,6 +54,7 @@ const getters = {
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
         if (getters.getPermission('aps-informeEjecutivoRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 29))
         if (getters.getPermission('aps-bitacorasRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 35))
+        if (getters.getPermission('aps-cuentaAltoCostoIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 45))
         // SEGURIDAD
         if (getters.getPermission('usuario-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 4))
         if (getters.getPermission('rolesPermisos-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 42))
