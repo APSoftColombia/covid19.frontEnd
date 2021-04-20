@@ -37,6 +37,7 @@ export default {
   }),
   methods: {
     open(consulta){
+      console.log(consulta)
       this.datos.push(
           {
             label: 'Tipo identificación del usuario',
@@ -52,7 +53,7 @@ export default {
           },
           {
             label: 'Codigo CUP',
-            body: consulta.codigo_cup,
+            body: consulta.cup ? `${consulta.cup.codigo + " - " + consulta.cup.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
@@ -76,25 +77,25 @@ export default {
           },
           {
             label: 'Codigo diagnostico principal',
-            body: consulta.codigo_diagnostico_principal,
+            body: consulta.diagnostico_principalcie ? `${consulta.diagnostico_principalcie.codigo + " - " + consulta.diagnostico_principalcie.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 1',
-            body: consulta.codigo_diagnostico_relacionado1,
+            body: consulta.diagnostico_relacionado1 ? `${consulta.diagnostico_relacionado1.codigo + " - " + consulta.diagnostico_relacionado1.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 2',
-            body: consulta.codigo_diagnostico_relacionado2,
+            body: consulta.diagnostico_relacionado2 ? `${consulta.diagnostico_relacionado2.codigo + " - " + consulta.diagnostico_relacionado2.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 3',
-            body: consulta.codigo_diagnostico_relacionado3,
+            body: consulta.diagnostico_relacionado3 ? `${consulta.diagnostico_relacionado3.codigo + " - " + consulta.diagnostico_relacionado3.descrip}` : '',
             colmd: '4',
             collg: '4'
           },

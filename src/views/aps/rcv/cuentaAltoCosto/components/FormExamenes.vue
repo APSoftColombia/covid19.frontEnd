@@ -99,6 +99,7 @@ export default {
   }),
   methods: {
     open(examen = null, seguimiento_id = null, afiliado_id = null){
+      console.log(afiliado_id)
       if(examen){this.examen = this.clone(examen)}
       this.examen.seguimiento_id = seguimiento_id
       this.examen.afiliado_id = afiliado_id
@@ -123,7 +124,19 @@ export default {
     crearExamen(){
       this.$refs.formExamen.validate().then(result => {
         if(result){
-          return 0
+          this.loading = true
+          let request = this.examen && this.examen.id ? this.axios.put(`resultadoExamens/${this.examen.id}`, this.examen)
+          : this.axios.post(`resultadoExamens`, this.examen)
+          request.then(response => {
+            this.$store.commit('snackbar', {color: 'success', message: `examen ${this.examen && this.examen.id ? 'editado' : 'creado'} con exito`})
+            this.loading = false
+            console.log(response.data.seguimiento_id)
+            this.$emit('refresh', response.data.seguimiento_id)
+            this.close()
+          }).catch(error => {
+            this.$store.commit('snackbar', {color: 'error', message: `al ${this.examen && this.examen.id ? 'editar' : 'crear'} examen`, error: error})
+            this.loading = false
+          })
         }
       })
     }

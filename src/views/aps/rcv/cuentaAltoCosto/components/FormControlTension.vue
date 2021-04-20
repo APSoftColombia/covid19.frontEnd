@@ -82,11 +82,24 @@ export default {
     close(){
       this.control = {}
       this.dialog = false
+      this.loadingB = false
     },
     crearExamen(){
       this.$refs.formControlTension.validate().then(result => {
         if(result){
-          return 0
+          this.loadingB = true
+          let request = this.control && this.control.id ? this.axios.put(`controlTensions/${this.control.id}`, this.control)
+          : this.axios.post(`controlTensions`, this.control)
+          request.then(response => {
+            this.$store.commit('snackbar', {color: 'success', message: `control ${this.control && this.control.id ? 'editado' : 'creado'} con exito`})
+            this.loadingB = false
+            console.log(response.data.seguimiento_id)
+            this.$emit('refresh', response.data.seguimiento_id)
+            this.close()
+          }).catch(error => {
+            this.$store.commit('snackbar', {color: 'error', message: `al ${this.control && this.control.id ? 'editar' : 'crear'} control`, error: error})
+            this.loadingB = false
+          })
         }
       })
     }

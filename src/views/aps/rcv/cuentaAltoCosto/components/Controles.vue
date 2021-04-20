@@ -46,6 +46,7 @@
     </v-card-text>
     <form-control-tension
         ref="formControlTension"
+        @refresh="refresh"
     ></form-control-tension>
   </v-card>
 </template>
@@ -68,6 +69,9 @@ export default {
     FormControlTension
   },
   methods: {
+    refresh(id){
+      this.$emit('refresh', id)
+    },
     openForm(control){
       this.$refs.formControlTension.open(control, this.seguimiento.seguimiento_id, this.seguimiento.afiliado_id)
     }
