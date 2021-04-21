@@ -10,12 +10,32 @@
                 @resetOption="item => resetOptions(item)"
                 @verCuentaAltoCosto="item => verCuentaAltoCosto(item)"
             >
+              <template slot="top-actions-right">
+                <v-btn class="green white--text"
+                    @click="openReportesERC"
+                >
+                  <v-icon left>fas fa-file-download</v-icon>
+                  Descargar reporte ERC
+                </v-btn>
+                <v-btn class="green white--text"
+                    @click="openReportesTFG"
+                >
+                  <v-icon left>fas fa-file-download</v-icon>
+                  Descargar reporte TFG
+                </v-btn>
+              </template>
             </data-table>
             <ver-cuenta-alto-costo ref="verCuentaAltoCosto" @close="loading = false"></ver-cuenta-alto-costo>
             <app-section-loader :status="loading"></app-section-loader>
 				</v-card>
 			</v-col>
 		</v-row>
+      <descargar-reporte-e-r-c
+          ref="reporteERC"
+      ></descargar-reporte-e-r-c>
+      <descargar-reporte-t-f-g
+          ref="reporteTFG"
+      ></descargar-reporte-t-f-g>
     </v-container>
 </template>
 
@@ -23,10 +43,14 @@
 import {mapGetters} from 'vuex'
 import ItemListDataPaciente from '../componentes/ItemListDataPaciente'
 const verCuentaAltoCosto = () => import('../cuentaAltoCosto/components/verCuenta')
+const DescargarReporteERC = () => import('../cuentaAltoCosto/components/DescargarReporteERC')
+const DescargarReporteTFG = () => import('../cuentaAltoCosto/components/DescargarReporteTFG')
 
 export default {
     components: {
-        verCuentaAltoCosto
+        verCuentaAltoCosto,
+        DescargarReporteERC,
+        DescargarReporteTFG
     },
     name: "CuentaAltoCosto",
     data: (vm) => ({
@@ -80,7 +104,7 @@ export default {
                                     props: {
                                         value: {
                                             sexo: context.props.value.sexo,
-                                            nombre: `${context.props.value.nombre1} ${context.props.value.nombre2} ${context.props.value.apellido1} ${context.props.value.apellido2}`,
+                                            nombre: `${context.props.value.nombre1 ? context.props.value.nombre1 : ''} ${context.props.value.nombre2 ? context.props.value.nombre2 : ''} ${context.props.value.apellido1 ? context.props.value.apellido1 : ''} ${context.props.value.apellido2 ? context.props.value.apellido2 : ''}`,
                                             tipoIdentificacion: context.props.value.tipo_doc,
                                             identificacion: context.props.value.numero_documento_identidad,
                                             celular: context.props.value.numero_celular,
@@ -136,6 +160,12 @@ export default {
         }
     },
     methods: {
+        openReportesERC(){
+          this.$refs.reporteERC.open()
+        },
+        openReportesTFG(){
+          this.$refs.reporteTFG.open()
+        },
         goDatos(ruta) {
             this.dataTable.route = ruta
         },

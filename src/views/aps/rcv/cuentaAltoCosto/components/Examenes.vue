@@ -45,6 +45,7 @@
     </v-card-text>
     <form-examenes
         ref="formExamenes"
+        @refresh="refresh"
     ></form-examenes>
   </v-card>
 </template>
@@ -69,6 +70,9 @@ export default {
   methods: {
     openForm(examen){
       this.$refs.formExamenes.open(examen, this.seguimiento.seguimiento_id, this.seguimiento.afiliado_id)
+    },
+    refresh(id){
+      this.$emit('refresh', id)
     }
   }
 }
