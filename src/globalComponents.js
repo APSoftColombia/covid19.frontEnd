@@ -56,6 +56,7 @@ import BuscadorIps from 'Components/Inputs/BuscadorIps'
 import BuscadorAfiliado from 'Components/Inputs/BuscadorAfiliado'
 import CCombo from 'Components/Inputs/CCombo'
 import CDialog from 'Components/Inputs/CDialog'
+import CTooltip from 'Components/Inputs/CTooltip'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -103,6 +104,7 @@ const GlobalComponents = {
       Vue.component('BuscadorAfiliado', BuscadorAfiliado)
       Vue.component('CCombo', CCombo)
       Vue.component('CDialog', CDialog)
+      Vue.component('CTooltip', CTooltip)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)
