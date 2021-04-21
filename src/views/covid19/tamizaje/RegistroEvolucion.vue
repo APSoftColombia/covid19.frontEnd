@@ -35,15 +35,17 @@
         <v-row no-gutters>
           <jitsi-meet ref="jitsimeet" v-if="enlinea && videollamar" :enlinea="enlinea"
                       @cargado="val => showbuttonmeet = !val"
-                      @cerrar="enlinea = null, showbuttonmeet = true"></jitsi-meet>
+                      @cerrar="enlinea = null, showbuttonmeet = true" />
           <v-col cols="12" md="6" v-if="enlinea"></v-col>
           <v-col md="6" :offset-md="enlinea ? '0' : '3'">
             <jitsi-meet-button v-if="videollamar" :show="showbuttonmeet" block :tamizaje="tamizaje"
                                @enlinea="val => enlinea = val"></jitsi-meet-button>
             <datos-personales :abierto="false" :tamizaje="tamizaje" @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"></datos-personales>
-            <ValidationObserver ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }"
-                                autocomplete="off">
-              <v-row>
+            <ValidationObserver
+                ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }"
+                autocomplete="off"
+            >
+              <v-row class="mt-3">
                 <v-col cols="12" class="pb-0" v-if="[2, 3].find(x => x === tamizaje.orden_medica_id)">
                   <v-switch
                       v-model="evolucion.seguimiento_telefonico"
@@ -53,17 +55,52 @@
                       :false-value="0"
                   ></v-switch>
                 </v-col>
-                <v-col cols="12" class="pb-0">
-                  <v-col class="pb-0" cols="12">
-                    <c-date
-                        v-model="evolucion.fecha_seguimiento"
-                        rules="required"
-                        label="Fecha del Seguimiento"
-                        name="fecha del seguimiento"
-                        :max="moment().format('YYYY-MM-DD')"
-                    >
-                    </c-date>
-                  </v-col>
+                <v-col class="pb-0" cols="12" sm="6">
+                  <c-date
+                      v-model="evolucion.fecha_seguimiento"
+                      rules="required"
+                      label="Fecha del Seguimiento"
+                      name="fecha del seguimiento"
+                      :max="moment().format('YYYY-MM-DD')"
+                  >
+                  </c-date>
+                </v-col>
+                <v-col cols="12" sm="6" class="pb-0">
+                  <v-menu
+                      ref="menu"
+                      v-model="menuHora"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="horaSeguimiento"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <ValidationProvider name="Hora del seguimiento" rules="required" v-slot="{ errors }">
+                        <v-text-field
+                            v-model="horaSeguimiento"
+                            label="Hora del seguimiento"
+                            prepend-inner-icon="mdi-clock-time-four-outline"
+                            readonly
+                            outlined
+                            dense
+                            v-bind="attrs"
+                            v-on="on"
+                            :error-messages="errors"
+                        ></v-text-field>
+                      </ValidationProvider>
+                    </template>
+                    <v-time-picker
+                        scrollable
+                        v-if="menuHora"
+                        v-model="horaSeguimiento"
+                        full-width
+                        format="24hr"
+                        @click:minute="$refs.menu.save(horaSeguimiento)"
+                    ></v-time-picker>
+                  </v-menu>
                 </v-col>
                 <v-col cols="12">
                   <v-card outlined tile>
@@ -703,6 +740,8 @@ export default {
     }
   },
   data: () => ({
+    menuHora: false,
+    horaSeguimiento: null,
     enEdicion: false,
     permiteWatch: true,
     solicitaUltimo: false,
@@ -953,6 +992,7 @@ export default {
         let protocolos = this.evolucion.cumplimiento_protocolos_bioseguridad && this.evolucion.cumplimiento_protocolos_bioseguridad.length ? this.evolucion.cumplimiento_protocolos_bioseguridad.join(',') : null
         let alteraciones = this.evolucion.alteraciones_emocionales && this.evolucion.alteraciones_emocionales.length ? this.evolucion.alteraciones_emocionales.join(',') : null
         let evolution = this.clone(this.evolucion)
+        evolution.fecha_seguimiento = `${evolution.fecha_seguimiento} ${this.horaSeguimiento}`
         evolution.sintomas = coso
         evolution.cumplimiento_protocolos_bioseguridad = protocolos
         evolution.alteraciones_emocionales = alteraciones
@@ -985,6 +1025,7 @@ export default {
           })
     },
     open(idEvolucion = null) {
+      this.horaSeguimiento = null
       if (idEvolucion) this.getEvolucion(idEvolucion)
       else if (this.tamizaje) {
         let evolucion = this.clone(this.modelEvolucion)
@@ -992,6 +1033,8 @@ export default {
         this.activaSPO2 = true
         this.activaTemperatura = true
         // this.tamizaje = tamizaje
+        evolucion.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
+        this.horaSeguimiento = this.moment().format('HH:mm')
         evolucion.tamizaje_id = this.tamizaje.id
         evolucion.lugar_atencion = this.tamizaje.orden_medica_id
         evolucion.orden_medica_id = this.tamizaje.orden_medica_id
@@ -1059,6 +1102,9 @@ export default {
             this.activaPR = response.data.frecuencia_pulso !== null
             this.activaSPO2 = response.data.saturacion_oxigeno !== null
             this.activaTemperatura = response.data.temperatura !== null
+            let fechaxx = this.clone(response.data.fecha_seguimiento)
+            response.data.fecha_seguimiento = fechaxx ? this.moment(fechaxx).format('YYYY-MM-DD') : null
+            this.horaSeguimiento = fechaxx ? this.moment(fechaxx).format('HH:mm') : null
             this.evolucion = response.data
             this.loading = false
           })
@@ -1077,7 +1123,10 @@ export default {
       this.activaTemperatura = true
       let newEvolution = this.clone(this.modelEvolucion)
       newEvolution.tamizaje_id = this.tamizaje.id
-      newEvolution.fecha_seguimiento = this.evolucion.fecha_seguimiento
+
+      newEvolution.fecha_seguimiento = this.moment().format('YYYY-MM-DD')
+      this.horaSeguimiento = this.moment().format('HH:mm')
+
       newEvolution.lugar_atencion = this.tamizaje.orden_medica_id
       newEvolution.orden_medica_id = this.tamizaje.orden_medica_id
       newEvolution.seguimiento_telefonico = this.evolucion.lugar_atencion === 1 ? 1 : 0
@@ -1131,10 +1180,14 @@ export default {
       this.solicitaUltimo = true
     },
     editar(evolucion) {
+      console.log('evolucion', evolucion)
       this.enEdicion = true
       this.permiteWatch = false
       this.loading = true
       let evolucionCopiada = this.clone(evolucion)
+      const fechax = this.clone(evolucionCopiada.fecha_seguimiento)
+      evolucionCopiada.fecha_seguimiento = fechax ? this.moment(fechax).format('YYYY-MM-DD') : null
+      this.horaSeguimiento = fechax ? this.moment(fechax).format('HH:mm') : null
       /// Asignación
       this.activaPR = evolucionCopiada.frecuencia_pulso !== null
       this.activaSPO2 = evolucionCopiada.saturacion_oxigeno !== null
