@@ -30,7 +30,7 @@
                 </v-col>
                 <v-col cols="12">
                   <buscador-ips
-                      ref="buscadorips"
+                      ref="buscarips"
                       label="IPS"
                       name="IPS"
                       v-model="consulta.codigo_prestador"
@@ -67,7 +67,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="12" lg="12">
                   <buscador-cup
-                      ref="buscadorcups"
+                      ref="buscarcup"
                       label="Codigo de la consulta"
                       name="busqueda de codigo cup"
                       v-model="consulta.codigo_cup"
@@ -112,15 +112,18 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6" lg="6">
                   <buscador-cie
+                      ref="diagnosticoPrincipal"
                       label="Código del diagnóstico principal"
                       name="Código del diagnóstico principal"
                       v-model="consulta.codigo_diagnostico_principal"
                       rules="required"
+                      :value="consulta.codigo_diagnostico_principal"
                       @change="val => consulta.codigo_diagnostico_principal = val"
                   ></buscador-cie>
                 </v-col>
                 <v-col cols="12" sm="12" md="6" lg="6">
                   <buscador-cie
+                      ref="diagnosticoRelacionado1"
                       label="Código del diagnóstico relacionado No. 1"
                       name="Código del diagnóstico relacionado No. 1"
                       v-model="consulta.codigo_diagnostico_relacionado1"
@@ -130,6 +133,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6" lg="6">
                   <buscador-cie
+                      ref="diagnosticoRelacionado2"
                       label="Código del diagnóstico relacionado No. 2"
                       name="Código del diagnóstico relacionado No. 2"
                       v-model="consulta.codigo_diagnostico_relacionado2"
@@ -139,6 +143,7 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="6" lg="6">
                   <buscador-cie
+                      ref="diagnosticoRelacionado3"
                       label="Código del diagnóstico relacionado No. 3"
                       name="Código del diagnóstico relacionado No. 3"
                       v-model="consulta.codigo_diagnostico_relacionado3"
@@ -229,7 +234,31 @@ export default {
   },
   methods: {
     open(consulta = null, seguimiento_id = null, afiliado_id = null){
-      if(consulta){this.consulta = this.clone(consulta)}
+      if(consulta){
+        this.consulta = {
+          id: consulta.id,
+          numero_factura: consulta.numero_factura,
+          codigo_prestador: consulta.codigo_prestador,
+          tipo_identificacion: consulta.tipo_identificacion,
+          identificacion: consulta.identificacion,
+          fecha: consulta.fecha,
+          codigo_cup: consulta.codigo_cup,
+          finalidad_consulta: consulta.finalidad_consulta,
+          causa_externa: consulta.causa_externa,
+          otra_causa_externa: consulta.otra_causa_externa,
+          codigo_diagnostico_principal: consulta.codigo_diagnostico_principal,
+          codigo_diagnostico_relacionado1: consulta.codigo_diagnostico_relacionado1,
+          codigo_diagnostico_relacionado2: consulta.codigo_diagnostico_relacionado2,
+          codigo_diagnostico_relacionado3: consulta.codigo_diagnostico_relacionado3,
+          tipo_diagnostico_principal: consulta.tipo_diagnostico_principal,
+          valor_consulta: consulta.valor_consulta,
+          valor_cuota_moderada: consulta.valor_cuota_moderada,
+          valor_a_pagar: consulta.valor_a_pagar,
+          seguimiento_id: consulta.seguimiento_id,
+          afiliado_id: consulta.afiliado_id,
+          numero_autorizacion: consulta.numero_autorizacion
+        }
+      }
       this.consulta.seguimiento_id = seguimiento_id
       this.consulta.afiliado_id = afiliado_id
       this.dialog = true
@@ -256,30 +285,8 @@ export default {
       this.$refs.formConsultaAC.validate().then(result => {
         if(result){
           this.loading = true
-          let consultaData = {
-            numero_factura: this.consulta.numero_factura,
-            codigo_prestador: this.consulta.codigo_prestador,
-            tipo_identificacion: this.consulta.tipo_identificacion,
-            identificacion: this.consulta.identificacion,
-            fecha: this.consulta.fecha,
-            codigo_cup: this.consulta.codigo_cup,
-            finalidad_consulta: this.consulta.finalidad_consulta,
-            causa_externa: this.consulta.causa_externa,
-            otra_causa_externa: this.consulta.otra_causa_externa,
-            codigo_diagnostico_principal: this.consulta.codigo_diagnostico_principal,
-            codigo_diagnostico_relacionado1: this.consulta.codigo_diagnostico_relacionado1,
-            codigo_diagnostico_relacionado2: this.consulta.codigo_diagnostico_relacionado2,
-            codigo_diagnostico_relacionado3: this.consulta.codigo_diagnostico_relacionado3,
-            tipo_diagnostico_principal: this.consulta.tipo_diagnostico_principal,
-            valor_consulta: this.consulta.valor_consulta,
-            valor_cuota_moderada: this.consulta.valor_cuota_moderada,
-            valor_a_pagar: this.consulta.valor_a_pagar,
-            seguimiento_id: this.consulta.seguimiento_id,
-            afiliado_id: this.consulta.afiliado_id,
-            numero_autorizacion: this.consulta.numero_autorizacion
-          }
-          let request = this.consulta && this.consulta.id ? this.axios.put(`consultaRCVS/${this.consulta.id}`, consultaData)
-          : this.axios.post(`consultaRCVS`, consultaData)
+          let request = this.consulta && this.consulta.id ? this.axios.put(`consultaRCVS/${this.consulta.id}`, this.consulta)
+          : this.axios.post(`consultaRCVS`, this.consulta)
           request.then(response => {
             this.$store.commit('snackbar', {color: 'success', message: `consulta rcv ${this.consulta && this.consulta.id ? 'editada' : 'creada'} con exito`})
             this.loading = false
