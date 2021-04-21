@@ -87,6 +87,10 @@
       <detalle-seguimiento
           ref="detalleSeguimiento"
       ></detalle-seguimiento>
+      <form-seguimientos
+        ref="formSeguimientos"
+        @refresh="getAfiliado"
+      ></form-seguimientos>
     </v-card>
   </v-dialog>
 </template>
@@ -95,11 +99,13 @@
 import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
 const DetalleSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/DetalleSeguimiento.vue')
+const FormSeguimientos = () => import('Views/aps/rcv/cuentaAltoCosto/components/FormSeguimientos.vue')
 export default {
     name: "verCuentaAltoCosto",
     components: {
         DatosAfiliado,
-        DetalleSeguimiento
+        DetalleSeguimiento,
+        FormSeguimientos
     },
     data: () => ({
         loading: false,
@@ -141,10 +147,10 @@ export default {
             this.$emit('close')
         },
         crearNuevoSeguimiento() {
-            console.log("create");
+            this.$refs.formSeguimientos.open()
         },
         editItem(item) {
-            console.log("edit", item);
+            this.$refs.formSeguimientos.open(item)
         },
         deleteItem(item) {
             console.log("delete", item);
@@ -154,7 +160,6 @@ export default {
             this.loading = true
             this.axios.get(`cuenta-alto-costo/${id_afiliado}`)
                 .then(response => {
-                    //console.log('response get encuesta', response)
                     this.loadingTable = false
                     this.estadoAfiliado = response.data
                     this.loading = false

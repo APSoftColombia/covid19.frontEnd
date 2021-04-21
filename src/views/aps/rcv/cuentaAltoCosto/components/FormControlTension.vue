@@ -93,7 +93,6 @@ export default {
           request.then(response => {
             this.$store.commit('snackbar', {color: 'success', message: `control ${this.control && this.control.id ? 'editado' : 'creado'} con exito`})
             this.loadingB = false
-            console.log(response.data.seguimiento_id)
             this.$emit('refresh', response.data.seguimiento_id)
             this.close()
           }).catch(error => {
