@@ -39,11 +39,51 @@
 <!--      >-->
 <!--      </c-date-range>-->
 <!--    </v-col>-->
+<!--    <v-col cols="12" sm="6" md="4">-->
+<!--      <c-select-complete-->
+<!--          v-model="filters.models.riesgo"-->
+<!--          label="Riesgo"-->
+<!--          :items="filters.data.opcionesRiesgo"-->
+<!--          item-text="text"-->
+<!--          item-value="value"-->
+<!--          hide-details-->
+<!--      >-->
+<!--      </c-select-complete>-->
+<!--    </v-col>-->
+    <v-col cols="12" sm="6" md="4">
+      <v-autocomplete
+          label="EPS"
+          v-model="filters.models.eps_id"
+          :items="complementos.eps"
+          outlined
+          dense
+          :filter="filterEpsTamizajes"
+          item-value="id"
+          persistent-hint
+          clearable
+          :hint="filters.models.eps_id && complementos.eps.find(x => x.id === filters.models.eps_id).codigo ? `Código: ${complementos.eps.find(x => x.id === filters.models.eps_id).codigo}` : '' "
+          hide-details
+      >
+        <template v-slot:selection="{ item, index }">
+          <div class="pa-0 text-truncate" style="width: 100% !important;">
+            {{ item.nombre }}
+          </div>
+        </template>
+        <template v-slot:item="{ item, index }">
+          <template>
+            <v-list-item-content class="pa-0">
+              <v-list-item-title>{{ item.nombre }}</v-list-item-title>
+              <v-list-item-subtitle>{{ item.codigo ? `Código: ${item.codigo}` : '' }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </template>
+        </template>
+      </v-autocomplete>
+    </v-col>
     <v-col cols="12" sm="6" md="4">
       <c-select-complete
-          v-model="filters.models.riesgo"
-          label="Riesgo"
-          :items="filters.data.opcionesRiesgo"
+          v-model="filters.models.oportunidad"
+          label="Oportunidad Atención"
+          :items="filters.data.opcionesOportunidad"
           item-text="text"
           item-value="value"
           hide-details
@@ -220,35 +260,6 @@
       </v-autocomplete>
     </v-col>
     <v-col cols="12" sm="6" md="4">
-      <v-autocomplete
-          label="EPS"
-          v-model="filters.models.eps_id"
-          :items="complementos.eps"
-          outlined
-          dense
-          :filter="filterEpsTamizajes"
-          item-value="id"
-          persistent-hint
-          clearable
-          :hint="filters.models.eps_id && complementos.eps.find(x => x.id === filters.models.eps_id).codigo ? `Código: ${complementos.eps.find(x => x.id === filters.models.eps_id).codigo}` : '' "
-          hide-details
-      >
-        <template v-slot:selection="{ item, index }">
-          <div class="pa-0 text-truncate" style="width: 100% !important;">
-            {{ item.nombre }}
-          </div>
-        </template>
-        <template v-slot:item="{ item, index }">
-          <template>
-            <v-list-item-content class="pa-0">
-              <v-list-item-title>{{ item.nombre }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.codigo ? `Código: ${item.codigo}` : '' }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </template>
-      </v-autocomplete>
-    </v-col>
-    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.seguimientos"
           label="Cantidad seguimientos"
@@ -344,9 +355,14 @@ export default {
         seguimientos: null,
         erp_sin_asignar: null,
         aislamientos: null,
-        semaforo: null
+        semaforo: null,
+        oportunidad: null
       },
       data: {
+        opcionesOportunidad: [
+          {value: 1, text: 'Cumple'},
+          {value: 0, text: 'No Cumple'}
+        ],
         opcionesLocaliza: [
           {value: null, text: 'Todos'},
           {value: 1, text: 'Se localiza al paciente'},
@@ -401,8 +417,9 @@ export default {
   created() {
     this.getComplementos()
     if (this.esMedico) {
-      this.filters.models.evolucion = ['Mejoró', 'Sigue igual', 'Empeoró', 'Sin seguimiento']
-      this.filters.models.clasificacion = this.clasificacionesCovid && this.clasificacionesCovid.length ? this.clasificacionesCovid.filter(x => x.id !== '6') : []
+      this.filters.models.caso_estudio = 1
+      // this.filters.models.evolucion = ['Mejoró', 'Sigue igual', 'Empeoró', 'Sin seguimiento']
+      // this.filters.models.clasificacion = this.clasificacionesCovid && this.clasificacionesCovid.length ? this.clasificacionesCovid.filter(x => x.id !== '6') : []
       this.aplicaFiltros()
     }
   },
@@ -421,10 +438,16 @@ export default {
       if (this.filters.models.rango_updated_at.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[updated_between]=' + this.filters.models.rango_updated_at.join(',')
       }
-      if (this.filters.models.riesgo !== null) {
-        if (this.filters.models.riesgo === 1) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_procedencia]=1'
-        if (this.filters.models.riesgo === 2) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_ocupacional]=1'
-        if (this.filters.models.riesgo === 3) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_contacto]=1'
+      // if (this.filters.models.riesgo !== null) {
+      //   if (this.filters.models.riesgo === 1) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_procedencia]=1'
+      //   if (this.filters.models.riesgo === 2) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_ocupacional]=1'
+      //   if (this.filters.models.riesgo === 3) rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[riesgo_contacto]=1'
+      // }
+      if (this.filters.models.eps_id) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
+      }
+      if (this.filters.models.oportunidad !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[atendido]=' + this.filters.models.oportunidad
       }
       if (this.filters.models.departamentos.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[departamento_id]=' + this.filters.models.departamentos.join(',')
@@ -455,9 +478,6 @@ export default {
       }
       if (this.filters.models.medico_id) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[medico_id]=' + this.filters.models.medico_id
-      }
-      if (this.filters.models.eps_id) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
       }
       if (this.filters.models.localiza_persona !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[localiza_persona]=' + this.filters.models.localiza_persona

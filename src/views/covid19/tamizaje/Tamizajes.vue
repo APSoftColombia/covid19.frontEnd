@@ -377,7 +377,7 @@ export default {
           value: 'estado_afectacion'
         },
         {
-          text: 'Última Atención',
+          text: 'Oportunidad Atención',
           align: 'left',
           sortable: true,
           visibleColumn: true,
