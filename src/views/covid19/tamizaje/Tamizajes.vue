@@ -83,6 +83,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import BotonClasificacion from '../../../components/Tamizaje/BotonClasificacion'
+import DatoUltimaAtencion from '../../../components/Tamizaje/DatoUltimaAtencion'
 import SemaforoAvatar from "../../../components/Tamizaje/SemaforoAvatar";
 import PersonaItemTabla from "../../../components/Tamizaje/PersonaItemTabla";
 import axios from 'axios'
@@ -374,6 +375,27 @@ export default {
           align: 'left',
           sortable: false,
           value: 'estado_afectacion'
+        },
+        {
+          text: 'Última Atención',
+          align: 'left',
+          sortable: true,
+          visibleColumn: true,
+          value: 'ultimo_seguimiento',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  DatoUltimaAtencion,
+                  {
+                    props: {
+                      tamizaje: context.props.value
+                    }
+                  }
+              )
+            },
+            props: ['value']
+          }
         },
         {
           text: 'Último Seguimiento',
