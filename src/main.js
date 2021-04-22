@@ -205,10 +205,15 @@ Vue.mixin({
 
 				let days = a.diff(b, 'days')
 				b.add(days, 'days')
+
+				let hours = a.diff(b, 'hours')
+				b.add(hours, 'hours')
 				let stringDate = ``
 				stringDate = stringDate + (years ? `${years} año${years === 1 ? '' : 's'}` : '')
 				stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? ''  : 'es'}` : '')
 				stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
+
+				stringDate = stringDate + (years || months || days ? hours ? ` ${hours} hora${hours === 1 ? '' : 's'}` : '' : '')
 				return {
 					stringDate: stringDate,
 					years: years,
