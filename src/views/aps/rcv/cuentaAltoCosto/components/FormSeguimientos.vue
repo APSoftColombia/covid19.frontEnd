@@ -67,7 +67,7 @@
                           <template v-if="seguimiento.hta">
                             <v-col cols="12" sm="12" md="6" lg="6">
                               <c-date
-                                  v-model="seguimiento.ingreso_nefroproteccion"
+                                  v-model="seguimiento.fecha_dx_hta"
                                   label="Fecha de diagnostico de la Hipertension Arterial"
                                   name="Fecha de diagnostico de la Hipertension Arterial"
                                   rules="required"
@@ -144,7 +144,7 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <c-select-complete
-                            v-model="seguimiento.diabetes"
+                            v-model="seguimiento.etiologia_erc"
                             label="Etiología de la ERC"
                             name="Etiología de la ERC"
                             :items="etiologiasOptions && etiologiasOptions.length ? etiologiasOptions : []"

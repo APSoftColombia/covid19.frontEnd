@@ -147,13 +147,23 @@ export default {
             this.$emit('close')
         },
         crearNuevoSeguimiento() {
-            this.$refs.formSeguimientos.open(null, null, this.estadoAfiliado.sexo)
+            this.$refs.formSeguimientos.open(null, this.estadoAfiliado.id)
         },
         editItem(item) {
             this.$refs.formSeguimientos.open(item, this.estadoAfiliado.id, this.estadoAfiliado.sexo)
         },
         deleteItem(item) {
             console.log("delete", item);
+            this.loadingTable = true
+            this.loading = true
+            this.axios.delete(`seguimientos/${item.id}`).then(() => {
+                this.loadingTable = false
+                this.loading = false
+                this.getAfiliado(this.estadoAfiliado.id)
+            }).catch(error => {
+                this.loading = false
+                this.$store.commit('snackbar', {color: 'error', message: `al borrar el seguimiento`, error: error})
+            });
         },
         getAfiliado(id_afiliado) {
             this.loadingTable = true
