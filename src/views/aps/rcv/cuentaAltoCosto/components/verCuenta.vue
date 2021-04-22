@@ -147,10 +147,10 @@ export default {
             this.$emit('close')
         },
         crearNuevoSeguimiento() {
-            this.$refs.formSeguimientos.open()
+            this.$refs.formSeguimientos.open(null, null, this.estadoAfiliado.sexo)
         },
         editItem(item) {
-            this.$refs.formSeguimientos.open(item)
+            this.$refs.formSeguimientos.open(item, this.estadoAfiliado.id, this.estadoAfiliado.sexo)
         },
         deleteItem(item) {
             console.log("delete", item);

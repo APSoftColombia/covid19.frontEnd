@@ -17,7 +17,7 @@
         <v-card-text>
           <v-container fluid>
             <v-row no-gutters>
-              <v-col md="6" offset-md="3" v-if="dialog">
+              <v-col md="6" offset-md="3" class="mx-auto" v-if="dialog">
                 <v-row>
                   <v-col cols="12" class="px-0">
                     <v-system-bar class="font-weight-bold" dark color="indigo" :height="40" :window="true">
@@ -305,13 +305,20 @@
                             </v-col>
                             <v-col class="pb-0" cols="12">
                               <c-texto
-                                  :value="seguimiento.tension_arterial_sistolica && seguimiento.tension_arterial_diastolica ? `${seguimiento.tension_arterial_sistolica}/${seguimiento.tension_arterial_diastolica}` : ''"
-                                  label="Tensión Arterial"
+                                  :value="hintTension"
+                                  label="Estadio HTA"
                                   rules="required"
-                                  name="tensión arterial"
-                                  :hint="hintTension"
+                                  name="Estadio HTA"
                                   readonly
                                   :clearable="false"
+                              >
+                              </c-texto>
+                            </v-col>
+                            <v-col class="pb-0" cols="12">
+                              <c-texto
+                                  v-model="seguimiento.clasificacion_rcv"
+                                  label="Clasificación del riesgo cardiovascular y metabolico"
+                                  name="Clasificación del riesgo RCV"
                               >
                               </c-texto>
                             </v-col>
@@ -321,7 +328,60 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <!--  Aqui va todo el apartado que va desde el campo 26 a 31   -->
+                  <v-col cols="12" class="pb-0">
+                    <v-card outlined tile>
+                      <v-card-text>
+                          <v-row>
+                            <v-col class="pb-0" cols="12" md="6" lg="6">
+                              <c-number
+                                  v-model="seguimiento.clasificacion_estadio_erc_kcg"
+                                  label="Clasificación estadio ERC KCG"
+                                  rules="required|min:0"
+                                  name="Clasificación estadio ERC KCG"
+                                  min="0"
+                              >
+                              </c-number>
+                            </v-col>
+                            <v-col class="pb-0" cols="12" md="6" lg="6">
+                              <c-number
+                                  v-model="seguimiento.tfg_anterior"
+                                  label="Tasa de Filtración Glomerular (TFGE) KCG (REPORTE ANTERIOR)"
+                                  rules="required|min:0"
+                                  name="Tasa de Filtración Glomerular anterior"
+                                  min="0"
+                              >
+                              </c-number>
+                            </v-col>
+                            <v-col class="pb-0" cols="12" md="12" lg="12">
+                              <c-number
+                                  v-model="seguimiento.perdida_funcional_renal"
+                                  label="Perdida de la funcion renal"
+                                  rules="required|min:0"
+                                  name="Perdida de la funcion renal"
+                                  min="0"
+                              >
+                              </c-number>
+                            </v-col>
+                            <v-col class="pb-0" cols="12">
+                              <c-texto
+                                  v-model="seguimiento.clasificacion_findrisc"
+                                  label="Clasificación riesgo FINDRISK"
+                                  name="Clasificación riesgo FINDRISK"
+                              >
+                              </c-texto>
+                            </v-col>
+                            <v-col class="pb-0" cols="12">
+                              <c-texto
+                                  v-model="seguimiento.resultado_riesgo_framingham"
+                                  label="Resultado Clasificación del Riego Framingham"
+                                  name="Resultado Clasificación del Riego Framingham"
+                              >
+                              </c-texto>
+                            </v-col>
+                          </v-row>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="12" md="12" lg="12">
@@ -491,57 +551,57 @@
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_nutricion"
-                                label="Valoración por nutricion"
-                                name="Valoración por nutricion"
+                                label="Nutricion"
+                                name="Nutricion"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_internista"
-                                label="Valoración por internista"
-                                name="Valoración por internista"
+                                label="Internista"
+                                name="Internista"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_nefrologia"
-                                label="Valoración por nefrologia"
-                                name="Valoración por nefrologia"
+                                label="Nefrologia"
+                                name="Nefrologia"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_endocrinologia"
-                                label="Valoración por endocrinologia"
-                                name="Valoración por endocrinologia"
+                                label="Endocrinologia"
+                                name="Endocrinologia"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_psicologia"
-                                label="Valoración por psicologia"
-                                name="Valoración por psicologia"
+                                label="Psicologia"
+                                name="Psicologia"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.fecha_valoracion_oftamologia"
-                                label="Valoración por oftamologia"
-                                name="Valoración por oftamologia"
+                                label="Oftamologia"
+                                name="Oftamologia"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.control_grupal"
-                                label="Valoración por control grupal"
-                                name="Valoración por control grupal"
+                                label="Control grupal"
+                                name="Control grupal"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
                             <c-date
                                 v-model="seguimiento.control_enfermeria"
-                                label="Valoración por control de enfermeria"
-                                name="Valoración por control de enfermeria"
+                                label="Control de enfermeria"
+                                name="Control de enfermeria"
                             />
                           </v-col>
                         </v-row>
@@ -589,8 +649,14 @@ export default {
     programasERC: [],
     novedades: [],
     causasMuerte: [],
-    hintTension: null
+    hintTension: null,
   }),
+  props: {
+    afiliado: {
+      type: [Object, Array],
+      default: null
+    }
+  },
   watch: {
     'seguimiento.peso': {
       handler() {
@@ -623,7 +689,26 @@ export default {
         }
       },
       immediate: false
-    }
+    },
+    'hintTension': {
+      handler() {
+        if(this.hintTension){
+          this.seguimiento.estadio_hta = this.hintTension
+        }
+      },
+      immediate: false
+    },
+    'seguimiento.tfg': {
+      handler() {
+        if(this.seguimiento.tfg === 999){
+          this.seguimiento.estadio_erc = 99
+        }
+        if(this.seguimiento.tfg !== 999 && this.seguimiento.estadio_erc === 99){
+          this.seguimiento.estadio_erc = null
+        }
+      },
+      immediate: false
+    },
   },
   methods: {
     open(seguimiento = null, afiliado_id = null){
@@ -657,7 +742,18 @@ export default {
     crearSeguimiento(){
       this.$refs.formSeguimiento.validate().then(result => {
         if(result){
-          return
+          this.loading = true
+          let request = this.seguimiento && this.seguimiento.id ? this.axios.put(`seguimientos/${this.seguimiento.id}`, this.seguimiento)
+          : this.axios.post(`seguimientos`, this.seguimiento)
+          request.then(response => {
+            this.$store.commit('snackbar', {color: 'success', message: `seguimiento ${this.seguimiento && this.seguimiento.id ? 'editado' : 'creado'} con exito`})
+            this.loading = false
+            this.$emit('refresh', response.data.afiliado_id)
+            this.close()
+          }).catch(error => {
+            this.$store.commit('snackbar', {color: 'error', message: `al ${this.seguimiento && this.seguimiento.id ? 'editar' : 'crear'} seguimiento`, error: error})
+            this.loading = false
+          })
         }
       })
     },
@@ -679,16 +775,21 @@ export default {
     },
     getTension() {
       if (Number(this.seguimiento.tension_arterial_sistolica) && Number(this.seguimiento.tension_arterial_diastolica)) {
-        if (this.seguimiento.tension_arterial_sistolica >= 140 || this.seguimiento.tension_arterial_diastolica >= 90) {
-          this.hintTension = 'Con hipertensión'
-        } else {
-          this.hintTension = 'Tensión Controlada'
+        if ((this.seguimiento.tension_arterial_sistolica >= 140 && this.seguimiento.tension_arterial_sistolica <= 159) && (this.seguimiento.tension_arterial_diastolica >= 90 && this.seguimiento.tension_arterial_diastolica <= 99)) {
+          this.hintTension = 'Grado 1 (Leve)'
+        }else if ((this.seguimiento.tension_arterial_sistolica >= 160 && this.seguimiento.tension_arterial_sistolica <= 179) && (this.seguimiento.tension_arterial_diastolica >= 100 && this.seguimiento.tension_arterial_diastolica <= 109)) {
+          this.hintTension = 'Grado 2 (Moderada)'
+        } else if (this.seguimiento.tension_arterial_sistolica >= 180 && this.seguimiento.tension_arterial_diastolica >= 110) {
+          this.hintTension = 'Grado 3 (Severa)'
+        } else if (this.seguimiento.tension_arterial_sistolica >= 140 && this.seguimiento.tension_arterial_diastolica < 90) {
+          this.hintTension = 'HTA Sistolica aislada'
         }
       } else {
         this.hintTension = ''
       }
     }
   },
+
 }
 </script>
 
