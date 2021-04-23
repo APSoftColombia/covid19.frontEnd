@@ -29,6 +29,7 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <buscador-ips
+                          ref="buscadoripsreps"
                           label="IPS del seguimiento"
                           name="IPS del seguimiento"
                           rules="required"
@@ -506,12 +507,23 @@
                   <v-col cols="12" sm="12" md="12" lg="12">
                     <v-card outlined tile>
                       <v-card-text>
-                        <c-texto
-                            label="¿Usuario hospitalizado en los ultimos 6 meses (escriba la institucion)?"
-                            name="causa de muerte externa"
+                        <c-radio
+                            v-model="usuario_hospitalizado"
+                            label="¿Usuario hospitalizado en los ultimos 6 meses?"
+                            :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                            item-text="text"
+                            item-value="value"
                             rules="required"
-                            v-model="seguimiento.hospitalizado_reciente"
-                        ></c-texto>
+                            name="Sedentarismo"
+                        ></c-radio>
+                        <template v-if="usuario_hospitalizado">
+                          <c-texto
+                              label="Escriba la institucion"
+                              name="institucion"
+                              rules="required"
+                              v-model="seguimiento.hospitalizado_reciente"
+                          ></c-texto>
+                        </template>
                         <template v-if="seguimiento.hospitalizado_reciente">
                           <c-date
                               v-model="seguimiento.fecha_hospitalizacion_reciente"
@@ -650,6 +662,7 @@ export default {
     novedades: [],
     causasMuerte: [],
     hintTension: null,
+    usuario_hospitalizado: null
   }),
   props: {
     afiliado: {
@@ -712,7 +725,14 @@ export default {
   },
   methods: {
     open(seguimiento = null, afiliado_id = null){
-      if(seguimiento){this.seguimiento = this.clone(seguimiento)}
+      if(seguimiento){
+        this.seguimiento = this.clone(seguimiento)
+        if(this.seguimiento.hospitalizado_reciente !== null){
+          this.usuario_hospitalizado = 1
+        }else{
+          this.usuario_hospitalizado = 0
+        }
+      }
       this.seguimiento.afiliado_id = afiliado_id
       this.dialog = true
       this.getComplementos()

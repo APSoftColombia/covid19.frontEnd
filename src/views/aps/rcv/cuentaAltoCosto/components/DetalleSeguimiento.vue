@@ -10,6 +10,10 @@
       </v-card-title>
       <v-card-text>
         <v-container fluid>
+          <informacion-seguimiento
+             :abierto="false"
+             :seguimiento="seguimiento"
+          ></informacion-seguimiento>
           <v-tabs
               class="mt-3"
               id="tabsDetalleSeguimiento"
@@ -82,12 +86,14 @@
 const Examenes = () => import('./Examenes')
 const Controles = () => import('./Controles')
 const ConsultasAC = () => import('./ConsultasAC')
+const InformacionSeguimiento = () => import('./InformacionSeguimiento')
 export default {
   name: "DetalleSeguimiento",
   components: {
     Examenes,
     Controles,
-    ConsultasAC
+    ConsultasAC,
+    InformacionSeguimiento
   },
   data: () => ({
     dialog: false,
@@ -104,6 +110,7 @@ export default {
       this.loading = true
       this.axios.get(`detalle-seguimiento/${id}`).then(response => {
         this.seguimiento = response.data
+        console.log(this.seguimiento)
         this.loading = false
       }).catch(error => {
         this.$store.commit('snackbar', {color: 'error', message: `al solicitar detalle del seguimiento.`, error: error})
