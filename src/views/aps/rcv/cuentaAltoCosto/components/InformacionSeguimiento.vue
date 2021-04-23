@@ -110,8 +110,8 @@ export default {
         {
           label: 'Diagnóstico confirmado de Hipertensión Arterial',
           body: this.seguimiento.hta ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-check',
+          iconColor: 'green',
           colmd: '4',
           collg: '4'
         }
@@ -123,15 +123,15 @@ export default {
             label: 'Fecha del diagnóstico de Hipertensión Arterial',
             body: this.seguimiento.fecha_dx_hta,
             icon: 'mdi mdi-calendar-range',
-            iconColor: 'red',
+            iconColor: 'blue',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Costo HTA durante el período de reporte',
             body: this.seguimiento.costo_hta,
-            icon: 'mdi mdi-calendar-range',
-            iconColor: 'red',
+            icon: 'mdi mdi-currency-usd',
+            iconColor: 'cyan',
             colmd: '4',
             collg: '4'
           },
@@ -141,8 +141,8 @@ export default {
         {
           label: 'Diagnóstico confirmado de Diabetes Mellitus - DM',
           body: this.seguimiento.diabetes_melitus ? this.seguimiento.diabetes_melitus.opcion : '',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-check',
+          iconColor: 'lime',
           colmd: '4',
           collg: '4'
         },
@@ -153,15 +153,15 @@ export default {
             label: 'Fecha de diagnostico de la Diabetes Mellitus',
             body: this.seguimiento.fecha_dx_dm,
             icon: 'mdi mdi-calendar-range',
-            iconColor: 'red',
+            iconColor: 'orange',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Costo DM durante el período de reporte',
             body: this.seguimiento.costo_dm,
-            icon: 'mdi mdi-calendar-range',
-            iconColor: 'red',
+            icon: 'mdi mdi-currency-usd',
+            iconColor: 'teal',
             colmd: '4',
             collg: '4'
           },
@@ -171,7 +171,7 @@ export default {
         {
           label: 'Insulinorequiriente',
           body: this.seguimiento.insulinorequiriente ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
+          icon: 'mdi mdi-needle',
           iconColor: 'red',
           colmd: '4',
           collg: '4'
@@ -179,7 +179,7 @@ export default {
         {
           label: 'Etiología de la ERC',
           body: this.seguimiento.etiologia_enfermedad_renal ? this.seguimiento.etiologia_enfermedad_renal.opcion : '',
-          icon: 'mdi mdi-calendar-range',
+          icon: 'mdi mdi-help-circle-outline',
           iconColor: 'red',
           colmd: '4',
           collg: '4'
@@ -187,39 +187,39 @@ export default {
         {
           label: 'Peso',
           body: this.seguimiento.peso + " kg",
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-weight-pound',
+          iconColor: 'blue accent-4',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Talla',
           body: this.seguimiento.talla + " cmts",
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-size-l',
+          iconColor: 'amber',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'IMC',
           body: this.seguimiento.imc,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-tape-measure',
+          iconColor: 'orange accent-4',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Clasificación de IMC',
           body: this.seguimiento.clasificacion_imc,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-file-tree-outline',
+          iconColor: 'brown',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Circunferencia abdominal',
           body: this.seguimiento.circunferencia_abdominal,
-          icon: 'mdi mdi-calendar-range',
+          icon: 'mdi mdi-tape-measure',
           iconColor: 'red',
           colmd: '4',
           collg: '4'
@@ -227,47 +227,47 @@ export default {
         {
           label: 'Alcoholismo',
           body: this.seguimiento.alcohol ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-glass-mug-variant',
+          iconColor: 'pink',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Tabaquismo',
           body: this.seguimiento.tabaquismo ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-smoking-off',
+          iconColor: 'purple',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Sedentarismo',
           body: this.seguimiento.sedentarismo ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-cup-water',
+          iconColor: 'indigo',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Adherencia',
           body: this.seguimiento.adherencia ? 'Si' : 'No',
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-account-search',
+          iconColor: 'light-blue',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Tension arterial sistolica',
           body: this.seguimiento.tension_arterial_sistolica + " Mm de Hg",
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-heart-pulse',
+          iconColor: 'purple',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Tension arterial diastolica',
           body: this.seguimiento.tension_arterial_diastolica + " Mm de Hg",
-          icon: 'mdi mdi-calendar-range',
+          icon: 'mdi mdi-heart-pulse',
           iconColor: 'red',
           colmd: '4',
           collg: '4'
@@ -275,32 +275,32 @@ export default {
         {
           label: 'Estadio HTA',
           body: this.seguimiento.estadio_hta,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-file-tree-outline',
+          iconColor: 'orange',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Clasificación del riesgo cardiovascular y metabolico',
           body: this.seguimiento.clasificacion_rcv,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-file-tree-outline',
+          iconColor: 'light-green',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Tasa de filtración Glomerular',
           body: this.seguimiento.tfg,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-tape-measure',
+          iconColor: 'blue',
           colmd: '4',
           collg: '4'
         },
         {
           label: 'Clasificación estadio ERC KCG',
           body: this.seguimiento.clasificacion_estadio_erc_kcg,
-          icon: 'mdi mdi-calendar-range',
-          iconColor: 'red',
+          icon: 'mdi mdi-counter',
+          iconColor: 'green darken-4',
           colmd: '4',
           collg: '4'
         },
