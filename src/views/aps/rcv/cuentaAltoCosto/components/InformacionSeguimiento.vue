@@ -17,6 +17,9 @@
                   <v-col cols="12" :md="item.colmd" :lg="item.collg" xl="3" :key="`col${indexItem}`">
                     <v-list two-line class="notification-wrap">
                       <v-list-item>
+                        <v-list-item-avatar class="my-1">
+                            <v-icon :color="item.iconColor">{{item.icon}}</v-icon>
+                        </v-list-item-avatar>
                         <v-list-item-content class="pa-0">
                           <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{item.label}}</v-list-item-subtitle>
                           <v-list-item-title><h6 class="mb-0">{{item.body}}</h6></v-list-item-title>
@@ -71,18 +74,26 @@ export default {
   },
   methods: {
     assign(){
+      this.datos = []
       this.datos.push(
-          {
-            label: 'IPS del seguimiento',
-            body: this.seguimiento.ips_seguimiento ? this.seguimiento.ips_seguimiento.nombre : '',
-            colmd: '4',
-            collg: '4'
-          }
+        {
+          label: 'IPS del seguimiento',
+          body: this.seguimiento.ips_seguimiento ? this.seguimiento.ips_seguimiento.nombre : '',
+          icon: 'mdi mdi-calendar-range',
+          iconColor: 'red',
+          colmd: '4',
+          collg: '4'
+        },
+        {
+          label: 'Fecha de ingreso al programa de nefroprotección',
+          body: this.seguimiento.ingreso_nefroproteccion,
+          icon: 'mdi mdi-calendar-range',
+          iconColor: 'red',
+          colmd: '4',
+          collg: '4'
+        },
       )
     },
-    close(){
-      this.datos = []
-    }
   }
 }
 </script>

@@ -110,7 +110,6 @@ export default {
       this.loading = true
       this.axios.get(`detalle-seguimiento/${id}`).then(response => {
         this.seguimiento = response.data
-        console.log(this.seguimiento)
         this.loading = false
       }).catch(error => {
         this.$store.commit('snackbar', {color: 'error', message: `al solicitar detalle del seguimiento.`, error: error})
