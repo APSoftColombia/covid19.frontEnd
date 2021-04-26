@@ -607,6 +607,7 @@
                                 v-model="seguimiento.control_grupal"
                                 label="Control grupal"
                                 name="Control grupal"
+                                rules="required"
                             />
                           </v-col>
                           <v-col cols="12" sm="12" md="6" lg="6">
@@ -614,6 +615,7 @@
                                 v-model="seguimiento.control_enfermeria"
                                 label="Control de enfermeria"
                                 name="Control de enfermeria"
+                                rules="required"
                             />
                           </v-col>
                         </v-row>
@@ -700,6 +702,28 @@ export default {
         if(this.seguimiento.estadio_erc === 98){
           this.seguimiento.diagnostico_enfermedad_renal = 0
         }
+        if(this.seguimiento.estadio_erc !== 5){
+          this.seguimiento.fecha_erc_estadio_5 = null
+        }
+      },
+      immediate: false
+    },
+    'seguimiento.diagnostico_enfermedad_renal': {
+      handler() {
+        if(this.seguimiento.diagnostico_enfermedad_renal !== 1){
+          this.seguimiento.programa_atencion_erc = null
+        }
+      },
+      immediate: false
+    },
+    'seguimiento.causa_de_muerte': {
+      handler() {
+        if(this.seguimiento.causa_de_muerte && this.seguimiento.causa_de_muerte === 98){
+          this.seguimiento.fecha_muerte = null
+        }
+        if(this.seguimiento.causa_de_muerte !== 6){
+          this.seguimiento.causa_muerte_externa = null
+        }
       },
       immediate: false
     },
@@ -707,6 +731,22 @@ export default {
       handler() {
         if(this.hintTension){
           this.seguimiento.estadio_hta = this.hintTension
+        }
+      },
+      immediate: false
+    },
+    'usuario_hospitalizado': {
+      handler() {
+        if(!this.usuario_hospitalizado){
+          this.seguimiento.hospitalizado_reciente = null
+        }
+      },
+      immediate: false
+    },
+    'seguimiento.hospitalizado_reciente': {
+      handler() {
+        if(this.seguimiento.hospitalizado_reciente === null){
+          this.seguimiento.fecha_hospitalizacion_reciente = null
         }
       },
       immediate: false
