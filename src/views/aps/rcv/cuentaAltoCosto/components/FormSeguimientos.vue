@@ -29,7 +29,7 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <buscador-ips
-                          ref="buscadoripsreps"
+                          ref="buscadorips"
                           label="IPS del seguimiento"
                           name="IPS del seguimiento"
                           rules="required"
@@ -545,6 +545,7 @@
                     <v-card outlined tile>
                       <v-card-text>
                         <buscador-ips
+                          ref="buscadorips2"
                           label="IPS de asistencia"
                           name="IPS de asistencia"
                           rules="required"
@@ -775,6 +776,10 @@ export default {
       }
       this.seguimiento.afiliado_id = afiliado_id
       this.dialog = true
+      setTimeout(() => {
+        if (this.seguimiento.ips_seguimiento) this.$refs.buscadorips.assign(this.seguimiento.ips_seguimiento)
+        if (this.seguimiento.ips_asistencia_object) this.$refs.buscadorips2.assign(this.seguimiento.ips_asistencia_object)
+      }, 600)
       this.getComplementos()
     },
     getComplementos(){
