@@ -28,10 +28,10 @@
             >
               <v-list two-line class="notification-wrap">
                 <v-list-item>
-                  <v-list-item-avatar class="my-1">
+                  <v-list-item-avatar class="my-1" v-if="item.icon">
                     <v-icon :color="item.iconColor">{{ item.icon }}</v-icon>
                   </v-list-item-avatar>
-                  <v-list-item-content class="pa-0">
+                  <v-list-item-content :class="`${item.style} pa-0`">
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{
                       item.label
                     }}</v-list-item-subtitle>
@@ -53,10 +53,6 @@
 export default {
   name: "InformacionSeguimiento",
   props: {
-    abierto: {
-      type: Boolean,
-      default: true,
-    },
     dense: {
       type: Boolean,
       default: false,
@@ -69,6 +65,7 @@ export default {
   data: () => ({
     datos: [],
     panel: [],
+    abierto: true
   }),
   watch: {
     abierto: {
@@ -444,6 +441,15 @@ export default {
           colmd: "4",
           collg: "4",
         },
+        /*{
+          label: "Fechas de valoración",
+          body: '',
+          icon: "",
+          iconColor: "",
+          colmd: "12",
+          collg: "12",
+          style: 'text-center'
+        },*/
         {
           label: "Fecha Valoracion Nutricion",
           body: this.seguimiento.fecha_valoracion_nutricion ? this.seguimiento.fecha_valoracion_nutricion : '-',
