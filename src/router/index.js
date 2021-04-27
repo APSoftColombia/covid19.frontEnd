@@ -6,6 +6,7 @@ import defaultRoutes from './default'
 import rutasDemandaInducida from 'Views/demandaInducida/router/index'
 import rutasImportadores from 'Views/importadores/router/index'
 import rutasPowerbi from 'Views/powerbi/router/index'
+import rutasCentroRegulador from 'Views/centroRegulador/router/index'
 // session components
 const SignUpOne = () => import('Views/session/SignUpOne')
 const LoginOne = () => import('Views/session/LoginOne')
@@ -22,6 +23,7 @@ export default new Router({
 		rutasDemandaInducida,
 		rutasPowerbi,
 		rutasImportadores,
+		rutasCentroRegulador,
 		{
 			path: '/session/sign-up',
 			component: SignUpOne,

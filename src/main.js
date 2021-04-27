@@ -49,6 +49,8 @@ import './registerServiceWorker'
 import './plugins/veeValidate'
 import './plugins/onLine'
 
+import { VueMaskDirective } from 'v-mask'
+Vue.directive('mask', VueMaskDirective)
 
 Vue.config.productionTip = false
 

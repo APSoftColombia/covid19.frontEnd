@@ -29,6 +29,10 @@
               <v-subheader class="font-weight-bold">RIESGO CARDIOVASCULAR</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'aps')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
+            <v-card-text v-if="datosEmpresa.centro_regulador === '1' && itemsMenu.filter(x => x.typeRoute === 'centroRegulador').length">
+              <v-subheader class="font-weight-bold">CENTRO REGULADOR</v-subheader>
+              <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'centroRegulador')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
+            </v-card-text>
             <v-card-text v-if="datosEmpresa.aps_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresRCV').length">
               <v-subheader class="font-weight-bold">REPORTES E INDICADORES RIESGO CARDIO VASCULAR</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresRCV')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>

@@ -3,6 +3,7 @@
  */
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import AppSectionLoader from 'Components/AppSectionLoader/AppSectionLoader'
+import Loading from 'Components/loading/components/Loading'
 import { RotateSquare2 } from 'vue-loading-spinner'
 
 //vee-validate component
@@ -21,7 +22,7 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar'
 import Snackbar from 'Components/Snackbar/Snackbar'
 
 // stats card
-import StatsCardV2 from 'Components/StatsCardV2/StatsCardV2';
+import StatsCardV2 from 'Components/StatsCardV2/StatsCardV2'
 
 // App Card component
 import AppCard from 'Components/AppCard/AppCard'
@@ -35,6 +36,7 @@ import ElementoCalculado from 'Views/formularios/components/ElementoCalculado'
 
 // DataTable component
 import DataTable from 'Components/DataTable/DataTable'
+import DataTablex from 'Components/DataTablex/components/DataTablex'
 
 // Inputs components
 import CDateRange from 'Components/Inputs/CDateRange'
@@ -57,6 +59,7 @@ import BuscadorAfiliado from 'Components/Inputs/BuscadorAfiliado'
 import CCombo from 'Components/Inputs/CCombo'
 import CDialog from 'Components/Inputs/CDialog'
 import CTooltip from 'Components/Inputs/CTooltip'
+import CChipFilters from 'Components/Inputs/CChipFilters'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -66,6 +69,8 @@ import Autopsia from 'Components/Icons/Autopsia'
 
 const GlobalComponents = {
    install(Vue) {
+      Vue.component('Loading', Loading)
+
       Vue.component('appCard', AppCard)
       Vue.component('sectionTooltip', SectionTooltip)
       Vue.component('deleteConfirmationDialog', DeleteConfirmationDialog)
@@ -83,6 +88,7 @@ const GlobalComponents = {
       Vue.component('ConfirmationDialog', ConfirmationDialog)
 
       Vue.component('DataTable', DataTable)
+      Vue.component('DataTablex', DataTablex)
 
       Vue.component('CDate', CDate)
       Vue.component('CTexto', CTexto)
@@ -105,6 +111,7 @@ const GlobalComponents = {
       Vue.component('CCombo', CCombo)
       Vue.component('CDialog', CDialog)
       Vue.component('CTooltip', CTooltip)
+      Vue.component('CChipFilters', CChipFilters)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)

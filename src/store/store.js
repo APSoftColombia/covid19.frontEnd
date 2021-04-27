@@ -18,6 +18,7 @@ import models from './modules/models'
 import firebase from './modules/firebase'
 import modelsRCV from '../views/aps/rcv/store/models'
 import RCV from '../views/aps/rcv/store/rcv'
+import loading from 'Components/loading/store'
 
 Vue.use(Vuex)
 
@@ -36,7 +37,8 @@ export const store = new Vuex.Store({
         models,
         firebase,
         RCV,
-        modelsRCV
+        modelsRCV,
+        loading
     },
     // plugins: [new VuexPersistence().plugin]
     plugins: [createPersistedState({

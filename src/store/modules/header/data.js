@@ -372,4 +372,12 @@ export const itemsMenu = [
         routeName: 'CuentaAltoCosto',
         typeRoute: 'aps'
     },
+    {
+        id: 61,
+        title: 'Referencias',
+        icon: 'mdi-home-city',
+        color: 'blue',
+        routeName: 'Referencias',
+        typeRoute: 'centroRegulador'
+    }
 ]

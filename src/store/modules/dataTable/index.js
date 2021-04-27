@@ -37,6 +37,8 @@ const state = {
         tablaVacunacionVersion: 4,
         tablaCuentaAltoCosto: 0,
         tablaCuentaAltoCostoVersion: 1,
+        tablaReferencias: 0,
+        tablaReferenciasVersion: 1
     }
 }
 

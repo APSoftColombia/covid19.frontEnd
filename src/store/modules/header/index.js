@@ -49,6 +49,8 @@ const getters = {
         if (getters.getPermission('covid-reportesDeLeyVer') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 34))
         if (getters.getPermission('covid-informeDePrensa') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 37))
         if (getters.getPermission('covidVacunacion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 44))
+        // CENTRO REGULADOR
+        if (getters.getPermission('centroRegulador-referenciasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 61))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
