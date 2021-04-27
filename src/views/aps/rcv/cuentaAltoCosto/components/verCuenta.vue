@@ -9,7 +9,7 @@
     <v-card>
         <v-toolbar dark color="primary">
             <v-icon left>far fa-clipboard</v-icon>
-            <v-toolbar-title id="inicio">Detalle {{ estadoAfiliado.id }}</v-toolbar-title>
+            <v-toolbar-title id="inicio">Detalle Cuenta Alto Costo N° {{ estadoAfiliado.id }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>
@@ -91,6 +91,10 @@
         ref="formSeguimientos"
         @refresh="getAfiliado"
       ></form-seguimientos>
+      <eliminar-seguimiento
+        ref="eliminarSeguimiento"
+        @refresh="reload"
+      ></eliminar-seguimiento>
     </v-card>
   </v-dialog>
 </template>
@@ -100,12 +104,14 @@ import {mapGetters} from 'vuex'
 const DatosAfiliado = () => import('Views/aps/rcv/encuestas/components/DatosAfiliado')
 const DetalleSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/DetalleSeguimiento.vue')
 const FormSeguimientos = () => import('Views/aps/rcv/cuentaAltoCosto/components/FormSeguimientos.vue')
+const EliminarSeguimiento = () => import('Views/aps/rcv/cuentaAltoCosto/components/EliminarSeguimiento.vue')
 export default {
     name: "verCuentaAltoCosto",
     components: {
         DatosAfiliado,
         DetalleSeguimiento,
-        FormSeguimientos
+        FormSeguimientos,
+        EliminarSeguimiento
     },
     data: () => ({
         loading: false,
@@ -147,13 +153,18 @@ export default {
             this.$emit('close')
         },
         crearNuevoSeguimiento() {
-            this.$refs.formSeguimientos.open()
+            this.$refs.formSeguimientos.open(null, this.estadoAfiliado.id)
         },
         editItem(item) {
-            this.$refs.formSeguimientos.open(item)
+            this.$refs.formSeguimientos.open(item, this.estadoAfiliado.id, this.estadoAfiliado.sexo)
         },
         deleteItem(item) {
-            console.log("delete", item);
+            this.$refs.eliminarSeguimiento.open(item.id)
+        },
+        reload(){
+          this.loadingTable = true
+          this.loading = true
+          this.getAfiliado(this.estadoAfiliado.id)
         },
         getAfiliado(id_afiliado) {
             this.loadingTable = true

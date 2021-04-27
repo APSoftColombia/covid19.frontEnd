@@ -103,6 +103,9 @@ export default {
       this.examen.seguimiento_id = seguimiento_id
       this.examen.afiliado_id = afiliado_id
       this.dialog = true
+      setTimeout(() => {
+        if (this.examen.with_prestador_object) this.$refs.buscadorips.assign(this.examen.with_prestador_object)
+      }, 600)
       this.getComplementos()
     },
     getComplementos(){

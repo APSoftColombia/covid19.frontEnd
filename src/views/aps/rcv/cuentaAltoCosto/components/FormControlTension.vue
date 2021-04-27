@@ -77,6 +77,9 @@ export default {
       if(control){this.control = this.clone(control)}
       this.control.seguimiento_id = seguimiento_id
       this.control.afiliado_id = afiliado_id
+      setTimeout(() => {
+        if (this.control.with_prestador_object) this.$refs.buscadorips.assign(this.control.with_prestador_object)
+      }, 600)
       this.dialog = true
     },
     close(){

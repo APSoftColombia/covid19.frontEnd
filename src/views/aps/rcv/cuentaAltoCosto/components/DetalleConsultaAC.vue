@@ -53,55 +53,55 @@ export default {
           },
           {
             label: 'Codigo CUP',
-            body: consulta.cup ? `${consulta.cup.codigo + " - " + consulta.cup.descrip}` : '',
+            body: consulta.with_cup_object ? `${consulta.with_cup_object.codigo + " - " + consulta.with_cup_object.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Finalidad consulta',
-            body: consulta.finalidad ? consulta.finalidad.opcion : '',
+            body: consulta.with_finalidad_object ? consulta.with_finalidad_object.opcion : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Causa externa',
-            body: consulta.causa ? consulta.causa.opcion : '',
+            body: consulta.with_causa_object ? consulta.with_causa_object.opcion : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Otra causa externa',
-            body: consulta.otra_causa ? consulta.otra_causa.opcion : '',
+            body: consulta.withO_ora_causa_object ? consulta.withO_ora_causa_object.opcion : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico principal',
-            body: consulta.diagnostico_principalcie ? `${consulta.diagnostico_principalcie.codigo + " - " + consulta.diagnostico_principalcie.descrip}` : '',
+            body: consulta.with_diagnostico_principal_object ? `${consulta.with_diagnostico_principal_object.codigo + " - " + consulta.with_diagnostico_principal_object.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 1',
-            body: consulta.diagnostico_relacionado1 ? `${consulta.diagnostico_relacionado1.codigo + " - " + consulta.diagnostico_relacionado1.descrip}` : '',
+            body: consulta.with_diagnostico_relacionado1_object ? `${consulta.with_diagnostico_relacionado1_object.codigo + " - " + consulta.with_diagnostico_relacionado1_object.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 2',
-            body: consulta.diagnostico_relacionado2 ? `${consulta.diagnostico_relacionado2.codigo + " - " + consulta.diagnostico_relacionado2.descrip}` : '',
+            body: consulta.with_diagnostico_relacionado2_object ? `${consulta.with_diagnostico_relacionado2_object.codigo + " - " + consulta.with_diagnostico_relacionado2_object.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Codigo diagnostico relacionado 3',
-            body: consulta.diagnostico_relacionado3 ? `${consulta.diagnostico_relacionado3.codigo + " - " + consulta.diagnostico_relacionado3.descrip}` : '',
+            body: consulta.with_diagnostico_relacionado3_object ? `${consulta.with_diagnostico_relacionado3_object.codigo + " - " + consulta.with_diagnostico_relacionado3_object.descrip}` : '',
             colmd: '4',
             collg: '4'
           },
           {
             label: 'Tipo diagnostico principal',
-            body: consulta.diagonstico_principal ? consulta.diagonstico_principal.opcion : '',
+            body: consulta.with_tipo_diagnostico_principla_object ? consulta.with_tipo_diagnostico_principla_object.opcion : '',
             colmd: '4',
             collg: '4'
           },
