@@ -9,7 +9,7 @@
     <v-card>
         <v-toolbar dark color="primary">
             <v-icon left>far fa-clipboard</v-icon>
-            <v-toolbar-title id="inicio">Detalle {{ estadoAfiliado.id }}</v-toolbar-title>
+            <v-toolbar-title id="inicio">Detalle Cuenta Alto Costo N° {{ estadoAfiliado.id }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon dark @click="close">
                 <v-icon>mdi-close</v-icon>

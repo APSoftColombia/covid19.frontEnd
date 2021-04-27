@@ -777,8 +777,8 @@ export default {
       this.seguimiento.afiliado_id = afiliado_id
       this.dialog = true
       setTimeout(() => {
-        if (this.seguimiento.ips_seguimiento) this.$refs.buscadorips.assign(this.seguimiento.ips_seguimiento)
-        if (this.seguimiento.ips_asistencia_object) this.$refs.buscadorips2.assign(this.seguimiento.ips_asistencia_object)
+        if (this.seguimiento.with_ips_seguimiento_object) this.$refs.buscadorips.assign(this.seguimiento.with_ips_seguimiento_object)
+        if (this.seguimiento.with_ips_asistencia_object) this.$refs.buscadorips2.assign(this.seguimiento.with_ips_asistencia_object)
       }, 600)
       this.getComplementos()
     },

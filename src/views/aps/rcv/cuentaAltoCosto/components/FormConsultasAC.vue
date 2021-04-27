@@ -30,7 +30,7 @@
                 </v-col>
                 <v-col cols="12">
                   <buscador-ips
-                      ref="buscarips"
+                      ref="buscadorips"
                       label="IPS"
                       name="IPS"
                       v-model="consulta.codigo_prestador"
@@ -235,7 +235,7 @@ export default {
   methods: {
     open(consulta = null, seguimiento_id = null, afiliado_id = null){
       if(consulta){
-        this.consulta = {
+        /* this.consulta = {
           id: consulta.id,
           numero_factura: consulta.numero_factura,
           codigo_prestador: consulta.codigo_prestador,
@@ -257,11 +257,20 @@ export default {
           seguimiento_id: consulta.seguimiento_id,
           afiliado_id: consulta.afiliado_id,
           numero_autorizacion: consulta.numero_autorizacion
-        }
+        } */
+        this.consulta = this.clone(consulta);
       }
       this.consulta.seguimiento_id = seguimiento_id
       this.consulta.afiliado_id = afiliado_id
       this.dialog = true
+      setTimeout(() => {
+        if (this.consulta.with_prestador_object) this.$refs.buscadorips.assign(this.consulta.with_prestador_object)
+        if (this.consulta.with_cup_object) this.$refs.buscarcup.assign(this.consulta.with_cup_object)
+        if (this.consulta.with_diagnostico_principal_object) this.$refs.diagnosticoPrincipal.assign(this.consulta.with_diagnostico_principal_object)
+        if (this.consulta.with_diagnostico_relacionado1_object) this.$refs.diagnosticoRelacionado1.assign(this.consulta.with_diagnostico_relacionado1_object)
+        if (this.consulta.with_diagnostico_relacionado2_object) this.$refs.diagnosticoRelacionado2.assign(this.consulta.with_diagnostico_relacionado2_object)
+        if (this.consulta.with_diagnostico_relacionado3_object) this.$refs.diagnosticoRelacionado3.assign(this.consulta.with_diagnostico_relacionado3_object)
+      }, 600)
       this.getComplementos()
     },
     getComplementos(){
