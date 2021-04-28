@@ -57,19 +57,19 @@ extend('integridadSQL', {
     message: 'La consulta no está permitida'
 })
 
-extend('dateValid', {
-    validate(value) {
-        return value && (value.length === 10) && moment(value, 'DD/MM/YYYY').isValid() ? true : false
-    },
-    message: 'La fecha no es válida'
-})
-
 extend('min', {
     params: ['minimo'],
     validate(value, { minimo }) {
         return Number(value) >= minimo
     },
     message: 'El campo {_field_} debe ser mayor o igual a {minimo}'
+})
+
+extend('dateValid', {
+    validate(value) {
+        return value && (value.length === 10) && moment(value, 'DD/MM/YYYY').isValid() ? true : false
+    },
+    message: 'La fecha no es válida'
 })
 
 extend('mindate', {
@@ -83,6 +83,33 @@ extend('mindate', {
 })
 
 extend('maxdate', {
+    params: ['maximo'],
+    validate(value, { maximo }) {
+        let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        let newMaximo = Vue.prototype.moment(maximo, 'YYYY-MM-DD')
+        return Vue.prototype.moment(newValue).valueOf() <= Vue.prototype.moment(newMaximo).valueOf()
+    },
+    message: 'El campo {_field_} debe ser menor o igual a {maximo}'
+})
+
+extend('timeValid', {
+    validate(value) {
+        return value && (value.length === 5) && moment(value, 'HH:mm').isValid() ? true : false
+    },
+    message: 'La Hora no es válida'
+})
+
+extend('mintime', {
+    params: ['minimo'],
+    validate(value, { minimo }) {
+        let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        let newMinimo = Vue.prototype.moment(minimo, 'YYYY-MM-DD')
+        return Vue.prototype.moment(newValue).valueOf() >= Vue.prototype.moment(newMinimo).valueOf()
+    },
+    message: 'El campo {_field_} debe ser mayor o igual a {minimo}'
+})
+
+extend('maxtime', {
     params: ['maximo'],
     validate(value, { maximo }) {
         let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')

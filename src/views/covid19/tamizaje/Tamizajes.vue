@@ -10,6 +10,14 @@
             :min="moment().subtract(20, 'days').format('YYYY-MM-DD')"
         />
       </v-col>
+      <v-col cols="12">
+        <c-time
+            v-model="timex"
+            label="Campo Hora"
+            name="Campo Hora"
+            rules="required"
+        />
+      </v-col>
     </template>
     <data-table
         ref="tablaTamizajes"
@@ -138,6 +146,7 @@ export default {
   },
   data: (vm) => ({
     fechax: '2021-04-28',
+    timex: '16:20:36',
     loading: false,
     medicos: [],
     rutaBase: 'tamizajes',

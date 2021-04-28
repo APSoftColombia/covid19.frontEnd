@@ -12,6 +12,7 @@
         outlined
         :dense="dense"
         :disabled="disabled"
+        :readonly="readonly"
         :error-messages="errors"
         :clearable="clearable"
         :hint="hint"

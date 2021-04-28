@@ -2,41 +2,54 @@
   <ValidationProvider
       :name="name"
       :vid="vid"
-      :rules="(rules ? `${rules}|`: '') + 'dateValid' + (min ? `|mindate:${min}` : max ? `|maxdate:${max}` : '')"
+      :rules="(rules ? `${rules}|`: '') + 'timeValid' + (min ? `|mintime:${min}` : '') + (max ? `|maxtime:${max}` : '')"
       v-slot="{ errors, valid }"
   >
     <v-text-field
-        v-model="dateFormatted"
+        v-model="timeFormatted"
         :label="label"
         :placeholder="placeholder"
         outlined
         :dense="dense"
         :disabled="disabled"
+        :readonly="readonly"
         :error-messages="errors"
         :clearable="clearable"
         :hint="hint"
         persistent-hint
         :hide-details="hideDetails"
-        v-mask="'##/##/####'"
+        v-mask="'##:##'"
+        @blur="calculaBlur"
     >
       <template v-slot:prepend-inner>
         <v-menu
-            v-model="menuFecha"
+            ref="theMenu"
+            v-model="menuTime"
             :close-on-content-click="false"
             :nudge-right="40"
             transition="scale-transition"
             offset-y
             min-width="290px"
         >
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on" class="mr-1">mdi-calendar-month</v-icon>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+                v-on="on"
+                v-bind="attrs"
+                class="mr-1"
+            >
+              mdi-clock-time-four-outline
+            </v-icon>
           </template>
-          <v-date-picker
+          <v-time-picker
+              ref="timePicker"
+              v-if="menuTime"
               v-model="model"
-              @input="menuFecha = false"
               :min="min"
               :max="max"
+              format="24hr"
               scrollable
+              full-width
+              @click:minute="$refs.theMenu.save(model)"
           />
         </v-menu>
       </template>
@@ -107,15 +120,16 @@ export default {
   },
   data: () => ({
     model: null,
-    menuFecha: false
+    menuTime: false
   }),
   computed: {
-    dateFormatted: {
+    timeFormatted: {
       get: function () {
         return this.value ? this.formatDate(this.value) : null
       },
       set: function (newValue) {
-        this.$emit('input', this.formatDateInverse(newValue))
+        this.model = newValue
+        this.$emit('input', this.formatDate(newValue))
       }
     }
   },
@@ -125,24 +139,21 @@ export default {
         this.$emit('input', (typeof val !== 'undefined') ? val : null)
       },
       immediate: false
-    },
-    value: {
-      handler(val) {
-        this.model = (((typeof val !== 'undefined') && (val && val.length === 10) && this.moment(val).isValid()) || null ? val : this.model)
-      },
-      immediate: true
     }
   },
   methods: {
+    calculaBlur() {
+      if (!this.timeFormatted) return null
+      let [hours, minuts] = this.timeFormatted.split(':')
+      if(minuts && minuts.length === 1) minuts = ('0' + minuts)
+      if(hours && hours.length === 1) hours = ('0' + hours)
+      const newTime = `${hours}:${minuts}`
+      this.model = newTime
+    },
     formatDate(date) {
       if (!date) return null
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
-    },
-    formatDateInverse(date) {
-      if (!date) return null
-      const [day, month, year] = date.split('/')
-      return `${year}-${month}-${day}`
+      const [hours, minuts] = date.split(':')
+      return `${hours}:${minuts}`
     }
   }
 }
