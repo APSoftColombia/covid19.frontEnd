@@ -1,5 +1,16 @@
 <template>
   <div>
+    <template v-if="esSuperAdmin">
+      <v-col cols="12">
+        <c-date-manual
+            v-model="fechax"
+            label="Campo Fecha"
+            name="Campo Fecha"
+            :max="moment().format('YYYY-MM-DD')"
+            :min="moment().subtract(20, 'days').format('YYYY-MM-DD')"
+        />
+      </v-col>
+    </template>
     <data-table
         ref="tablaTamizajes"
         v-model="dataTable"
@@ -126,6 +137,7 @@ export default {
     }
   },
   data: (vm) => ({
+    fechax: '2021-04-28',
     loading: false,
     medicos: [],
     rutaBase: 'tamizajes',

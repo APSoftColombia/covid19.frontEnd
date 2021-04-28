@@ -2,7 +2,7 @@
   <ValidationProvider
       :name="name"
       :vid="vid"
-      :rules="(rules ? `${rules}|`: '') + 'dateValid' + (min ? `|mindate:${min}` : '') + (max ? `|maxdate:${max}` : '')"
+      :rules="(rules ? `${rules}|`: '') + 'dateValid' + (min ? `|mindate:${min}` : max ? `|maxdate:${max}` : '')"
       v-slot="{ errors, valid }"
   >
     <v-text-field
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'CDateManual',
+  name: 'CTime',
   props: {
     value: {
       type: String,

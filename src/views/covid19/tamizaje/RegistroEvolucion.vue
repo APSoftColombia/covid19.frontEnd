@@ -582,7 +582,7 @@
                         hide-details
                     ></v-switch>
                   </v-col>
-                  <v-col cols="12" v-if="(verFormAislamiento || evolucion.obligaAislamiento) && verFormAislamiento">
+                  <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
                     <v-switch
                         label="Crear Orden de Aislamiento"
                         :readonly="evolucion.obligaAislamiento"

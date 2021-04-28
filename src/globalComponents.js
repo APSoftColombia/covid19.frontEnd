@@ -41,6 +41,8 @@ import DataTablex from 'Components/DataTablex/components/DataTablex'
 // Inputs components
 import CDateRange from 'Components/Inputs/CDateRange'
 import CDate from 'Components/Inputs/CDate'
+import CDateManual from 'Components/Inputs/CDateManual'
+import CTime from 'Components/Inputs/CTime'
 import CTexto from 'Components/Inputs/CTexto'
 import CNumber from 'Components/Inputs/CNumber'
 import CSelectComplete from 'Components/Inputs/CSelectComplete'
@@ -91,6 +93,8 @@ const GlobalComponents = {
       Vue.component('DataTablex', DataTablex)
 
       Vue.component('CDate', CDate)
+      Vue.component('CDateManual', CDateManual)
+      Vue.component('CTime', CTime)
       Vue.component('CTexto', CTexto)
       Vue.component('CNumber', CNumber)
       Vue.component('CSelectComplete', CSelectComplete)

@@ -59,7 +59,7 @@ extend('integridadSQL', {
 
 extend('dateValid', {
     validate(value) {
-        return moment(value, 'DD/MM/YYYY').isValid() ? true : false
+        return value && (value.length === 10) && moment(value, 'DD/MM/YYYY').isValid() ? true : false
     },
     message: 'La fecha no es válida'
 })
@@ -76,10 +76,20 @@ extend('mindate', {
     params: ['minimo'],
     validate(value, { minimo }) {
         let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
-        let newMinimo = Vue.prototype.moment(minimo, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        let newMinimo = Vue.prototype.moment(minimo, 'YYYY-MM-DD')
         return Vue.prototype.moment(newValue).valueOf() >= Vue.prototype.moment(newMinimo).valueOf()
     },
     message: 'El campo {_field_} debe ser mayor o igual a {minimo}'
+})
+
+extend('maxdate', {
+    params: ['maximo'],
+    validate(value, { maximo }) {
+        let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        let newMaximo = Vue.prototype.moment(maximo, 'YYYY-MM-DD')
+        return Vue.prototype.moment(newValue).valueOf() <= Vue.prototype.moment(newMaximo).valueOf()
+    },
+    message: 'El campo {_field_} debe ser menor o igual a {maximo}'
 })
 
 extend('max', {
