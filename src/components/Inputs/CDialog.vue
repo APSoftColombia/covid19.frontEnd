@@ -25,6 +25,7 @@
         <v-btn
             :color="color"
             @click="save"
+            class="white--text"
         >
           {{ textConfirm }}
         </v-btn>

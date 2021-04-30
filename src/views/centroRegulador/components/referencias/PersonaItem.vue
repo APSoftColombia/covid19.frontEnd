@@ -2,7 +2,7 @@
   <v-list-item class="pa-0">
     <v-icon large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
     <v-card align="center" color="transparent" class="elevation-0">
-      <v-icon large>{{this.value.sexo === 'M' ? 'mdi mdi-face' : this.value.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi-account'}}</v-icon>
+      <v-icon large>{{value.sexo === 'M' ? 'mdi mdi-face' : value.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi-account'}}</v-icon>
       <v-card-actions class="py-0 px-1" v-if="value && (typeof value.cantidad_nexos !== 'undefined')">
         <v-chip
             align="center"
@@ -33,10 +33,10 @@
             <v-icon x-small>fas fa-people-arrows</v-icon>
           </v-btn>
         </template>
-        {{[this.value.nombre1, this.value.nombre2, this.value.apellido1, this.value.apellido2].filter(x => x).join(' ')}}
+        {{[value.nombre1, value.nombre2, value.apellido1, value.apellido2].filter(x => x).join(' ')}}
       </v-list-item-title>
       <v-list-item-subtitle class="body-2 text-truncate">
-        {{[this.value.tipo_id ? this.value.tipo_id.tipo : null, this.value.identificacion, this.value.celular ? `, Cel.${this.value.celular}` : ''].filter(x => x).join('')}}
+        {{[value.tipo_id ? value.tipo_id.tipo : null, value.identificacion, value.celular ? `, Cel.${value.celular}` : ''].filter(x => x).join('')}}
       </v-list-item-subtitle>
     </v-list-item-content>
     <!--            <template v-if="verAltoCosto">-->

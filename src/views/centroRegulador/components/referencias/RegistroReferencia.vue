@@ -70,16 +70,40 @@
                   />
                   <v-row dense>
                     <v-col cols="12">
-                      <c-select-complete
-                          v-model="item.modservicio_id"
-                          label="Modalidad del Servicio"
-                          name="Modalidad del Servicio"
-                          rules="required"
-                          :items="ref_modalidadesServicio || []"
-                          item-text="descripcion"
-                          item-value="id"
-                          :disabled="!verificado"
-                      />
+                      <ValidationProvider name="Modalidad del Servicio" rules="required" v-slot="{ errors }">
+                        <v-select
+                            v-model="item.modservicio_id"
+                            label="Modalidad del Servicio"
+                            :items="ref_modalidadesServicio || []"
+                            item-value="id"
+                            outlined
+                            dense
+                            :disabled="!verificado"
+                            :error-messages="errors"
+                            clearable
+                            persistent-hint
+                            :hint="item.modservicio_id && ref_modalidadesServicio && ref_modalidadesServicio.length && ref_modalidadesServicio.find(x => x.id === item.modservicio_id) ? ref_modalidadesServicio.find(x => x.id === item.modservicio_id).modalidad : ''"
+                        >
+                          <template v-slot:selection="{ item, index }">
+                            {{ item.codigo }} - {{ item.tipo }}
+                          </template>
+                          <template v-slot:item="data">
+                            <div style="width: 100% !important;">
+                              <v-list-item class="pa-0">
+                                <v-list-item-content class="text-truncate pa-0">
+                                  <v-list-item-title class="body-2">
+                                    {{ data.item.codigo }} - {{ data.item.tipo }}
+                                  </v-list-item-title>
+                                  <v-list-item-subtitle>
+                                    {{ data.item.modalidad }}
+                                  </v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+                              <v-divider class="ma-0"></v-divider>
+                            </div>
+                          </template>
+                        </v-select>
+                      </ValidationProvider>
                     </v-col>
                     <v-col cols="12">
                       <buscador-ips
@@ -101,8 +125,14 @@
                       <buscador-cups
                           label="Procedimiento"
                           name="Procedimiento"
-                          v-model="item.rs_cup_id"
+                          v-model="item.codigo_cup"
                           rules="required"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <c-text-area
+                          label="Observaciones"
+                          v-model="item.observaciones"
                       />
                     </v-col>
                   </v-row>
@@ -180,6 +210,8 @@ export default {
         if (result) {
           this.loading = true
           let itemCopia = await this.clone(this.item)
+          itemCopia.fecha_solicitud = `${itemCopia.fecha_solicitud} ${itemCopia.hora_solicitud}`
+          itemCopia.fecha_orden = `${itemCopia.fecha_orden} ${itemCopia.hora_orden}`
           let request = itemCopia.id
               ? this.axios.put(`referencias/${itemCopia.id}`, itemCopia)
               : this.axios.post(`referencias`, itemCopia)
@@ -202,6 +234,10 @@ export default {
         this.getItem(item.id)
       } else {
         this.item = this.clone(models.referencia)
+        this.item.fecha_solicitud = this.moment().format('YYYY-MM-DD')
+        this.item.hora_solicitud = this.moment().format('HH:mm')
+        this.item.fecha_orden = this.moment().format('YYYY-MM-DD')
+        this.item.hora_orden = this.moment().format('HH:mm')
       }
     },
     close() {
@@ -215,6 +251,14 @@ export default {
       this.loading = true
       this.axios.get(`referencias/${id}`)
           .then(response => {
+            const fechaSolicitud = this.clone(response.data.fecha_solicitud)
+            response.data.fecha_solicitud = fechaSolicitud ? this.moment(fechaSolicitud).format('YYYY-MM-DD') : null
+            response.data.hora_solicitud = fechaSolicitud ? this.moment(fechaSolicitud).format('HH:mm') : null
+
+            const fechaOrden = this.clone(response.data.fecha_orden)
+            response.data.fecha_orden = fechaOrden ? this.moment(fechaOrden).format('YYYY-MM-DD') : null
+            response.data.hora_orden = fechaOrden ? this.moment(fechaOrden).format('HH:mm') : null
+            response.data.si_eps = response.data.eps_id ? 1 : 0
             this.item = response.data
             this.loading = false
           })

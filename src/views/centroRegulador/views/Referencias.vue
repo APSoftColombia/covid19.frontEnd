@@ -152,6 +152,22 @@
                   <div class="optionsButtons">
                     <v-toolbar>
                       <c-tooltip
+                          v-if="permisos.referenciasVer"
+                          bottom
+                          tooltip="Detalle Referencia"
+                      >
+                        <v-btn
+                            class="ma-1"
+                            color="success"
+                            depressed
+                            fab
+                            x-small
+                            @click="detalleItem(item)"
+                        >
+                          <v-icon>mdi-file-find</v-icon>
+                        </v-btn>
+                      </c-tooltip>
+                      <c-tooltip
                           v-if="permisos.referenciasEditar"
                           bottom
                           tooltip="Editar Referencia"
@@ -212,6 +228,10 @@
         ref="registroItem"
         @guardado="itemGuardado"
     />
+    <detalle-referencia
+        ref="detalleItem"
+        @guardado="itemGuardado"
+    />
     <c-dialog
         ref="cdialog"
         @save="eliminarItem"
@@ -219,6 +239,7 @@
     <c-dialog
         ref="cdialogAnula"
         @save="anularItem"
+        title="Anular Registro"
         text-confirm="Anular"
         color="indigo"
     />
@@ -227,12 +248,14 @@
 
 <script>
 import PersonaItem from 'Views/centroRegulador/components/referencias/PersonaItem'
+import DetalleReferencia from 'Views/centroRegulador/components/referencias/detalleReferencia/DetalleReferencia'
 import RegistroReferencia from 'Views/centroRegulador/components/referencias/RegistroReferencia'
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
 export default {
   name: 'Referencias',
   components: {
     PersonaItem,
+    DetalleReferencia,
     RegistroReferencia,
     Filtros
   },
@@ -300,15 +323,19 @@ export default {
     editarItem(item) {
       this.$refs.registroItem.open(item)
     },
+    detalleItem(item) {
+      this.$refs.detalleItem.open(item)
+    },
     preAnularItem(item) {
       this.seleccionado = item
       this.$refs.cdialogAnula.open(`¿Está seguro de anular el registro de la referencia ID: <strong>${this.seleccionado.id}</strong>?`)
     },
     anularItem() {
-      this.axios.delete(`referencias/${this.seleccionado.id}`)
+      this.axios.delete(`anular-referencia/${this.seleccionado.id}`)
           .then(() => {
             this.$store.commit('snackbar', { color: 'success', message: 'Referencia anulada correctamente.' })
             this.$refs.cdialogAnula.close()
+            this.itemGuardado()
           })
           .catch(error => {
             this.$store.commit('snackbar', { color: 'error', message: ' al anular el registro de la referencia.', error: error })
@@ -324,6 +351,7 @@ export default {
           .then(() => {
             this.$store.commit('snackbar', { color: 'success', message: 'Referencia eliminada correctamente.' })
             this.$refs.cdialog.close()
+            this.itemGuardado()
           })
           .catch(error => {
             this.$store.commit('snackbar', { color: 'error', message: ' al eliminar el registro de la referencia.', error: error })
