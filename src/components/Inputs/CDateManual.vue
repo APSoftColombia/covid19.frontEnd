@@ -22,6 +22,7 @@
     >
       <template v-slot:prepend-inner>
         <v-menu
+            :disabled="disabled"
             v-model="menuFecha"
             :close-on-content-click="false"
             :nudge-right="40"
@@ -33,6 +34,8 @@
             <v-icon v-on="on" class="mr-1">mdi-calendar-month</v-icon>
           </template>
           <v-date-picker
+              :disabled="disabled"
+              :readonly="readonly"
               v-model="model"
               @input="menuFecha = false"
               :min="min"

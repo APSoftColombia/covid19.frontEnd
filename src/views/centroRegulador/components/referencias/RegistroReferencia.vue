@@ -26,6 +26,89 @@
                   v-slot="{ invalid, validated, passes, validate }"
                   autocomplete="off"
               >
+                <template v-if="item">
+                  <v-row dense>
+                    <v-col cols="12" sm="6">
+                      <c-date-manual
+                          v-model="item.fecha_solicitud"
+                          label="Fecha Solicitud"
+                          name="Fecha Solicitud"
+                          rules="required"
+                          :max="moment().format('YYYY-MM-DD')"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <c-time
+                          v-model="item.hora_solicitud"
+                          label="Hora Solicitud"
+                          name="Hora Solicitud"
+                          rules="required"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <c-date-manual
+                          v-model="item.fecha_orden"
+                          label="Fecha Orden"
+                          name="Fecha Orden"
+                          rules="required"
+                          :max="moment().format('YYYY-MM-DD')"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <c-time
+                          v-model="item.hora_orden"
+                          label="Hora Orden"
+                          name="Hora Orden"
+                          rules="required"
+                      />
+                    </v-col>
+                  </v-row>
+                  <form-persona
+                      :value="item"
+                      @verificado="val => verificar(val)"
+                      @responseReferencia="val => respuestaPersona = val"
+                  />
+                  <v-row dense>
+                    <v-col cols="12">
+                      <c-select-complete
+                          v-model="item.modservicio_id"
+                          label="Modalidad del Servicio"
+                          name="Modalidad del Servicio"
+                          rules="required"
+                          :items="ref_modalidadesServicio || []"
+                          item-text="descripcion"
+                          item-value="id"
+                          :disabled="!verificado"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <buscador-ips
+                          label="IPS de Origen"
+                          name="IPS de Origen"
+                          v-model="item.codigo_prestador_origen"
+                          rules="required"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <buscador-cies
+                          label="Diagnóstico"
+                          name="Diagnóstico"
+                          v-model="item.codigo_cie10_ingreso"
+                          rules="required"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <buscador-cups
+                          label="Procedimiento"
+                          name="Procedimiento"
+                          v-model="item.rs_cup_id"
+                          rules="required"
+                      />
+                    </v-col>
+                  </v-row>
+                </template>
+                <v-divider class="mt-0"/>
+                <p class="body-2 error--text mb-0 text-center" v-if="invalid && validated">Hay errores en el formulario</p>
                 <v-card-actions>
                   <v-btn
                       large
@@ -35,7 +118,6 @@
                     Cancelar
                   </v-btn>
                   <v-spacer></v-spacer>
-                  <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
                   <v-btn
                       large
                       color="primary"
@@ -49,6 +131,10 @@
           </v-row>
         </v-container>
       </template>
+      <dialog-referencias-afiliado
+          ref="dialogReferenciaAfiliado"
+          :value="respuestaPersona"
+      />
       <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
@@ -56,19 +142,35 @@
 
 <script>
 import models from '../../models'
+import FormPersona from 'Views/centroRegulador/components/referencias/FormPersona'
+import DialogReferenciasAfiliado from 'Views/centroRegulador/components/referencias/DialogReferenciasAfiliado'
+import BuscadorCies from 'Views/centroRegulador/components/referencias/BuscadorCies'
+import BuscadorCups from 'Views/centroRegulador/components/referencias/BuscadorCups'
+import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
+import { mapGetters } from 'vuex'
 export default {
   name: 'RegistroReferencia',
   components: {
+    BuscadorIps,
+    BuscadorCups,
+    BuscadorCies,
+    FormPersona,
+    DialogReferenciasAfiliado
   },
   data: () => ({
     loading: false,
     dialog: false,
+    verificado: 0,
+    respuestaPersona: null,
     item: null
   }),
   computed: {
     permisos() {
       return this.$store.getters.getPermissionModule('centroRegulador')
-    }
+    },
+    ...mapGetters([
+      'ref_modalidadesServicio'
+    ])
   },
   watch: {
   },
@@ -120,6 +222,11 @@ export default {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar el registro de la referencia.`, error: error})
           })
+    },
+    verificar(val) {
+      this.verificado = val
+      this.$emit('verificado', val)
+      if (((val === -1) || (val === 1)) && this.respuestaPersona) this.$refs.dialogReferenciaAfiliado.open()
     }
   }
 }

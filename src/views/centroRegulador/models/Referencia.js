@@ -29,7 +29,16 @@ const Referencia = {
   codigo_prestador_egreso: null,
   estado_egreso: null,
   fecha_egreso: null,
-  rs_cup_id: null
+  rs_cup_id: null,
+  // Sin referencia tabla
+  tipo_id: null,
+  hora_solicitud: null,
+  hora_orden: null,
+  barrio_id: null,
+  email: null,
+  edad: null,
+  si_eps: null,
+  regimen_especial: null
 }
 
 export default Referencia

@@ -72,41 +72,69 @@
                   hide-default-footer
                   disable-pagination
               >
-                <template v-slot:item.vehiculo="{ item }">
-                  <item-vehiculo :vehiculo="item.vehiculo"/>
+                <template v-slot:item.paciente="{ item }">
+                  <persona-item :value="item"/>
                 </template>
-                <template v-slot:item.programacion="{ item }">
-                  <v-list-item-content class="pa-0">
-                    <v-list-item-subtitle v-if="item.fecha_programacion">
-                      {{ `Fecha: ${moment(item.fecha_programacion).format('DD/MM/YYYY')}` }}
+                <template v-slot:item.eps="{ item }">
+                  <v-list-item-content
+                      v-if="item.eps"
+                      class="pa-0"
+                  >
+                    <v-list-item-subtitle>
+                      {{ item.eps.nombre }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="item.kilometraje_programado">
-                      {{ `Kilometraje: ${item.kilometraje_programado}` }}
+                    <v-list-item-subtitle class="body-2">
+                      {{ `Cód: ${item.eps.codigo}` }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
-                <template v-slot:item.taller="{ item }">
-                  <v-list-item-content class="pa-0" v-if="item.taller">
-                    <v-list-item-title>
-                      <nombre-tercero :tercero="item.taller"/>
-                    </v-list-item-title>
-                    <v-list-item-title>
+                <template v-slot:item.ipsOrigen="{ item }">
+                  <v-list-item-content
+                      v-if="item.prestador_origen"
+                  >
+                    <v-list-item-subtitle>
+                      {{ item.prestador_origen.nombre }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="body-2">
+                      <template v-if="item.prestador_origen.telefono">
+                        <v-icon small>mdi-phone</v-icon>
+                        {{ item.prestador_origen.telefono }}
+                      </template>
+
+                      <template v-if="item.prestador_origen.email">
+                        <v-icon small>mdi-email</v-icon>
+                        {{ item.prestador_origen.email }}
+                      </template>
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="body-2">
                       {{
-                        [item.taller.celular ? `Cel: ${item.taller.celular}` : null, item.taller.email ? `EMAIL: ${item.taller.email}` : null].filter(x => x).join(', ')
+                        [item.prestador_origen.direccion, item.prestador_origen.nompio, item.prestador_origen.nomdepto].filter(x => x).join(', ')
                       }}
-                    </v-list-item-title>
-                    <v-list-item-title>
-                      {{ item.taller.direccion ? item.taller.direccion : '' }}
-                    </v-list-item-title>
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
-                <template v-slot:item.mantenimiento="{ item }">
-                  <v-list-item-content class="pa-0">
-                    <v-list-item-subtitle v-if="item.fecha_mantenimiento">
-                      {{ `Fecha: ${moment(item.fecha_mantenimiento).format('DD/MM/YYYY')}` }}
+                <template v-slot:item.ipsEgreso="{ item }">
+                  <v-list-item-content
+                      v-if="item.prestador_egreso"
+                  >
+                    <v-list-item-subtitle>
+                      {{ item.prestador_egreso.nombre }}
                     </v-list-item-subtitle>
-                    <v-list-item-subtitle v-if="item.kilometraje_mantenimiento">
-                      {{ `Kilometraje: ${item.kilometraje_mantenimiento}` }}
+                    <v-list-item-subtitle class="body-2">
+                      <template v-if="item.prestador_egreso.telefono">
+                        <v-icon small>mdi-phone</v-icon>
+                        {{ item.prestador_egreso.telefono }}
+                      </template>
+
+                      <template v-if="item.prestador_egreso.email">
+                        <v-icon small>mdi-email</v-icon>
+                        {{ item.prestador_egreso.email }}
+                      </template>
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="body-2">
+                      {{
+                        [item.prestador_egreso.direccion, item.prestador_egreso.nompio, item.prestador_egreso.nomdepto].filter(x => x).join(', ')
+                      }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>
@@ -115,7 +143,7 @@
                     <v-list-item-title>
                       {{ item.user.name }}
                     </v-list-item-title>
-                    <v-list-item-subtitle>
+                    <v-list-item-subtitle class="body-2">
                       {{ item.user.email }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
@@ -168,7 +196,7 @@
                             x-small
                             @click="preAnularItem(item)"
                         >
-                          <v-icon>mdi-file-cancel</v-icon>
+                          <v-icon class="white--text">mdi-file-cancel</v-icon>
                         </v-btn>
                       </c-tooltip>
                     </v-toolbar>
@@ -198,11 +226,13 @@
 </template>
 
 <script>
+import PersonaItem from 'Views/centroRegulador/components/referencias/PersonaItem'
 import RegistroReferencia from 'Views/centroRegulador/components/referencias/RegistroReferencia'
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
 export default {
   name: 'Referencias',
   components: {
+    PersonaItem,
     RegistroReferencia,
     Filtros
   },
@@ -220,24 +250,24 @@ export default {
           value: 'id'
         },
         {
-          text: 'Vehículo',
+          text: 'Paciente',
           sortable: false,
-          value: 'vehiculo'
+          value: 'paciente'
         },
         {
-          text: 'Programación',
+          text: 'EPS',
           sortable: false,
-          value: 'programacion'
+          value: 'eps'
         },
         {
-          text: 'Taller',
+          text: 'IPS Origen',
           sortable: false,
-          value: 'taller'
+          value: 'ipsOrigen'
         },
         {
-          text: 'Mantenimiento',
+          text: 'IPS Egreso',
           sortable: false,
-          value: 'mantenimiento'
+          value: 'ipsEgreso'
         },
         {
           text: 'Usuario',
@@ -259,6 +289,9 @@ export default {
     permisos () {
       return this.$store.getters.getPermissionModule('centroRegulador')
     }
+  },
+  created() {
+    this.$store.dispatch('getComplementosReferencias')
   },
   methods: {
     crearItem() {

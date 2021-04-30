@@ -166,13 +166,13 @@
             tile
             elevation="5"
         >
-          <v-container fluid>
+          <v-container fluid class="pa-2">
             <v-row align="center" justify="center">
               <span class="title grey--text text--darken-1 text-center caption">
               Registros del {{ pagination.from }} al {{ pagination.to }} de {{ pagination.total }} totales
             </span>
             </v-row>
-            <v-row align="center" justify="center" class="mt-2">
+            <v-row align="center" justify="center" class="mt-1">
               <v-pagination v-model="pagination.current_page" :total-visible="7"
                             :length="pagination.last_page" @input="reloadPage"></v-pagination>
             </v-row>
@@ -321,14 +321,6 @@ export default {
         {
           text: 200,
           value: 200
-        },
-        {
-          text: 500,
-          value: 500
-        },
-        {
-          text: 1000,
-          value: 1000
         }
       ])
     }
@@ -421,6 +413,10 @@ export default {
   right: 0px !important;
   height: 0px !important;
 }
+.optionsButtons>header .v-toolbar__content, .v-toolbar__extension {
+  padding: 0px !important;
+}
+
 .v-data-table tr .optionsButtons {
   display: none;
 }

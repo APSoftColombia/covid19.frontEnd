@@ -28,7 +28,7 @@
               btn-visible
               ref="modalPaciente"
               :tamizaje-origen="tamizaje"
-              @ ="val => $emit('actualizarTamizaje', val)"
+              @actualizado="val => $emit('actualizarTamizaje', val)"
           />
           <v-btn
               class="ml-2"

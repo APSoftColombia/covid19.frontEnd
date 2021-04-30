@@ -560,6 +560,15 @@
                     >
                     </c-select-complete>
                   </v-col>
+                  <v-alert
+                      v-if="tamizaje.estado_prueba === 'Requiere Muestra' && ((evolucion.estado_afectacion === 'Recuperado') || (evolucion.estado_afectacion === 'Ninguno') || (evolucion.estado_afectacion === 'Fallecido'))"
+                      dense
+                      border="left"
+                      type="error"
+                      class="text-center"
+                  >
+                    El caso requiere registrar toma de muestra, si cierra el caso, <strong>podría tomar una decisión apresurada según el requerimiento previo</strong>.
+                  </v-alert>
                   <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
                     <v-switch
                         label="Solicitar Toma de Muestra"

@@ -96,15 +96,11 @@
               if (this.model) {
                   this.$emit('keyup')
                   this.loading = true
-                this.axios.get(`afiliado_referencias/${this.model}`)
-                    .then(response => {
-                      this.$emit('response', (typeof response !== 'undefined') ? response.data : null)
-                      this.loading = false
-                    })
-                    .catch(error => {
-                      this.$store.commit('snackbar', {color: 'error', message: `al hacer la búsqueda del afiliado.`, error: error})
-                      this.loading = false
-                    })
+                  this.$store.dispatch('searchAfiliadoIdentidadServer', this.model)
+                      .then(response => {
+                          this.$emit('responsepersona', (typeof response !== 'undefined') ? response : null)
+                          this.loading = false
+                      })
               }
           }
       }
