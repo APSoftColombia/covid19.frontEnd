@@ -2,8 +2,8 @@
   <v-card>
     <v-card-title>
       Evolución
-      <v-spacer/>
       <template v-if="referencia && referencia.acciones && referencia.acciones.length">
+        <v-spacer/>
         <component
             v-for="(accion, indexAccion) in referencia.acciones"
             :key="`accion${indexAccion}`"
@@ -23,6 +23,22 @@
           <v-card-text>
             {{ bitacora.observaciones }}
           </v-card-text>
+          <v-card-actions v-if="bitacora.presentacion || bitacora.traslado">
+            <template v-if="bitacora.presentacion">
+              <presentacion
+                  :referencia="referencia"
+                  :presentacion="bitacora.presentacion"
+                  @guardado="val => $emit('guardado', val)"
+              />
+            </template>
+            <template v-if="bitacora.traslado">
+              <presentacion
+                  :referencia="referencia"
+                  :traslado="bitacora.traslado"
+                  @guardado="val => $emit('guardado', val)"
+              />
+            </template>
+          </v-card-actions>
         </v-card>
       </template>
     </v-list>
@@ -30,9 +46,11 @@
 </template>
 
 <script>
+
 import RegistroBitacora from 'Views/centroRegulador/components/referencias/evolucion/RegistroBitacora'
 import RegistroAnularProceso from 'Views/centroRegulador/components/referencias/evolucion/RegistroBitacora'
-import RegistroPresentar from 'Views/centroRegulador/components/referencias/evolucion/RegistroBitacora'
+import RegistroPresentar from 'Views/centroRegulador/components/referencias/evolucion/RegistroPresentar'
+import Presentacion from 'Views/centroRegulador/components/referencias/evolucion/Presentacion'
 export default {
   name: 'Evolucion',
   props: {
@@ -42,6 +60,7 @@ export default {
     }
   },
   components: {
+    Presentacion,
     RegistroBitacora,
     RegistroAnularProceso,
     RegistroPresentar

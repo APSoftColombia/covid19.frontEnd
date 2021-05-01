@@ -273,6 +273,11 @@ export default {
           value: 'id'
         },
         {
+          text: 'Estado',
+          sortable: false,
+          value: 'estado'
+        },
+        {
           text: 'Paciente',
           sortable: false,
           value: 'paciente'
