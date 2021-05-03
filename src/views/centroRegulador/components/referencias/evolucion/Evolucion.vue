@@ -32,7 +32,7 @@
               />
             </template>
             <template v-if="bitacora.traslado">
-              <presentacion
+              <traslado
                   :referencia="referencia"
                   :traslado="bitacora.traslado"
                   @guardado="val => $emit('guardado', val)"
@@ -51,6 +51,7 @@ import RegistroBitacora from 'Views/centroRegulador/components/referencias/evolu
 import RegistroAnularProceso from 'Views/centroRegulador/components/referencias/evolucion/RegistroBitacora'
 import RegistroPresentar from 'Views/centroRegulador/components/referencias/evolucion/RegistroPresentar'
 import Presentacion from 'Views/centroRegulador/components/referencias/evolucion/Presentacion'
+import Traslado from 'Views/centroRegulador/components/referencias/evolucion/Traslado'
 export default {
   name: 'Evolucion',
   props: {
@@ -61,6 +62,7 @@ export default {
   },
   components: {
     Presentacion,
+    Traslado,
     RegistroBitacora,
     RegistroAnularProceso,
     RegistroPresentar
