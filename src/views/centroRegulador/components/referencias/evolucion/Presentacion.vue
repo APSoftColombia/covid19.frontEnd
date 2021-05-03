@@ -14,6 +14,8 @@
 
 <script>
 import RegistroAceptarPresentacion from 'Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion'
+const Aceptar = () => import('Views/centroRegulador/components/referencias/evolucion/AceptarPresentacion');
+const NoAceptar = () => import('Views/centroRegulador/components/referencias/evolucion/NoAceptarPresentacion');
 
 export default {
   name: 'Presentacion',
@@ -32,7 +34,9 @@ export default {
     }
   },
   components: {
-    RegistroAceptarPresentacion
+    RegistroAceptarPresentacion,
+    Aceptar,
+    NoAceptar
   }
 }
 </script>
