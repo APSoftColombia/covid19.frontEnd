@@ -14,7 +14,7 @@
 
 <script>
 const Aceptar = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion');
-const NoAceptar = () => import('Views/centroRegulador/components/referencias/evolucion/NoAceptarPresentacion');
+const NoAceptar = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion');
 
 export default {
   name: 'Presentacion',
