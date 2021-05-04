@@ -17,7 +17,8 @@ const Aceptar = () => import('Views/centroRegulador/components/referencias/evolu
 const NoAceptar = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion');
 const SeleccionarIPS = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarIps');
 const DeseleccionarIPS = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarIps');
-
+const SeleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarTransporte');
+const DeseleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/DeseleccionarTransporte');
 export default {
   name: 'Presentacion',
   props: {
@@ -38,7 +39,9 @@ export default {
     Aceptar,
     NoAceptar,
     SeleccionarIPS,
-    DeseleccionarIPS
+    DeseleccionarIPS,
+    SeleccionarTransporte,
+    DeseleccionarTransporte
   }
 }
 </script>
