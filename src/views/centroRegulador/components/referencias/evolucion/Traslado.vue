@@ -14,6 +14,10 @@
 
 <script>
 import RegistroAceptarPresentacion from 'Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion'
+import TerminarProceso from 'Views/centroRegulador/components/referencias/evolucion/TerminarProceso'
+import TerminarTraslado from 'Views/centroRegulador/components/referencias/evolucion/TerminarTraslado'
+import IniciarTraslado from 'Views/centroRegulador/components/referencias/evolucion/IniciarTraslado'
+import TrasladoFallido from 'Views/centroRegulador/components/referencias/evolucion/TrasladoFallido'
 
 export default {
   name: 'Traslado',
@@ -32,7 +36,11 @@ export default {
     }
   },
   components: {
-    RegistroAceptarPresentacion
+    RegistroAceptarPresentacion,
+    TerminarProceso,
+    TerminarTraslado,
+    IniciarTraslado,
+    TrasladoFallido
   }
 }
 </script>

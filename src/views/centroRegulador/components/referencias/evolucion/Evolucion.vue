@@ -17,12 +17,27 @@
     <v-list>
       <template v-for="(bitacora, indexBitacora) in referencia.bitacoras">
         <v-card :key="`bitacora${indexBitacora}`">
-          <v-card-title>
-            {{ bitacora.accion }}
-          </v-card-title>
-          <v-card-text>
-            {{ bitacora.observaciones }}
-          </v-card-text>
+            <v-list-item-subtitle class="body-2 font-weight-bold text--primary mx-4 pt-2">{{ bitacora.presentacion_id ? 'Presentación' : 'Traslado' }}</v-list-item-subtitle>
+            <v-list-item class="py-0">
+              <v-list-item-content class="pa-0">
+                <v-list-item-subtitle class="caption">
+                  {{ bitacora.accion }}
+                </v-list-item-subtitle>
+                <v-list-item-title>
+                  <v-icon small>mdi-calendar-month</v-icon>
+                  {{ item.fecha_solicitud ? moment(item.fecha).format('DD/MM/YYYY HH:mm') : '' }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content class="pa-0">
+                <v-list-item-subtitle class="caption">
+                  Orden
+                </v-list-item-subtitle>
+                <v-list-item-title>
+                  <v-icon small>mdi-calendar-month</v-icon>
+                  {{ item.fecha_orden ? moment(item.fecha).format('DD/MM/YYYY HH:mm') : '' }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           <v-card-actions v-if="bitacora.presentacion || bitacora.traslado">
             <template v-if="bitacora.presentacion">
               <presentacion
