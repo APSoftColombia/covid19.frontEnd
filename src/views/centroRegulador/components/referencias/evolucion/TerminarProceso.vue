@@ -172,23 +172,16 @@ export default {
                 this.loading = true
                 let itemCopia = await this.clone(this.item)
                 itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-                this.axios.post(`terminar-proceso/${itemCopia.id}`, itemCopia)
-                    .then(() => {
-                      this.$emit('guardado', itemCopia.referencia_id)
-                      this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})
-                      this.close()
-                    })
-                    .catch(error => {
-                      this.loading = false
-                      this.$store.commit('snackbar', {color: 'error', message: `al guardar registro.`, error: error})
-                    })
+                this.axios.post(`terminar-proceso/${itemCopia.id}`, itemCopia).then(() => {
+                  this.$emit('guardado', itemCopia.referencia_id)
+                  this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})
+                  this.close()
+                }).catch(error => {
+                  this.loading = false
+                  this.$store.commit('snackbar', {color: 'error', message: `al guardar registro.`, error: error})
+                })
               }
             })
-          },
-          getComplementos(){
-              this.axios.get(`complementos-centro-regulador`).then(response => {
-                  this.complementos = response.data
-              }).catch(() => {})
           }
         }
     }
