@@ -41,7 +41,7 @@
           <v-row dense>
             <v-col cols="12" sm="6">
               <c-date-manual
-                  v-model="item.fecha"
+                  v-model="item.fecha_egreso"
                   label="Fecha"
                   name="Fecha"
                   rules="required"
@@ -53,6 +53,23 @@
                   v-model="item.hora"
                   label="Hora"
                   name="Hora"
+                  rules="required"
+              />
+            </v-col>
+            <v-col cols="12">
+              <c-select-complete
+                  label="Estado egreso"
+                  name="Estado egreso"
+                  rules="required"
+                  :items="['Vivo', 'Muerto']"
+                  v-model="item.estado_egreso"
+              ></c-select-complete>
+            </v-col>
+            <v-col cols="12">
+              <buscador-cies
+                  label="Codigo Cie de egreso"
+                  name="Codigo Cie de egreso"
+                  v-model="item.codigo_cie10_egreso"
                   rules="required"
               />
             </v-col>
@@ -106,19 +123,68 @@ export default {
     data: () => ({
         dialog: false,
         loading: false,
+        item: null,
+        complementos: null,
+        makeItem: {
+          id: null,
+          referencia_id: null,
+          estado: null,
+          codigo_prestador_origen: null,
+          tipo_traslado: null,
+          tipo_ambulancia: null,
+          fecha_solicitud: null,
+          codigo_prestador_traslado: null,
+          fecha_traslado: null,
+          fecha_llegada: null,
+          fecha_fallido: null,
+          contacto: null,
+          codigo_prestador_destino: null
+        }
     }),
+    watch: {
+      dialog: {
+        handler(val) {
+          if(val) this.asignar()
+        },
+        immediate: false
+      }
+    },
     methods: {
-        open() {
-            this.dialog = true;
-        },
-        close() {
-            this.dialog = false;
-        },
-        save() {
-            console.log("Save");
+        methods: {
+          asignar() {
+            if(this.referencia) {
+              this.item = this.clone(this.makeItem)
+              this.item.referencia_id = this.referencia.id
+            } else {
+              this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
+              this.close()
+            }
+          },
+          close() {
+            this.$refs.formItem.reset()
+            this.dialog = false
+            this.loading = false
+            this.item = this.clone(this.makeItem)
+          },
+          save() {
+            this.$refs.formItem.validate().then(async result => {
+              if (result) {
+                this.loading = true
+                let itemCopia = await this.clone(this.item)
+                itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+                this.axios.post(`terminar-proceso/${itemCopia.id}`, itemCopia).then(() => {
+                  this.$emit('guardado', itemCopia.referencia_id)
+                  this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})
+                  this.close()
+                }).catch(error => {
+                  this.loading = false
+                  this.$store.commit('snackbar', {color: 'error', message: `al guardar registro.`, error: error})
+                })
+              }
+            })
+          }
         }
     }
-
 }
 </script>
 
