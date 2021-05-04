@@ -80,7 +80,7 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
-                label="IPS de Origen"
+                label="IPS de Traslado"
                 name="IPS de Origen"
                 v-model="item.codigo_prestador_traslado"
                 rules="required"
@@ -88,7 +88,7 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
-                label="IPS de Origen"
+                label="IPS de Destino"
                 name="IPS de Origen"
                 v-model="item.codigo_prestador_destino"
                 rules="required"
