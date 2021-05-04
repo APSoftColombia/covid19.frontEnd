@@ -48,7 +48,7 @@ const mutations = {
         state.ref_estadosEgreso = complementos.estados_egreso
         state.ref_modalidadesServicio = complementos.mod_servicios
         state.ref_tiposAmbulancia = complementos.tipos_ambulancias
-        state.ref_tiposTraslado = complementos.tipos_traslados
+        state.ref_tiposTraslados = complementos.tipos_traslados
     }
 }
 
