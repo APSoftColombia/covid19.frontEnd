@@ -76,7 +76,7 @@
         <v-btn
             :color="accion.color"
             class="white--text"
-            @click="save"
+            @click="save()"
         >
           Guardar
         </v-btn>
@@ -132,41 +132,41 @@ export default {
       }
     },
     methods: {
-        methods: {
-          asignar() {
-            if(this.referencia) {
-              this.item = this.clone(this.makeItem)
-              this.item.referencia_id = this.referencia.id
-            } else {
-              this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
-              this.close()
-            }
-          },
-          close() {
-            this.$refs.formItem.reset()
-            this.dialog = false
-            this.loading = false
+        asignar() {
+          if(this.referencia) {
             this.item = this.clone(this.makeItem)
-          },
-          save() {
-            this.$refs.formItem.validate().then(async result => {
-              if (result) {
-                this.loading = true
-                let itemCopia = await this.clone(this.item)
-                itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-                this.axios.post(`iniciar-traslado/${itemCopia.id}`, itemCopia)
-                    .then(() => {
-                      this.$emit('guardado', itemCopia.referencia_id)
-                      this.$store.commit('snackbar', {color: 'success', message: `El traslado se guardo correctamente.`})
-                      this.close()
-                    })
-                    .catch(error => {
-                      this.loading = false
-                      this.$store.commit('snackbar', {color: 'error', message: `al guardar traslado.`, error: error})
-                    })
-              }
-            })
+            this.item.referencia_id = this.referencia.id
+            this.item.fecha_traslado = this.moment().format('YYYY-MM-DD');
+            this.item.hora = this.moment().format('HH:mm');
+          } else {
+            this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
+            this.close()
           }
+        },
+        close() {
+          this.$refs.formItem.reset()
+          this.dialog = false
+          this.loading = false
+          this.item = this.clone(this.makeItem)
+        },
+        save() {
+          this.$refs.formItem.validate().then(async result => {
+            if (result) {
+              this.loading = true
+              let itemCopia = await this.clone(this.item)
+              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              this.axios.post(`iniciar-traslado/${this.id}`, itemCopia)
+                  .then(() => {
+                    this.$emit('guardado', itemCopia.referencia_id)
+                    this.$store.commit('snackbar', {color: 'success', message: `El traslado se guardo correctamente.`})
+                    this.close()
+                  })
+                  .catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: `al guardar traslado.`, error: error})
+                  })
+            }
+          })
         }
     }
 }

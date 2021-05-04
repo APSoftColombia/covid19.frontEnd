@@ -25,7 +25,7 @@
       <v-toolbar dark :color="accion.color">
         <v-icon left>{{ accion.icon }}</v-icon>
         <v-toolbar-title>
-          {{ accion.accion }} Presentación
+          {{ accion.accion }}
         </v-toolbar-title>
         <v-spacer/>
         <v-btn icon dark @click="close">
@@ -93,7 +93,7 @@
         <v-btn
             :color="accion.color"
             class="white--text"
-            @click="save"
+            @click="save()"
         >
           Guardar
         </v-btn>
@@ -104,8 +104,12 @@
 </template>
 
 <script>
+import BuscadorCies from 'Views/centroRegulador/components/referencias/BuscadorCies'
 export default {
     name: 'TerminarProceso',
+    components: {
+        BuscadorCies
+    },
     props: {
         referencia: {
             type: Object,
@@ -150,39 +154,39 @@ export default {
       }
     },
     methods: {
-        methods: {
-          asignar() {
-            if(this.referencia) {
-              this.item = this.clone(this.makeItem)
-              this.item.referencia_id = this.referencia.id
-            } else {
-              this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
-              this.close()
-            }
-          },
-          close() {
-            this.$refs.formItem.reset()
-            this.dialog = false
-            this.loading = false
+        asignar() {
+          if(this.referencia) {
             this.item = this.clone(this.makeItem)
-          },
-          save() {
-            this.$refs.formItem.validate().then(async result => {
-              if (result) {
-                this.loading = true
-                let itemCopia = await this.clone(this.item)
-                itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-                this.axios.post(`terminar-proceso/${itemCopia.id}`, itemCopia).then(() => {
-                  this.$emit('guardado', itemCopia.referencia_id)
-                  this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})
-                  this.close()
-                }).catch(error => {
-                  this.loading = false
-                  this.$store.commit('snackbar', {color: 'error', message: `al guardar registro.`, error: error})
-                })
-              }
-            })
+            this.item.referencia_id = this.referencia.id
+            this.item.fecha_egreso = this.moment().format('YYYY-MM-DD');
+            this.item.hora = this.moment().format('HH:mm');
+          } else {
+            this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
+            this.close()
           }
+        },
+        close() {
+          this.$refs.formItem.reset()
+          this.dialog = false
+          this.loading = false
+          this.item = this.clone(this.makeItem)
+        },
+        save() {
+          this.$refs.formItem.validate().then(async result => {
+            if (result) {
+              this.loading = true
+              let itemCopia = await this.clone(this.item)
+              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              this.axios.post(`terminar-proceso/${itemCopia.referencia_id}`, itemCopia).then(() => {
+                this.$emit('guardado', itemCopia.referencia_id)
+                this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})
+                this.close()
+              }).catch(error => {
+                this.loading = false
+                this.$store.commit('snackbar', {color: 'error', message: `al guardar registro.`, error: error})
+              })
+            }
+          })
         }
     }
 }

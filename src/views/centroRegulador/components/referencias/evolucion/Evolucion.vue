@@ -78,6 +78,7 @@ import RegistroAnularProceso from 'Views/centroRegulador/components/referencias/
 import RegistroPresentar from 'Views/centroRegulador/components/referencias/evolucion/RegistroPresentar'
 import Presentacion from 'Views/centroRegulador/components/referencias/evolucion/Presentacion'
 import Traslado from 'Views/centroRegulador/components/referencias/evolucion/Traslado'
+import TerminarProceso from 'Views/centroRegulador/components/referencias/evolucion/TerminarProceso'
 export default {
   name: 'Evolucion',
   props: {
@@ -96,7 +97,8 @@ export default {
     Traslado,
     RegistroBitacora,
     RegistroAnularProceso,
-    RegistroPresentar
+    RegistroPresentar,
+    TerminarProceso
   },
   data: () => ({
     loading: false

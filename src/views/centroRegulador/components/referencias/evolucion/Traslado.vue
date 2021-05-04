@@ -14,10 +14,10 @@
 
 <script>
 import RegistroAceptarPresentacion from 'Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion'
-const TerminarProceso = () => import('Views/centroRegulador/components/referencias/evolucion/TerminarProceso')
 const TerminarTraslado = () => import('Views/centroRegulador/components/referencias/evolucion/TerminarTraslado')
 const IniciarTraslado = () => import('Views/centroRegulador/components/referencias/evolucion/IniciarTraslado')
 const TrasladoFallido = () => import('Views/centroRegulador/components/referencias/evolucion/TrasladoFallido')
+const CancelarTraslado = () => import('Views/centroRegulador/components/referencias/evolucion/CancelarTraslado')
 
 export default {
   name: 'Traslado',
@@ -37,10 +37,10 @@ export default {
   },
   components: {
     RegistroAceptarPresentacion,
-    TerminarProceso,
     TerminarTraslado,
     IniciarTraslado,
     TrasladoFallido,
+    CancelarTraslado
   }
 }
 </script>

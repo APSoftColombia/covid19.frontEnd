@@ -129,7 +129,7 @@ export default {
           this.loading = true;
           let itemCopia = this.clone(this.item);
           itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-          this.axios.post(`deseleccionar-transporte/${this.referencia.id}`, itemCopia).then(() => {
+          this.axios.post(`deseleccionar-transporte/${this.id}`, itemCopia).then(() => {
             this.$emit('guardado', this.referencia.id);
             this.$store.commit('snackbar', {color: 'success', message: `${this.accion.accion} se guardo correctamente.`});
             this.close();
