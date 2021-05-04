@@ -49,55 +49,15 @@
               />
             </v-col>
             <v-col cols="12" sm="6">
-              <ValidationProvider
-                name="Tipo de Traslado"
-                rules="required"
-                v-slot="{ errors }"
-              >
-                <v-select
-                  v-model="item.tipo_traslado"
-                  label="Tipo de Traslado"
-                  :items="ref_tiposTraslados || []"
-                  item-value="id"
-                  outlined
-                  dense
-                  :disabled="!verificado"
-                  :error-messages="errors"
-                  clearable
-                  persistent-hint
-                  :hint="
-                    item.tipo_traslado &&
-                    ref_tiposTraslados &&
-                    ref_tiposTraslados.length &&
-                    ref_tiposTraslados.find(
-                      (x) => x.id === item.tipo_traslado
-                    )
-                      ? ref_tiposTraslados.find(
-                          (x) => x.id === item.tipo_traslado
-                        ).modalidad
-                      : ''
-                  "
-                >
-                  <template v-slot:selection="{ item, index }">
-                    {{ item.codigo }} - {{ item.tipo }}
-                  </template>
-                  <template v-slot:item="data">
-                    <div style="width: 100% !important">
-                      <v-list-item class="pa-0">
-                        <v-list-item-content class="text-truncate pa-0">
-                          <v-list-item-title class="body-2">
-                            {{ data.item.codigo }} - {{ data.item.tipo }}
-                          </v-list-item-title>
-                          <v-list-item-subtitle>
-                            {{ data.item.modalidad }}
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider class="ma-0"></v-divider>
-                    </div>
-                  </template>
-                </v-select>
-              </ValidationProvider>
+              <v-select
+                label="Tipo Traslado"
+                v-model="item.tipo_traslado"
+                :items="ref_tiposTraslados"
+                hide-details
+                outlined
+                dense
+                clearable
+              ></v-select>
             </v-col>
             <v-col cols="12" sm="6">
               <v-select
@@ -105,7 +65,10 @@
                 v-model="item.tipo_ambulancia"
                 :items="ref_tiposAmbulancia"
                 hide-details
-            ></v-select>
+                outlined
+                dense
+                clearable
+              ></v-select>
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
@@ -138,7 +101,7 @@
                 name="contacto"
                 rules="required|numeric"
               >
-            </c-texto>
+              </c-texto>
             </v-col>
             <v-col cols="12">
               <c-text-area label="Observaciones" v-model="item.observaciones" />
@@ -198,7 +161,7 @@ export default {
     },
   }),
   computed: {
-    ...mapGetters(["ref_tiposAmbulancia", "ref_tiposTraslados"]),
+    ...mapGetters(['ref_tiposAmbulancia', 'ref_tiposTraslados']),
   },
   watch: {
     dialog: {
@@ -207,7 +170,7 @@ export default {
           this.open();
         }
       },
-      inmediate: false
+      inmediate: false,
     },
   },
   methods: {
