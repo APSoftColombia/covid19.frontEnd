@@ -41,9 +41,9 @@
           <v-row dense>
             <v-col cols="12" sm="6">
               <c-date-manual
-                  v-model="item.fecha"
-                  label="Fecha"
-                  name="Fecha"
+                  v-model="item.fecha_llegada"
+                  label="Fecha de llegada"
+                  name="Fecha de llegada"
                   rules="required"
                   :max="moment().format('YYYY-MM-DD')"
               />
@@ -106,19 +106,69 @@ export default {
     data: () => ({
         dialog: false,
         loading: false,
+        item: null,
+        makeItem: {
+          id: null,
+          referencia_id: null,
+          estado: null,
+          codigo_prestador_origen: null,
+          tipo_traslado: null,
+          tipo_ambulancia: null,
+          fecha_solicitud: null,
+          codigo_prestador_traslado: null,
+          fecha_traslado: null,
+          fecha_llegada: null,
+          fecha_fallido: null,
+          contacto: null,
+          codigo_prestador_destino: null
+        }
     }),
+    watch: {
+      dialog: {
+        handler(val) {
+          if(val) this.asignar()
+        },
+        immediate: false
+      }
+    },
     methods: {
-        open() {
-            this.dialog = true;
-        },
-        close() {
-            this.dialog = false;
-        },
-        save() {
-            console.log("Save");
+        methods: {
+          asignar() {
+            if(this.referencia) {
+              this.item = this.clone(this.makeItem)
+              this.item.referencia_id = this.referencia.id
+            } else {
+              this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
+              this.close()
+            }
+          },
+          close() {
+            this.$refs.formItem.reset()
+            this.dialog = false
+            this.loading = false
+            this.item = this.clone(this.makeItem)
+          },
+          save() {
+            this.$refs.formItem.validate().then(async result => {
+              if (result) {
+                this.loading = true
+                let itemCopia = await this.clone(this.item)
+                itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+                this.axios.post(`finalizar-traslado/${itemCopia.id}`, itemCopia)
+                    .then(() => {
+                      this.$emit('guardado', itemCopia.referencia_id)
+                      this.$store.commit('snackbar', {color: 'success', message: `El traslado se guardo correctamente.`})
+                      this.close()
+                    })
+                    .catch(error => {
+                      this.loading = false
+                      this.$store.commit('snackbar', {color: 'error', message: `al guardar traslado.`, error: error})
+                    })
+              }
+            })
+          }
         }
     }
-
 }
 </script>
 
