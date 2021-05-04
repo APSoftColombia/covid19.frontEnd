@@ -14,6 +14,8 @@
 
 <script>
 import RegistroAceptarPresentacion from 'Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion'
+const SeleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarTransporte');
+const DeseleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/DeseleccionarTransporte');
 
 export default {
   name: 'Traslado',
@@ -32,7 +34,9 @@ export default {
     }
   },
   components: {
-    RegistroAceptarPresentacion
+    RegistroAceptarPresentacion,
+    SeleccionarTransporte,
+    DeseleccionarTransporte
   }
 }
 </script>

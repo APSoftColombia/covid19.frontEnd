@@ -15,6 +15,8 @@
 <script>
 const Aceptar = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion');
 const NoAceptar = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion');
+const SeleccionarIPS = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarIps');
+const DeseleccionarIPS = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarIps');
 
 export default {
   name: 'Presentacion',
@@ -34,7 +36,9 @@ export default {
   },
   components: {
     Aceptar,
-    NoAceptar
+    NoAceptar,
+    SeleccionarIPS,
+    DeseleccionarIPS
   }
 }
 </script>
