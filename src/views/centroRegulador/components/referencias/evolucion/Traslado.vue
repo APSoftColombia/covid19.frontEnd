@@ -14,8 +14,10 @@
 
 <script>
 import RegistroAceptarPresentacion from 'Views/centroRegulador/components/referencias/evolucion/RegistroAceptarPresentacion'
-const SeleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarTransporte');
-const DeseleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/DeseleccionarTransporte');
+const TerminarProceso = () => import('Views/centroRegulador/components/referencias/evolucion/TerminarProceso')
+const TerminarTraslado = () => import('Views/centroRegulador/components/referencias/evolucion/TerminarTraslado')
+const IniciarTraslado = () => import('Views/centroRegulador/components/referencias/evolucion/IniciarTraslado')
+const TrasladoFallido = () => import('Views/centroRegulador/components/referencias/evolucion/TrasladoFallido')
 
 export default {
   name: 'Traslado',
@@ -35,8 +37,10 @@ export default {
   },
   components: {
     RegistroAceptarPresentacion,
-    SeleccionarTransporte,
-    DeseleccionarTransporte
+    TerminarProceso,
+    TerminarTraslado,
+    IniciarTraslado,
+    TrasladoFallido,
   }
 }
 </script>
