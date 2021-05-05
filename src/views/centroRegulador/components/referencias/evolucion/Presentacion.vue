@@ -1,14 +1,16 @@
 <template>
   <div>
-    <component
-        v-for="(accion, indexAccion) in presentacion.acciones"
-        :is="accion.componente"
-        :referencia="referencia"
-        :accion="accion"
-        :key="`accion${indexAccion}`"
-        :id="presentacion.id"
-        @guardado="val => $emit('guardado', val)"
-    />
+      <template v-for="(accion, indexAccion) in presentacion.acciones">
+          <component
+              :is="accion.componente"
+              :referencia="referencia"
+              :accion="accion"
+              :key="`accion${indexAccion}`"
+              :id="presentacion.id"
+              @guardado="val => $emit('guardado', val)"
+              v-if="(!presentacion.otra_seleccionada && accion.accion !== 'Aceptar') || accion.accion !== 'Seleccionar IPS'"
+          />
+      </template>
   </div>
 </template>
 

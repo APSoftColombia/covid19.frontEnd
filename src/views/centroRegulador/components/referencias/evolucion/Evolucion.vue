@@ -50,20 +50,24 @@
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-          <v-card-actions v-if="bitacora.presentacion || bitacora.traslado" class="mx-auto">
-            <template v-if="bitacora.presentacion">
-              <presentacion
-                  :referencia="referencia"
-                  :presentacion="bitacora.presentacion"
-                  @guardado="val => $emit('guardado', val)"
-              /></template>
-            <template v-if="bitacora.traslado">
-              <traslado
-                  :referencia="referencia"
-                  :traslado="bitacora.traslado"
-                  @guardado="val => $emit('guardado', val)"
-              /></template>
-          </v-card-actions>
+          <template v-if="referencia.estado !== 'Proceso Terminado' || referencia.estado !== 'Cancelado'">
+              <v-card-actions v-if="bitacora.presentacion || bitacora.traslado" class="mx-auto">
+                <span class="caption">{{ bitacora.presentacion.ips_presentacion ? bitacora.presentacion.ips_presentacion.nombre : '' }}</span>
+                <v-spacer></v-spacer>
+                <template v-if="bitacora.presentacion">
+                  <presentacion
+                      :referencia="referencia"
+                      :presentacion="bitacora.presentacion"
+                      @guardado="val => $emit('guardado', val)"
+                  /></template>
+                <template v-if="bitacora.traslado">
+                  <traslado
+                      :referencia="referencia"
+                      :traslado="bitacora.traslado"
+                      @guardado="val => $emit('guardado', val)"
+                  /></template>
+              </v-card-actions>
+          </template>
         </v-card>
       </template>
     </v-list>
