@@ -42,8 +42,8 @@
             <v-col cols="12" sm="6">
               <c-date-manual
                   v-model="item.fecha_fallido"
-                  label="Fecha del traslado fallido"
-                  name="Fecha del traslado fallido"
+                  label="Fecha"
+                  name="Fecha"
                   rules="required"
                   :max="moment().format('YYYY-MM-DD')"
               />
@@ -132,41 +132,41 @@ export default {
       }
     },
     methods: {
-        methods: {
-          asignar() {
-            if(this.referencia) {
-              this.item = this.clone(this.makeItem)
-              this.item.referencia_id = this.referencia.id
-            } else {
-              this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
-              this.close()
-            }
-          },
-          close() {
-            this.$refs.formItem.reset()
-            this.dialog = false
-            this.loading = false
+        asignar() {
+          if(this.referencia) {
             this.item = this.clone(this.makeItem)
-          },
-          save() {
-            this.$refs.formItem.validate().then(async result => {
-              if (result) {
-                this.loading = true
-                let itemCopia = await this.clone(this.item)
-                itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-                this.axios.post(`traslado-fallido/${itemCopia.id}`, itemCopia)
-                    .then(() => {
-                      this.$emit('guardado', itemCopia.referencia_id)
-                      this.$store.commit('snackbar', {color: 'success', message: `El traslado se guardo correctamente.`})
-                      this.close()
-                    })
-                    .catch(error => {
-                      this.loading = false
-                      this.$store.commit('snackbar', {color: 'error', message: `al guardar traslado.`, error: error})
-                    })
-              }
-            })
+            this.item.referencia_id = this.referencia.id
+            this.item.fecha_fallido = this.moment().format("YYYY-MM-DD");
+            this.item.hora = this.moment().format("HH:mm");
+          } else {
+            this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
+            this.close()
           }
+        },
+        close() {
+          this.$refs.formItem.reset()
+          this.dialog = false
+          this.loading = false
+          this.item = this.clone(this.makeItem)
+        },
+        save() {
+          this.$refs.formItem.validate().then(async result => {
+            if (result) {
+              this.loading = true
+              let itemCopia = await this.clone(this.item)
+              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              this.axios.post(`traslado-fallido/${this.id}`, itemCopia)
+                  .then(() => {
+                    this.$emit('guardado', itemCopia.referencia_id)
+                    this.$store.commit('snackbar', {color: 'success', message: `El traslado se guardo correctamente.`})
+                    this.close()
+                  })
+                  .catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: `al guardar traslado.`, error: error})
+                  })
+            }
+          })
         }
     }
 }

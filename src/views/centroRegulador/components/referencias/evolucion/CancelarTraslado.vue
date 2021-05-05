@@ -25,7 +25,7 @@
       <v-toolbar dark :color="accion.color">
         <v-icon left>{{ accion.icon }}</v-icon>
         <v-toolbar-title>
-          {{ accion.accion }} Presentación
+          {{ accion.accion }}
         </v-toolbar-title>
         <v-spacer/>
         <v-btn icon dark @click="close">
@@ -104,21 +104,63 @@ export default {
         }
     },
     data: () => ({
-        dialog: false,
-        loading: false,
+      dialog: false,
+      loading: false,
+      item: null,
+      itemModel: {
+        fecha: null,
+        hora: null,
+        observaciones: null
+      }
     }),
+    watch: {
+      dialog: {
+        handler(val) {
+          if (val) {
+            this.open();
+          }
+        },
+        inmeadiate: false
+      }
+    },
     methods: {
-        open() {
-            this.dialog = true;
-        },
-        close() {
-            this.dialog = false;
-        },
-        save() {
-            console.log("Save");
+      open() {
+        if (this.referencia) {
+          this.item = this.clone(this.itemModel);
+          this.item.fecha = this.moment().format("YYYY-MM-DD");
+          this.item.hora = this.moment().format("HH:mm");
+        } else {
+          this.$store.commit("snackbar", {
+            color: "error",
+            message: `No hay una referencia seleccionada.`,
+          });
+          this.close();
         }
-    }
-
+      },
+      close() {
+        this.loading = false;
+        this.dialog = false;
+        this.$refs.formItem.reset();
+        this.item = this.clone(this.itemModel);
+      },
+      save() {
+        this.$refs.formItem.validate().then(async result => {
+          if (result) {
+            this.loading = true;
+            let itemCopia = this.clone(this.item);
+            itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+            this.axios.post(`deseleccionar-transporte/${this.id}`, itemCopia).then(() => {
+              this.$emit('guardado', this.referencia.id);
+              this.$store.commit('snackbar', {color: 'success', message: `${this.accion.accion} se guardo correctamente.`});
+              this.close();
+            }).catch(error => {
+              this.loading = false;
+              this.$store.commit('snackbar', {color: 'error', message: `al guardar al ${this.accion.accion}.`, error: error});
+            })
+          }
+        })
+      },
+    },
 }
 </script>
 

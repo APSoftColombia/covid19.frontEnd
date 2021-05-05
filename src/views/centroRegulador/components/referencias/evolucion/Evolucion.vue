@@ -52,7 +52,7 @@
             </v-list-item>
           <template v-if="referencia.estado !== 'Proceso Terminado' || referencia.estado !== 'Cancelado'">
               <v-card-actions v-if="bitacora.presentacion || bitacora.traslado" class="mx-auto">
-                <span class="caption">{{ bitacora.presentacion.ips_presentacion ? bitacora.presentacion.ips_presentacion.nombre : '' }}</span>
+                <span class="caption">{{ bitacora.presentacion && bitacora.presentacion.ips_presentacion ? bitacora.presentacion.ips_presentacion.nombre : '' }}</span>
                 <v-spacer></v-spacer>
                 <template v-if="bitacora.presentacion">
                   <presentacion

@@ -66,6 +66,7 @@
                 <v-simple-table
                     fixed-header
                     height="400px"
+                    v-if="item.prestadores && item.prestadores.length"
                 >
                   <template v-slot:default>
                     <thead>
@@ -115,6 +116,11 @@
                     </tbody>
                   </template>
                 </v-simple-table>
+                <template v-else>
+                    <div class="text-center mt-2 mb-3">
+                        <p>Sin prestadores seleccionados</p>
+                    </div>
+                </template>
               </div>
             </v-col>
             <v-col cols="12">
