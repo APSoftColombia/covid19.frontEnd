@@ -62,6 +62,7 @@ import CCombo from 'Components/Inputs/CCombo'
 import CDialog from 'Components/Inputs/CDialog'
 import CTooltip from 'Components/Inputs/CTooltip'
 import CChipFilters from 'Components/Inputs/CChipFilters'
+import CFile from 'Components/Inputs/CFile'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -116,6 +117,7 @@ const GlobalComponents = {
       Vue.component('CDialog', CDialog)
       Vue.component('CTooltip', CTooltip)
       Vue.component('CChipFilters', CChipFilters)
+      Vue.component('CFile', CFile)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)

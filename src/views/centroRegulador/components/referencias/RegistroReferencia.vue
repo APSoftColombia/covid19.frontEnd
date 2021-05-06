@@ -129,6 +129,24 @@
                           rules="required"
                       />
                     </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6">
+                      <c-file
+                          label="Historia Clinica"
+                          name="historial clinica"
+                          v-model="archivos.fileHistoriaClinica"
+                          rules="size:750"
+                          :hint="item.historia_clinica && item.historia_clinica.id ? 'cargado actualmente: ' + `${item.historia_clinica.ruta.split('/')[1]}` : ''"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6">
+                      <c-file
+                          label="Orden Médica"
+                          name="orden médica"
+                          v-model="archivos.fileOrdenMedica"
+                          rules="size:750"
+                          :hint="item.orden_medica && item.orden_medica.id ? 'cargado actualmente: ' + `${item.orden_medica.ruta.split('/')[1]}` : ''"
+                      />
+                    </v-col>
                     <v-col cols="12">
                       <c-text-area
                           label="Observaciones"
@@ -192,7 +210,11 @@ export default {
     dialog: false,
     verificado: 0,
     respuestaPersona: null,
-    item: null
+    item: null,
+    archivos: {
+        fileOrdenMedica: null,
+        fileHistoriaClinica: null
+    }
   }),
   computed: {
     permisos() {
@@ -203,6 +225,20 @@ export default {
     ])
   },
   watch: {
+      'archivos.fileOrdenMedica': {
+          handler(val){
+              if(val && val.size <= 750000){
+                  val && this.guardarOrdenMedica()
+              }
+          }
+      },
+      'archivos.fileHistoriaClinica': {
+          handler(val){
+              if(val && val.size <= 750000){
+                  val && this.guardarHistoriaClinica()
+              }
+          }
+      },
   },
   methods: {
     guardarItem() {
@@ -228,6 +264,34 @@ export default {
         }
       })
     },
+    async guardarOrdenMedica(){
+        let archivo = await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(this.archivos.fileOrdenMedica)
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = error => reject(error)
+        })
+        this.axios.post(`subir-archivos`, {fileOrdenMedica: archivo}).then(response => {
+            this.item.orden_medica_id = response.data
+          this.$store.commit('snackbar', {color: 'success', message: 'Archivo guardado con exito'})
+        }).catch(error => {
+          this.$store.commit('snackbar', {color: 'error', message: `al guardar archivo.`, error: error})
+        })
+    },
+    async guardarHistoriaClinica(){
+        let archivo = await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(this.archivos.fileHistoriaClinica)
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = error => reject(error)
+        })
+        this.axios.post(`subir-archivos`, {fileHistoriaClinica: archivo}).then(response => {
+            this.item.historia_clinica_id = response.data
+          this.$store.commit('snackbar', {color: 'success', message: 'Archivo guardado con exito'})
+        }).catch(error => {
+          this.$store.commit('snackbar', {color: 'error', message: `al guardar archivo.`, error: error})
+        })
+    },
     open(item = null) {
       this.dialog = true
       if (item) {
@@ -246,6 +310,10 @@ export default {
       this.loading = false
       this.$emit('close')
       this.item = null
+      this.archivos = {
+          fileOrdenMedica: null,
+          fileHistoriaClinica: null
+      }
     },
     getItem(id) {
       this.loading = true
