@@ -57,6 +57,7 @@
                 outlined
                 dense
                 clearable
+                rules="required"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6">
@@ -68,6 +69,7 @@
                 outlined
                 dense
                 clearable
+                rules="required"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="12">
