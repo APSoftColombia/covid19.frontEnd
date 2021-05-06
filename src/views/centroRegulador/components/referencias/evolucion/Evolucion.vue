@@ -5,9 +5,7 @@
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
       <v-list-item-content>
-        <v-list-item-title class="white--text body-3 font-weight-bold ml-4">
-          <v-chip class="success">{{ referencia.estado }}</v-chip>
-        </v-list-item-title>
+        <v-chip class="success">{{ referencia.estado }}</v-chip>
       </v-list-item-content>
         <v-spacer />
         <component
