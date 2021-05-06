@@ -26,16 +26,6 @@
               <v-col cols="10" class="mx-auto">
                   <v-row dense>
                       <v-col cols="12" md="4">
-                          <v-list-item>
-                            <v-list-item-content>
-                              <v-list-item-subtitle class="caption font-weight-bold grey--text">
-                                Estado
-                              </v-list-item-subtitle>
-                              <v-list-item-title class="grey--text body-3 font-weight-bold ml-4">
-                                {{ item.estado }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
                         <v-card>
                           <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Paciente</v-list-item-subtitle>
                           <v-list-item class="py-0">
@@ -72,7 +62,7 @@
                             </v-list-item-content>
                           </v-list-item>
                           <v-divider></v-divider>
-                          <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Ingreso</v-list-item-subtitle>
+                          <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Remite</v-list-item-subtitle>
                           <v-list-item class="py-0" v-if="item.prestador_origen">
                             <v-list-item-content>
                               <v-list-item-title class="font-weight-bold grey--text">

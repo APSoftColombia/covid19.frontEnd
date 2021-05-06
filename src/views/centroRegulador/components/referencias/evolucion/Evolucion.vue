@@ -1,10 +1,14 @@
 <template>
   <v-card>
     <v-card-title>
-      Evolución
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
+      <v-list-item-content>
+        <v-list-item-title class="white--text body-3 font-weight-bold ml-4">
+          <v-chip class="success">{{ referencia.estado }}</v-chip>
+        </v-list-item-title>
+      </v-list-item-content>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
@@ -19,9 +23,9 @@
     <v-card-text>
       <v-row>
         <v-tabs fixed-tabs>
-          <v-tab> Bitacoras general </v-tab>
-          <v-tab> Presentaciones </v-tab>
-          <v-tab> Traslados </v-tab>
+          <v-tab> Bitácora </v-tab>
+          <v-tab> Busqueda de IPS </v-tab>
+          <v-tab> Traslado </v-tab>
           <v-tab-item>
             <v-card class="root-card" flat height="500px">
               <v-card-text class="root-card-text">
@@ -267,12 +271,12 @@
                         <v-list-item-content class="pa-0">
                           <v-list-item-subtitle class="mb-2">
                             <v-icon small>mdi-car</v-icon>
-                            <b>Tipo transporte:</b> 
+                            <b>Tipo transporte:</b>
                             {{ traslado.tipo_traslado }}
                           </v-list-item-subtitle>
                           <v-list-item-subtitle>
                             <v-icon small>mdi-ambulance</v-icon>
-                            <b>Tipo ambulancia:</b> 
+                            <b>Tipo ambulancia:</b>
                             {{ traslado.tipo_ambulancia }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
