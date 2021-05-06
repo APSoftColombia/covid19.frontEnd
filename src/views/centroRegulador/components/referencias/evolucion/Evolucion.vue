@@ -1,10 +1,14 @@
 <template>
   <v-card>
     <v-card-title>
-      Evolución
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
+      <v-list-item-content>
+        <v-list-item-title class="white--text body-3 font-weight-bold ml-4">
+          <v-chip class="success">{{ referencia.estado }}</v-chip>
+        </v-list-item-title>
+      </v-list-item-content>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
@@ -19,9 +23,9 @@
     <v-card-text>
       <v-row>
         <v-tabs fixed-tabs>
-          <v-tab> Bitacoras general </v-tab>
-          <v-tab> Presentaciones </v-tab>
-          <v-tab> Traslados </v-tab>
+          <v-tab> Bitácora </v-tab>
+          <v-tab> Busqueda de IPS </v-tab>
+          <v-tab> Traslado </v-tab>
           <v-tab-item>
             <v-list>
               <template
