@@ -8,7 +8,7 @@
               :key="`accion${indexAccion}`"
               :id="presentacion.id"
               @guardado="val => $emit('guardado', val)"
-              v-if="(!presentacion.otra_seleccionada && accion.accion !== 'Aceptar') || accion.accion !== 'Seleccionar IPS'"
+              v-if="(!presentacion.otra_seleccionada && accion.accion !== 'Aceptar' && referencia.estado !== 'Cancelado' && referencia.estado !== 'Proceso Terminado') || (accion.accion !== 'Seleccionar IPS' && referencia.estado !== 'Cancelado' && referencia.estado !== 'Proceso Terminado')"
           />
       </template>
   </div>

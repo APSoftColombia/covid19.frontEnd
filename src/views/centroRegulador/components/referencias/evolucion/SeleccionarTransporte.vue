@@ -72,6 +72,7 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
+                ref="buscadoripsOrigen"
                 label="IPS de Origen"
                 name="IPS de Origen"
                 v-model="item.codigo_prestador_origen"
@@ -88,6 +89,7 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
+                ref="buscadoripsDestino"
                 label="IPS de Destino"
                 name="IPS de Origen"
                 v-model="item.codigo_prestador_destino"
@@ -176,9 +178,15 @@ export default {
   methods: {
     open() {
       if (this.referencia) {
+        setTimeout(() => {
+          if (this.$refs.buscadoripsOrigen) this.$refs.buscadoripsOrigen.assign(this.referencia.codigo_prestador_origen)
+          if (this.$refs.buscadoripsrepsDestino) this.$refs.buscadoripsrepsDestino.assign(this.referencia.presentaciones.find(x => x.id == this.id).codigo_prestador_presentacion)
+        }, 600)
         this.item = this.clone(this.itemModel);
         this.item.fecha = this.moment().format("YYYY-MM-DD");
         this.item.hora = this.moment().format("HH:mm");
+        this.item.codigo_prestador_origen = this.referencia.codigo_prestador_origen;
+        this.item.codigo_prestador_destino = this.referencia.presentaciones.find(x => x.id == this.id).codigo_prestador_presentacion;
       } else {
         this.$store.commit("snackbar", {
           color: "error",

@@ -1,14 +1,16 @@
 <template>
   <div>
-    <component
-        v-for="(accion, indexAccion) in traslado.acciones"
-        :is="accion.componente"
-        :referencia="referencia"
-        :accion="accion"
-        :key="`accion${indexAccion}`"
-        :id="traslado.id"
-        @guardado="val => $emit('guardado', val)"
-    />
+    <template v-for="(accion, indexAccion) in traslado.acciones">
+      <component
+          :is="accion.componente"
+          :referencia="referencia"
+          :accion="accion"
+          :key="`accion${indexAccion}`"
+          :id="traslado.id"
+          @guardado="val => $emit('guardado', val)"
+          v-if="referencia.estado !== 'Cancelado' && referencia.estado !== 'Proceso Terminado'"
+      />
+    </template>
   </div>
 </template>
 

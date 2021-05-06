@@ -92,12 +92,7 @@
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
-                      <template
-                        v-if="
-                          referencia.estado !== 'Proceso Terminado' ||
-                          referencia.estado !== 'Cancelado'
-                        "
-                      >
+                      <template>
                         <v-card-actions
                           v-if="bitacora.presentacion || bitacora.traslado"
                           class="mx-3"
@@ -192,12 +187,7 @@
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
-                      <template
-                        v-if="
-                          referencia.estado !== 'Proceso Terminado' ||
-                          referencia.estado !== 'Cancelado'
-                        "
-                      >
+                      <template>
                         <v-card-actions v-if="presentacion" class="mx-3">
                           <v-row style="border: 1px solid blue">
                             <v-col cols="8">
@@ -287,12 +277,7 @@
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
-                      <template
-                        v-if="
-                          referencia.estado !== 'Proceso Terminado' ||
-                          referencia.estado !== 'Cancelado'
-                        "
-                      >
+                      <template>
                         <v-card-actions v-if="traslado" class="mx-3">
                           <v-row style="border: 1px solid blue">
                             <v-col cols="8">

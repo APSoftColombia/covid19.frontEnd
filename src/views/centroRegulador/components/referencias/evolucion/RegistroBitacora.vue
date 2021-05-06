@@ -25,7 +25,7 @@
       <v-toolbar dark :color="accion.color">
         <v-icon left>{{ accion.icon }}</v-icon>
         <v-toolbar-title>
-          Bitácora
+          {{accion.accion == 'Cancelar' ? 'Bitacora Anular Proceso' : 'Bitácora'}}
         </v-toolbar-title>
         <v-spacer/>
         <v-btn icon dark @click="close">
@@ -147,7 +147,8 @@ export default {
           this.loading = true
           let itemCopia = await this.clone(this.item)
           itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
-          this.axios.post(`bitacoras/${itemCopia.referencia_id}`, itemCopia)
+          let url = this.accion.accion === 'Cancelar' ? 'anular-proceso' : 'bitacoras';
+          this.axios.post(`${url}/${itemCopia.referencia_id}`, itemCopia)
               .then(() => {
                 this.$emit('guardado', itemCopia.referencia_id)
                 this.$store.commit('snackbar', {color: 'success', message: `La bitácora se guardo correctamente.`})
