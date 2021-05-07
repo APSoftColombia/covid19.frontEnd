@@ -4,9 +4,7 @@
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
-      <v-list-item-content>
-        <v-chip class="success">{{ referencia.estado }}</v-chip>
-      </v-list-item-content>
+      <v-chip class="success font-weight-bold">{{ referencia.estado }}</v-chip>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
