@@ -50,6 +50,7 @@
             </v-col>
             <v-col cols="12" sm="6">
               <v-select
+                name="tipoTraslado"
                 label="Tipo Traslado"
                 v-model="item.tipo_traslado"
                 :items="ref_tiposTraslados"
@@ -57,7 +58,7 @@
                 outlined
                 dense
                 clearable
-                rules="required"
+                :rules="[(v) => !!v || 'El campo tipoTraslado es requerido']"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6">
@@ -69,7 +70,7 @@
                 outlined
                 dense
                 clearable
-                rules="required"
+                :rules="[(v) => !!v || 'El campo tipoAmbulancia es requerido']"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="12">
