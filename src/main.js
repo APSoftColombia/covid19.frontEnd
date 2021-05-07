@@ -195,7 +195,7 @@ Vue.mixin({
 		}
 	},
 	methods: {
-		calculaEdad (fechaNacimiento) {
+		calculaEdad (fechaNacimiento, inHours = false) {
 			if (fechaNacimiento && this.moment(fechaNacimiento).isValid()) {
 				let a = this.moment()
 				let b = this.moment(fechaNacimiento)
@@ -215,7 +215,7 @@ Vue.mixin({
 				stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? ''  : 'es'}` : '')
 				stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
 
-				stringDate = stringDate + (years || months || days ? hours ? ` ${hours} hora${hours === 1 ? '' : 's'}` : '' : '')
+				if(inHours) stringDate = stringDate + (years || months || days ? hours ? ` ${hours} hora${hours === 1 ? '' : 's'}` : '' : '')
 				return {
 					stringDate: stringDate,
 					years: years,

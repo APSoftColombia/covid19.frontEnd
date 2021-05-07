@@ -54,7 +54,6 @@
                 label="Tipo Traslado"
                 v-model="item.tipo_traslado"
                 :items="ref_tiposTraslados"
-                hide-details
                 outlined
                 dense
                 clearable
@@ -66,7 +65,6 @@
                 label="Tipo Ambulancia"
                 v-model="item.tipo_ambulancia"
                 :items="ref_tiposAmbulancia"
-                hide-details
                 outlined
                 dense
                 clearable
@@ -84,8 +82,8 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
-                label="IPS de Traslado"
-                name="IPS de Origen"
+                label="Transportadora"
+                name="Transportadora"
                 v-model="item.codigo_prestador_traslado"
                 rules="required"
               />
@@ -104,7 +102,7 @@
                 v-model="item.contacto"
                 label="Contacto"
                 name="contacto"
-                rules="required|numeric"
+                rules="required"
               >
               </c-texto>
             </v-col>
@@ -127,8 +125,8 @@
 </template>
 
 <script>
-import BuscadorIps from "Views/centroRegulador/components/referencias/BuscadorIps";
-import { mapGetters } from "vuex";
+import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "SeleccionarTransporte",

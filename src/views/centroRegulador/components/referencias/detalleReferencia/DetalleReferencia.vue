@@ -33,34 +33,59 @@
                               <v-list-item-title class="font-weight-bold grey--text">
                                 {{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}
                               </v-list-item-title>
-                              <v-list-item-title class="grey--text body-3">
+                              <v-list-item-subtitle>
                                 {{ [item.tipo_id ? item.tipo_id.tipo : '', item.identificacion].filter(x => x).join(' ') }}
-                              </v-list-item-title>
+                              </v-list-item-subtitle>
+                              <v-list-item-subtitle v-if="item.fecha_nacimiento">
+                                {{ calculaEdad(item.fecha_nacimiento).stringDate }}
+                              </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
-                          <v-list-item class="py-0">
-                            <v-list-item-content class="pt-0">
-                              <v-list-item-subtitle class="body-2" v-if="item.celular || item.email">
-                                <template v-if="item.celular">
-                                  <v-icon small>mdi-cellphone</v-icon>
-                                  {{ item.celular }}
-                                </template>
-                                <template v-if="item.email">
-                                  <v-icon small>mdi-email</v-icon>
-                                  {{ item.email }}
-                                </template>
+                          <v-list-item class="py-0 mh-30 mt-3" v-if="item.celular">
+                            <v-icon small class="mr-1">mdi-cellphone</v-icon>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="body-2">
+                                {{ item.celular }}
                               </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30" v-if="item.email">
+                            <v-icon small class="mr-1">mdi-email</v-icon>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="body-2">
+                                {{ item.email }}
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30">
+                            <v-icon small class="mr-1">fas fa-map-signs</v-icon>
+                            <v-list-item-content class="pa-0">
                               <v-list-item-subtitle class="body-2">
                                 {{ [item.direccion, item.municipio ? item.municipio.nombre : null, item.municipio && item.municipio.departamento ? item.municipio.departamento.nombre : null].filter(x => x).join(', ') }}
                               </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="item.eps" class="grey--text subtitle-2 mt-3">
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30 mt-2" v-if="item.eps">
+                            <v-icon small class="mr-1">fas fa-clinic-medical</v-icon>
+                            <v-list-item-content class="pa-0">
+                              <v-list-item-subtitle class="body-2">
                                 {{ item.eps.nombre }}
                               </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="item.tipo_afiliacion" class="grey--text subtitle-2 mb-2">
+                              <v-list-item-subtitle v-if="item.tipo_afiliacion" class="body-2">
                                 {{ item.tipo_afiliacion }}
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
+<!--                          <v-list-item class="py-0 mt-3">-->
+<!--                            <v-list-item-content class="pa-0">-->
+<!--                              <v-list-item-title v-if="item.eps" class="grey&#45;&#45;text subtitle-2">-->
+<!--                                {{ item.eps.nombre }}-->
+<!--                              </v-list-item-title>-->
+<!--                              <v-list-item-subtitle v-if="item.tipo_afiliacion" class="grey&#45;&#45;text subtitle-2 mb-2">-->
+<!--                                {{ item.tipo_afiliacion }}-->
+<!--                              </v-list-item-subtitle>-->
+<!--                            </v-list-item-content>-->
+<!--                          </v-list-item>-->
                           <v-divider></v-divider>
                           <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Remite</v-list-item-subtitle>
                           <v-list-item class="py-0" v-if="item.prestador_origen">
@@ -75,6 +100,7 @@
                                   </template>
                               </v-list-item-subtitle>
                               <v-list-item-subtitle class="body-2">
+                                <v-icon v-if="item.prestador_origen.direccion" small>fas fa-map-signs</v-icon>
                                 {{ [item.prestador_origen.direccion, item.prestador_origen.nompio, item.prestador_origen.nomdepto].filter(x => x).join(', ') }}
                               </v-list-item-subtitle>
                               <v-list-item-subtitle class="body-2">
@@ -242,3 +268,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.mh-30{
+  min-height: 30px !important;
+}
+</style>

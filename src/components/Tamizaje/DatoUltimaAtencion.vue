@@ -1,7 +1,7 @@
 <template>
   <c-tooltip
       top
-      :tooltip="[moment(tamizaje.ultimo_seguimiento || tamizaje.created_at).format('DD/MM/YYYY HH:mm'), diferencia > 24 ? `(${calculaEdad(tamizaje.ultimo_seguimiento || tamizaje.created_at).stringDate})` : null].filter(x => x).join(' ')"
+      :tooltip="[moment(tamizaje.ultimo_seguimiento || tamizaje.created_at).format('DD/MM/YYYY HH:mm'), diferencia > 24 ? `(${calculaEdad(tamizaje.ultimo_seguimiento || tamizaje.created_at, true).stringDate})` : null].filter(x => x).join(' ')"
   >
     <v-chip
         class="elevation-2"
