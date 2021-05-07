@@ -76,16 +76,6 @@
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
-<!--                          <v-list-item class="py-0 mt-3">-->
-<!--                            <v-list-item-content class="pa-0">-->
-<!--                              <v-list-item-title v-if="item.eps" class="grey&#45;&#45;text subtitle-2">-->
-<!--                                {{ item.eps.nombre }}-->
-<!--                              </v-list-item-title>-->
-<!--                              <v-list-item-subtitle v-if="item.tipo_afiliacion" class="grey&#45;&#45;text subtitle-2 mb-2">-->
-<!--                                {{ item.tipo_afiliacion }}-->
-<!--                              </v-list-item-subtitle>-->
-<!--                            </v-list-item-content>-->
-<!--                          </v-list-item>-->
                           <v-divider></v-divider>
                           <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Remite</v-list-item-subtitle>
                           <v-list-item class="py-0" v-if="item.prestador_origen">
@@ -93,21 +83,29 @@
                               <v-list-item-title class="font-weight-bold grey--text">
                                 {{ item.prestador_origen.nombre }}
                               </v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.telefono">
+                            <v-icon small class="mr-1">mdi-cellphone</v-icon>
+                            <v-list-item-content class="pa-0">
                               <v-list-item-subtitle class="body-2">
-                                  <template v-if="item.prestador_origen.telefono">
-                                    <v-icon small>mdi-cellphone</v-icon>
-                                    {{ item.prestador_origen.telefono }}
-                                  </template>
+                                {{ item.prestador_origen.telefono }}
                               </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.direccion">
+                            <v-icon small class="mr-1">fas fa-map-signs</v-icon>
+                            <v-list-item-content class="pa-0">
                               <v-list-item-subtitle class="body-2">
-                                <v-icon v-if="item.prestador_origen.direccion" small>fas fa-map-signs</v-icon>
                                 {{ [item.prestador_origen.direccion, item.prestador_origen.nompio, item.prestador_origen.nomdepto].filter(x => x).join(', ') }}
                               </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.email">
+                            <v-icon small class="mr-1">mdi-email</v-icon>
+                            <v-list-item-content class="pa-0">
                               <v-list-item-subtitle class="body-2">
-                                <template v-if="item.prestador_origen.email">
-                                  <v-icon small>mdi-email</v-icon>
-                                  {{ item.prestador_origen.email }}
-                                </template>
+                                {{ item.prestador_origen.email }}
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
