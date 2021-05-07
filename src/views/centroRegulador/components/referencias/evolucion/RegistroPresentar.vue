@@ -58,7 +58,7 @@
             </v-col>
             <v-col cols="12">
               <buscador-ips
-                  label="IPS de Origen"
+                  label="IPS"
                   v-model="prestadorTemporal"
                   @inputObject="val => asignarIps(val)"
               />

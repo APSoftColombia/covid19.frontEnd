@@ -167,7 +167,7 @@
                             </div>
                           </v-row>
                         </v-col>
-                        <v-col class="pb-0" cols="12">
+                        <v-col class="pb-0" cols="12" v-if="presentacion.fecha_aceptacion">
                           <v-row align="center" justify="start">
                             <div>
                               <div class="font-weight-normal">
@@ -191,7 +191,7 @@
                             </div>
                           </v-row>
                         </v-col>
-                        <v-col class="pb-0" cols="12">
+                        <v-col class="pb-0" cols="12" v-if="presentacion.fecha_seleccion">
                           <v-row align="center" justify="start">
                             <div>
                               <div class="font-weight-normal">
