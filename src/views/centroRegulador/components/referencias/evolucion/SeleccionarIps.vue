@@ -49,7 +49,7 @@
               />
             </v-col>
             <v-col cols="12">
-              <c-text-area label="Observaciones" v-model="item.observaciones" />
+              <c-text-area label="Observaciones" rules="required" name="observaciones" v-model="item.observaciones" />
             </v-col>
           </v-row>
         </ValidationObserver>

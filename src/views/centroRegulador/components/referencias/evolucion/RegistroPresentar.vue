@@ -127,6 +127,8 @@
               <c-text-area
                   label="Observaciones"
                   v-model="item.observaciones"
+                  rules="required"
+                  name="observaciones"
               />
             </v-col>
           </v-row>
