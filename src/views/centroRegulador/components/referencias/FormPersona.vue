@@ -1,7 +1,7 @@
 <template>
   <v-row dense>
     <v-col cols="12" sm="6" md="6">
-      <c-identificacion
+      <c-identificacion-referencia
           ref="cIdentificacion"
           v-model="value.identificacion"
           label="Identificación"
@@ -220,9 +220,11 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import CIdentificacionReferencia from './CIdentificacionReferencia'
 
 export default {
   name: 'FormPersona',
+  components: {CIdentificacionReferencia},
   props: {
     value: {
       type: Object,

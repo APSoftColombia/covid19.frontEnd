@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'CTexto',
+  name: 'CIdentificacionReferencia',
   props: {
     value: {
       type: String,
