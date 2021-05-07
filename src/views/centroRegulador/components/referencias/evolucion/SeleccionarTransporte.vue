@@ -49,29 +49,26 @@
               />
             </v-col>
             <v-col cols="12" sm="6">
-              <v-select
-                name="tipoTraslado"
-                label="Tipo Traslado"
-                v-model="item.tipo_traslado"
-                :items="ref_tiposTraslados"
-                outlined
-                dense
-                clearable
-                :rules="[(v) => !!v || 'El campo tipoTraslado es requerido']"
-              ></v-select>
+                <c-select-complete
+                    name="tipo traslado"
+                    label="Tipo Traslado"
+                    v-model="item.tipo_traslado"
+                    :items="ref_tiposTraslados"
+                    hide-details
+                    rules="required"
+                />
             </v-col>
             <v-col cols="12" sm="6">
-              <v-select
-                label="Tipo Ambulancia"
-                v-model="item.tipo_ambulancia"
-                :items="ref_tiposAmbulancia"
-                outlined
-                dense
-                clearable
-                :rules="[(v) => !!v || 'El campo tipoAmbulancia es requerido']"
-              ></v-select>
+                <c-select-complete
+                    label="Tipo Ambulancia"
+                    name="tipo ambulancia"
+                    v-model="item.tipo_ambulancia"
+                    :items="ref_tiposAmbulancia"
+                    hide-details
+                    rules="required"
+                />
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="12" sm="12" class="mt-2">
               <buscador-ips
                 ref="buscadoripsOrigen"
                 label="IPS de Origen"
@@ -82,8 +79,8 @@
             </v-col>
             <v-col cols="12" sm="12">
               <buscador-ips
-                label="Transportadora"
-                name="Transportadora"
+                label="IPS de Traslado"
+                name="IPS de Origen"
                 v-model="item.codigo_prestador_traslado"
                 rules="required"
               />
@@ -102,12 +99,12 @@
                 v-model="item.contacto"
                 label="Contacto"
                 name="contacto"
-                rules="required"
+                rules="required|numeric"
               >
               </c-texto>
             </v-col>
             <v-col cols="12">
-              <c-text-area label="Observaciones" v-model="item.observaciones" />
+              <c-text-area label="Observaciones" rules="required" name="observaciones" v-model="item.observaciones" />
             </v-col>
           </v-row>
         </ValidationObserver>
@@ -125,8 +122,8 @@
 </template>
 
 <script>
-import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
-import { mapGetters } from 'vuex'
+import BuscadorIps from "Views/centroRegulador/components/referencias/BuscadorIps";
+import { mapGetters } from "vuex";
 
 export default {
   name: "SeleccionarTransporte",

@@ -12,7 +12,7 @@
     <v-col class="pb-0" cols="12" sm="6" md="4">
         <c-select-complete
             v-model="filters.models.estados"
-            label="Estado Direccionamiento"
+            label="Estado de Referencia"
             :items="filters.data.estados"
             multiple
             hide-details
