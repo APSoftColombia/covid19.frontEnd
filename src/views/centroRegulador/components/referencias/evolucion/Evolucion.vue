@@ -4,7 +4,9 @@
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
-      <v-chip class="success font-weight-bold">{{ referencia.estado }}</v-chip>
+      <v-list-item-content>
+        <v-chip class="success">{{ referencia.estado }}</v-chip>
+      </v-list-item-content>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
@@ -22,6 +24,7 @@
           <v-tab> Bitácora </v-tab>
           <v-tab> Busqueda de IPS </v-tab>
           <v-tab> Traslado </v-tab>
+          <!-- Bitacora -->
           <v-tab-item>
             <v-list>
               <template
@@ -48,33 +51,6 @@
                               )
                             : "" }}</div>
                   </v-list-item-subtitle>
-                  <!-- <v-list-item class="py-0">
-                    <v-list-item-content class="pa-0 caption">
-                      <v-list-item-subtitle class="grey--text">
-                        <v-icon small>fas fa-user</v-icon>
-                        {{ bitacora.usuario.name }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle class="grey--text pl-4">
-                        {{
-                          bitacora.usuario.tipo_documento_identidad_id &&
-                          tiposDocumentoIdentidad.length &&
-                          tiposDocumentoIdentidad.find(
-                            (x) =>
-                              x.id ===
-                              bitacora.usuario.tipo_documento_identidad_id
-                          )
-                            ? tiposDocumentoIdentidad.find(
-                                (x) =>
-                                  x.id ===
-                                  bitacora.usuario
-                                    .tipo_documento_identidad_id
-                              ).tipo
-                            : ""
-                        }}
-                        {{ bitacora.usuario.numero_documento_identidad }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item> -->
                   <v-list-item class="py-0">
                     <v-list-item-content class="pa-0">
                       {{ bitacora.observaciones }}
@@ -122,11 +98,15 @@
                         </v-col>
                       </v-row>
                     </v-card-actions>
+                    <v-row class="mx-2" align="center" justify="end">
+                      <span class="caption grey--text">Realizo: {{ bitacora.usuario ? bitacora.usuario.name.toLowerCase() : '-' }}</span>
+                    </v-row>
                   </template>
                 </v-card>
               </template>
             </v-list>
           </v-tab-item>
+          <!-- Busqueda de IPS -->
           <v-tab-item>
             <v-list>
               <template
@@ -139,52 +119,8 @@
                   class="my-2"
                   outlined
                 >
-                  <v-list-item-subtitle
-                    class="body-2 font-weight-bold text--primary mx-4 pt-2"
-                  >
-                    Presentacion -
-                    <span class="caption">{{ presentacion.estado }}</span>
-                  </v-list-item-subtitle>
-                  <v-list-item class="py-0">
-                    <v-list-item-content class="pa-0">
-                      <v-list-item-subtitle>
-                        <v-icon small>mdi-calendar-month</v-icon>
-                        Fecha Aceptacion:
-                        {{
-                          presentacion.fecha_aceptacion
-                            ? moment(presentacion.fecha_aceptacion).format(
-                                "DD/MM/YYYY HH:mm"
-                              )
-                            : "-"
-                        }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle>
-                        <v-icon small>mdi-calendar-month</v-icon>
-                        Fecha Seleccion:
-                        {{
-                          presentacion.fecha_seleccion
-                            ? moment(presentacion.fecha_seleccion).format(
-                                "DD/MM/YYYY HH:mm"
-                              )
-                            : "-"
-                        }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle>
-                        <v-icon small>mdi-calendar-month</v-icon>
-                        Fecha Presentacion:
-                        {{
-                          presentacion.fecha_presentacion
-                            ? moment(
-                                presentacion.fecha_presentacion
-                              ).format("DD/MM/YYYY HH:mm")
-                            : "-"
-                        }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <template>
-                    <v-card-actions v-if="presentacion" class="mx-3">
-                      <v-row class="presentado">
+                  <v-card-text class="pb-0">
+                    <v-row class="presentado">
                         <v-col cols="8">
                           <span>Presentado a:</span>
                           <h5>
@@ -195,7 +131,7 @@
                             }}
                           </h5>
                         </v-col>
-                        <v-col cols="4" align-self="center">
+                        <v-col cols="4" align-self="center"  v-if="presentacion">
                           <v-row align="center" justify="end" class="mx-2">
                             <presentacion
                               :referencia="referencia"
@@ -205,12 +141,90 @@
                           </v-row>
                         </v-col>
                       </v-row>
+                  </v-card-text>
+                  <template>
+                    <v-card-actions class="mx-3 pt-0">
+                      <v-row>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>Presentacion</b></span>
+                              </div>
+                              <div>
+                                {{
+                                  presentacion.fecha_presentacion
+                                    ? moment(
+                                        presentacion.fecha_presentacion
+                                      ).format("DD/MM/YYYY")
+                                    : "-"
+                                }} a las {{
+                                  presentacion.fecha_presentacion
+                                    ? moment(
+                                        presentacion.fecha_presentacion
+                                      ).format("HH:mm")
+                                    : "-"
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>IPS Acepta</b></span>
+                              </div>
+                              <div>
+                                {{
+                                  presentacion.fecha_aceptacion
+                                    ? moment(
+                                        presentacion.fecha_aceptacion
+                                      ).format("DD/MM/YYYY")
+                                    : "-"
+                                }} a las {{
+                                  presentacion.fecha_aceptacion
+                                    ? moment(
+                                        presentacion.fecha_aceptacion
+                                      ).format("HH:mm")
+                                    : "-"
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>Se selecciona IPS</b></span>
+                              </div>
+                              <div>
+                                {{
+                                  presentacion.fecha_seleccion
+                                    ? moment(
+                                        presentacion.fecha_seleccion
+                                      ).format("DD/MM/YYYY")
+                                    : "-"
+                                }} a las {{
+                                  presentacion.fecha_seleccion
+                                    ? moment(
+                                        presentacion.fecha_seleccion
+                                      ).format("HH:mm")
+                                    : "-"
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                      </v-row>
                     </v-card-actions>
                   </template>
                 </v-card>
               </template>
             </v-list>
           </v-tab-item>
+          <!-- Traslado -->
           <v-tab-item>
             <v-list>
               <template
@@ -223,71 +237,66 @@
                   class="my-2"
                   outlined
                 >
-                  <v-list-item-subtitle
-                    class="body-2 font-weight-bold text--primary mx-4 pt-2"
-                  >
-                    Traslado -
-                    <span class="caption">{{ traslado.estado }}</span>
-                  </v-list-item-subtitle>
-                  <v-list-item class="py-0">
-                    <v-list-item-content class="pa-0">
-                      <v-list-item-subtitle class="my-2">
-                        <v-icon small>mdi-hospital-building</v-icon>
-                        IPS Origen:
-                        {{
-                          traslado.ips_origen ? traslado.ips_origen.nombre : '-'
-                        }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">
-                        <v-icon small>mdi-hospital-building</v-icon>
-                        IPS Traslado:
-                        {{
-                          traslado.ips_traslado ? traslado.ips_traslado.nombre : '-'
-                        }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">
-                        <v-icon small>mdi-hospital-building</v-icon>
-                        IPS Destino:
-                        {{
-                          traslado.ips_destino ? traslado.ips_destino.nombre : '-'
-                        }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item class="py-0">
-                    <v-list-item-content class="pa-0">
-                      <v-list-item-subtitle class="mb-2">
-                        <v-icon small>mdi-car</v-icon>
-                        <b>Tipo transporte:</b>
-                        {{ traslado.tipo_traslado }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle>
-                        <v-icon small>mdi-ambulance</v-icon>
-                        <b>Tipo ambulancia:</b>
-                        {{ traslado.tipo_ambulancia }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <template>
-                    <v-card-actions v-if="traslado" class="mx-3">
-                      <v-row class="presentado">
+                  <v-card-text class="pb-0">
+                    <v-row class="presentado">
                         <v-col cols="8">
-                          <span>Presentado a:</span>
-                          <h5>
+                          <span>Transportadora:</span>
+                          <h5 class="mb-0">
                             {{
                               traslado.ips_traslado
                                 ? traslado.ips_traslado.nombre
                                 : ""
                             }}
                           </h5>
+                          <span class="caption">
+                            {{
+                              traslado.tipo_ambulancia == 'Otro' ? 'Otro tipo de ambulancia' : traslado.tipo_ambulancia
+                            }} via {{
+                              traslado.tipo_traslado
+                            }} <br>
+                            Contacto: {{ traslado.contacto ? traslado.contacto : '-' }}
+                          </span>
                         </v-col>
-                        <v-col cols="4" align-self="center">
+                        <v-col cols="4" align-self="center" v-if="traslado">
                           <v-row align="center" justify="end" class="mx-2">
                             <Traslado
                               :referencia="referencia"
                               :traslado="traslado"
                               @guardado="(val) => $emit('guardado', val)"
                             />
+                          </v-row>
+                        </v-col>
+                      </v-row>
+                  </v-card-text>
+                  <template>
+                    <v-card-actions class="mx-3">
+                      <v-row>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>IPS Origen</b></span>
+                              </div>
+                              <div>
+                                {{
+                                  traslado.ips_origen ? traslado.ips_origen.nombre : '-'
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>IPS Destino</b></span>
+                              </div>
+                              <div>
+                                {{
+                                  traslado.ips_destino ? traslado.ips_destino.nombre : '-'
+                                }}
+                              </div>
+                            </div>
                           </v-row>
                         </v-col>
                       </v-row>
