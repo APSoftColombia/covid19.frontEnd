@@ -23,7 +23,7 @@
         </v-toolbar>
         <v-container fluid>
           <v-row v-if="item" no-gutters>
-              <v-col cols="10" class="mx-auto">
+              <v-col lg="10" md="12" sm="12" class="mx-auto">
                   <v-row dense>
                       <v-col cols="12" md="4">
                         <v-card>
