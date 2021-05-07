@@ -129,7 +129,7 @@
                           rules="required"
                       />
                     </v-col>
-                    <v-col cols="12" sm="12" md="6" lg="6">
+                    <v-col cols="12" sm="12" md="12" lg="6">
                       <c-file
                           label="Historia Clinica"
                           name="historial clinica"
@@ -138,7 +138,7 @@
                           :hint="item.historia_clinica && item.historia_clinica.id ? 'cargado actualmente: ' + `${item.historia_clinica.ruta.split('/')[1]}` : ''"
                       />
                     </v-col>
-                    <v-col cols="12" sm="12" md="6" lg="6">
+                    <v-col cols="12" sm="12" md="12" lg="6">
                       <c-file
                           label="Orden Médica"
                           name="orden médica"
