@@ -4,9 +4,7 @@
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
-      <v-list-item-content>
-        <v-chip class="success">{{ referencia.estado }}</v-chip>
-      </v-list-item-content>
+      <v-chip class="success font-weight-bold">{{ referencia.estado }}</v-chip>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
@@ -260,12 +258,12 @@
                     <v-list-item-content class="pa-0">
                       <v-list-item-subtitle class="mb-2">
                         <v-icon small>mdi-car</v-icon>
-                        <b>Tipo transporte:</b> 
+                        <b>Tipo transporte:</b>
                         {{ traslado.tipo_traslado }}
                       </v-list-item-subtitle>
                       <v-list-item-subtitle>
                         <v-icon small>mdi-ambulance</v-icon>
-                        <b>Tipo ambulancia:</b> 
+                        <b>Tipo ambulancia:</b>
                         {{ traslado.tipo_ambulancia }}
                       </v-list-item-subtitle>
                     </v-list-item-content>

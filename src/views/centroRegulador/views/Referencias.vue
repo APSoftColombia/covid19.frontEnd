@@ -262,7 +262,7 @@ export default {
   data: () => ({
     rutaBase: 'referencias',
     dataTable: {
-      advanceFilters: false,
+      advanceFilters: true,
       titleFilters: 'Filtros Referencias',
       nameItemState: 'tablaReferencias',
       route: 'referencias',
