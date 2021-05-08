@@ -34,34 +34,10 @@
                 @filtra="val => dataTable.route = val"
             />
             <template v-slot:tagsfilters="{tags}">
-              <v-col cols="12" class="py-0">
-                <c-chip-filters
-                    v-for="(tag, keytag) in tags.estados"
-                    :key="`tag${keytag}`"
-                    :text="tag"
-                    subtitle="Estado"
-                    @close="() => {
-                      tags.estados.splice(keytag, 1)
-                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()
-                    }"
-                />
-<!--                <c-chip-filters-->
-<!--                    v-if="tags.direccionado"-->
-<!--                    :text="tags.direccionado.text"-->
-<!--                    @close="() => {-->
-<!--                      tags.direccionado = null-->
-<!--                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()-->
-<!--                    }"-->
-<!--                />-->
-<!--                <c-chip-filters-->
-<!--                    v-if="tags.fecha_between && tags.fecha_between.length"-->
-<!--                    :text="`Desde ${tags.fecha_between[0]} hasta ${tags.fecha_between[1]}`"-->
-<!--                    @close="() => {-->
-<!--                      tags.fecha_between = []-->
-<!--                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()-->
-<!--                    }"-->
-<!--                />-->
-              </v-col>
+              <tags-filters
+                  :tags="tags"
+                  @change="$refs && $refs.filtros && $refs.filtros.aplicaFiltros()"
+              />
             </template>
             <template v-slot:tabla="{ items, headers, loading }">
               <v-data-table
@@ -252,9 +228,11 @@ import PersonaItem from 'Views/centroRegulador/components/referencias/PersonaIte
 import DetalleReferencia from 'Views/centroRegulador/components/referencias/detalleReferencia/DetalleReferencia'
 import RegistroReferencia from 'Views/centroRegulador/components/referencias/RegistroReferencia'
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
+import TagsFilters from 'Views/centroRegulador/components/referencias/TagsFilters'
 export default {
   name: 'Referencias',
   components: {
+    TagsFilters,
     PersonaItem,
     DetalleReferencia,
     RegistroReferencia,
