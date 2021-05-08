@@ -164,7 +164,7 @@ export default {
   methods: {
     aplicaFiltros() {
       let rutaTemp = this.rutaBase
-      if (this.filters.models.tiposOrigen !== null) {
+      if (this.filters.models.tiposOrigen.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tiposOrigen]=' + this.filters.models.tiposOrigen.map(x => x).join(',')
       }
       if (this.filters.models.estados.length) {

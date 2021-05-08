@@ -33,23 +33,24 @@
                 :ruta-base="rutaBase"
                 @filtra="val => dataTable.route = val"
             />
-<!--            <template v-slot:tagsfilters="{tags}">-->
-<!--              <v-col cols="12" class="py-0">-->
-<!--                <c-chip-filters-->
-<!--                    v-for="(tag, keytag) in tags.CodAmbAte"-->
-<!--                    :key="`tag${keytag}`"-->
-<!--                    :text="tag.text"-->
-<!--                    @close="() => {-->
-<!--                      tags.CodAmbAte.splice(keytag, 1)-->
-<!--                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()-->
-<!--                    }"-->
-<!--                />-->
+            <template v-slot:tagsfilters="{tags}">
+              <v-col cols="12" class="py-0">
+                <c-chip-filters
+                    v-for="(tag, keytag) in tags.estados"
+                    :key="`tag${keytag}`"
+                    :text="tag"
+                    subtitle="Estado"
+                    @close="() => {
+                      tags.estados.splice(keytag, 1)
+                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()
+                    }"
+                />
 <!--                <c-chip-filters-->
 <!--                    v-if="tags.direccionado"-->
 <!--                    :text="tags.direccionado.text"-->
 <!--                    @close="() => {-->
 <!--                      tags.direccionado = null-->
-<!--                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()-->
+<!--                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()-->
 <!--                    }"-->
 <!--                />-->
 <!--                <c-chip-filters-->
@@ -57,11 +58,11 @@
 <!--                    :text="`Desde ${tags.fecha_between[0]} hasta ${tags.fecha_between[1]}`"-->
 <!--                    @close="() => {-->
 <!--                      tags.fecha_between = []-->
-<!--                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()-->
+<!--                      $refs && $refs.filtros && $refs.filtros.aplicaFiltros()-->
 <!--                    }"-->
 <!--                />-->
-<!--              </v-col>-->
-<!--            </template>-->
+              </v-col>
+            </template>
             <template v-slot:tabla="{ items, headers, loading }">
               <v-data-table
                   :headers="headers"
