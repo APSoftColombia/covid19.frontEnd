@@ -113,7 +113,7 @@
                     label="Fecha Recepción"
                     :max="moment().format('YYYY-MM-DD')"
                     name="fecha recepción"
-                    :rules="[fechaMinimaRecepcion ? `mindate:${moment(fechaMinimaRecepcion).format('DD/MM/YYYY')}` : null].filter(x => x).join('|')"
+                    :rules="[fechaMinimaRecepcion ? `mindate:${moment(fechaMinimaRecepcion).format('YYYY-MM-DD')}` : null].filter(x => x).join('|')"
                     :min="fechaMinimaRecepcion ? moment(fechaMinimaRecepcion).format('YYYY-MM-DD') : null"
                 >
                 </c-date>
