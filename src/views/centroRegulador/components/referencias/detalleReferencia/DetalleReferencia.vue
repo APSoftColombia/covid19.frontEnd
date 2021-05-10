@@ -117,7 +117,7 @@
                                 Fecha Orden Médica
                               </v-list-item-subtitle>
                               <v-list-item-title>
-                                {{ item.fecha_orden ? moment(item.fecha_orden).format('DD/MM/YYYY') + ' a las ' + moment(item.fecha_orden).format('HH:mm') : '' }}
+                                {{ item.fecha_orden + ' a las ' + item.hora_orden }}
                               </v-list-item-title>
                             </v-list-item-content>
                           </v-list-item>
@@ -127,7 +127,7 @@
                                 Fecha Recepción de la Solicitud
                               </v-list-item-subtitle>
                               <v-list-item-title>
-                                {{ item.fecha_solicitud ? moment(item.fecha_solicitud).format('DD/MM/YYYY') + ' a las ' + moment(item.fecha_orden).format('HH:mm') : '' }}
+                                {{ item.fecha_solicitud + ' a las ' + item.hora_solicitud }}
                               </v-list-item-title>
                             </v-list-item-content>
                           </v-list-item>

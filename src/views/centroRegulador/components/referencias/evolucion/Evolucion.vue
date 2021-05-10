@@ -61,7 +61,7 @@
                     >
                       <v-row class="presentado">
                         <v-col cols="8">
-                          <span>Presentado a:</span>
+                          <span>{{ bitacora.presentacion ? 'Presentado a:' : 'Transportadora: ' }}</span>
                           <h5>
                             {{
                               bitacora.presentacion
@@ -70,8 +70,8 @@
                                       .nombre
                                   : "-"
                                 : bitacora.traslado
-                                ? bitacora.traslado.ips_destino
-                                  ? bitacora.traslado.ips_destino.nombre
+                                ? bitacora.traslado.ips_traslado
+                                  ? bitacora.traslado.ips_traslado.nombre
                                   : "-"
                                 : "-"
                             }}
@@ -79,7 +79,7 @@
                         </v-col>
                         <v-col cols="4" align-self="center">
                           <v-row align="center" justify="end" class="mx-2">
-                            <template v-if="bitacora.presentacion">
+                            <template v-if="bitacora.presentacion && referencia.estado !== 'Transporte Seleccionado'">
                               <presentacion
                                 :referencia="referencia"
                                 :presentacion="bitacora.presentacion"
@@ -120,7 +120,7 @@
                   <v-card-text class="pb-0">
                     <v-row class="presentado">
                         <v-col cols="8">
-                          <span>Presentado a:</span>
+                          <span class="caption "><b>{{ presentacion.estado }}</b></span>
                           <h5>
                             {{
                               presentacion.ips_presentacion
@@ -129,7 +129,7 @@
                             }}
                           </h5>
                         </v-col>
-                        <v-col cols="4" align-self="center"  v-if="presentacion">
+                        <v-col cols="4" align-self="center"  v-if="presentacion && referencia.estado !== 'Transporte Seleccionado'">
                           <v-row align="center" justify="end" class="mx-2">
                             <presentacion
                               :referencia="referencia"
