@@ -141,7 +141,6 @@
                 </c-texto>
               </v-col>
               <v-col class="pb-0" cols="12">
-                {{fechaMinimaProcesamiento}}
                 <c-date
                     v-model="muestra.fecha_procesamiento"
                     label="Fecha Procesamiento"
