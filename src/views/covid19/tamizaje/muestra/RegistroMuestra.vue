@@ -141,12 +141,13 @@
                 </c-texto>
               </v-col>
               <v-col class="pb-0" cols="12">
+                {{fechaMinimaProcesamiento}}
                 <c-date
                     v-model="muestra.fecha_procesamiento"
                     label="Fecha Procesamiento"
                     :max="moment().format('YYYY-MM-DD')"
                     name="fecha procesamiento"
-                    :rules="[fechaMinimaProcesamiento ? `mindate:${moment(fechaMinimaProcesamiento).format('DD/MM/YYYY')}` : null].filter(x => x).join('|')"
+                    :rules="[fechaMinimaProcesamiento ? `mindate:${moment(fechaMinimaProcesamiento).format('YYYY-MM-DD')}` : null].filter(x => x).join('|')"
                     :min="fechaMinimaProcesamiento ? moment(fechaMinimaProcesamiento).format('YYYY-MM-DD') : null"
                 >
                 </c-date>
@@ -171,7 +172,7 @@
                       label="Fecha Resultado"
                       :max="moment().format('YYYY-MM-DD')"
                       name="fecha resultado"
-                      :rules="[muestra.resultado !== null ? 'required' : null, fechaMinimaResultado ? `mindate:${moment(fechaMinimaResultado).format('DD/MM/YYYY')}` : null].filter(x => x).join('|')"
+                      :rules="[muestra.resultado !== null ? 'required' : null, fechaMinimaResultado ? `mindate:${moment(fechaMinimaResultado).format('YYYY-MM-DD')}` : null].filter(x => x).join('|')"
                       :min="fechaMinimaResultado ? moment(fechaMinimaResultado).format('YYYY-MM-DD') : null"
                   >
                   </c-date>
@@ -197,7 +198,7 @@
                       label="Fecha de Notificación EPS"
                       name="fecha de notificación EPS"
                       :max="moment().format('YYYY-MM-DD')"
-                      :rules="[muestra.fecha_resultado ? `mindate:${moment(muestra.fecha_resultado).format('DD/MM/YYYY')}` : muestra.fecha_toma ? `mindate:${moment(muestra.fecha_toma).format('DD/MM/YYYY')}` : null].filter(x => x).join('|')"
+                      :rules="[muestra.fecha_resultado ? `mindate:${moment(muestra.fecha_resultado).format('YYYY-MM-DD')}` : muestra.fecha_toma ? `mindate:${moment(muestra.fecha_toma).format('YYYY-MM-DD')}` : null].filter(x => x).join('|')"
                       :min="muestra.fecha_resultado ? moment(muestra.fecha_resultado).format('YYYY-MM-DD') : muestra.fecha_toma ? moment(muestra.fecha_toma).format('YYYY-MM-DD') : null"
                   >
                   </c-date>
@@ -208,7 +209,7 @@
                       label="Fecha de Notificación Afiliado"
                       name="fecha de notificación afiliado"
                       :max="moment().format('YYYY-MM-DD')"
-                      :rules="[muestra.fecha_resultado ? `mindate:${moment(muestra.fecha_resultado).format('DD/MM/YYYY')}` : muestra.fecha_toma ? `mindate:${moment(muestra.fecha_toma).format('DD/MM/YYYY')}` : null].filter(x => x).join('|')"
+                      :rules="[muestra.fecha_resultado ? `mindate:${moment(muestra.fecha_resultado).format('YYYY-MM-DD')}` : muestra.fecha_toma ? `mindate:${moment(muestra.fecha_toma).format('YYYY-MM-DD')}` : null].filter(x => x).join('|')"
                       :min="muestra.fecha_resultado ? moment(muestra.fecha_resultado).format('YYYY-MM-DD') : muestra.fecha_toma ? moment(muestra.fecha_toma).format('YYYY-MM-DD') : null"
                   >
                   </c-date>
