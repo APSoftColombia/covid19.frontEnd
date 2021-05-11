@@ -1,10 +1,10 @@
 <template>
   <v-card>
     <v-card-title>
+      <v-chip class="success font-weight-bold">{{ referencia.estado }}</v-chip>
       <template
         v-if="referencia && referencia.acciones && referencia.acciones.length"
       >
-      <v-chip class="success font-weight-bold">{{ referencia.estado }}</v-chip>
         <v-spacer />
         <component
           v-for="(accion, indexAccion) in referencia.acciones"
