@@ -308,7 +308,7 @@
         <v-card-text class="py-2">
           <v-checkbox
               class="mt-0 pt-0"
-              label="Celulares Actualizados"
+              label="Celulares Actualizados (5 días)"
               v-model="filters.models.cambio_telefono"
               :true-value="1"
               :false-value="null"
