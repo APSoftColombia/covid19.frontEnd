@@ -147,7 +147,7 @@
                   <c-number
                       v-model="reporte.edad"
                       label="Edad"
-                      rules="max:120"
+                      rules="numeric|max:120"
                       suffix="Años"
                       name="Edad"
                       min="0"
