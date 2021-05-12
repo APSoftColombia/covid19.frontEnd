@@ -54,7 +54,30 @@
                     </v-list-item-avatar>
                     <v-list-item-content class="pa-0">
                       <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
-                      <v-list-item-title><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
+                      <v-list-item-title v-if="item.label === 'Celular'">
+                        <template v-if="item.body.split('-')[0]">
+                          <a
+                              :href="`tel:${item.body.split('-')[0]}`"
+                          >
+                            <h6 class="mb-0">{{ item.body.split('-')[0] }}</h6>
+                          </a>
+                        </template>
+                        <template v-if="item.body.split('-')[0] && item.body.split('-')[1]"> | </template>
+                        <template v-if="item.body.split('-')[1]">
+                          <a
+                              :href="`tel:${item.body.split('-')[1]}`"
+                          >
+                            <h6 class="mb-0">{{ item.body.split('-')[1] }}</h6>
+                          </a>
+                        </template>
+                      </v-list-item-title>
+                      <v-list-item-title v-else><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
+                      <v-list-item-subtitle
+                          v-if="item.subtitle"
+                          class="fs-12 fw-normal green--text"
+                      >
+                        {{ item.subtitle }}
+                      </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action v-if="item.action">
                       <v-list-item-action-text>{{ item.action }}</v-list-item-action-text>
@@ -143,7 +166,8 @@ export default {
           },
           {
             label: 'Celular',
-            body: [this.tamizaje.celular, this.tamizaje.celular2].filter(x => x).join(' - '),
+            body: [this.tamizaje.celular, this.tamizaje.celular2].filter(x => x).join('-'),
+            subtitle: this.tamizaje.cambio_telefono ? `Actualizados el ${this.moment(this.tamizaje.cambio_telefono).format('dddd, DD [de] MMMM [de] YYYY')}` : null,
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',
             colmd: '6',

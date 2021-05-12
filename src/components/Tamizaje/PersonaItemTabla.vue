@@ -37,15 +37,55 @@
                       <v-icon x-small>fas fa-people-arrows</v-icon>
                     </v-btn>
                   </template>
-                    {{this.value.nombre}}
-                    <v-tooltip top v-if="this.value.showButton">
+                    {{value.nombre}}
+                    <v-tooltip top v-if="value.showButton">
                         <template v-slot:activator="{ on }">
                             <v-btn v-on="on" x-small icon @click.stop="goSeguimiento"><v-icon color="success">mdi-file-find</v-icon></v-btn>
                         </template>
                         <span>Detalle ERP</span>
                     </v-tooltip>
                 </v-list-item-title>
-                <v-list-item-subtitle :class="`${colorText}--text body-2 text-truncate`">{{this.value.tipoIdentificacion}} {{this.value.identificacion}}{{this.value.celular ? ', Cel. ' + this.value.celular : ''}}</v-list-item-subtitle>
+                <v-list-item-subtitle
+                    :class="`${colorText}--text body-2 text-truncate`"
+                >
+                  {{value.tipoIdentificacion}} {{value.identificacion}}
+                  <template v-if="value.celular || value.celular2">
+                    <c-tooltip
+                        v-if="value.cambio_telefono"
+                        top
+                        :tooltip="`Números de celular actualizados el ${moment(value.cambio_telefono).format('dddd, DD [de] MMMM [de] YYYY')}`"
+                    >
+                      <v-chip
+                          color="green"
+                          label
+                          class="white--text body-2 px-2 mr-1"
+                          style="height: 20px !important;"
+                      >
+                        Cel.
+                      </v-chip>
+                    </c-tooltip>
+                    <template v-else>
+                      Cel.
+                    </template>
+                    <template v-if="value.celular">
+                      <a
+                          :href="`tel:${value.celular}`"
+                          :style="`color: ${colorText}; text-decoration: underline;`"
+                      >
+                        {{ value.celular }}
+                      </a>
+                    </template>
+                    <template v-if="value.celular && value.celular2"> | </template>
+                    <template v-if="value.celular2">
+                      <a
+                          :href="`tel:${value.celular2}`"
+                          :style="`color: ${colorText}; text-decoration: underline;`"
+                      >
+                        {{ value.celular2 }}
+                      </a>
+                    </template>
+                  </template>
+                </v-list-item-subtitle>
               <v-list-item-subtitle v-if="value.nombre_eps">
                 {{ value.nombre_eps }}
               </v-list-item-subtitle>
