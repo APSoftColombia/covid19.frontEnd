@@ -269,21 +269,6 @@
       </c-select-complete>
     </v-col>
     <v-col cols="12" sm="6" md="4">
-      <v-card outlined tile class="rounded" style="border: thin solid rgba(0, 0, 0, 0.4) !important;">
-        <v-card-text class="py-2">
-          <v-checkbox
-              class="mt-0 pt-0"
-              label="ERP sin Asignar"
-              v-model="filters.models.erp_sin_asignar"
-              :true-value="1"
-              :false-value="null"
-              @change="aplicaFiltros"
-              hide-details
-          ></v-checkbox>
-        </v-card-text>
-      </v-card>
-    </v-col>
-    <v-col cols="12" sm="6" md="4">
       <c-select-complete
           v-model="filters.models.aislamientos"
           label="Aislamientos"
@@ -302,6 +287,36 @@
           hide-details
       >
       </c-select-complete>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <v-card outlined tile class="rounded" style="border: thin solid rgba(0, 0, 0, 0.4) !important;">
+        <v-card-text class="py-2">
+          <v-checkbox
+              class="mt-0 pt-0"
+              label="ERP sin Asignar"
+              v-model="filters.models.erp_sin_asignar"
+              :true-value="1"
+              :false-value="null"
+              @change="aplicaFiltros"
+              hide-details
+          ></v-checkbox>
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="12" sm="6" md="4">
+      <v-card outlined tile class="rounded" style="border: thin solid rgba(0, 0, 0, 0.4) !important;">
+        <v-card-text class="py-2">
+          <v-checkbox
+              class="mt-0 pt-0"
+              label="Celulares Actualizados"
+              v-model="filters.models.cambio_telefono"
+              :true-value="1"
+              :false-value="null"
+              @change="aplicaFiltros"
+              hide-details
+          />
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -356,7 +371,8 @@ export default {
         erp_sin_asignar: null,
         aislamientos: null,
         semaforo: null,
-        oportunidad: null
+        oportunidad: null,
+        cambio_telefono: null
       },
       data: {
         opcionesOportunidad: [
@@ -496,6 +512,9 @@ export default {
       }
       if (this.filters.models.semaforo !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[semaforo]=' + this.filters.models.semaforo
+      }
+      if (this.filters.models.cambio_telefono !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[cambio_telefono]=' + this.filters.models.cambio_telefono
       }
       this.$emit('filtra', rutaTemp)
     },
