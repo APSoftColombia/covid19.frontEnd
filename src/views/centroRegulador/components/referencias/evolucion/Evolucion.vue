@@ -79,7 +79,7 @@
                         </v-col>
                         <v-col cols="4" align-self="center">
                           <v-row align="center" justify="end" class="mx-2">
-                            <template v-if="bitacora.presentacion && referencia.estado !== 'Transporte Seleccionado'">
+                            <template v-if="bitacora.presentacion && !referencia.tiene_transporte">
                               <presentacion
                                 :referencia="referencia"
                                 :presentacion="bitacora.presentacion"
@@ -129,7 +129,7 @@
                             }}
                           </h5>
                         </v-col>
-                        <v-col cols="4" align-self="center"  v-if="presentacion && referencia.estado !== 'Transporte Seleccionado'">
+                        <v-col cols="4" align-self="center"  v-if="presentacion && !referencia.tiene_transporte">
                           <v-row align="center" justify="end" class="mx-2">
                             <presentacion
                               :referencia="referencia"
