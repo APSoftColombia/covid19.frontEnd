@@ -313,7 +313,7 @@
 <script>
 import { mapGetters } from "vuex";
 import RegistroBitacora from "Views/centroRegulador/components/referencias/evolucion/RegistroBitacora";
-import RegistroAnularProceso from "Views/centroRegulador/components/referencias/evolucion/RegistroBitacora";
+import RegistroAnularProceso from "Views/centroRegulador/components/referencias/evolucion/RegistroAnularProceso";
 import RegistroPresentar from "Views/centroRegulador/components/referencias/evolucion/RegistroPresentar";
 import Presentacion from "Views/centroRegulador/components/referencias/evolucion/Presentacion";
 import Traslado from "Views/centroRegulador/components/referencias/evolucion/Traslado";
