@@ -54,7 +54,6 @@
                     label="Tipo Traslado"
                     v-model="item.tipo_traslado"
                     :items="ref_tiposTraslados"
-                    hide-details
                     rules="required"
                 />
             </v-col>
@@ -64,7 +63,6 @@
                     name="tipo ambulancia"
                     v-model="item.tipo_ambulancia"
                     :items="ref_tiposAmbulancia"
-                    hide-details
                     rules="required"
                 />
             </v-col>
