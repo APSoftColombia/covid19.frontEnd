@@ -102,7 +102,10 @@
         </template>
         <span>Ver Detalle</span>
       </v-tooltip>
-      <v-tooltip top>
+      <v-tooltip
+          v-if="permisos.aislamientoEditar"
+          top
+      >
         <template v-slot:activator="{on}">
           <v-btn icon color="info" v-on="on" @click="editar(aislamiento)">
             <v-icon>mdi-pencil</v-icon>
@@ -142,6 +145,9 @@ export default {
     }
   },
   computed: {
+    permisos () {
+      return this.$store.getters.getPermissionModule('covid')
+    },
     ultimoSeguimiento() {
       return this && this.aislamiento && this.aislamiento.seguimientos && this.aislamiento.seguimientos.length ? this.aislamiento.seguimientos[0] : null
     }
