@@ -18,13 +18,11 @@
             hide-details
         />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="4">
         <c-select-complete
-            v-model="filters.models.codigo_prestador_origen"
-            label="IPS Origen"
-            :items="ref_ipss"
-            item-text="nombre"
-            item-value="id"
+            v-model="filters.models.regimen"
+            label="Tipo Afiliación"
+            :items="filters.data.regimenes"
             hide-details
         />
     </v-col>
@@ -36,14 +34,15 @@
             outlined
             dense
             multiple
+            chips
             item-value="id"
             clearable
             persistent-hint
             hide-details
         >
           <template v-slot:selection="{ item, index }">
-            <div class="pa-0 text-truncate" style="width: 100% !important;">
-              {{ item.tipo }}
+            <div class="pa-0 text-truncate">
+              {{ item.tipo + ", " }} 
             </div>
           </template>
           <template v-slot:item="{ item, index }">
@@ -56,7 +55,17 @@
           </template>
         </v-autocomplete>
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+        <c-select-complete
+            v-model="filters.models.codigo_prestador_origen"
+            label="IPS Origen"
+            :items="ref_ipss"
+            item-text="nombre"
+            item-value="id"
+            hide-details
+        />
+    </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="6">
         <c-select-complete
             v-model="filters.models.eps_id"
             label="EPS"
@@ -86,14 +95,6 @@
           label="Fecha de Ultima Gestión"
           :max="moment().format('YYYY-MM-DD')"
       />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-        <c-select-complete
-            v-model="filters.models.regimen"
-            label="Tipo Afiliación"
-            :items="filters.data.regimenes"
-            hide-details
-        />
     </v-col>
   </v-row>
 </template>

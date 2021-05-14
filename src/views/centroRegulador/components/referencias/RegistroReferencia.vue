@@ -106,6 +106,15 @@
                       </ValidationProvider>
                     </v-col>
                     <v-col cols="12">
+                        <c-select-complete
+                            v-model="item.tipo_origen"
+                            label="Tipo de Atención"
+                            name="tipo de atención"
+                            :items="tiposOrigen"
+                            rules="required"
+                        />
+                    </v-col>
+                    <v-col cols="12">
                       <buscador-ips
                           label="IPS de Origen"
                           name="IPS de Origen"
@@ -214,7 +223,12 @@ export default {
     archivos: {
         fileOrdenMedica: null,
         fileHistoriaClinica: null
-    }
+    },
+    tiposOrigen: [
+      'Ambulatorio',
+      'Hospitalario',
+      'Urgencias'
+    ]
   }),
   computed: {
     permisos() {
