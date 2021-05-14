@@ -57,6 +57,7 @@ import CLocation from 'Components/Inputs/CLocation'
 import JitsiMeet from 'Components/Inputs/JitsiMeet'
 import JitsiMeetButton from 'Components/Inputs/JitsiMeetButton'
 import BuscadorIps from 'Components/Inputs/BuscadorIps'
+import BuscadorIpsx from 'Components/Inputs/BuscadorIpsx'
 import BuscadorAfiliado from 'Components/Inputs/BuscadorAfiliado'
 import CCombo from 'Components/Inputs/CCombo'
 import CDialog from 'Components/Inputs/CDialog'
@@ -111,6 +112,7 @@ const GlobalComponents = {
       Vue.component('JitsiMeet', JitsiMeet)
       Vue.component('JitsiMeetButton', JitsiMeetButton)
       Vue.component('BuscadorIps', BuscadorIps)
+      Vue.component('BuscadorIpsx', BuscadorIpsx)
       Vue.component('IconTooltip', IconTooltip)
       Vue.component('BuscadorAfiliado', BuscadorAfiliado)
       Vue.component('CCombo', CCombo)

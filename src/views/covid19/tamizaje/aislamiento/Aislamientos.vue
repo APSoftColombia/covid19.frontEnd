@@ -26,6 +26,7 @@
             <v-col cols="12" class="pt-0 ma-0">
                 <datos-aislamiento-tabla
                         @guardado="item => aislamientoGuardado(item)"
+                        @editar="item => editarAislamiento(item)"
                         :aislamientos="tamizaje.aislamientos"
                         :nombre="tamizaje.nombre1 + ' ' + tamizaje.apellido1"
                 ></datos-aislamiento-tabla>
@@ -72,6 +73,9 @@
         watch: {
         },
         methods: {
+            editarAislamiento(item) {
+                this.$refs.registroAislamiento.open(item, {id: this.tamizaje.id, aislamientos: this.tamizaje.aislamientos})
+            },
             agregarAislamiento () {
                 this.$refs.registroAislamiento.open(null, {id: this.tamizaje.id, aislamientos: this.tamizaje.aislamientos})
             },

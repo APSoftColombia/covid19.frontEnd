@@ -23,13 +23,13 @@
         </c-select-complete>
       </v-col>
       <v-col cols="12" class="pb-0" v-if="aislamiento.ordenado_por === 'IPS'">
-        <buscador-ips
+        <buscador-ipsx
             ref="buscadorips"
             label="IPS que ordena aislamiento"
             v-model="aislamiento.codigo_habilitacion"
             rules="required"
             name="IPS que ordena aislamiento"
-        ></buscador-ips>
+        />
       </v-col>
       <v-col class="pb-0" cols="12">
         <c-select-complete
@@ -39,6 +39,7 @@
             rules="required"
             name="tipo de aislamiento"
             :clearable="false"
+            @change="aislamiento.ambito = null"
         >
         </c-select-complete>
       </v-col>
@@ -125,10 +126,10 @@
       </v-col>
     </v-row>
     <form-seguimiento-aislamiento
+        v-if="!aislamiento.id"
         :aislamiento="aislamiento"
         :seguimiento_aislamiento="seguimiento_aislamiento"
-    >
-    </form-seguimiento-aislamiento>
+    />
   </div>
 </template>
 
@@ -182,12 +183,6 @@ export default {
         if (val !== 'IPS') {
           this.aislamiento.codigo_habilitacion = null
         }
-      },
-      immediate: false
-    },
-    'aislamiento.tipo': {
-      handler() {
-        this.aislamiento.ambito = null
       },
       immediate: false
     },

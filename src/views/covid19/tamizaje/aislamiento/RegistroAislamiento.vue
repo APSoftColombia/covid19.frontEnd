@@ -15,11 +15,13 @@
       </v-toolbar>
       <v-container fluid>
         <ValidationObserver ref="formAislamiento" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-          <form-aislamiento :tamizaje="tamizaje" :aislamiento="aislamiento"
-                            :seguimiento_aislamiento="seguimiento_aislamiento"></form-aislamiento>
+          <form-aislamiento :tamizaje="tamizaje"
+                            :aislamiento="aislamiento"
+                            :seguimiento_aislamiento="seguimiento_aislamiento"
+          />
         </ValidationObserver>
       </v-container>
-      <v-divider class="mt-0"></v-divider>
+      <v-divider class="mt-0"/>
       <v-card-actions>
         <v-btn
             large
@@ -28,7 +30,7 @@
           <v-icon>mdi-close</v-icon>
           Cerrar
         </v-btn>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <v-btn
             large
             color="deep-purple"
@@ -48,7 +50,7 @@
             </p>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer/>
             <v-btn large @click.stop="dialogEnviarPDF = false">
               <v-icon>mdi-close</v-icon>
               No
@@ -61,7 +63,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
 </template>
@@ -142,7 +144,7 @@ export default {
       })
     },
     open(aislamiento = null, tamizaje = null) {
-      if (aislamiento) this.aislamiento = aislamiento
+      if (aislamiento) this.aislamiento = this.clone(aislamiento)
       else if (tamizaje) {
         this.tamizaje = tamizaje
         this.aislamiento.tamizaje_id = this.tamizaje.id

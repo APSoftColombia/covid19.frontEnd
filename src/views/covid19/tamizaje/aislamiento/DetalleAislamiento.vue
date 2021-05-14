@@ -248,25 +248,19 @@
                         },
                         {
                           label: '¿Reporta contactos?',
-                          body: this.aislamiento.ReportaContactos !== null ? this.aislamiento.ReportaContactos ?  'Si' : 'No' : '',
+                          body: this.aislamiento.ReportaContactos !== null
+                              ? this.aislamiento.ReportaContactos
+                                  ?  'Si'
+                                  :`No ${this.aislamiento.IDCausalNoReporteContactos && this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos)
+                                      ? ` - ${this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos).text}`
+                                      : ''}`
+                              : '',
                           icon: 'fas fa-file-signature',
                           iconColor: 'purple',
                           colmd: '6',
                           collg: '4'
                         }
                     )
-                  if(!this.aislamiento.ReportaContactos){
-                    this.datos.push(
-                        {
-                          label: 'Causa por la cual no reporta contactos',
-                          body: this.aislamiento.IDCausalNoReporteContactos ? this.causalesNoReportaContactos.find(x => x.value === this.aislamiento.IDCausalNoReporteContactos).text : '',
-                          icon: 'fas fa-question',
-                          iconColor: 'blue',
-                          colmd: '6',
-                          collg: '4'
-                        }
-                    )
-                  }
                 }
             },
             open () {

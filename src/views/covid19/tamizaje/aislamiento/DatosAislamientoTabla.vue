@@ -17,7 +17,13 @@
                 </thead>
                 <tbody>
                 <template v-for="(aislamiento, aislamientoIndex) in aislamientos">
-                    <dato-aislamiento-t-r @verdetalle="val => verDetalle(val)" :aislamiento="aislamiento" :numero="aislamientos.length - aislamientoIndex" :key="`aislamiento${aislamientoIndex}`" :nombre="nombre"></dato-aislamiento-t-r>
+                    <dato-aislamiento-t-r
+                        @verdetalle="val => verDetalle(val)"
+                        @editar="val => $emit('editar', val)"
+                        :aislamiento="aislamiento"
+                        :numero="aislamientos.length - aislamientoIndex" :key="`aislamiento${aislamientoIndex}`"
+                        :nombre="nombre"
+                    />
                 </template>
                 </tbody>
             </template>
@@ -67,7 +73,6 @@
             },
             verDetalle (aislamiento) {
                 this.aislamientoSeleccionado = aislamiento ? this.aislamientos.find(x => x.id === aislamiento.id) : null
-                console.log('llega', this.aislamientoSeleccionado)
                 if (this.aislamientoSeleccionado) {
                     this.$refs.detalleAislamiento.open()
                 }

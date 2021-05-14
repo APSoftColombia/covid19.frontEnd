@@ -156,14 +156,14 @@ export default {
             colmd: '6',
             collg: '4'
           },
-          {
-            label: 'Sexo',
-            body: this.tamizaje.sexo ? this.tamizaje.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
-            icon: 'mdi-human-male-female',
-            iconColor: 'primary',
-            colmd: '6',
-            collg: '4'
-          },
+          // {
+          //   label: 'Sexo',
+          //   body: this.tamizaje.sexo ? this.tamizaje.sexo === 'M' ? 'Masculino' : 'Femenino' : '',
+          //   icon: 'mdi-human-male-female',
+          //   iconColor: 'primary',
+          //   colmd: '6',
+          //   collg: '4'
+          // },
           {
             label: 'Celular',
             body: [this.tamizaje.celular, this.tamizaje.celular2].filter(x => x).join('-'),
