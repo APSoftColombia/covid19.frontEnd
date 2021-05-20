@@ -55,6 +55,15 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="12">
+      <v-checkbox
+          v-model="filters.models.fallido"
+          label="Personas no localizadas"
+          :true-value="true"
+          :false-value="false"
+          @change="aplicaFiltros"
+      ></v-checkbox>
+    </v-col>
   </v-row>
 </template>
 
@@ -73,7 +82,8 @@
           covid_contacto: null,
           cet_id: '',
           estado: null,
-          tipo: null
+          tipo: null,
+          fallido: null
         },
         data: {
           tipos: [
@@ -107,6 +117,9 @@
         }
         if (this.filters.models.tipo != null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo]=' + this.filters.models.tipo + `,${this.filters.models.cet_id ? this.filters.models.cet_id : ''}`
+        }
+        if (this.filters.models.fallido !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fallidos]=' + this.filters.models.fallido
         }
         this.$emit('filtra', rutaTemp)
       },

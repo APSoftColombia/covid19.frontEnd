@@ -13,10 +13,18 @@
       <v-tooltip top v-if="this.value.sin_beneficiarios && this.value.comparte_gastos">
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon>
-            <v-icon size="32px">mdi mdi-currency-usd-off</v-icon>
+            <v-icon size="26px">mdi mdi-currency-usd-off</v-icon>
           </v-btn>
         </template>
         <span>Sin contactos beneficiarios</span>
+      </v-tooltip>
+      <v-tooltip top v-if="this.value.no_efectividad">
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon>
+            <v-icon size="26px" color="red">mdi mdi-information</v-icon>
+          </v-btn>
+        </template>
+        <span>Persona no localizada. Razon: {{this.value.no_efectividad}}</span>
       </v-tooltip>
       <icon-tooltip v-if="[this.value.fecha_expedicion, this.value.codigo_departamento, this.value.codigo_municipio, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
       <v-icon v-if="this.value.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>

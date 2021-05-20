@@ -8,6 +8,7 @@
         @addContacto="item => addContactos(item)"
         @infoContacto="item => infoContacto(item)"
         @editContacto="item => editarContacto(item)"
+        @fallidas="item => fallidas(item)"
         @apply-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.aplicaFiltros()"
         @clear-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.limpiarFiltros()"
     >
@@ -44,6 +45,9 @@
         ref="editarContacto"
         @editado="reloadTable"
     ></editar-contacto>
+    <llamadas-fallidas
+        ref="llamadasFallidas"
+    ></llamadas-fallidas>
   </v-container>
 </template>
 
@@ -59,6 +63,7 @@
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   const EditarContacto = () => import('./Componentes/EditarContacto')
   const DuplicarRegistrosNuevoCet = () => import('./Componentes/DuplicarRegistrosNuevoCet')
+  const LlamadasFallidas = () => import('./Componentes/LlamadasFallidas.vue')
   export default {
     name: "Cets",
     data: (vm) => ({
@@ -127,7 +132,8 @@
                               comparte_gastos: context.props.value.covid_contacto === 1 ? context.props.value.comparten_gastos : 0,
                               sin_beneficiarios: context.props.value.sin_beneficiarios,
                               fue_confirmado: context.props.value.fue_confirmado,
-                              covid_contacto: context.props.value.covid_contacto
+                              covid_contacto: context.props.value.covid_contacto,
+                              no_efectividad: context.props.value.no_efectividad
                             },
                           }
                         }
@@ -241,7 +247,8 @@
       DescargarReporte,
       EditarContacto,
       CargarNegativos,
-      DuplicarRegistrosNuevoCet
+      DuplicarRegistrosNuevoCet,
+      LlamadasFallidas
     },
     methods: {
       resetOptions(item) {
@@ -262,6 +269,12 @@
           event: 'infoContacto',
           icon: 'mdi-information-outline',
           tooltip: item.covid_contacto === 1 ? 'Información del Confirmado' : 'Información del Contacto'
+        })
+        if (item.no_efectivas && item.no_efectivas.length) item.options.push({
+          event: 'fallidas',
+          icon: 'mdi-alert-box-outline',
+          color: 'error',
+          tooltip: 'Llamadas fallidas'
         })
         return item
       },
@@ -287,6 +300,9 @@
         let hasContactos = contacto.contactos
         this.$refs.editarContacto.open(contacto, setNoToAuthEPS, hasContactos, true)
       },
+      fallidas(item){
+          this.$refs.llamadasFallidas.open(item.no_efectivas)
+      }
     },
     created() {
       this.dataTable.route = this.rutaBase
