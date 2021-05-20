@@ -14,7 +14,7 @@
                         {{moment(evolucion.created_at).format('DD/MM/YYYY HH:mm')}}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-          <template v-if="index === 0 && permisos.seguimientoEditar && !evolucion.fallida">
+          <template v-if="index === 0 && ((permisos.seguimientoEditar && !evolucion.fallida) || esSuperAdmin)">
             <v-spacer/>
             <v-tooltip top>
               <template v-slot:activator="{ on }">

@@ -284,7 +284,7 @@
             </td>
           </template>
           <td class="text-center">
-            <v-tooltip top v-if="indexEvolucionTable === 0 && permisos.seguimientoEditar && !evolucion.fallida">
+            <v-tooltip top v-if="indexEvolucionTable === 0 && ((permisos.seguimientoEditar && !evolucion.fallida) || esSuperAdmin)">
               <template v-slot:activator="{ on }">
                 <v-btn fab color="orange" small dark v-on="on"
                        @click="$emit('editarEvolucion', evolucion.id)">
