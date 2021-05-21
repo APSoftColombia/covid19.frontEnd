@@ -357,6 +357,9 @@ export default {
               let copySintomas = this.clone(response.data.sintomas)
               response.data.sintomas = response.data.sintomas.filter(a => a.aplica_covid && a.solicita_fecha).map(x => x.id)
               response.data.signos_alarma = copySintomas.filter(b => b.aplica_covid && !b.solicita_fecha).map(x => x.id)
+            } else {
+              response.data.sintomas = []
+              response.data.signos_alarma = []
             }
             if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
               response.data.comorbilidades = response.data.comorbilidades.map(x => x.codigo)
