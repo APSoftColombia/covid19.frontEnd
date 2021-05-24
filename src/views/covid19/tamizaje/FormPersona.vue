@@ -110,6 +110,26 @@
       >
       </c-texto>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+      <c-texto
+          v-model="persona.telefono_sivigila"
+          label="Telefono Sivigila"
+          rules="numeric|minlength:10|maxlength:10"
+          name="telefono sivigila"
+          :disabled="identificacionVerificada < 1"
+      >
+      </c-texto>
+    </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+      <c-texto
+          v-model="persona.telefono_ma"
+          label="Telefono MA"
+          rules="numeric|minlength:10|maxlength:10"
+          name="telefono ma"
+          :disabled="identificacionVerificada < 1"
+      >
+      </c-texto>
+    </v-col>
     <v-col class="pb-0" cols="12" sm="12" md="12">
       <c-texto
           v-model="persona.email"
