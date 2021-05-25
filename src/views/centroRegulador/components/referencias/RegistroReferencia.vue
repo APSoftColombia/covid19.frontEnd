@@ -67,6 +67,7 @@
                       :value="item"
                       @verificado="val => verificar(val)"
                       @responseReferencia="val => respuestaPersona = val"
+                      @responseFallecido="val => respuestaFallecido = val"
                   />
                   <v-row dense>
                     <v-col cols="12">
@@ -192,6 +193,10 @@
           ref="dialogReferenciaAfiliado"
           :value="respuestaPersona"
       />
+      <dialog-fallecido
+          ref="dialogFallecido"
+          :value="respuestaFallecido"
+      />
       <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
@@ -201,6 +206,7 @@
 import models from '../../models'
 import FormPersona from 'Views/centroRegulador/components/referencias/FormPersona'
 import DialogReferenciasAfiliado from 'Views/centroRegulador/components/referencias/DialogReferenciasAfiliado'
+import DialogFallecido from 'Views/centroRegulador/components/referencias/DialogFallecido'
 import BuscadorCies from 'Views/centroRegulador/components/referencias/BuscadorCies'
 import BuscadorCups from 'Views/centroRegulador/components/referencias/BuscadorCups'
 import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
@@ -212,13 +218,15 @@ export default {
     BuscadorCups,
     BuscadorCies,
     FormPersona,
-    DialogReferenciasAfiliado
+    DialogReferenciasAfiliado,
+    DialogFallecido
   },
   data: () => ({
     loading: false,
     dialog: false,
     verificado: 0,
     respuestaPersona: null,
+    respuestaFallecido: null,
     item: null,
     archivos: {
         fileOrdenMedica: null,
@@ -352,6 +360,7 @@ export default {
     verificar(val) {
       this.verificado = val
       this.$emit('verificado', val)
+      if (val === -2 && this.respuestaFallecido) this.$refs.dialogFallecido.open()
       if (((val === -1) || (val === 1)) && this.respuestaPersona) this.$refs.dialogReferenciaAfiliado.open()
     }
   }

@@ -342,7 +342,9 @@ export default {
     resultAfiliado(response) {
       console.log('response', response)
       this.$emit('responseReferencia', null)
-      this.identificacionVerificada = 1
+      if(!response.fallecido){
+          this.identificacionVerificada = 1
+      }
       this.$emit('verificado', this.identificacionVerificada)
       if (response.afiliado !== null) {
         this.value.tipo_identificacion = null
@@ -361,6 +363,10 @@ export default {
         this.value.si_eps = 1
         this.value.eps_id = null
         this.value.tipo_afiliacion = null
+      }
+      if(response && response.fallecido && response.afiliado){
+          this.identificacionVerificada = -2
+          this.$emit('responseFallecido', {afiliado: response.afiliado, mensaje: { id: 3, mensaje: 'El paciente buscado se encuentra en esta Fallecidó' }})
       }
       if (response && response.referencias && response.referencias.length && (response.referencias[0].estado !== 'Proceso terminado' && response.referencias[0].estado !== 'Proceso cancelado')) {
         this.identificacionVerificada = -1
