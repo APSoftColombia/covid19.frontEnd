@@ -54,7 +54,7 @@
                     </td>
                     <td>
                       <v-list-item>
-                        <icon-tooltip v-if="[contacto.fecha_expedicion, contacto.codigo_departamento, contacto.codigo_municipio, contacto.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
+                        <icon-tooltip v-if="contacto.producto_financiero === null" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
                         <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
