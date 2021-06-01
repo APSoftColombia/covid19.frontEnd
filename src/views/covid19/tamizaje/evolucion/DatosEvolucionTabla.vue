@@ -143,7 +143,21 @@
           </td>
           <td :style="evolucion.fallida ? 'white-space: inherit !important;' : 'max-width: 200px !important;'"
               :colspan="evolucion.fallida ? 10 : 1">
-            <p class="ma-0" v-if="evolucion.fallida">{{ evolucion.observaciones }}</p>
+            <template v-if="evolucion.fallida">
+              <p class="ma-0">{{ evolucion.observaciones }}</p>
+              <v-chip
+                  v-if="evolucion.no_efectividad"
+                  color="error"
+                  text-color="white"
+                  small
+                  label
+              >
+                <c-tooltip top tooltip="Motivo de no localización">
+                  <v-icon left small style="margin-bottom: 2px">mdi-alert-circle-outline</v-icon>
+                </c-tooltip>
+                {{ evolucion.no_efectividad }}
+              </v-chip>
+            </template>
             <template v-else>
               <v-chip-group
                   v-if="evolucion.sintomas && evolucion.sintomas.filter(x => x.solicita_fecha)"
