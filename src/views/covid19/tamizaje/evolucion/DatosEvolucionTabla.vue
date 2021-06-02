@@ -371,5 +371,6 @@ export default {
 
 .tablaseguimientos .v-data-table td, .v-data-table th {
   padding: 0 8px !important;
+  line-height: 2px;
 }
 </style>

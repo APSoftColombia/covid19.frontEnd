@@ -46,7 +46,7 @@
                     </v-tooltip>
                 </v-list-item-title>
                 <v-list-item-subtitle
-                    :class="`${colorText}--text body-2 text-truncate`"
+                    :class="`${colorText}--text body-2`"
                 >
                   {{value.tipoIdentificacion}} {{value.identificacion}}
                   <template v-if="value.celular || value.celular2">
@@ -68,21 +68,31 @@
                       Cel.
                     </template>
                     <template v-if="value.celular">
-                      <a
-                          :href="`tel:${value.celular}`"
-                          :style="`color: ${colorText}; text-decoration: underline;`"
+                      <c-tooltip
+                          top
+                          tooltip="Principal"
                       >
-                        {{ value.celular }}
-                      </a>
+                        <a
+                            :href="`tel:${value.celular}`"
+                            :style="`color: ${colorText}; text-decoration: underline;`"
+                        >
+                          {{ value.celular }}
+                        </a>
+                      </c-tooltip>
                     </template>
                     <template v-if="value.celular && value.celular2"> | </template>
                     <template v-if="value.celular2">
-                      <a
-                          :href="`tel:${value.celular2}`"
-                          :style="`color: ${colorText}; text-decoration: underline;`"
+                      <c-tooltip
+                          top
+                          tooltip="Opcional"
                       >
-                        {{ value.celular2 }}
-                      </a>
+                        <a
+                            :href="`tel:${value.celular2}`"
+                            :style="`color: ${colorText}; text-decoration: underline;`"
+                        >
+                          {{ value.celular2 }}
+                        </a>
+                      </c-tooltip>
                     </template>
                   </template>
                 </v-list-item-subtitle>

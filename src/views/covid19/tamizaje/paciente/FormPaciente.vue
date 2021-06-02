@@ -107,6 +107,26 @@
       >
       </c-texto>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+      <c-texto
+          v-model="persona.telefono_sivigila"
+          label="Telefono Sivigila"
+          rules="numeric|minlength:10|maxlength:10"
+          name="telefono sivigila"
+          :disabled="identificacionVerificada < 1"
+      >
+      </c-texto>
+    </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+      <c-texto
+          v-model="persona.telefono_ma"
+          label="Telefono MA"
+          rules="numeric|minlength:10|maxlength:10"
+          name="telefono ma"
+          :disabled="identificacionVerificada < 1"
+      >
+      </c-texto>
+    </v-col>
     <v-col class="pb-0" cols="12" sm="12" md="12">
       <c-texto
           v-model="persona.email"
@@ -376,45 +396,50 @@ export default {
       this.$emit('responsetamizaje', null)
       this.identificacionVerificada = 1
       this.$emit('verificado', this.identificacionVerificada)
-      this.persona.tipo_identificacion = null
-      this.persona.nombre1 = null
-      this.persona.nombre2 = null
-      this.persona.apellido1 = null
-      this.persona.apellido2 = null
-      this.persona.fecha_nacimiento = null
-      this.persona.sexo = null
-      this.persona.celular = null
-      this.persona.email = null
-      this.persona.direccion = null
-      this.persona.departamento_id = null
-      this.persona.municipio_id = null
-      this.persona.barrio_id = null
-      this.persona.si_eps = 1
-      this.persona.eps_id = null
-      this.persona.tipo_afiliacion = null
+      if ((this.remplazarAfiliadoNull && response.afiliado === null) || response.afiliado !== null) {
+        this.persona.tipo_identificacion = null
+        this.persona.nombre1 = null
+        this.persona.nombre2 = null
+        this.persona.apellido1 = null
+        this.persona.apellido2 = null
+        this.persona.fecha_nacimiento = null
+        this.persona.sexo = null
+        this.persona.celular = null
+        this.persona.celular2 = null
+        this.persona.telefono_sivigila = null
+        this.persona.telefono_ma = null
+        this.persona.email = null
+        this.persona.direccion = null
+        this.persona.departamento_id = null
+        this.persona.municipio_id = null
+        this.persona.barrio_id = null
+        this.persona.si_eps = 1
+        this.persona.eps_id = null
+        this.persona.tipo_afiliacion = null
+      }
       if (response && response.tamizaje && response.tamizaje.length) {
         this.identificacionVerificada = 0
         this.$emit('verificado', this.identificacionVerificada)
         let tm0 = response.tamizaje[0]
         let mensaje = null
-        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6') {
+        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
           this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: 'Se puede continuar con la creación de la ERP.'}
+          mensaje = {id: 1, mensaje: `Se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
         } else if (tm0.total_riesgo && !tm0.medico_id) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 2,
             mensaje: `El documento ${tm0.identificacion} ya tiene ERP activa y está pendiente por Asignación de Caso de Estudio.`
           }
-        } else if (tm0.medico_id && (tm0.evolucion !== 'Mejora Total (Curado)' && tm0.evolucion !== 'Falleció')) {
+        } else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 3,
-            mensaje: `El documento ${tm0.identificacion} ya tiene un Caso de Estudio Asignado y no se puede continuar con la creación de la ERP.`
+            mensaje: `El documento ${tm0.identificacion} tiene un Caso de Estudio Asignado y no se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
           }
         } else {
           this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: 'Se puede continuar con la creación de la ERP.'}
+          mensaje = {id: 1, mensaje: `Se puede continuar con la creación de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
         }
         this.$emit('responsetamizaje', {tamizajes: response.tamizaje, mensaje: mensaje})
       }
@@ -430,6 +455,9 @@ export default {
         this.persona.fecha_nacimiento = response.afiliado.fecha_nacimiento
         this.persona.sexo = response.afiliado.sexo
         this.persona.celular = response.afiliado.numero_celular
+        this.persona.celular2 = response.afiliado.telefono_opcional
+        this.persona.telefono_sivigila = response.afiliado.telefono_sivigila || null
+        this.persona.telefono_ma = response.afiliado.telefono_ma || null
         this.persona.email = response.afiliado.email
         this.persona.direccion = response.afiliado.direccion
         this.persona.departamento_id = response.afiliado.departamento_id

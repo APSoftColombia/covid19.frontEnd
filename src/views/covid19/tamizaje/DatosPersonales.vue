@@ -55,20 +55,20 @@
                     <v-list-item-content class="pa-0">
                       <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
                       <v-list-item-title v-if="item.label === 'Celular'">
-                        <template v-if="item.body.split('-')[0]">
-                          <a
-                              :href="`tel:${item.body.split('-')[0]}`"
+                        <template v-for="(telefono, indexTelefono) in item.body.split('-')">
+                          <c-tooltip
+                              v-if="telefono"
+                              :key="`tel${indexTelefono}`"
+                              top
+                              :tooltip="typePhone[indexTelefono]"
                           >
-                            <h6 class="mb-0">{{ item.body.split('-')[0] }}</h6>
-                          </a>
-                        </template>
-                        <template v-if="item.body.split('-')[0] && item.body.split('-')[1]"> | </template>
-                        <template v-if="item.body.split('-')[1]">
-                          <a
-                              :href="`tel:${item.body.split('-')[1]}`"
-                          >
-                            <h6 class="mb-0">{{ item.body.split('-')[1] }}</h6>
-                          </a>
+                            <a
+                                :href="`tel:${telefono}`"
+                            >
+                              <h6 class="mb-0">{{ telefono }}</h6>
+                            </a>
+                          </c-tooltip>
+                          <template v-if="telefono && (item.body.split('-')[indexTelefono + 1])"> | </template>
                         </template>
                       </v-list-item-title>
                       <v-list-item-title v-else><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
@@ -110,6 +110,10 @@ export default {
     tipo: {
       type: String,
       default: null
+    },
+    view: {
+      type: String,
+      default: null
     }
   },
   components: {
@@ -117,7 +121,8 @@ export default {
   },
   data: () => ({
     datos: [],
-    panel: [0]
+    panel: [0],
+    typePhone: ['Principal', 'Opcional', 'Tel. SIVIGILA', 'Tel. Maestro Afiliado']
   }),
   watch: {
     abierto: {
@@ -153,8 +158,8 @@ export default {
             body: this.tamizaje.fecha_nacimiento,
             icon: 'mdi-calendar-month',
             iconColor: 'warning',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           // {
           //   label: 'Sexo',
@@ -166,60 +171,60 @@ export default {
           // },
           {
             label: 'Celular',
-            body: [this.tamizaje.celular, this.tamizaje.celular2].filter(x => x).join('-'),
+            body: [this.tamizaje.celular, this.tamizaje.celular2, this.tamizaje.telefono_sivigila, this.tamizaje.telefono_ma].join('-'),
             subtitle: this.tamizaje.cambio_telefono ? `Actualizados el ${this.moment(this.tamizaje.cambio_telefono).format('dddd, DD [de] MMMM [de] YYYY')}` : null,
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'Email',
             body: this.tamizaje.email,
             icon: 'mdi-email',
             iconColor: 'error',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'Acudiente',
             body: this.tamizaje.acudiente,
             icon: 'mdi-account-child',
             iconColor: 'green',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'Dirección',
             body: `${this.tamizaje.direccion}${this.tamizaje.barrio_id && this.tamizaje.barrio ? ` - ${this.tamizaje.barrio.tipo === 'Barrio' ? 'Barrio' : 'Vereda'} ` + this.tamizaje.barrio.nombre : ''}`,
             icon: 'fas fa-map-signs',
             iconColor: 'purple',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'Municipio',
             body: this.tamizaje.municipio ? `${this.tamizaje.municipio.nombre}, ${this.tamizaje.municipio.departamento.nombre}` : '',
             icon: 'mdi-map-marker-radius',
             iconColor: 'blue',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'EPS',
             body: this.tamizaje.eps ? this.tamizaje.eps.nombre : '',
             icon: 'fas fa-hospital',
             iconColor: 'pink',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           },
           {
             label: 'Régimen',
             body: [this.tamizaje.tipo_afiliacion, this.tamizaje.regimen_especial].filter(x => x).join(' - '),
             icon: 'mdi-medical-bag',
             iconColor: 'indigo',
-            colmd: '6',
-            collg: '4'
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           }
       )
       // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)

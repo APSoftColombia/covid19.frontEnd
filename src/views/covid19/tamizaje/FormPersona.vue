@@ -412,6 +412,9 @@ export default {
         this.persona.fecha_nacimiento = null
         this.persona.sexo = null
         this.persona.celular = null
+        this.persona.celular2 = null
+        this.persona.telefono_sivigila = null
+        this.persona.telefono_ma = null
         this.persona.email = null
         this.persona.direccion = null
         this.persona.departamento_id = null
@@ -459,6 +462,9 @@ export default {
         this.persona.fecha_nacimiento = response.afiliado.fecha_nacimiento
         this.persona.sexo = response.afiliado.sexo
         this.persona.celular = response.afiliado.numero_celular
+        this.persona.celular2 = response.afiliado.telefono_opcional
+        this.persona.telefono_sivigila = response.afiliado.telefono_sivigila || null
+        this.persona.telefono_ma = response.afiliado.telefono_ma || null
         this.persona.email = response.afiliado.email
         this.persona.direccion = response.afiliado.direccion
         this.persona.departamento_id = response.afiliado.departamento_id
