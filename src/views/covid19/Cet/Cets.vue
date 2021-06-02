@@ -22,6 +22,10 @@
         <cargar-negativos
             @reloadTable="reloadTable"
         ></cargar-negativos>
+        <cargar-grupos-familiares
+            @reloadTable="reloadTable"
+            v-if="permisos.cetsGruposFamiliares"
+        ></cargar-grupos-familiares>
         <duplicar-registros-nuevo-cet
             @reloadTable="reloadTable"
             v-if="permisos.cetsMigrarRegistros"
@@ -60,6 +64,7 @@
   const Filtros = () => import('Views/covid19/Cet/Filtros/Filtros')
   const CargarRegistros = () => import('Views/covid19/Cet/Componentes/CargarRegistros')
   const CargarNegativos = () => import('Views/covid19/Cet/Componentes/CargarNegativos.vue')
+  const CargarGruposFamiliares = () => import('Views/covid19/Cet/Componentes/CargarGruposFamiliares.vue')
   const DescargarReporte = () => import('Views/covid19/Cet/Componentes/DescargarReporte')
   const EditarContacto = () => import('./Componentes/EditarContacto')
   const DuplicarRegistrosNuevoCet = () => import('./Componentes/DuplicarRegistrosNuevoCet')
@@ -248,7 +253,8 @@
       EditarContacto,
       CargarNegativos,
       DuplicarRegistrosNuevoCet,
-      LlamadasFallidas
+      LlamadasFallidas,
+      CargarGruposFamiliares
     },
     methods: {
       resetOptions(item) {

@@ -27,6 +27,14 @@
             </template>
             <span>Este confirmado tiene tamizaje con contactos vinculados</span>
           </v-tooltip>
+          <v-tooltip top v-if="presuntosContactos && presuntosContactos.length">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon text @click="openPresuntosFamiliares">
+                <v-icon color="info">fas fa-exclamation-circle</v-icon>
+              </v-btn>
+            </template>
+            <span>Se ha encontrado un grupo familiar para este confirmado</span>
+          </v-tooltip>
           <v-tooltip top v-if="hasContactosERPC && contactosIDS.tamizaje_id">
             <template v-slot:activator="{ on }">
               <v-btn v-on="on" icon text @click="goToTamizaje()">
@@ -73,6 +81,11 @@
         <v-btn block text @click="close">Cerrar</v-btn>
       </v-card-actions>-->
       <app-section-loader :status="loading"></app-section-loader>
+      <presuntos-familiares
+        ref="presuntosFamiliares"
+        @reload="getInfoAfiliado"
+        @reloadPresuntosContactos="getTienePosiblesContactos"
+      />
     </v-card>
   </v-dialog>
 </template>
@@ -80,11 +93,13 @@
 <script>
   const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
   const ContactosTables = () => import('./Componentes/ContactosTables')
+  const PresuntosFamiliares = () => import('./Componentes/PresuntosFamiliares')
   export default {
     name: "AñadirContactos",
     components: {
       ContactosTables,
-      Seguimiento
+      Seguimiento,
+      PresuntosFamiliares
     },
     data: () => ({
       dialog: false,
@@ -93,7 +108,8 @@
       loading: false,
       loadingBtn: false,
       hasContactosERP: false,
-      contactosIDS: null
+      contactosIDS: null,
+      presuntosContactos: []
     }),
     computed: {
       hasContactosERPC(){
@@ -106,6 +122,7 @@
           this.getTieneTamizajeConContactos(id)
           this.dialog = true
           this.getInfoAfiliado(id)
+          this.getTienePosiblesContactos(id)
         }
       },
       goToTamizaje(){
@@ -116,6 +133,9 @@
         this.dialog = false
         this.contactosIDS = null
         this.hasContactosERP = false
+      },
+      openPresuntosFamiliares(){
+          this.$refs.presuntosFamiliares.open(this.presuntosContactos, this.data.confirmado.producto_financiero, this.data.confirmado.id)
       },
       getInfoAfiliado(id){
         this.loading = true
@@ -137,6 +157,13 @@
           }
         }).catch(error => {
           this.$store.commit('snackbar', {color: 'error', message: ` al conseguir contactos de ERP`, error: error})
+        })
+      },
+      getTienePosiblesContactos(id){
+        this.axios.get(`posibles-contactos/${id}`).then(response => {
+          this.presuntosContactos = response.data
+        }).catch(error => {
+          this.$store.commit('snackbar', {color: 'error', message: ` al conseguir presuntos contactos`, error: error})
         })
       },
       crearContactos(){
