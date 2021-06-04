@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="720">
+  <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{on}">
       <v-btn
           color="red"
@@ -23,7 +23,7 @@
           <span>Cerrar</span>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="desvincular" :loading="loading" :disabled="loading" class="white--text" color="indigo">
+        <v-btn @click="desvincular" :loading="loading" :disabled="loading" class="white--text" color="teal">
           <v-icon left>fas fa-save</v-icon>
           <span>Aceptar</span>
         </v-btn>
@@ -52,8 +52,7 @@
     methods: {
       desvincular(){
         this.loading = true
-        this.axios.put(`vincular-contacto/${this.contactoID}/persona/${this.afiliadoID}`).then(response => {
-          response
+        this.axios.put(`vincular-contacto/${this.contactoID}/persona/${this.afiliadoID}`).then(() => {
           this.loading = false
           this.$store.commit('snackbar', {color: 'success', message: `contacto desvinculado con exito`})
           this.dialog = false

@@ -46,7 +46,7 @@
                   <tr v-for="(contacto, index) in afiliado.confirmado.contactos" :key="index">
                     <td>
                       <v-list-item>
-                        <v-list-item-content style="display: grid !important;">
+                        <v-list-item-content>
                           <v-list-item-title class="body-2">Caso: {{ contacto.numero_caso }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">BDUA: {{ contacto.bdua_afl_id }}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -55,10 +55,10 @@
                     <td>
                       <v-list-item>
                         <icon-tooltip v-if="contacto.producto_financiero === null" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
-                        <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
-                        <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
-                        <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
-                        <v-list-item-content style="display: grid !important;">
+                        <v-icon class="mr-2" v-if="contacto.covid_contacto === 1" size="20px">fas fa-virus</v-icon>
+                        <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange" size="20px">fas fa-virus</v-icon>
+                        <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="20px">mdi mdi-currency-usd</v-icon>
+                        <v-list-item-content>
                           <v-list-item-title class="body-2">{{ [contacto.apellido1, contacto.apellido2, contacto.nombre1, contacto.nombre2].filter(x => x).join(' ') }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">{{contacto.tipoid}} {{contacto.identificacion}}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -68,7 +68,7 @@
                     <td>{{ contacto.fecha_nacimiento }}</td>
                     <td>
                       <v-list-item>
-                        <v-list-item-content style="display: grid !important;">
+                        <v-list-item-content>
                           <v-list-item-title class="body-2">Celular: {{ contacto.celular }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">Fijo: {{ contacto.telefono_fijo }}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -78,7 +78,7 @@
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on"
-                                 color="blue"
+                                 color="teal"
                                  icon
                                  @click="editarContacto(contacto)"
                           >
@@ -90,7 +90,7 @@
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn v-on="on"
-                                 color="blue"
+                                 color="teal"
                                  icon
                                  @click="infoContacto(contacto)"
                           >
@@ -125,91 +125,9 @@
               </v-row>
             </template>
           </v-col>
-          <!--
-          <v-col cols="12">
-            <div class="grey--text text-center">
-              <h5>Registros sin vincular</h5>
-              <v-btn icon x-small @click="openInfo = true">
-                <v-icon>fas fa-question-circle</v-icon>
-              </v-btn>
-            </div>
-            <v-row>
-              <v-spacer></v-spacer>
-              <v-text-field style="max-width: 400px" v-model="search" append-icon="search" label="Search" hide-details></v-text-field>
-            </v-row>
-            <template>
-              <v-data-table
-                  :headers="headers"
-                  :items="afiliado.sinVincular"
-                  :search="search"
-              >
-                <template v-slot:item.id="{ item }">
-                  <v-list-item>
-                    <v-list-item-content style="display: grid !important;">
-                      <v-list-item-title class="body-2">Caso: {{ item.numero_caso }}</v-list-item-title>
-                      <v-list-item-subtitle class="text-truncate">BDUA: {{ item.bdua_afl_id }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-                <template v-slot:item.persona="{ item }">
-                  <v-list-item>
-                    <v-list-item-content style="display: grid !important;">
-                      <v-list-item-title class="body-2">{{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}</v-list-item-title>
-                      <v-list-item-subtitle class="text-truncate">{{item.tipoid}} {{item.identificacion}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-                <template v-slot:item.celular="{ item }">
-                  <v-list-item>
-                    <v-list-item-content style="display: grid !important;">
-                      <v-list-item-title class="body-2">Celular: {{ item.celular }}</v-list-item-title>
-                      <v-list-item-subtitle class="text-truncate">Fijo: {{ item.telefono_fijo }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-                <template v-slot:item.opciones="{ item }">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <v-switch
-                          v-on="on"
-                          :loading="item.loading"
-                          :disabled="item.loading"
-                          @change="desvincular(item)"
-                          v-model="item.id_bdua_af_confirmado"
-                          :value="item.id_bdua_af_confirmado"
-                      ></v-switch>
-                    </template>
-                    <span>Vincular Contacto</span>
-                  </v-tooltip>
-                </template>
-                <template v-slot:no-data>
-                  <div class="text-center grey--text">
-                    No hay registros para mostrar
-                  </div>
-                </template>
-              </v-data-table>
-            </template>
-          </v-col>-->
         </v-row>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-dialog v-model="openInfo" width="600px">
-      <v-card>
-        <v-card-text class="subtitle-1">
-          <p class="pt-8">
-            Presione click sobre el boton 'Vincular Contacto' que se encuentra en la columna de 'Opciones'
-            en la siguiente tabla para vincular contactos al confirmado.
-          </p>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="openInfo=false">
-            <v-icon>mdi-close</v-icon>
-            <span>Cerrar</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <editar-contacto
         ref="editarContacto"
         @editado="refreshAfiliado"
@@ -329,8 +247,7 @@
       },
       desvincular(contacto){
         contacto.loading = true
-        this.axios.put(`vincular-contacto/${contacto.id}/persona/${this.afiliado.confirmado.id}`).then(response => {
-          response
+        this.axios.put(`vincular-contacto/${contacto.id}/persona/${this.afiliado.confirmado.id}`).then(() => {
           this.$store.commit('snackbar', {color: 'success', message: `contacto vinculado con exito`})
           this.refreshAfiliado()
           contacto.loading = false

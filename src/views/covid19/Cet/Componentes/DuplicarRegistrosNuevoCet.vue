@@ -1,13 +1,14 @@
 <template>
-  <v-dialog v-model="dialog" max-width="1200px" persistent>
+  <v-dialog v-model="dialog" max-width="1000px" persistent>
     <template v-slot:activator="{ on }">
       <v-btn
           color="green"
-          class="white--text mr-2"
+          class="white--text"
+          block
           v-on="on"
           @click.stop="open"
       >
-        <v-icon left>fas fa-file-download</v-icon>
+        <v-icon left>fas fa-exchange-alt</v-icon>
         Migrar Registros
       </v-btn>
     </template>
@@ -59,7 +60,7 @@
             </v-col>
             <v-col class="pb-0" cols="12" sm="12" md="2" lg="2">
               <v-btn
-                  class="info"
+                  class="teal"
                   type="submit"
                   text
                   icon
@@ -87,7 +88,7 @@
                   <tr v-for="(contacto, index) in data.nucleo" :key="index">
                     <td>
                       <v-list-item>
-                        <v-list-item-content style="display: grid !important;">
+                        <v-list-item-content>
                           <v-list-item-title class="body-2">Caso: {{ contacto.numero_caso }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">BDUA: {{ contacto.bdua_afl_id }}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -98,7 +99,7 @@
                         <v-icon class="mr-2" v-if="contacto.covid_contacto === 1">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.fue_confirmado === 1" color="orange">fas fa-virus</v-icon>
                         <v-icon class="mr-2" v-if="contacto.autoriza_eps" size="32px">mdi mdi-currency-usd</v-icon>
-                        <v-list-item-content style="display: grid !important;">
+                        <v-list-item-content>
                           <v-list-item-title class="body-2">{{ [contacto.apellido1, contacto.apellido2, contacto.nombre1, contacto.nombre2].filter(x => x).join(' ') }}</v-list-item-title>
                           <v-list-item-subtitle class="text-truncate">{{contacto.tipoid}} {{contacto.identificacion}} - Cel. {{ contacto.celular}}</v-list-item-subtitle>
                         </v-list-item-content>
@@ -152,7 +153,7 @@
             </v-col>
             <v-col class="pb-0" cols="12" sm="12" md="2" lg="2">
               <v-btn
-                  class="info"
+                  class="teal white--text"
                   type="submit"
                   @click="crearNucleo"
               >Crear</v-btn>
@@ -234,8 +235,7 @@ export default {
       this.$refs.formCrearNucleo.validate().then(result => {
         if(result) {
           this.loading = true
-          this.axios.post(`duplicar-nucleo-familiar-a-nuevo-cet`, this.data).then(response => {
-            response
+          this.axios.post(`duplicar-nucleo-familiar-a-nuevo-cet`, this.data).then(() => {
             this.$emit('reloadTable')
             this.loading = false
             this.close()

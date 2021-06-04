@@ -64,7 +64,7 @@
             <span>Cerrar</span>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn @click="crearContactos" :loading="loadingBtn" :disabled="loadingBtn" class="white--text" color="indigo">
+          <v-btn @click="crearContactos" :loading="loadingBtn" :disabled="loadingBtn" class="white--text" color="teal">
             <v-icon left>fas fa-save</v-icon>
             <span>Aceptar</span>
           </v-btn>

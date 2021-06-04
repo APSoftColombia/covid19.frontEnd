@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800">
     <v-card v-if="contacto">
-      <v-toolbar dark color='indigo'>
+      <v-toolbar dark color='teal'>
           <v-icon left>fas fa-edit</v-icon>
           <v-toolbar-title>Editar {{ contacto.covid_contacto === 2 ? 'Contacto' : 'Confirmado' }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -12,10 +12,6 @@
       <ValidationObserver ref="formContacto" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
         <v-card-text>
           <v-container fluid>
-            <v-row>
-              <v-spacer></v-spacer>
-
-            </v-row>
             <v-row>
               <datos-afiliado
                   :afiliado="contacto"
@@ -101,7 +97,7 @@
                           v-model="dataContacto.direccion"
                       ></c-texto>
                     </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="12">
+                    <v-col cols="12" sm="12" md="6" lg="6">
                       <c-date
                           v-model="dataContacto.fecha_nacimiento"
                           label="Fecha de Nacimiento"
@@ -109,6 +105,17 @@
                           :max="moment().format('YYYY-MM-DD')"
                       >
                       </c-date>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6">
+                      <c-select-complete
+                          v-model="dataContacto.sexo"
+                          label="Sexo"
+                          name="sexo"
+                          rules="required"
+                          :items="[{text: 'Masculino', value: 'M'},{text: 'Femenino', value: 'F'}]"
+                          item-text="text"
+                          item-value="value"
+                      ></c-select-complete>
                     </v-col>
                     <v-col class="pb-0" cols="12" sm="12">
                       <c-select-complete
@@ -249,7 +256,7 @@
           </v-btn>
           <v-spacer></v-spacer>
           <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
-          <v-btn @click.stop="actualizarContacto" class="white--text" color="indigo" :loading="loading" :disabled="loading">
+          <v-btn @click.stop="actualizarContacto" class="white--text" color="teal" :loading="loading" :disabled="loading">
             <v-icon left>fas fa-save</v-icon>
             <span>Guardar</span>
           </v-btn>

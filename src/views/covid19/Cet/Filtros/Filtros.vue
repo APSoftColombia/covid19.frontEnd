@@ -91,13 +91,14 @@
             {text: 'Contactos', value: 2}
           ],
           estados: [
-            {text: 'Glosados', value: 1},
-            {text: 'Validados', value: 2},
-            {text: 'Sin Estado', value: 3}
+            {text: 'Aplica devolución', value: 1},
+            {text: 'No aplica devolución', value: 2},
+            {text: 'Sin estado', value: 3}
           ],
           tiposRegistros: [
-            {text: 'Registros completados', value: 1},
-            {text: 'Registros sin completar', value: 2}
+            {text: 'Grupos familiares completados', value: 1},
+            {text: 'Grupos familiares sin completar', value: 2},
+            {text: 'Registros sin gestionar', value: 3}
           ]
         }
       },
@@ -135,6 +136,10 @@
       limpiarFiltros(){
         this.filters.models.covid_contacto = null
         this.filters.models.cet_id = null
+        this.filters.models.estado = null
+        this.filters.models.tipo = null
+        this.filters.models.fallido = false
+        this.aplicaFiltros()
       }
     },
     created() {

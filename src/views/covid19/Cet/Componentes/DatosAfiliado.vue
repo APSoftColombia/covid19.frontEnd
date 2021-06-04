@@ -124,7 +124,7 @@
               label: 'Fecha Diagnostico',
               body: this.afiliado && this.afiliado.fecha_diagnostico ? this.moment(this.fixFecha(this.afiliado.fecha_diagnostico)).format('DD/MM/YYYY') : '',
               icon: 'mdi-calendar-month',
-              iconColor: 'warning',
+              iconColor: 'cyan',
               colmd: this.columMD,
               collg: this.dense ? '6' : '4'
             },

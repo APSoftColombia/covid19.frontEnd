@@ -13,23 +13,53 @@
         @clear-filters="$refs && $refs.filtrosCets && $refs.filtrosCets.limpiarFiltros()"
     >
       <template slot="top-actions-right">
-        <descargar-reporte
-            v-if="permisos.cetsCrearReporte"
-        ></descargar-reporte>
-        <cargar-registros
-            @reloadTable="reloadTable"
-        ></cargar-registros>
-        <cargar-negativos
-            @reloadTable="reloadTable"
-        ></cargar-negativos>
-        <cargar-grupos-familiares
-            @reloadTable="reloadTable"
-            v-if="permisos.cetsGruposFamiliares"
-        ></cargar-grupos-familiares>
-        <duplicar-registros-nuevo-cet
-            @reloadTable="reloadTable"
-            v-if="permisos.cetsMigrarRegistros"
-        ></duplicar-registros-nuevo-cet>
+          <v-menu offset-y transition="slide-y-transition">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="teal" dark v-bind="attrs" v-on="on">
+                Opciones
+                <v-icon right>mdi mdi-chevron-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list >
+              <v-list-item class="pl-1 pr-1">
+                <v-list-item-title>
+                    <cargar-registros
+                        @reloadTable="reloadTable"
+                    ></cargar-registros>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="pl-1 pr-1">
+                <v-list-item-title>
+                    <cargar-negativos
+                        @reloadTable="reloadTable"
+                    ></cargar-negativos>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="pl-1 pr-1">
+                <v-list-item-title>
+                    <cargar-grupos-familiares
+                        @reloadTable="reloadTable"
+                        v-if="permisos.cetsGruposFamiliares"
+                    ></cargar-grupos-familiares>
+                </v-list-item-title>
+               </v-list-item>
+               <v-list-item class="pl-1 pr-1">
+                <v-list-item-title>
+                    <duplicar-registros-nuevo-cet
+                        @reloadTable="reloadTable"
+                        v-if="permisos.cetsMigrarRegistros"
+                    ></duplicar-registros-nuevo-cet>
+                </v-list-item-title>
+                </v-list-item>
+                <v-list-item class="pl-1 pr-1">
+                  <v-list-item-title>
+                      <descargar-reporte
+                          v-if="permisos.cetsCrearReporte"
+                      ></descargar-reporte>
+                  </v-list-item-title>
+                </v-list-item>
+            </v-list>
+          </v-menu>
       </template>
       <filtros
           slot="filters"
@@ -91,13 +121,13 @@
                     {
                       domProps: {
                         innerHTML: `
-												<v-list-item>
-													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">Caso: ${this.value.numero_caso}</v-list-item-title>
-														<v-list-item-subtitle class="body-2 text-truncate">BDUA: ${this.value.bdua_afl_id}</v-list-item-subtitle>
-													</v-list-item-content>
-												</v-list-item>
-											`
+							<v-list-item>
+								<v-list-item-content style="display: grid !important;">
+									<v-list-item-title class="body-2">Caso: ${this.value.numero_caso}</v-list-item-title>
+									<v-list-item-subtitle class="body-2 text-truncate">BDUA: ${this.value.bdua_afl_id}</v-list-item-subtitle>
+								</v-list-item-content>
+							</v-list-item>
+						`
                       }
                     }
                 )
@@ -138,7 +168,8 @@
                               sin_beneficiarios: context.props.value.sin_beneficiarios,
                               fue_confirmado: context.props.value.fue_confirmado,
                               covid_contacto: context.props.value.covid_contacto,
-                              no_efectividad: context.props.value.no_efectividad
+                              no_efectividad: context.props.value.no_efectividad,
+                              info_reporte: context.props.value.no_sale_en_archivo,
                             },
                           }
                         }
@@ -165,12 +196,12 @@
                     {
                       domProps: {
                         innerHTML: `
-												<v-list-item style="max-width: 300px; white-space: normal">
-													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-2">${this.value.codeps && vm.epss && vm.epss.length && vm.epss.find(x => x.codigo === this.value.codeps) && vm.epss.find(x => x.codigo === this.value.codeps).nombre ? vm.epss.find(x => x.codigo === this.value.codeps).nombre : ''}</v-list-item-title>
-													</v-list-item-content>
-												</v-list-item>
-											`
+							<v-list-item style="max-width: 300px; white-space: normal">
+								<v-list-item-content style="display: grid !important;">
+									<v-list-item-title class="body-2">${this.value.codeps && vm.epss && vm.epss.length && vm.epss.find(x => x.codigo === this.value.codeps) && vm.epss.find(x => x.codigo === this.value.codeps).nombre ? vm.epss.find(x => x.codigo === this.value.codeps).nombre : ''}</v-list-item-title>
+								</v-list-item-content>
+							</v-list-item>
+						`
                       }
                     }
                 )
@@ -190,12 +221,12 @@
                     {
                       domProps: {
                         innerHTML: `
-												<v-list-item>
-													<v-list-item-content style="display: grid !important;">
-														<v-list-item-title class="body-3">${this.value.covid_contacto === 1 ? 'Confirmado' : 'Contacto'}</v-list-item-title>
-													</v-list-item-content>
-												</v-list-item>
-											`
+							<v-list-item>
+								<v-list-item-content style="display: grid !important;">
+									<v-list-item-title class="body-3">${this.value.covid_contacto === 1 ? 'Confirmado' : 'Contacto'}</v-list-item-title>
+								</v-list-item-content>
+							</v-list-item>
+						`
                       }
                     }
                 )
@@ -264,16 +295,19 @@
         if (item.covid_contacto === 1 && this.permisos.cetsCrear) item.options.push({
           event: 'addContacto',
           icon: 'mdi-account-multiple-plus-outline',
+          color: 'teal',
           tooltip: 'Añadir Contactos'
         })
         if (item.covid_contacto === 1) item.options.push({
           event: 'editContacto',
           icon: 'mdi-pencil-box-multiple-outline',
+          color: 'teal',
           tooltip: 'Editar Confirmado'
         })
         item.options.push({
           event: 'infoContacto',
           icon: 'mdi-information-outline',
+          color: 'teal',
           tooltip: item.covid_contacto === 1 ? 'Información del Confirmado' : 'Información del Contacto'
         })
         if (item.no_efectivas && item.no_efectivas.length) item.options.push({
@@ -288,7 +322,6 @@
         this.$refs.addContactos.open(item.id)
       },
       infoContacto(item){
-        console.log("entre")
         this.$refs.infoContacto.open(item.id)
       },
       goDatos(ruta) {

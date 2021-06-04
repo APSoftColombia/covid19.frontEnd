@@ -47,7 +47,6 @@
                     name="fecha de diagnostico"
                     :max="moment().format('YYYY-MM-DD')"
                 ></c-date>
-                <!--rules="required"-->
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6" class="mx-auto mt-0">
                 <c-texto
@@ -55,7 +54,6 @@
                     name="numero unico bdua"
                     v-model="afiliado.bdua_afl_id"
                 ></c-texto>
-                <!--rules="required|maxlength:11"-->
               </v-col>
             </v-row>
             <v-row>

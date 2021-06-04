@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="1000px">
     <v-card v-if="contacto">
-      <v-toolbar dark color='indigo'>
+      <v-toolbar dark color='teal'>
         <v-icon left>fas fa-clipboard-list</v-icon>
         <v-toolbar-title>{{ contacto.numero_caso ? 'Caso No.' + contacto.numero_caso : '' }}</v-toolbar-title>
         <v-spacer></v-spacer>

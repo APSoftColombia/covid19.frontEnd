@@ -3,7 +3,8 @@
     <template v-slot:activator="{ on }">
       <v-btn
           color="green"
-          class="white--text mr-2"
+          class="white--text"
+          block
           v-on="on"
           @click.stop="close"
       >

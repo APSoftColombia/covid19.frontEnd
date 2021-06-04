@@ -3,7 +3,8 @@
     <template v-slot:activator="{on}">
       <v-btn
           color="green"
-          class="white--text mr-2"
+          class="white--text"
+          block
           v-on="on"
           @click.stop="dialog = true"
       >
@@ -79,8 +80,7 @@
             let data = new FormData()
             data.append('archivo', this.data.archivo)
             this.axios.post(`grupos-familiares-cet`, data)
-                .then(response => {
-                  response
+                .then(() => {
                   this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})
                   this.close()
                   this.$emit('reloadTable')

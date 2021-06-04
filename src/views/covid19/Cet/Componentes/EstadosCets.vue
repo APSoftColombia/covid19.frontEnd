@@ -6,7 +6,7 @@
                :color="`${value.aplica_devolucion ? 'red' : 'green'}`"
                icon
         >
-          <v-icon>fas fa-info-circle</v-icon>
+          <v-icon size="20px">fas fa-info-circle</v-icon>
         </v-btn>
       </template>
       <v-list class="p-8">

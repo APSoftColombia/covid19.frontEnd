@@ -3,7 +3,8 @@
     <template v-slot:activator="{on}">
       <v-btn
           color="green"
-          class="white--text mr-2"
+          class="white--text"
+          block
           v-on="on"
           @click.stop="dialog = true"
       >
@@ -26,14 +27,6 @@
                 >
                 </c-date>
             </v-col>
-            <!--<v-col cols="12" sm="12" md="5" lg="5" class="ml-md-8 ml-lg-8">
-              <c-texto
-                    v-model="data.nombre_archivo"
-                    label="Nombre del archivo"
-                    :rules="'required'"
-                    name="nombre del archivo"
-                ></c-texto>
-            </v-col>-->
             <v-col cols="12" sm="12" md="12" lg="12">
               <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
                 <v-file-input
@@ -99,8 +92,7 @@
             data.append('fecha_proceso', this.data.fecha_proceso)
             data.append('nombre_archivo', this.data.nombre_archivo)
             this.axios.post(`upload-info-cets`, data)
-                .then(response => {
-                  response
+                .then(() => {
                   this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})
                   this.close()
                   this.$emit('reloadTable')
