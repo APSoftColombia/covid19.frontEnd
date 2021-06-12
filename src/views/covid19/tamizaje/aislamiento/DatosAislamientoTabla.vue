@@ -18,17 +18,22 @@
                 <tbody>
                 <template v-for="(aislamiento, aislamientoIndex) in aislamientos">
                     <dato-aislamiento-t-r
-                        @verdetalle="val => verDetalle(val)"
+                        @verdetalle="val => verDetalle(val, aislamientoIndex)"
                         @editar="val => $emit('editar', val)"
                         :aislamiento="aislamiento"
-                        :numero="aislamientos.length - aislamientoIndex" :key="`aislamiento${aislamientoIndex}`"
+                        :numero="aislamientos.length - aislamientoIndex"
+                        :key="`aislamiento${aislamientoIndex}`"
                         :nombre="nombre"
                     />
                 </template>
                 </tbody>
             </template>
         </v-simple-table>
-        <detalle-aislamiento :aislamiento="aislamientoSeleccionado" @guardado="val => datoActualizado(val)" ref="detalleAislamiento"></detalle-aislamiento>
+        <detalle-aislamiento
+            :aislamiento="aislamientoSeleccionado"
+            :index="indexAislamientoSeleccionado"
+            @guardado="val => datoActualizado(val)" ref="detalleAislamiento"
+        />
     </div>
 </template>
 
@@ -60,7 +65,8 @@
             }
         },
         data: () => ({
-            aislamientoSeleccionado: null
+            aislamientoSeleccionado: null,
+            indexAislamientoSeleccionado: null
         }),
         computed: {
             ultimoSeguimiento () {
@@ -71,8 +77,9 @@
             datoActualizado (dato) {
                 this.$emit('guardado', dato)
             },
-            verDetalle (aislamiento) {
+            verDetalle (aislamiento, index) {
                 this.aislamientoSeleccionado = aislamiento ? this.aislamientos.find(x => x.id === aislamiento.id) : null
+                this.indexAislamientoSeleccionado = index
                 if (this.aislamientoSeleccionado) {
                     this.$refs.detalleAislamiento.open()
                 }

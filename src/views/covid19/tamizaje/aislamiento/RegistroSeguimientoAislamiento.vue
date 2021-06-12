@@ -17,10 +17,10 @@
                             registra-fecha
                             :aislamiento="aislamiento"
                             :seguimiento_aislamiento="seguimiento_aislamiento"
-                    ></form-seguimiento-aislamiento>
+                    />
                 </ValidationObserver>
             </v-container>
-            <v-divider class="mt-0"></v-divider>
+            <v-divider class="mt-0"/>
             <v-card-actions>
                 <v-btn
                         large
@@ -29,7 +29,7 @@
                     <v-icon>mdi-close</v-icon>
                     Cerrar
                 </v-btn>
-                <v-spacer></v-spacer>
+                <v-spacer/>
                 <v-btn
                         large
                         color="deep-purple"
@@ -40,7 +40,7 @@
                     Guardar Seguimiento
                 </v-btn>
             </v-card-actions>
-            <app-section-loader :status="loading"></app-section-loader>
+            <app-section-loader :status="loading"/>
         </v-card>
     </v-dialog>
 </template>
@@ -80,7 +80,7 @@
                         this.loading = true
                         let request = null
                         if (this.seguimiento_aislamiento.id) {
-                            request = this.axios.put(`aislamientos/${this.seguimiento_aislamiento.aislamiento_id}/seguimientos/${this.seguimiento_aislamiento.id}`, this.seguimiento_aislamiento)
+                            request = this.axios.put(`update-seguimiento-aislamiento/${this.seguimiento_aislamiento.id}`, this.seguimiento_aislamiento)
                         } else {
                             request = this.axios.post(`aislamientos/${this.seguimiento_aislamiento.aislamiento_id}/seguimientos`, this.seguimiento_aislamiento)
                         }
@@ -97,8 +97,13 @@
                     }
                 })
             },
-            open () {
+            open (seguimiento = null) {
+              if(seguimiento) {
+                seguimiento.registra_egreso = seguimiento.fecha_egreso ? 1 : 0
+                this.seguimiento_aislamiento = this.clone(seguimiento)
+              } else {
                 this.seguimiento_aislamiento.aislamiento_id = this.aislamiento.id
+              }
                 this.dialog = true
             },
             close () {

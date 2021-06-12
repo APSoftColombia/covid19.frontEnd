@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" persistent max-width="920">
+    <v-dialog v-model="dialog" persistent max-width="1020">
         <v-card v-if="aislamiento">
             <v-toolbar dark color="deep-purple">
                 <v-icon left>mdi-door-closed-lock</v-icon>
@@ -39,19 +39,21 @@
                             <v-toolbar-title>
                                 <v-toolbar-title>Seguimientos</v-toolbar-title>
                             </v-toolbar-title>
+                          <template v-if="!aislamiento.fecha_egreso">
                             <v-spacer></v-spacer>
                             <v-tooltip top v-if="$vuetify.breakpoint.xsOnly">
-                                <template v-slot:activator="{on}">
-                                    <v-btn @click="agregarSeguimiento" icon color="primary darken-3" v-on="on">
-                                        <v-icon>mdi-plus</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Agregar seguimiento</span>
+                              <template v-slot:activator="{on}">
+                                <v-btn @click="agregarSeguimiento" icon color="primary darken-3" v-on="on">
+                                  <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                              </template>
+                              <span>Agregar seguimiento</span>
                             </v-tooltip>
                             <v-btn v-else dark @click="agregarSeguimiento" color="primary darken-3" class="mr-2">
-                                <v-icon left>mdi-plus</v-icon>
-                                Agregar seguimiento
+                              <v-icon left>mdi-plus</v-icon>
+                              Agregar seguimiento
                             </v-btn>
+                          </template>
                         </v-toolbar>
                         <v-divider class="my-0 py-0"></v-divider>
                         <v-simple-table dense class="tablaseguimientoaislamiento" fixed-header>
@@ -63,6 +65,7 @@
                                     <th>Soportes</th>
                                     <th>Proceso</th>
                                     <th>Usuario</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -116,6 +119,19 @@
                                                 </v-list-item-content>
                                             </v-list-item>
                                         </td>
+                                      <td>
+                                        <v-tooltip
+                                            v-if="permisos.aislamientoEditar && (index === 0) && (seguimientoIndex === 0)"
+                                            top
+                                        >
+                                          <template v-slot:activator="{on}">
+                                            <v-btn icon color="info" v-on="on" @click="editarSeguimiento(seguimiento)">
+                                              <v-icon>mdi-pencil</v-icon>
+                                            </v-btn>
+                                          </template>
+                                          <span>Editar</span>
+                                        </v-tooltip>
+                                      </td>
                                     </tr>
                                 </template>
                                 </tbody>
@@ -139,7 +155,7 @@
                     :aislamiento="aislamiento"
                     @guardado="val => seguimientoGuardado(val)"
                     ref="registroSeguimientoAislamiento"
-            ></registro-seguimiento-aislamiento>
+            />
             <app-section-loader :status="loading"></app-section-loader>
         </v-card>
     </v-dialog>
@@ -155,7 +171,11 @@
             aislamiento: {
                 type: Object,
                 default: null
-            }
+            },
+          index: {
+            type: [String, Number],
+            default: 0
+          },
         },
         components: {
             RegistroSeguimientoAislamiento
@@ -166,9 +186,12 @@
             dialog: false
         }),
       computed: {
+        permisos () {
+          return this.$store.getters.getPermissionModule('covid')
+        },
         ...mapGetters([
           'causalesNoReportaContactos'
-        ]),
+        ])
       },
         watch: {
             aislamiento: {
@@ -184,6 +207,9 @@
             },
             agregarSeguimiento () {
                 this.$refs.registroSeguimientoAislamiento.open()
+            },
+            editarSeguimiento (seguimiento) {
+                this.$refs.registroSeguimientoAislamiento.open(seguimiento)
             },
             assign () {
                 this.datos = []
