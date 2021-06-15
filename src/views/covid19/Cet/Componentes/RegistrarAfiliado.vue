@@ -151,7 +151,7 @@
                 <c-texto
                     label="Celular"
                     name="celular"
-                    rules="required|numeric|minlength:10"
+                    rules="required|numeric|minlength:10|maxlength:10"
                     v-model="afiliado.celular"
                 ></c-texto>
               </v-col>

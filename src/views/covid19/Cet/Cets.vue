@@ -35,27 +35,36 @@
                     ></cargar-negativos>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item class="pl-1 pr-1">
+              <v-list-item class="pl-1 pr-1" v-if="permisos.cetsGruposFamiliares">
                 <v-list-item-title>
                     <cargar-grupos-familiares
                         @reloadTable="reloadTable"
-                        v-if="permisos.cetsGruposFamiliares"
                     ></cargar-grupos-familiares>
                 </v-list-item-title>
                </v-list-item>
-               <v-list-item class="pl-1 pr-1">
+               <v-list-item class="pl-1 pr-1" v-if="permisos.cetsMigrarRegistros">
                 <v-list-item-title>
                     <duplicar-registros-nuevo-cet
                         @reloadTable="reloadTable"
-                        v-if="permisos.cetsMigrarRegistros"
                     ></duplicar-registros-nuevo-cet>
                 </v-list-item-title>
                 </v-list-item>
-                <v-list-item class="pl-1 pr-1">
+                <v-list-item class="pl-1 pr-1" v-if="permisos.cetsCrearReporte">
                   <v-list-item-title>
                       <descargar-reporte
-                          v-if="permisos.cetsCrearReporte"
                       ></descargar-reporte>
+                  </v-list-item-title>
+                </v-list-item>
+                <v-list-item class="pl-1 pr-1">
+                  <v-list-item-title>
+                      <cargar-archivos-consolidado-adres
+                      ></cargar-archivos-consolidado-adres>
+                  </v-list-item-title>
+                </v-list-item>
+                <v-list-item class="pl-1 pr-1">
+                  <v-list-item-title>
+                      <descargar-reporte-adres
+                      ></descargar-reporte-adres>
                   </v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -99,6 +108,8 @@
   const EditarContacto = () => import('./Componentes/EditarContacto')
   const DuplicarRegistrosNuevoCet = () => import('./Componentes/DuplicarRegistrosNuevoCet')
   const LlamadasFallidas = () => import('./Componentes/LlamadasFallidas.vue')
+  const CargarArchivosConsolidadoAdres = () => import('./Componentes/CargarArchivosConsolidadoAdres.vue')
+  const DescargarReporteAdres = () => import('./Componentes/DescargarReporteAdres.vue')
   export default {
     name: "Cets",
     data: (vm) => ({
@@ -285,7 +296,9 @@
       CargarNegativos,
       DuplicarRegistrosNuevoCet,
       LlamadasFallidas,
-      CargarGruposFamiliares
+      CargarGruposFamiliares,
+      CargarArchivosConsolidadoAdres,
+      DescargarReporteAdres
     },
     methods: {
       resetOptions(item) {
