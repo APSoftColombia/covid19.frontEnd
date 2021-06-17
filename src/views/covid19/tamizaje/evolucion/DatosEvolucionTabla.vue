@@ -122,6 +122,12 @@
                 <v-list-item-subtitle class="font-weight-black">
                   {{ evolucion.medico ? evolucion.medico.name : 'No registra médico' }}
                 </v-list-item-subtitle>
+                <v-list-item-subtitle
+                    v-if="evolucion.medico && evolucion.medico.ips"
+                    class="font-weight-black caption"
+                >
+                  {{ evolucion.medico.ips.nombre }}
+                </v-list-item-subtitle>
                 <v-list-item-subtitle>
                   {{ evolucion.created_at ? moment(evolucion.created_at).format('DD/MM/YYYY HH:mm') : '' }}
                 </v-list-item-subtitle>
