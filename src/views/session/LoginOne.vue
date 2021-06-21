@@ -17,9 +17,14 @@
 			<v-col cols="12" sm="6">
 				<div class="session-table-cell text-center">
 					<div class="session-content">
+<!--            <img-->
+<!--                :src="`/static/logos/logoLogin.png`"-->
+<!--                class="img-responsive mb-4 rounded"-->
+<!--            />-->
 						<img
-								:src="`/static/logos/logoLogin.png`"
-								class="img-responsive mb-4 rounded"
+								:src="`/static/logos/logo_apsoft.png`"
+								class="img-responsive mb-2 rounded"
+                width="80%"
 						/>
 						<h2 class="mb-4">Inicio de sesión</h2>
 						<p class="fs-14">Ingrese nombre de usuario y contraseña para acceder.</p>
