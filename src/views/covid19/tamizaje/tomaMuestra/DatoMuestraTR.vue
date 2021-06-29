@@ -26,6 +26,13 @@
       </v-list-item>
     </td>
     <td>
+      <v-list-item class="pa-0" v-if="toma && toma.laboratorio_destino">
+        <v-list-item-content class="pa-0">
+          <v-list-item-title>{{ toma.laboratorio_destino.laboratorio }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </td>
+    <td>
       <v-list-item class="pa-0" v-if="toma && toma.user_prueba">
         <v-list-item-content class="pa-0">
           <v-list-item-title>{{ toma.usuario_prueba.name }}</v-list-item-title>

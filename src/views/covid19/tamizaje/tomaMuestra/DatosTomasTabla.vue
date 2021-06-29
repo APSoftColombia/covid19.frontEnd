@@ -7,6 +7,7 @@
                     <th>No.</th>
                     <th>Asignación</th>
                     <th>Institución que realiza la toma</th>
+                    <th>Laboratorio destino</th>
                     <th>Usuario Registra Toma</th>
                     <th>Fecha Toma</th>
                     <th></th>
