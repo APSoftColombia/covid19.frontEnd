@@ -55,6 +55,19 @@
               </v-menu>
             </v-col>
             <v-col cols="12">
+              <ValidationProvider name="laboratorio remite prueba es requerido" rules="required" v-slot="{ errors, valid }">
+                <v-select
+                    v-model="laboratorio_id_destino"
+                    label="Laboratorio a donde envia la prueba"
+                    :items="laboratorios"
+                    item-text="laboratorio"
+                    item-value="id"
+                    outlined
+                    :error-messages="errors"
+                ></v-select>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="12">
               <c-radio
                   v-model="toma_prueba"
                   :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
@@ -131,7 +144,8 @@ export default {
     razon_no_toma: null,
     observaciones: null,
     razones_no_toma_muestra: null,
-    fecha_reprogramacion: null
+    fecha_reprogramacion: null,
+    laboratorio_id_destino: null
   }),
   watch: {
     'toma_prueba': {
@@ -153,7 +167,8 @@ export default {
     ...mapGetters([
       'tiposDocumentoIdentidad',
       'departamentos',
-      'municipiosTotal'
+      'municipiosTotal',
+      'laboratorios'
     ])
   },
   methods: {
@@ -175,6 +190,7 @@ export default {
         this.razon_no_toma = null
         this.observaciones = null
         this.fecha_reprogramacion = null
+        this.laboratorio_id_destino = null
         this.$refs.formToma.reset()
       }, 400)
     },
@@ -190,7 +206,8 @@ export default {
               toma_prueba: this.toma_prueba,
               razon_no_toma: this.razon_no_toma,
               observaciones: this.observaciones,
-              fecha_reprogramacion: this.fecha_reprogramacion
+              fecha_reprogramacion: this.fecha_reprogramacion,
+              laboratorio_id_destino: this.laboratorio_id_destino
             })
           } else {
             request = this.axios.post(`toma-prueba`, {
@@ -199,7 +216,8 @@ export default {
               toma_prueba: this.toma_prueba,
               razon_no_toma: this.razon_no_toma,
               observaciones: this.observaciones,
-              fecha_reprogramacion: this.fecha_reprogramacion
+              fecha_reprogramacion: this.fecha_reprogramacion,
+              laboratorio_id_destino: this.laboratorio_id_destino
             })
           }
           request

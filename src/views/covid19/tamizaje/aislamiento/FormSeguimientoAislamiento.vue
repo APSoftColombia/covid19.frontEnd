@@ -91,7 +91,7 @@
         watch: {
             'seguimiento_aislamiento.registra_egreso': {
                 handler (val) {
-                    this.seguimiento_aislamiento.fecha_egreso = val ? this.moment().format('YYYY-MM-DD') : null
+                    this.seguimiento_aislamiento.fecha_egreso = val ? this.seguimiento_aislamiento.fecha_egreso ? this.moment(this.seguimiento_aislamiento.fecha_egreso).format('YYYY-MM-DD') : this.moment().format('YYYY-MM-DD') : null
                 },
                 immediate: false
             }

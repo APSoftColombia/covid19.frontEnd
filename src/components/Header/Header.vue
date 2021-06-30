@@ -7,22 +7,22 @@
 			fixed
 		>
 			<div class="d-custom-flex align-items-center navbar-left pa-0">
-				<v-img class="img-responsive" :width="$vuetify.breakpoint.mdAndUp ? '280' : '222'" :src="`/static/img/session.png`">
+<!--        <v-img class="img-responsive" :width="$vuetify.breakpoint.mdAndUp ? '280' : '222'" :src="`/static/img/session.png`">-->
+				<v-img class="img-responsive" :width="$vuetify.breakpoint.mdAndUp ? '220' : '162'" :src="`/static/logos/logo_apsoft.png`">
 					<v-btn
-							absolute
+							fixed
 							dark
 							fab
 							top
-							right
+							left
 							small
 							color="error"
-							:class="$vuetify.breakpoint.mdAndUp ? 'mt-2' : 'mt-0'"
+              :style="`top: -18px; margin-left: ${$vuetify.breakpoint.mdAndUp ? 180 : 124}px`"
 					>
-						<span :class="$vuetify.breakpoint.mdAndUp ? 'mt-2' : 'mt-3'">V{{appVersion}}</span>
+<!--            :style="`top: -18px; margin-left: ${$vuetify.breakpoint.mdAndUp ? 240 : 190}px`"-->
+						<span :class="$vuetify.breakpoint.mdAndUp ? 'mt-3' : 'mt-3'">V{{appVersion}}</span>
 					</v-btn>
 				</v-img>
-<!--				<v-img v-if="$vuetify.breakpoint.mdAndUp" class="img-responsive" width="280" :src="`/static/img/session.png`"></v-img>-->
-<!--				<v-img v-else class="img-responsive" width="60" :src="`/static/img/sessionsmall.png`"></v-img>-->
 				<app-menu></app-menu>
 			</div>
 			<v-spacer></v-spacer>

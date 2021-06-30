@@ -54,21 +54,30 @@
                     </v-list-item-avatar>
                     <v-list-item-content class="pa-0">
                       <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
-                      <v-list-item-title v-if="item.label === 'Celular'">
-                        <template v-for="(telefono, indexTelefono) in item.body.split('-')">
-                          <c-tooltip
-                              v-if="telefono"
-                              :key="`tel${indexTelefono}`"
-                              top
-                              :tooltip="typePhone[indexTelefono]"
+                      <v-list-item-title v-if="item.label === 'Email' || item.label === 'Celular'">
+                        <template v-if="item.label === 'Email' && item.body">
+                          <a
+                              :href="`mailto:${item.body}`"
                           >
-                            <a
-                                :href="`tel:${telefono}`"
+                            <h6 class="mb-0">{{ item.body }}</h6>
+                          </a>
+                        </template>
+                        <template v-if="item.label === 'Celular'">
+                          <template v-for="(telefono, indexTelefono) in item.body.split('*||*')">
+                            <c-tooltip
+                                v-if="telefono"
+                                :key="`tel${indexTelefono}`"
+                                top
+                                :tooltip="telefono.split('*-*')[1]"
                             >
-                              <h6 class="mb-0">{{ telefono }}</h6>
-                            </a>
-                          </c-tooltip>
-                          <template v-if="telefono && (item.body.split('-')[indexTelefono + 1])"> | </template>
+                              <a
+                                  :href="`tel:${telefono.split('*-*')[0]}`"
+                              >
+                                <h6 class="mb-0">{{ telefono.split('*-*')[0] }}</h6>
+                              </a>
+                            </c-tooltip>
+                            <template v-if="telefono && (item.body.split('*||*')[indexTelefono + 1])"> | </template>
+                          </template>
                         </template>
                       </v-list-item-title>
                       <v-list-item-title v-else><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
@@ -171,7 +180,13 @@ export default {
           // },
           {
             label: 'Celular',
-            body: [this.tamizaje.celular, this.tamizaje.celular2, this.tamizaje.telefono_sivigila, this.tamizaje.telefono_ma].join('-'),
+            body:
+                [
+                  this.tamizaje.celular ? `${this.tamizaje.celular}*-*Principal` : null,
+                  this.tamizaje.celular2 ? `${this.tamizaje.celular2}*-*Opcional` : null,
+                  this.tamizaje.telefono_sivigila ? `${this.tamizaje.telefono_sivigila}*-*Tel. SIVIGILA` : null,
+                  this.tamizaje.telefono_ma ? `${this.tamizaje.telefono_ma }*-*Tel. Maestro Afiliado` : null
+                ].filter(x => x).join('*||*'),
             subtitle: this.tamizaje.cambio_telefono ? `Actualizados el ${this.moment(this.tamizaje.cambio_telefono).format('dddd, DD [de] MMMM [de] YYYY')}` : null,
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',

@@ -29,15 +29,14 @@
                         @editar="item => editarAislamiento(item)"
                         :aislamientos="tamizaje.aislamientos"
                         :nombre="tamizaje.nombre1 + ' ' + tamizaje.apellido1"
-                ></datos-aislamiento-tabla>
+                />
             </v-col>
         </v-row>
         <registro-aislamiento
                 v-if="permisos.aislamientoCrear"
                 ref="registroAislamiento"
                 @guardado="item => aislamientoGuardado(item)"
-        >
-        </registro-aislamiento>
+        />
     </v-card>
 </template>
 

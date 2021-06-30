@@ -92,6 +92,7 @@ export default {
       this.$refs.formPaciente.validate().then(async result => {
         if (result) {
           this.loading = true
+          this.tamizaje.no_erp = 1
           this.axios.put(`tamizajes/${this.tamizaje.id}`, this.tamizaje)
               .then(response => {
                 this.$emit('actualizado', response.data)
