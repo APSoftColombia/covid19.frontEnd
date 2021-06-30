@@ -26,6 +26,7 @@ import moment from 'moment'
 import VueSignaturePad from 'vue-signature-pad'
 import UUID from 'vue-uuid'
 import lodash from 'lodash'
+import IdleVue from 'idle-vue'
 window.lodash = lodash
 
 // global components
@@ -132,6 +133,13 @@ Vue.use(Croppa)
 Vue.use(VueAxios, axios)
 Vue.use(VueSignaturePad)
 Vue.use(UUID)
+
+const eventsHub = new Vue()
+Vue.use(IdleVue, {
+	eventEmitter: eventsHub,
+	store,
+	idleTime: 20000
+})
 moment.locale('es')
 Vue.prototype.moment = moment
 store.commit('assignTokenAxios')
@@ -146,6 +154,9 @@ Vue.mixin({
 		esMovil: false
 	}),
 	computed: {
+		isIdle() {
+			return this.$store.state.idleVue.isIdle
+		},
 		esMedico () {
 			return this && this.roles && this.roles.length && [3].find(x => this.roles.find(z => z.id === x))
 		},
