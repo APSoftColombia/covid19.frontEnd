@@ -4,7 +4,7 @@
       Nombre cargador: {{ nombreCargador }}, Separador: {{ separador }}
     </v-card-title>
     <v-card-subtitle>
-      <v-btn icon @click="generateCsv(cabeceras)">
+      <v-btn icon @click="generateCsv(cabeceras, 'Plantilla')">
         <v-icon>mdi-file-download</v-icon>
       </v-btn>
       <span class="title font-weight-light">Descargar Plantilla</span>
@@ -98,11 +98,26 @@
     <v-dialog
       v-model="dialog"
       persistent
-      max-width="600px"
+      max-width="800px"
     >
       <v-card>
         <v-card-title>
           <span class="headline">Carga exitosa: Resultados del cargador</span>
+          <v-spacer></v-spacer>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="green"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                @click="generateCsv(cabecerasResult, 'Resultados', successResult)"
+              >
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+            <span>Descargar resultados</span>
+          </v-tooltip>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -120,7 +135,7 @@
           <v-btn
             depressed
             text
-            @click="dialog = false"
+            @click="closeModalResult()"
           >
             Cerrar
           </v-btn>
@@ -169,14 +184,20 @@ export default {
     },
   },
   methods: {
-    generateCsv(cabeceras) {
+    closeModalResult() {
+      this.dialog = false;
+      this.cabecerasResult = []
+      this.successResult = []
+    },
+    generateCsv(cabeceras, titulo, content = []) {
+      let contenido = this.clone(content)
       let headers = cabeceras;
       if (typeof cabeceras[0] == "object") {
         headers = cabeceras.map((value) => {
-          return value.header;
+          return value.header ? value.header : value.text;
         });
       }
-      this.download(headers, `Plantilla ${this.nombreCargador}`, this.separador);
+      this.download(headers, `${titulo} ${this.nombreCargador}`, this.separador, contenido);
     },
     convertToCSV(objArray, delimiter) {
       var array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
@@ -227,8 +248,8 @@ export default {
         }
       }
     },
-    download(headers, filename, delimiter) {
-      this.exportCSVFile(headers, [], filename, delimiter); // call the exportCSVFile() function to process the JSON and trigger the download
+    download(headers, filename, delimiter, content) {
+      this.exportCSVFile(headers, content, filename, delimiter); // call the exportCSVFile() function to process the JSON and trigger the download
     },
     cargarArchivo() {
       this.$refs.formArchivo.validate().then((result) => {
@@ -245,10 +266,10 @@ export default {
               })
             .then(async (response) => {
               if (response.status === 201) {
+                this.loading = false;
                 let text = await response.data.text();
                 let result = JSON.parse(text).success;
                 if (result) {
-                  console.log("result");
                   Object.keys(result[0]).forEach(item => {
                     this.cabecerasResult.push(
                       {
@@ -260,13 +281,11 @@ export default {
                   });
                   this.successResult = result;
                   this.dialog = true;
-                  this.loading = false;
                 }else {
                   this.$store.commit("snackbar", {
                     color: "success",
                     message: `Carga exitosa`,
                   });
-                  this.loading = false;
                 }
                 this.loading = false;
               }else {
@@ -290,9 +309,10 @@ export default {
               this.loading = false;
             })
             .catch((error) => {
+              this.loading = false;
               error.response.data.text().then(text => {
                 let errorText = JSON.parse(text);
-                this.loading = false;
+                // this.loading = false;
                 this.$store.commit("snackbar", {
                   color: "error",
                   message: errorText.message
