@@ -71,6 +71,20 @@
       <!-- app customizer -->
       <!--			<app-customizer></app-customizer>-->
     </template>
+    <v-dialog v-model="inactividad" persistent max-width="290">
+      <v-card>
+        <v-card-title class="text-h5">
+          Aviso
+        </v-card-title>
+        <v-card-text>Sera redireccionado a la pagina de inicio de sesion, debido a inactividad por un periodo de tiempo.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="logoutUser">
+            Aceptar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -84,7 +98,8 @@ export default {
     return {
       message: true,
       constF5: false,
-      loading: true
+      loading: true,
+      inactividad: false,
     }
   },
   components: {
@@ -96,7 +111,10 @@ export default {
       'reloadComplementos',
       'rF5',
       'datosEmpresa'
-    ])
+    ]),
+    isIdle() {
+			return this.$store.state.idleVue.isIdle
+		},
   },
   watch: {
     'reloadComplementos': {
@@ -112,6 +130,14 @@ export default {
         console.log('this.getF5 watch xxxx', val)
       },
       immediate: true
+    },
+    isIdle: {
+      handler(val){
+        if(val) {
+          this.$store.commit('InactivitylogoutUser', this.$router)
+          this.inactividad = true
+        }
+      }
     }
   },
   beforeCreate() {
@@ -133,11 +159,15 @@ export default {
   mounted() {
     setTimeout(() => {
       this.loading = false
-    }, 2000)
+    }, 1000)
   },
   methods: {
     getComplementos() {
       this.$store.dispatch('reloadStorage')
+    },
+    logoutUser() {
+      this.inactividad = false
+      this.$router.push({name: 'Login'})
     }
   }
 }

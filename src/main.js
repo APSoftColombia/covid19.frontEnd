@@ -63,6 +63,10 @@ router.beforeEach((to, from, next) => {
 			next({
 				name: 'Login'
 			})
+		} else if(JSON.parse(localStorage.getItem('user')).change_password_needed){
+			next({
+				name: 'Home'
+			})
 		} else if (to.meta.requiresPermission) {
 			if (store.getters.getPermission(to.meta.requiresPermission)) {
 				next()
@@ -138,7 +142,7 @@ const eventsHub = new Vue()
 Vue.use(IdleVue, {
 	eventEmitter: eventsHub,
 	store,
-	idleTime: 20000
+	idleTime: 1800000
 })
 moment.locale('es')
 Vue.prototype.moment = moment
@@ -154,9 +158,6 @@ Vue.mixin({
 		esMovil: false
 	}),
 	computed: {
-		isIdle() {
-			return this.$store.state.idleVue.isIdle
-		},
 		esMedico () {
 			return this && this.roles && this.roles.length && [3].find(x => this.roles.find(z => z.id === x))
 		},

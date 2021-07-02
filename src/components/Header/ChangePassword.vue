@@ -33,7 +33,7 @@
                     </ValidationProvider>
                 </v-flex>
                 <v-flex xs12 v-if="current_password">
-                    <ValidationProvider name="Nueva Contraseña" :rules="{minlength:8, required: true, is_not:current_password}" vid="password"  v-slot="{ errors, valid }">
+                    <ValidationProvider name="Nueva Contraseña" :rules="{minlength:8, required: true, is_not:current_password, regex:password}" vid="password"  v-slot="{ errors, valid }">
                         <v-text-field
                                 v-model="password"
                                 :append-icon="showPassword ? 'visibility_off' : 'visibility'"
@@ -91,7 +91,8 @@
         showPassword: false,
         showPasswordConfirmation: false,
         model: false,
-        loading: false
+        loading: false,
+        update_password_date: false
     }) ,
     computed: {
         ...mapState({
@@ -103,11 +104,12 @@
         if (!val) {
           this.resetData()
         }
-      }
+      },
     },
     methods: {
-        open () {
-            this.model = true
+        open (update_password_date = false) {
+          this.update_password_date = update_password_date
+          this.model = true
         },
       resetData () {
         this.current_password = null
@@ -121,11 +123,11 @@
           this.$refs.formPassword.validate().then(result => {
               if (result) {
                   this.loading = true
-                  this.axios.post('changepassword', {current_password: this.current_password, password: this.password, password_confirmation: this.password_confirmation})
+                  this.axios.post('changepassword', {current_password: this.current_password, password: this.password, password_confirmation: this.password_confirmation, update_password_date: this.update_password_date})
                       .then(() => {
                           this.$store.commit('snackbar', {color: 'success', message: `La contraseña se ha cambiado correctamente.`})
                           this.loading = false
-                          this.model = false
+                          location.reload()
                       }).catch(e => {
                       this.loading = false
                       this.$store.commit('snackbar', {color: 'error', message: `al cambiar la contraseña`, error: e})

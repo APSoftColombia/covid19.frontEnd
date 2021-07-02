@@ -164,6 +164,23 @@ const mutations = {
             state.refresh_token = null
             state.permisos = null
         }, 500)
+    },
+    InactivitylogoutUser (state) {
+        Nprogress.start()
+        setTimeout(() => {
+            Nprogress.done()
+            Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
+            localStorage.removeItem('user')
+            localStorage.removeItem('token_type')
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+            localStorage.removeItem('permisos')
+            state.user = null
+            state.token_type = null
+            state.access_token = null
+            state.refresh_token = null
+            state.permisos = null
+        }, 500)
     }
 }
 

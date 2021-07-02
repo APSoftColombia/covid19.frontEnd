@@ -23,7 +23,7 @@
 						<span :class="$vuetify.breakpoint.mdAndUp ? 'mt-3' : 'mt-3'">V{{appVersion}}</span>
 					</v-btn>
 				</v-img>
-				<app-menu></app-menu>
+				<app-menu v-if="user && !user.change_password_needed"></app-menu>
 			</div>
 			<v-spacer></v-spacer>
 			<div class="d-custom-flex align-items-center navbar-right pa-0">
@@ -76,7 +76,7 @@ import screenfull from 'screenfull'
 // import Notifications from './Notifications'
 import AppMenu from './AppMenu'
 import MobileSearchForm from './MobileSearchForm'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import User from './User'
 import axios from "axios";
 export default {
@@ -100,8 +100,11 @@ export default {
 			'activeHeaderFilter',
 			'appVersion',
 			'onLine',
-      'datosEmpresa'
+      'datosEmpresa',
 		]),
+		...mapState({
+			user: state => state.auth.user
+		}),
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },

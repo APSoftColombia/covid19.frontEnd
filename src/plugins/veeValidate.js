@@ -16,7 +16,7 @@ extend('size', {
 
 extend('is_not', {
     ...is_not,
-    message: 'El campo {_field_} no es válido'
+    message: 'El campo {_field_} debe ser diferente de la contraseña actual'
 })
 
 extend('confirmed', {
@@ -163,4 +163,13 @@ extend('maxPregunta', {
         return Number(value) <= maximo
     },
     message: 'La respuesta debe ser menor o igual a {maximo}'
+})
+
+extend('regex', {
+  params: ['password'],
+  validate(value, { password }) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_-])(?=.{8,})/;
+    return regex.test(password)
+  },
+  message: "La contraseña debe ser alfanumerica, debe contener mayusculas y minusculas y un caracter especial"
 })

@@ -58,7 +58,7 @@
      },
      methods: {
          logoutUser() {
-            this.$store.commit('logoutUser', this.$router)
+           this.$store.commit('logoutUser', this.$router)
          }
       }
    }
