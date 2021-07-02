@@ -128,6 +128,21 @@
                   label="¿Toma la muestra?"
               ></c-radio>
             </v-col>
+            <template v-if="toma_prueba && toma_prueba !== null">
+              <v-col cols="12">
+                <ValidationProvider name="Laboratorio a donde envia la prueba" rules="required" v-slot="{ errors, valid }">
+                  <v-select
+                      v-model="laboratorio_id_destino"
+                      label="Laboratorio a donde envia la prueba"
+                      :items="laboratorios"
+                      item-text="laboratorio"
+                      item-value="id"
+                      outlined
+                      :error-messages="errors"
+                  />
+                </ValidationProvider>
+              </v-col>
+            </template>
             <template v-if="!toma_prueba && toma_prueba !== null">
               <v-col cols="12" class="pb-0">
                 <c-select-complete
@@ -193,22 +208,27 @@ export default {
     razon_no_toma: null,
     observaciones: null,
     razones_no_toma_muestra: null,
-    fecha_reprogramacion: null
+    fecha_reprogramacion: null,
+    laboratorio_id_destino: null
   }),
   computed: {
     ...mapGetters([
       'tiposDocumentoIdentidad',
       'departamentos',
-      'municipiosTotal'
+      'municipiosTotal',
+      'laboratorios'
     ])
   },
   watch: {
-    'toma_prueba': {
+    toma_prueba: {
       handler(val){
-        if(!val){
+        if(val){
           this.razon_no_toma = null
+        } else {
+          this.laboratorio_id_destino = null
         }
-      }
+      },
+      immediate: true
     },
     'razon_no_toma': {
       handler(val){
@@ -247,11 +267,12 @@ export default {
           this.loading = true
           this.axios.put(`actualizar-pruebas/${this.id}`, {
             id: this.id,
-            fecha_toma_prueba: this.fecha_toma_prueba + ' ' + this.hora ,
+            fecha_toma_prueba: this.fecha_toma_prueba + ' ' + this.hora,
             toma_prueba: this.toma_prueba,
             razon_no_toma: this.razon_no_toma,
             observaciones: this.observaciones,
-            fecha_reprogramacion: this.fecha_reprogramacion
+            fecha_reprogramacion: this.fecha_reprogramacion,
+            laboratorio_id_destino: this.laboratorio_id_destino
           })
               .then(() => {
                 this.$emit('guardado')

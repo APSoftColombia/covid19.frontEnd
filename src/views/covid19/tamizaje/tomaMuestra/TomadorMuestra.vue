@@ -55,19 +55,6 @@
               </v-menu>
             </v-col>
             <v-col cols="12">
-              <ValidationProvider name="laboratorio remite prueba es requerido" rules="required" v-slot="{ errors, valid }">
-                <v-select
-                    v-model="laboratorio_id_destino"
-                    label="Laboratorio a donde envia la prueba"
-                    :items="laboratorios"
-                    item-text="laboratorio"
-                    item-value="id"
-                    outlined
-                    :error-messages="errors"
-                ></v-select>
-              </ValidationProvider>
-            </v-col>
-            <v-col cols="12">
               <c-radio
                   v-model="toma_prueba"
                   :items="[{text: 'Si', value: 1}, {text: 'No', value: 0}]"
@@ -77,8 +64,23 @@
                   rules="required"
                   name="toma la muestra"
                   label="¿Toma la muestra?"
-              ></c-radio>
+              />
             </v-col>
+            <template v-if="toma_prueba && toma_prueba !== null">
+              <v-col cols="12">
+                <ValidationProvider name="Laboratorio a donde envia la prueba" rules="required" v-slot="{ errors, valid }">
+                  <v-select
+                      v-model="laboratorio_id_destino"
+                      label="Laboratorio a donde envia la prueba"
+                      :items="laboratorios"
+                      item-text="laboratorio"
+                      item-value="id"
+                      outlined
+                      :error-messages="errors"
+                  />
+                </ValidationProvider>
+              </v-col>
+            </template>
             <template v-if="!toma_prueba && toma_prueba !== null">
               <v-col cols="12" class="pb-0">
                 <c-select-complete
@@ -148,12 +150,15 @@ export default {
     laboratorio_id_destino: null
   }),
   watch: {
-    'toma_prueba': {
+    toma_prueba: {
       handler(val){
-        if(!val){
+        if(val){
           this.razon_no_toma = null
+        } else {
+          this.laboratorio_id_destino = null
         }
-      }
+      },
+      immediate: true
     },
     'razon_no_toma': {
       handler(val){
