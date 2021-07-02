@@ -81,14 +81,14 @@
 			appLogo: AppConfig.appLogo2,
 			brand: AppConfig.brand
 		}),
-		created () {
+    created () {
       window.FreshworksWidget('hide')
 			this.getDatosEmpresa()
 		},
 		methods: {
 			getDatosEmpresa () {
 				this.loading = true
-				Vue.axios.get(`api/configuraciones`)
+				Vue.axios.get(`${Vue.axios.defaults.baseURL.includes('api') ? '' : 'api/'}configuraciones`)
 						.then(response => {
 							this.imagenName = response.data.imagen_inicio
 							this.loading = false

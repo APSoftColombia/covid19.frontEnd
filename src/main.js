@@ -58,44 +58,38 @@ Vue.config.productionTip = false
 // navigation guards before each
 router.beforeEach((to, from, next) => {
 	Nprogress.start()
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (localStorage.getItem('user') === null) {
-			next({
-				name: 'Login'
-			})
-		} else if(JSON.parse(localStorage.getItem('user')).change_password_needed){
-			next({
-				name: 'Home'
-			})
-		} else if (to.meta.requiresPermission) {
-			if (store.getters.getPermission(to.meta.requiresPermission)) {
-				next()
-			} else {
-				setTimeout(() => {
-					store.commit('snackbar', {color: 'error', message: `No tiene permisos para ingresar al módulo ${to.meta.title}.`})
-				}, 200)
+	const user = store.getters.getUser
+	console.log('from', from.name)
+	console.log('to', to.name)
+	if(user === null && (to.name !== 'Login')) {
+		console.log('user', user)
+		next({
+			name: 'Login'
+		})
+	}
+	else {
+		if (to.matched.some(record => record.meta.requiresAuth)) {
+			if(user.change_password_needed === true) {
 				next({
 					name: 'Home'
 				})
-			}
-			if (to.meta.requiresOnLine) {
-				console.log('store.getters.onLine()', store.getters.onLine)
-				if (store.getters.onLine) {
+			} else if (to.meta.requiresPermission) {
+				if (store.getters.getPermission(to.meta.requiresPermission)) {
 					next()
 				} else {
 					setTimeout(() => {
-						store.commit('snackbar', {color: 'warning', message: `No es posible acceder al módulo ${to.meta.title} en modo offLine.`})
+						store.commit('snackbar', {color: 'error', message: `No tiene permisos para ingresar al módulo ${to.meta.title}.`})
 					}, 200)
 					next({
 						name: 'Home'
 					})
 				}
+			} else {
+				next()
 			}
 		} else {
 			next()
 		}
-	} else {
-		next() // make sure to always call next()!
 	}
 })
 

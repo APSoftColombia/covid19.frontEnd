@@ -35,6 +35,23 @@
           </v-alert>
         </v-expand-transition>
         <v-expand-transition>
+          <v-alert class="mt-4" dense color="error" v-if="(user && user.change_password_needed) || (user && user.password_will_expired_on !== null)">
+            <v-row align="center" class="white--text">
+              <v-col cols="8">
+                <v-icon left>fas fa-exclamation-triangle</v-icon>
+                {{ user.password_will_expired_on !== null ? user.password_will_expired_on : 'Para inciar a usar el sistema, por favor, cambie su contraseña.' }}
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col class="shrink">
+                <v-btn
+                    class="black white--text"
+                    @click="$refs.dialogChangePassword.open(true)"
+                >Cambiar contraseña</v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>
+        </v-expand-transition>
+        <v-expand-transition>
           <v-alert
               v-if="message && moment().format('YYYY-MM-DD') === '2020-12-03'"
               color="primary"
@@ -85,11 +102,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <change-password ref="dialogChangePassword"></change-password>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import Header from 'Components/Header/Header.vue'
 import {store} from '../store/store'
 
@@ -103,7 +121,8 @@ export default {
     }
   },
   components: {
-    appHeader: Header
+    appHeader: Header,
+    ChangePassword: () => import('../components/Header/ChangePassword.vue')
   },
   computed: {
     ...mapGetters([
@@ -115,6 +134,9 @@ export default {
     isIdle() {
 			return this.$store.state.idleVue.isIdle
 		},
+    ...mapState({
+      user: state => state.auth.user
+    })
   },
   watch: {
     'reloadComplementos': {

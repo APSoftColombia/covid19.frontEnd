@@ -58,7 +58,7 @@ export default {
          name: 'Home',
          component: Home,
          meta: {
-            requiresAuth: true,
+            requiresAuth: false,
             avatar: {
                icon: 'fas fa-home',
                color: 'info',
