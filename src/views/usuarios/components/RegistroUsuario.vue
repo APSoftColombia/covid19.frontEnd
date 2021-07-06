@@ -52,7 +52,7 @@
                 ></v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="6">
+            <v-col class="pb-0" cols="12" :sm="usuario.id === null ? '12' : '6'">
               <ValidationProvider name="correo electrónico" rules="required|email" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="usuario.email"
@@ -63,6 +63,25 @@
                 ></v-text-field>
               </ValidationProvider>
             </v-col>
+            <template v-if="usuario.id === null">
+              <v-col class="pb-0" cols="12" sm="6">
+                <ValidationProvider name="Contraseña"
+                                    :rules="{minlength:8, required: true, regex:usuario.password}"
+                                    v-slot="{ errors, valid }">
+                  <v-text-field
+                      v-model="usuario.password"
+                      :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                      :type="showPassword ? 'text' : 'password'"
+                      dense
+                      outlined
+                      label="Contraseña"
+                      :error-messages="errors"
+                      :autocomplete="false"
+                      @click:append="showPassword = !showPassword"
+                  ></v-text-field>
+                </ValidationProvider>
+              </v-col>
+            </template>
             <v-col class="pb-0" cols="12" sm="6">
               <v-text-field
                   v-model="usuario.telefono"
@@ -184,6 +203,7 @@ export default {
       telefono: null,
       direccion: null,
       email: null,
+      password: null,
       fecha_nacimiento: null,
       habilitado: 1,
       roles: [],
@@ -191,6 +211,7 @@ export default {
       cod_ips: null,
       cargo: null
     },
+    showPassword: false,
     tiposDocumentoIdentidad: [],
     permisos: [],
     cargos: [],

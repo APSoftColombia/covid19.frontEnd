@@ -11,20 +11,20 @@
       >
       </data-table>
         <registro-usuario ref="dialogRegistroUsuario" @save="reloadTable"></registro-usuario>
-        <confirmation-dialog
+        <dialog-password
                 ref="confirmation"
                 :heading="dialog.heading"
-                :message="dialog.message"
+                :name="dialog.name"
                 :loading="dialog.loading"
                 @confirm="confirmResetPassword"
-        ></confirmation-dialog>
+        ></dialog-password>
     </v-card>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
     //import PersonaItemTabla from "Components/Tamizaje/PersonaItemTabla";
-
+    const DialogPassword = () => import('Views/usuarios/components/ConfirmChangePassword')
     const RegistroUsuario = () => import('Views/usuarios/components/RegistroUsuario')
     export default {
         name: "UsuariosTable",
@@ -115,13 +115,14 @@
           },
           dialog: {
               heading: '',
-              message: '',
+              name: '',
               loading: false,
               registro: null
           },
         }),
         components: {
-            RegistroUsuario
+            RegistroUsuario,
+            DialogPassword
         },
         computed: {
             ...mapGetters([
@@ -131,7 +132,7 @@
         methods: {
           resetOptions(item) {
               item.options = []
-              item.options.push({event: 'rest_contra', icon: 'mdi-account-key', tooltip: 'Restablecer Contraseña', color:'primary'})
+              item.options.push({event: 'rest_contra', icon: 'mdi-account-key', tooltip: 'Cambiar Contraseña', color:'primary'})
               item.options.push({event: 'editar', icon: 'mdi-pencil', tooltip: 'Editar Usuario', color:'primary'})
               item.options.push({event: 'cambiar_estado', icon: item.habilitado ? 'far fa-window-close' : 'far fa-check-circle', tooltip: item.habilitado ? 'Deshabilitar usuario' : 'Habilitar usuario' , color:'primary'})
           },
@@ -152,24 +153,24 @@
                     })
             },
             resetPassword (usuario) {
-                this.dialog.heading = 'Reestablecer Contraseña'
-                this.dialog.message = `La contraseña del usuario <strong>${usuario.name}</strong> será reestablecida.`
+                this.dialog.heading = 'Cambiar Contraseña'
+                this.dialog.name = usuario.name
                 this.dialog.registro = usuario
-                this.$refs.confirmation.open()
+                this.$refs.confirmation.open(true)
             },
             editarUsuario (usuario) {
                 this.$refs.dialogRegistroUsuario.open(usuario.id)
             },
-            confirmResetPassword () {
+            confirmResetPassword (password) {
                 this.dialog.loading = true
-                this.axios.put(`user/restablecer-contrasena/${this.dialog.registro.id}`, {id: this.dialog.registro.id})
+                this.axios.put(`user/restablecer-contrasena/${this.dialog.registro.id}`, {id: this.dialog.registro.id, password: password})
                     .then(() => {
-                        this.$store.commit('snackbar', {color: 'success', message: `La contraseña se reestableció correctamente.`})
+                        this.$store.commit('snackbar', {color: 'success', message: `La contraseña se actualizo correctamente.`})
                         this.dialog.loading = false
                         this.$refs.confirmation.close()
                     })
                     .catch(error => {
-                        this.$store.commit('snackbar', {color: 'error', message: `Error al reestablecer la contraseña, ${error.response.data.message}.`})
+                        this.$store.commit('snackbar', {color: 'error', message: `Error al actualizar la contraseña, ${error.response.data.message}.`})
                         this.dialog.loading = false
                     })
             },
