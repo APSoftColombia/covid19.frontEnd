@@ -416,14 +416,20 @@
                       </v-list-item>
                     </td>
                     <td>
-                      <v-list-item class="pa-0" v-if="respuestaPersona.mensaje && (respuestaPersona.mensaje.id === 2 || respuestaPersona.mensaje.id === 3)">
-                        <v-list-item-content class="pa-0">
-                          <v-list-item-title>Activo</v-list-item-title>
-                          <v-list-item-subtitle>
-                            {{ respuestaPersona.mensaje.id === 2 ? 'Pendiente por Asignar' : 'En Caso de Estudio' }}
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
+                      <template v-if="item.localiza_persona === 1 && item.contesta_encuesta === 1">
+                        <v-list-item
+                            class="pa-0"
+                        >
+                          <v-list-item-content class="pa-0">
+                            <v-list-item-title>
+                              {{ (item.estado_afectacion === 'Fallecido' || item.estado_afectacion === 'Recuperado' || item.clasificacion === '4' || item.clasificacion === '6') ? 'Cerrado' : 'Activo' }}
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ !item.medico_id ? 'Pendiente por Asignar' : 'En Caso de Estudio' }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
                     </td>
                     <td>
                       <v-list-item class="pa-0">
