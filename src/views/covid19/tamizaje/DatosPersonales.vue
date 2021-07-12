@@ -162,14 +162,6 @@ export default {
   methods: {
     assign() {
       this.datos = []
-      this.tamizaje.ips_medicamentos = {
-        codigohabilitacion: '1100100130',
-        direccion: 'TV 24 No. 54-08',
-        nombre: 'INVERSIONES DAMA SALUD SAS',
-        nomdepto: 'Bogotá D.C',
-        nompio: 'BOGOTÁ',
-        telefono: '3 58 04 44'
-      }
       this.datos.push(
           {
             label: 'Fecha Nacimiento',
