@@ -83,7 +83,8 @@
                       <v-list-item-title v-else><h6 class="mb-0">{{ item.body }}</h6></v-list-item-title>
                       <v-list-item-subtitle
                           v-if="item.subtitle"
-                          class="fs-12 fw-normal green--text"
+                          class="fs-12 fw-normal"
+                          :class="item.clasSubtitle"
                       >
                         {{ item.subtitle }}
                       </v-list-item-subtitle>
@@ -161,6 +162,14 @@ export default {
   methods: {
     assign() {
       this.datos = []
+      this.tamizaje.ips_medicamentos = {
+        codigohabilitacion: '1100100130',
+        direccion: 'TV 24 No. 54-08',
+        nombre: 'INVERSIONES DAMA SALUD SAS',
+        nomdepto: 'Bogotá D.C',
+        nompio: 'BOGOTÁ',
+        telefono: '3 58 04 44'
+      }
       this.datos.push(
           {
             label: 'Fecha Nacimiento',
@@ -188,6 +197,7 @@ export default {
                   this.tamizaje.telefono_ma ? `${this.tamizaje.telefono_ma }*-*Tel. Maestro Afiliado` : null
                 ].filter(x => x).join('*||*'),
             subtitle: this.tamizaje.cambio_telefono ? `Actualizados el ${this.moment(this.tamizaje.cambio_telefono).format('dddd, DD [de] MMMM [de] YYYY')}` : null,
+            clasSubtitle: 'green--text',
             icon: 'mdi-cellphone-iphone',
             iconColor: 'info',
             colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
@@ -241,7 +251,20 @@ export default {
             colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
             collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           }
-      )
+    )
+      if(this.tamizaje.ips_medicamentos) {
+        this.datos.push(
+            {
+              label: 'IPS Primarua Medicamentos',
+              body: this.tamizaje.ips_medicamentos.nombre,
+              subtitle: `Tel. ${this.tamizaje.ips_medicamentos.telefono}, ${[this.tamizaje.ips_medicamentos.direccion, this.tamizaje.ips_medicamentos.nompio, this.tamizaje.ips_medicamentos.nomdepto].filter(x => x).join(', ')}`,
+              icon: 'fas fa-clinic-medical',
+              iconColor: '',
+              colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+              collg: this.view === 'RegistroEvolucion' ? '6' : '4'
+            }
+        )
+      }
       // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)
     }
   }
