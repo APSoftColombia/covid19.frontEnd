@@ -215,6 +215,7 @@ export default {
 														<v-list-item-title class="body-1">${this.value.toma_prueba ? 'Tomada: ' + this.moment(this.value.fecha_toma_prueba).format('DD/MM/YYYY HH:mm') : !this.value.toma_prueba && this.value.toma_prueba !== null ? 'No Tomada: ' + this.moment(this.value.updated_at).format('DD/MM/YYYY HH:mm') : this.value.fecha_reprogramacion ? 'Reprogramada: ' + this.moment(this.value.fecha_reprogramacion).format('DD/MM/YYYY') : 'Pendiente'}</v-list-item-title>
 														<v-list-item-title class="body-2">${this.value.toma_prueba && this.value.usuario_prueba ? this.value.usuario_prueba.name : !this.value.toma_prueba && this.value.toma_prueba !== null ? this.value.razon_no_toma : ''}</v-list-item-title>
 														<v-list-item-title class="body-2">${ !this.value.toma_prueba && this.value.toma_prueba === 0 ? this.value.usuario_prueba.name : ''}</v-list-item-title>
+                            <v-list-item-title class="body-2">${ this.value.laboratorio_destino && this.value.laboratorio_destino.id ? "Laboratorio Destino: " + this.value.laboratorio_destino.laboratorio : ''}</v-list-item-title>
 													</v-list-item-content>
 												</v-list-item>
 											`
@@ -234,7 +235,7 @@ export default {
         }
       ]
     }
-    
+
   }),
   computed: {
     ...mapGetters([

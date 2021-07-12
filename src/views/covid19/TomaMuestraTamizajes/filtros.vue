@@ -20,6 +20,14 @@
       >
       </c-select-complete>
     </v-col>
+    <v-col class="pb-0" cols="12" sm="6" md="4" v-if="filters.models.estado === 2">
+      <c-select-complete
+          v-model="filters.models.razon"
+          label="Estado de la muestra"
+          :items="filters.data.razones"
+      >
+      </c-select-complete>
+    </v-col>
   </v-row>
 </template>
 
@@ -37,7 +45,8 @@
       filters: {
         models: {
           estado: null,
-          ips: null
+          ips: null,
+          razon: null
         },
         data: {
           estados: [
@@ -45,10 +54,29 @@
             {value: 2, text: 'Muestra no Tomada'},
             {value: 3, text: 'Muestra Pendiente'},
             {value: 4, text: 'Muestras Reprogramadas'},
+          ],
+          razones: [
+            'No contactado por teléfono sin señal',
+            'apagado',
+            'numero equivocado',
+            'Paciente manifiesta que ya tiene prueba',
+            'Paciente no desea  prueba',
+            'Prueba Reprogramada por causa particular',
+            'Paciente al ser contactado el contacto reporta que falleció',
+            'hospitalizado o se fue de la ciudad'
           ]
         }
       }
     }),
+    watch: {
+      'filters.models.estado': {
+        handler(val){
+          if(!val || val != 2) {
+            this.filters.models.razon = null
+          }
+        }
+      }
+    },
     methods: {
       getIPSS(){
         this.axios.get('/ajustes-generales/iniciales').then(response => {
@@ -68,6 +96,9 @@
         }
         if (this.filters.models.ips !== null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[cod_habilitacion_ips]=' + this.filters.models.ips
+        }
+        if (this.filters.models.razon !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[razon]=' + this.filters.models.razon
         }
         this.$emit('filtra', rutaTemp)
       },
