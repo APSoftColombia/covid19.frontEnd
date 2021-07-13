@@ -4,7 +4,7 @@
       <c-select-complete
           v-model="filters.models.ips"
           label="IPS"
-          :items="ipss"
+          :items="ipssPruebas"
           item-text="nombre"
           item-value="codigohabilitacion"
       >
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     name: "filtros",
     props: {
@@ -41,7 +42,6 @@
       }
     },
     data: () => ({
-      ipss: [],
       filters: {
         models: {
           estado: null,
@@ -68,6 +68,11 @@
         }
       }
     }),
+    computed: {
+      ...mapGetters([
+        'ipssPruebas',
+      ])
+    },
     watch: {
       'filters.models.estado': {
         handler(val){
@@ -78,17 +83,6 @@
       }
     },
     methods: {
-      getIPSS(){
-        this.axios.get('/ajustes-generales/iniciales').then(response => {
-          this.ipss = response.data.parametros.ipss_pruebas
-        }).catch(error => {
-          this.$store.commit('snackbar', {
-            color: 'error',
-            message: `al conseguir parametros`,
-            error: error
-          })
-        })
-      },
       aplicaFiltros() {
         let rutaTemp = this.rutaBase
         if (this.filters.models.estado !== null) {
@@ -107,9 +101,6 @@
         this.filters.models.ips = null
       },
     },
-    created() {
-      this.getIPSS()
-    }
   }
 </script>
 

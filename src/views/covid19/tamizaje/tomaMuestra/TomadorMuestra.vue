@@ -85,7 +85,7 @@
               <v-col cols="12" class="pb-0">
                 <c-select-complete
                     v-model="razon_no_toma"
-                    :items="razones_no_toma_muestra || []"
+                    :items="razonesNoTomaMuestra || []"
                     rules="required"
                     name="Razon de la no toma de muestra"
                     dense
@@ -145,7 +145,6 @@ export default {
     toma_prueba: null,
     razon_no_toma: null,
     observaciones: null,
-    razones_no_toma_muestra: null,
     fecha_reprogramacion: null,
     laboratorio_id_destino: null
   }),
@@ -173,7 +172,8 @@ export default {
       'tiposDocumentoIdentidad',
       'departamentos',
       'municipiosTotal',
-      'laboratorios'
+      'laboratorios',
+      'razonesNoTomaMuestra'
     ])
   },
   methods: {
@@ -245,20 +245,6 @@ export default {
         }
       })
     },
-    getRazonesNoTomaMuestra(){
-      this.axios.get('/ajustes-generales/iniciales').then(response => {
-        this.razones_no_toma_muestra = response.data.parametros.razones_no_toma_muestra
-      }).catch(error => {
-        this.$store.commit('snackbar', {
-          color: 'error',
-          message: `al conseguir parametros`,
-          error: error
-        })
-      })
-    },
-  },
-  created() {
-    this.getRazonesNoTomaMuestra()
   }
 }
 </script>

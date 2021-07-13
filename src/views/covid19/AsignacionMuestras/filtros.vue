@@ -43,6 +43,7 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     name: "filtros",
     props: {
@@ -52,7 +53,6 @@
       }
     },
     data: () => ({
-      municipiosPruebas: [],
       panelAdvanceFilters : false,
       filters: {
         models: {
@@ -60,18 +60,12 @@
         },
       }
     }),
+    computed: {
+      ...mapGetters([
+        'municipiosPruebas',
+      ])
+    },
     methods: {
-      getMunicipiosMuestas(){
-        this.axios.get('/ajustes-generales/iniciales').then(response => {
-          this.municipiosPruebas = response.data.parametros.municipios_pruebas
-        }).catch(error => {
-          this.$store.commit('snackbar', {
-            color: 'error',
-            message: `al conseguir parametros`,
-            error: error
-          })
-        })
-      },
       aplicaFiltros() {
         let rutaTemp = this.rutaBase
         console.log(rutaTemp)
@@ -84,9 +78,6 @@
         this.filters.models.municipio_id = null
       },
     },
-    created() {
-      this.getMunicipiosMuestas()
-    }
   }
 </script>
 

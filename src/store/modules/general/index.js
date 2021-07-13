@@ -256,7 +256,12 @@ const state = {
     ],
     respuestasPsicologicas: [],
     protocolosBioseguridad: [],
-    alteracionesEmocionales: []
+    alteracionesEmocionales: [],
+    municipiosPruebas: [],
+    razonesNoTomaMuestra: [],
+    ipssPruebas: [],
+    ipssVacunas: [],
+    priorizacionesVacunas: [],
 }
 
 // getters
@@ -445,7 +450,22 @@ const getters = {
     },
     alteracionesEmocionales: state => {
         return state.alteracionesEmocionales
-    }
+    },
+    municipiosPruebas: state => {
+      return state.municipiosPruebas
+    },
+    razonesNoTomaMuestra: state => {
+      return state.razonesNoTomaMuestra
+    },
+    ipssPruebas: state => {
+      return state.ipssPruebas
+    },
+    ipssVacunas: state => {
+      return state.ipssVacunas
+    },
+    priorizacionesVacunas: state => {
+      return state.priorizacionesVacunas
+    },
 }
 // actions
 const actions = {
@@ -552,6 +572,11 @@ const actions = {
                             context.commit('assignRespuestasPsicologicas', response.data.parametros.respuestas_seguimientos)
                             context.commit('assignProtocolosBioseguridad', response.data.parametros.protocolos_bioseguridad_respuestas)
                             context.commit('assignAlteracionesEmocionales', response.data.parametros.alteraciones_emocionales_respuestas)
+                            context.commit('assignMunicipiosPruebas', response.data.parametros.municipios_pruebas)
+                            context.commit('assignRazonesNoTomaMuestra', response.data.parametros.razones_no_toma_muestra)
+                            context.commit('assignIpssPruebas', response.data.parametros.ipss_pruebas)
+                            context.commit('assignIpssVacunas', response.data.parametros.ipss_vacunas)
+                            context.commit('assignPriorizacionesVacunas', response.data.parametros.priorizaciones_vacunas)
                             resolve(true)
                         })
                         .catch(error => {
@@ -718,6 +743,21 @@ const mutations = {
     },
     assignAlteracionesEmocionales(state, alteracionesEmocionales) {
         state.alteracionesEmocionales = alteracionesEmocionales
+    },
+    assignMunicipiosPruebas(state, municipiosPruebas){
+      state.municipiosPruebas = municipiosPruebas
+    },
+    assignRazonesNoTomaMuestra(state, razonesNoTomaMuestra) {
+      state.razonesNoTomaMuestra = razonesNoTomaMuestra
+    },
+    assignIpssPruebas(state, ipssPruebas){
+      state.ipssPruebas = ipssPruebas
+    },
+    assignIpssVacunas(state, ipssVacunas){
+      state.ipssVacunas = ipssVacunas
+    },
+    assignPriorizacionesVacunas(state, priorizacionesVacunas){
+      state.priorizacionesVacunas = priorizacionesVacunas
     },
     snackbar(state, data) {
         let timeout = 8000

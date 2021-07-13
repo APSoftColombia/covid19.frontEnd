@@ -4,7 +4,7 @@
       <c-select-complete
           v-model="filters.models.ips"
           label="IPS"
-          :items="ipss"
+          :items="ipssVacunas"
           item-text="nombre"
           item-value="codigohabilitacion"
       >
@@ -42,7 +42,7 @@
       <c-select-complete
           v-model="filters.models.priorizacion"
           label="Tipo de Priorizacion"
-          :items="priorizaciones"
+          :items="priorizacionesVacunas"
           item-text="descripcion"
           item-value="id"
       >
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     name: "filtros",
     props: {
@@ -61,8 +62,6 @@
       }
     },
     data: () => ({
-      ipss: [],
-      priorizaciones: [],
       filters: {
         models: {
           estado: null,
@@ -80,19 +79,13 @@
         }
       }
     }),
+    computed: {
+      ...mapGetters([
+        'ipssVacunas',
+        'priorizacionesVacunas'
+      ])
+    },
     methods: {
-      getIPSS(){
-        this.axios.get('/ajustes-generales/iniciales').then(response => {
-          this.ipss = response.data.parametros.ipss_vacunas,
-          this.priorizaciones = response.data.parametros.priorizaciones_vacunas
-        }).catch(error => {
-          this.$store.commit('snackbar', {
-            color: 'error',
-            message: `al conseguir parametros`,
-            error: error
-          })
-        })
-      },
       aplicaFiltros() {
         let rutaTemp = this.rutaBase
         if (this.filters.models.estado !== null) {
@@ -120,9 +113,6 @@
         this.filters.models.priorizacion = null
       },
     },
-    created() {
-      this.getIPSS()
-    }
   }
 </script>
 
