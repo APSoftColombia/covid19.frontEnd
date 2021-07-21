@@ -18,7 +18,7 @@
                 hide-details
                 outlined
                 dense
-                append-icon="search"
+                append-icon="mdi-magnify"
                 @keyup.enter="reloadCurrentPage"
             ></v-text-field>
           </v-card-title>
