@@ -13,7 +13,7 @@
 																	v-slot="{ errors, valid }">
 								<v-text-field
 										v-model="password"
-										:append-icon="showPassword ? 'visibility_off' : 'visibility'"
+										:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 										:type="showPassword ? 'text' : 'password'"
 										dense
 										outlined

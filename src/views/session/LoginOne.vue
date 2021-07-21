@@ -46,7 +46,7 @@
 										:success="valid"
 										:error-messages="errors"
 										:type="showPassword ? 'text' : 'password'"
-										:append-icon="showPassword ? 'visibility' : 'visibility_off'"
+										:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 										@click:append="showPassword = !showPassword"
 								></v-text-field>
 							</ValidationProvider>
