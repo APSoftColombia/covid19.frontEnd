@@ -147,9 +147,19 @@
             ref="registroTamizaje"
             @guardado="val => nexoGuardado(val)"
         ></registro-tamizaje>
-      <seguimiento
-          ref="seguimientox"
-      ></seguimiento>
+      <v-dialog
+          v-model="dialogSeguimiento"
+          fullscreen
+          transition="dialog-bottom-transition"
+          persistent
+          hide-overlay
+      >
+        <seguimiento
+            ref="seguimiento"
+            @open="val => dialogSeguimiento = val"
+            @close="val => dialogSeguimiento = val"
+        />
+      </v-dialog>
       <detalle-nexo
           :sonNexos="sonNexos"
           ref="detalleNexo"
@@ -204,6 +214,9 @@
                 return this.$store.getters.getPermissionModule('covid')
             },
         },
+      data: () => ({
+        dialogSeguimiento: false
+      }),
         methods: {
             agregarNexo () {
                 this.$refs.registroNexo.open(null, this.tamizaje)
@@ -221,7 +234,12 @@
               this.$refs.registroTamizaje.open(null, item.id)
             },
             verSeguimiento (item) {
-              if (item && item.tamizaje) this.$refs.seguimientox.open(item.tamizaje.id)
+              if (item && item.tamizaje) {
+                this.dialogSeguimiento = true
+                setTimeout(() => {
+                  this.$refs.seguimiento.open(item.tamizaje.id)
+                }, 400)
+              }
             },
             verDetalle(item) {
                 this.$refs.detalleNexo.open(item)

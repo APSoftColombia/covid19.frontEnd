@@ -164,7 +164,7 @@
 <script>
     import {mapGetters} from "vuex";
 
-    const Seguimiento = () => import('../../views/covid19/tamizaje/Seguimiento')
+    const Seguimiento = () => import('../../views/covid19/tamizaje/SeguimientoC')
     export default {
         name: 'PersonaItemTabla',
         props: {

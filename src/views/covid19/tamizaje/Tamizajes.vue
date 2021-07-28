@@ -62,9 +62,19 @@
         @guardado="item => tamizajeGuardado(item)"
         @close="loading = false"
     ></registro-tamizaje>
-    <seguimiento
-        ref="seguimiento"
-    ></seguimiento>
+    <v-dialog
+        v-model="dialogSeguimiento"
+        fullscreen
+        transition="dialog-bottom-transition"
+        persistent
+        hide-overlay
+    >
+      <seguimiento
+          ref="seguimiento"
+          @open="val => dialogSeguimiento = val"
+          @close="val => dialogSeguimiento = val"
+      />
+    </v-dialog>
     <asigna-medico
         v-if="permisos.tamizajeAsignarMedico"
         :medicos="medicos"
@@ -126,6 +136,7 @@ export default {
     }
   },
   data: (vm) => ({
+    dialogSeguimiento: false,
     loading: false,
     medicos: [],
     rutaBase: 'tamizajes',
@@ -671,7 +682,10 @@ export default {
       }
     },
     verSeguimiento(item) {
-      this.$refs.seguimiento.open(item.id)
+      this.dialogSeguimiento = true
+      setTimeout(() => {
+        this.$refs.seguimiento.open(item.id)
+      }, 400)
     },
     tamizajeGuardado(tamizaje) {
       if(tamizaje) this.verSeguimiento(tamizaje)
