@@ -1,7 +1,7 @@
 <template>
   <v-dialog
       v-if="idTamizaje"
-      :attach="`#attachTamizaje${idTamizaje}`"
+      :attach="true"
       v-model="dialog"
       fullscreen
       hide-overlay
@@ -13,7 +13,7 @@
         <v-icon left> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 1.3 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">prueba 1.4 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
@@ -41,21 +41,6 @@
         <datos-personales :tamizaje="tamizaje" @actualizarTamizaje="val => changeTamizaje(val.id)"></datos-personales>
         <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
-          <!--          <v-alert-->
-          <!--              v-if="tamizaje.medico"-->
-          <!--              class="mt-3"-->
-          <!--              v-model="alertPurebas"-->
-          <!--              dismissible-->
-          <!--              close-icon="mdi-delete"-->
-          <!--              color="orange"-->
-          <!--              border="left"-->
-          <!--              elevation="2"-->
-          <!--              colored-border-->
-          <!--              icon="mdi-alert"-->
-          <!--          >-->
-          <!--            Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se-->
-          <!--            relacionen correctamente.-->
-          <!--          </v-alert>-->
           <v-alert
               v-if="verAlertAislamiento"
               dark
@@ -375,12 +360,12 @@ const Seguimientos = () => import('Views/covid19/tamizaje/seguimientosPsicologic
 const TomaMuestras = () => import('Views/covid19/tamizaje/tomaMuestra/TomaMuestras')
 export default {
   name: 'Seguimiento',
-  props: {
-    attach: {
-      type: [String, Boolean],
-      default: false
-    }
-  },
+  // props: {
+  //   attach: {
+  //     type: [String, Boolean],
+  //     default: false
+  //   }
+  // },
   components: {
     TomaMuestras,
     Seguimientos,
