@@ -1,6 +1,7 @@
 <template>
   <div :id="`tamizaje${idTamizaje}`">
     <v-dialog
+        v-if="idTamizaje"
         :attach="`#tamizaje${idTamizaje}`"
         v-model="dialog"
         fullscreen
