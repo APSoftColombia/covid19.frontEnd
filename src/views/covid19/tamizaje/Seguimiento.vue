@@ -13,7 +13,7 @@
           <v-icon left> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="title">{{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+              <v-list-item-title class="title">prueba {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
                 <template v-if="tamizaje.id">
                   <v-tooltip bottom>
                     <template v-slot:activator="{on}">
