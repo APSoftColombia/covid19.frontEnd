@@ -1,9 +1,11 @@
 <template>
   <v-dialog
       v-model="dialog"
-      scrollable
-      max-width="1366"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
       persistent
+      :retain-focus="false"
   >
     <v-card tile flat>
       <v-card-title
@@ -16,7 +18,7 @@
             <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 3.0 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">{{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
@@ -283,6 +285,15 @@
               >
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab
+                    href="#tab-0"
+                >
+                  <span class="subtitle-1">
+                    ERP
+                    {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}
+                  </span>
+                  <v-icon>{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
+                </v-tab>
+                <v-tab
                     href="#tab-1"
                 >
                   <v-badge
@@ -323,6 +334,14 @@
                 </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
+                <v-tab-item
+                    value="tab-0"
+                >
+                  <datos-tamizaje
+                      v-if="tab === 'tab-0'"
+                      :tamizaje="tamizaje"
+                  />
+                </v-tab-item>
                 <v-tab-item
                     value="tab-1"
                 >
