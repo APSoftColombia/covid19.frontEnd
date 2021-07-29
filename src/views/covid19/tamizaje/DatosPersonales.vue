@@ -33,18 +33,16 @@
           <v-btn
               class="ml-2"
               icon
-              @click="panel = panel.length ? [] : [0]"
+              @click="panel= !panel"
           >
-            <v-icon>mdi-chevron-{{panel.length ? 'up' : 'down'}}</v-icon>
+            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>
           </v-btn>
         </v-list-item-action-text>
       </v-list-item>
     </v-list>
-<!--    <v-expansion-panels class="elevation-0" v-model="panel" multiple style="z-index: 0 !important;">-->
-    <v-expansion-panels class="elevation-0" v-model="panel" multiple>
-      <v-expansion-panel>
-        <v-expansion-panel-content>
-<!--          <v-divider class="ma-0"></v-divider>-->
+    <v-expand-transition>
+      <div v-if="panel">
+        <v-card-text>
           <v-row no-gutters>
             <template v-for="(item, indexItem) in datos">
               <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
@@ -98,9 +96,9 @@
               </v-col>
             </template>
           </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+        </v-card-text>
+      </div>
+    </v-expand-transition>
   </v-card>
 </template>
 
@@ -139,7 +137,7 @@ export default {
     abierto: {
       handler(val) {
         if (this) {
-          this.panel = val ? [0] : []
+          this.panel = val
         }
       },
       immediate: true
