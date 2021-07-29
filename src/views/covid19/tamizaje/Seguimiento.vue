@@ -16,7 +16,7 @@
             <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 2.5 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">prueba 2.6 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
@@ -357,16 +357,15 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import DatosPersonales from 'Views/covid19/tamizaje/DatosPersonales'
-import DatosTamizaje from 'Views/covid19/tamizaje/DatosTamizaje'
+const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
+const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
 
-import Evoluciones from 'Views/covid19/tamizaje/evolucion/Evoluciones'
-import Aislamientos from 'Views/covid19/tamizaje/aislamiento/Aislamientos'
-import Muestras from 'Views/covid19/tamizaje/muestra/Muestras'
-import Nexos from 'Views/covid19/tamizaje/nexo/Nexos'
-import Seguimientos from 'Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos'
-import TomaMuestras from 'Views/covid19/tamizaje/tomaMuestra/TomaMuestras'
-
+const Evoluciones = () => import('Views/covid19/tamizaje/evolucion/Evoluciones')
+const Aislamientos = () => import('Views/covid19/tamizaje/aislamiento/Aislamientos')
+const Muestras = () => import('Views/covid19/tamizaje/muestra/Muestras')
+const Nexos = () => import('Views/covid19/tamizaje/nexo/Nexos')
+const Seguimientos = () => import('Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos')
+const TomaMuestras = () => import('Views/covid19/tamizaje/tomaMuestra/TomaMuestras')
 export default {
   name: 'Seguimiento',
   components: {

@@ -40,7 +40,8 @@
         </v-list-item-action-text>
       </v-list-item>
     </v-list>
-    <v-expansion-panels class="elevation-0" v-model="panel" multiple style="z-index: 0 !important;">
+<!--    <v-expansion-panels class="elevation-0" v-model="panel" multiple style="z-index: 0 !important;">-->
+    <v-expansion-panels class="elevation-0" v-model="panel" multiple>
       <v-expansion-panel>
         <v-expansion-panel-content>
 <!--          <v-divider class="ma-0"></v-divider>-->

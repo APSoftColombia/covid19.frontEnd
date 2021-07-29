@@ -1,5 +1,6 @@
 <template>
-  <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">
+<!--  <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">-->
+  <v-expansion-panels v-model="panel" multiple>
     <v-expansion-panel>
       <v-expansion-panel-header class="py-0 pl-0">
         <v-list-item>
