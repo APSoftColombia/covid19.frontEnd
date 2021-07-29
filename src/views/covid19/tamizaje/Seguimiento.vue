@@ -12,11 +12,11 @@
           style="background-color: #125a9c"
       >
         <v-list-item class="pa-0" dark>
-          <v-list-item-avatar>
+          <v-list-item-avatar class="mr-1">
             <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 2.4 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">prueba 2.5 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
@@ -39,28 +39,6 @@
           </v-list-item-action>
         </v-list-item>
       </v-card-title>
-<!--      <v-toolbar dark color="primary" v-if="tamizaje">-->
-<!--        <v-icon left> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>-->
-<!--        <v-list-item>-->
-<!--          <v-list-item-content>-->
-<!--            <v-list-item-title class="title">prueba 2.3 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}-->
-<!--              <template v-if="tamizaje.id">-->
-<!--                <v-tooltip bottom>-->
-<!--                  <template v-slot:activator="{on}">-->
-<!--                    <span v-on="on" class="border-bottom-1">ERP</span>-->
-<!--                  </template>-->
-<!--                  <span>Encuesta de Riesgo Poblacional</span>-->
-<!--                </v-tooltip>-->
-<!--                No. {{ tamizaje.id }}-->
-<!--              </template>-->
-<!--            </v-list-item-title>-->
-<!--          </v-list-item-content>-->
-<!--        </v-list-item>-->
-<!--        <v-spacer></v-spacer>-->
-<!--        <v-btn icon dark @click="close">-->
-<!--          <v-icon>mdi-close</v-icon>-->
-<!--        </v-btn>-->
-<!--      </v-toolbar>-->
       <v-card-text class="pa-4">
         <div style="padding-bottom: 15px; text-align: right" v-if="permisos.descargarERPPDF">
           <v-btn :loading="loadingPDF" class="red darken-4" @click.stop="descargarPDF">
@@ -379,15 +357,16 @@
 
 <script>
 import {mapGetters} from 'vuex'
-const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
-const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
+import DatosPersonales from 'Views/covid19/tamizaje/DatosPersonales'
+import DatosTamizaje from 'Views/covid19/tamizaje/DatosTamizaje'
 
-const Evoluciones = () => import('Views/covid19/tamizaje/evolucion/Evoluciones')
-const Aislamientos = () => import('Views/covid19/tamizaje/aislamiento/Aislamientos')
-const Muestras = () => import('Views/covid19/tamizaje/muestra/Muestras')
-const Nexos = () => import('Views/covid19/tamizaje/nexo/Nexos')
-const Seguimientos = () => import('Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos')
-const TomaMuestras = () => import('Views/covid19/tamizaje/tomaMuestra/TomaMuestras')
+import Evoluciones from 'Views/covid19/tamizaje/evolucion/Evoluciones'
+import Aislamientos from 'Views/covid19/tamizaje/aislamiento/Aislamientos'
+import Muestras from 'Views/covid19/tamizaje/muestra/Muestras'
+import Nexos from 'Views/covid19/tamizaje/nexo/Nexos'
+import Seguimientos from 'Views/covid19/tamizaje/seguimientosPsicologicos/Seguimientos'
+import TomaMuestras from 'Views/covid19/tamizaje/tomaMuestra/TomaMuestras'
+
 export default {
   name: 'Seguimiento',
   components: {
