@@ -7,7 +7,7 @@
       transition="dialog-bottom-transition"
       persistent
   >
-    <v-card>
+    <v-card tile flat>
       <v-card-title
           v-if="tamizaje"
           class="py-1"
@@ -18,7 +18,7 @@
             <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 2.8 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">prueba 2.9 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
@@ -48,8 +48,14 @@
             <span class="font-weight-bold white--text">Descargar PDF</span>
           </v-btn>
         </div>
-        <datos-personales :tamizaje="tamizaje" @actualizarTamizaje="val => changeTamizaje(val.id)"></datos-personales>
-        <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
+        <datos-personales
+            :tamizaje="tamizaje"
+            @actualizarTamizaje="val => changeTamizaje(val.id)"
+        />
+<!--        <datos-tamizaje-->
+<!--            class="mt-3"-->
+<!--            :tamizaje="tamizaje"-->
+<!--        />-->
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
           <v-alert
               v-if="verAlertAislamiento"
@@ -76,6 +82,15 @@
                   :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : tab === 'tab-4' ? 'deep-purple' : tab === 'tab-5' ? 'indigo' : 'teal'"
               >
                 <v-tabs-slider></v-tabs-slider>
+                <v-tab
+                    href="#tab-0"
+                >
+                  <span class="subtitle-1">
+                    ERP
+                    {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}
+                  </span>
+                  <v-icon>{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
+                </v-tab>
                 <v-tab
                     href="#tab-1"
                 >
@@ -157,15 +172,23 @@
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
                 <v-tab-item
+                    value="tab-0"
+                >
+                  <datos-tamizaje
+                      v-if="tab === 'tab-0'"
+                      :tamizaje="tamizaje"
+                  />
+                </v-tab-item>
+                <v-tab-item
                     value="tab-1"
                 >
                   <evoluciones
-                      v-if="permisos.seguimientoVer"
+                      v-if="permisos.seguimientoVer && (tab === 'tab-1')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
                       @actualizarTamizaje="val => changeTamizaje(val.id)"
-                  ></evoluciones>
+                  />
                   <div v-if="!permisos.seguimientoVer"
                        class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                     <v-icon color="primary" large left>mdi-alert-outline</v-icon>
@@ -176,7 +199,7 @@
                     value="tab-4"
                 >
                   <aislamientos
-                      v-if="permisos.aislamientoVer"
+                      v-if="permisos.aislamientoVer && (tab === 'tab-4')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -191,7 +214,7 @@
                     value="tab-2"
                 >
                   <nexos
-                      v-if="permisos.nexoVer"
+                      v-if="permisos.nexoVer && (tab === 'tab-2')"
                       :tamizaje="tamizaje"
                       :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
@@ -207,7 +230,7 @@
                     value="tab-5"
                 >
                   <toma-muestras
-                      v-if="permisos.tomaMuestrasIndex"
+                      v-if="permisos.tomaMuestrasIndex && (tab === 'tab-5')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -222,7 +245,7 @@
                     value="tab-6"
                 >
                   <seguimientos
-                      v-if="permisos.seguimientoPsicologicoVer"
+                      v-if="permisos.seguimientoPsicologicoVer && (tab === 'tab-6')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -238,7 +261,7 @@
                     value="tab-3"
                 >
                   <muestras
-                      v-if="permisos.muestraVer"
+                      v-if="permisos.muestraVer && (tab === 'tab-3')"
                       :tamizaje="tamizaje"
                       :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
@@ -306,7 +329,7 @@
                     value="tab-1"
                 >
                   <nexos
-                      v-if="permisos.nexoVer"
+                      v-if="permisos.nexoVer && (tab === 'tab-1')"
                       :tamizaje="tamizaje"
                       :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
@@ -322,7 +345,7 @@
                     value="tab-3"
                 >
                   <toma-muestras
-                      v-if="permisos.tomaMuestrasIndex"
+                      v-if="permisos.tomaMuestrasIndex && (tab === 'tab-3')"
                       :tamizaje="tamizaje"
                       :editable="editableNexos"
                       @change="changeTamizaje(tamizaje.id)"
@@ -337,7 +360,7 @@
                     value="tab-2"
                 >
                   <muestras
-                      v-if="permisos.muestraVer"
+                      v-if="permisos.muestraVer && (tab === 'tab-2')"
                       :tamizaje="tamizaje"
                       :editable="false"
                       @change="changeTamizaje(tamizaje.id)"

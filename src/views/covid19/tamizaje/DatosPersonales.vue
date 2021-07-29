@@ -130,7 +130,7 @@ export default {
   },
   data: () => ({
     datos: [],
-    panel: [0],
+    panel: false,
     typePhone: ['Principal', 'Opcional', 'Tel. SIVIGILA', 'Tel. Maestro Afiliado']
   }),
   watch: {

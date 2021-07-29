@@ -1,10 +1,8 @@
 <template>
-  <v-card>
+  <v-card tile flat>
     <v-list two-line class="notification-wrap">
       <v-list-item>
-        <v-list-item-avatar>
-          <v-icon color="blue" large>{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
-        </v-list-item-avatar>
+        <v-icon color="blue" large class="mr-2">{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
         <v-list-item-content class="pa-0">
           <v-list-item-title class="grey--text fs-12 fw-normal">
             <h4 class="ma-0" v-if="$vuetify.breakpoint.smAndDown">
@@ -18,8 +16,10 @@
                 No. {{ tamizaje.id }}
               </template>
             </h4>
-            <h4 class="ma-0" v-else>ERP - Encuesta de Riesgo Poblacional
-              {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}</h4>
+            <h4 class="ma-0" v-else>
+              ERP - Encuesta de Riesgo Poblacional
+              {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}
+            </h4>
           </v-list-item-title>
           <v-list-item-title v-if="tamizaje.tamizador">
             <h6 v-if="tamizaje.tipo_tamizaje === 'telefónico'" class="mb-0">
@@ -28,19 +28,19 @@
             <h6 v-else class="mb-0">Realizado en: {{ tamizaje.tamizador.nombre }}</h6>
           </v-list-item-title>
         </v-list-item-content>
-        <v-list-item-action-text>
-          <v-btn
-              class="ml-2"
-              icon
-              @click="panel= !panel"
-          >
-            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>
-          </v-btn>
-        </v-list-item-action-text>
+<!--        <v-list-item-action-text>-->
+<!--          <v-btn-->
+<!--              class="ml-2"-->
+<!--              icon-->
+<!--              @click="panel= !panel"-->
+<!--          >-->
+<!--            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>-->
+<!--          </v-btn>-->
+<!--        </v-list-item-action-text>-->
       </v-list-item>
     </v-list>
     <v-expand-transition>
-      <div v-if="panel">
+      <div v-if="!panel">
         <v-card-text>
           <v-row no-gutters>
             <v-col cols="12" v-if="tamizaje.tamizador_id === 897">
@@ -421,7 +421,7 @@ export default {
     click: null,
     datos: [],
     comorbilidades: [],
-    panel: 0
+    panel: false
   }),
   watch: {
     tamizaje: {
@@ -455,7 +455,7 @@ export default {
   },
   methods: {
     assign() {
-      this.panel = (!this.tamizaje.medico_id || (this.tamizaje.medico_id && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0)) ? [0] : []
+      // this.panel = (!this.tamizaje.medico_id || (this.tamizaje.medico_id && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0))
       // this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
       this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       this.datos = []
