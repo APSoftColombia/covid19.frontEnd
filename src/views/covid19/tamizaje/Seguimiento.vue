@@ -1,9 +1,11 @@
 <template>
   <v-dialog
       v-model="dialog"
-      max-width="1366"
       :retain-focus="false"
-      scrollable
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      persistent
   >
     <v-card>
       <v-card-title
@@ -16,7 +18,7 @@
             <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">prueba 2.7 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
+            <v-list-item-title class="title">prueba 2.8 {{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
                 <v-tooltip bottom>
                   <template v-slot:activator="{on}">
