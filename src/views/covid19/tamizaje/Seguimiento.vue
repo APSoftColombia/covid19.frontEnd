@@ -96,19 +96,6 @@
                   <v-icon>fas fa-chart-line</v-icon>
                 </v-tab>
                 <v-tab
-                    href="#tab-4"
-                >
-                  <v-badge
-                      overlap
-                      :color="tab === 'tab-4' ? 'deep-purple' : 'grey'"
-                      :content="String(tamizaje.aislamientos.length)"
-                      :class="tab === 'tab-4' ? 'deep-purple--text' : 'text--secondary'"
-                  >
-                    <span class="subtitle-1">Aislamientos</span>
-                  </v-badge>
-                  <v-icon>mdi-door-closed-lock</v-icon>
-                </v-tab>
-                <v-tab
                     href="#tab-2"
                 >
                   <v-badge
@@ -120,6 +107,19 @@
                     <span class="subtitle-1">{{ sonNexos ? 'Nexos' : 'Contactos' }}</span>
                   </v-badge>
                   <v-icon>fas fa-people-arrows</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-4"
+                >
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-4' ? 'deep-purple' : 'grey'"
+                      :content="String(tamizaje.aislamientos.length)"
+                      :class="tab === 'tab-4' ? 'deep-purple--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Aislamientos</span>
+                  </v-badge>
+                  <v-icon>mdi-door-closed-lock</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-5"
@@ -395,6 +395,9 @@ export default {
     tab: null
   }),
   computed: {
+    actualizaPorGlobal() {
+      return this.$store.state.settings.actualizadorGlobal
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },
@@ -421,6 +424,14 @@ export default {
     ]),
     sonNexos() {
       return !!(this.tamizaje.muestras && this.tamizaje.muestras.filter(x => x.resultado).length)
+    }
+  },
+  watch: {
+    actualizaPorGlobal: {
+      handler (val) {
+        if (val && this.tamizaje && this.tamizaje.id) this.getTamizaje(this.tamizaje.id)
+      },
+      immediate: false
     }
   },
   created() {

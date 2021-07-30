@@ -43,15 +43,15 @@
           </template>
           <span>Generar informe de corte diario</span>
         </v-tooltip>
-				<v-tooltip left>
-					<template v-slot:activator="{ on }">
-						<v-btn icon large v-on="on">
-							<v-icon v-if="onLine" color="success" dark>mdi mdi-signal-cellular-3</v-icon>
-							<v-icon v-else color="red" dark>mdi mdi-signal-off</v-icon>
-						</v-btn>
-					</template>
-					<span>{{onLine ? 'En línea' : 'Sin internet'}}</span>
-				</v-tooltip>
+<!--				<v-tooltip left>-->
+<!--					<template v-slot:activator="{ on }">-->
+<!--						<v-btn icon large v-on="on">-->
+<!--							<v-icon v-if="onLine" color="success" dark>mdi mdi-signal-cellular-3</v-icon>-->
+<!--							<v-icon v-else color="red" dark>mdi mdi-signal-off</v-icon>-->
+<!--						</v-btn>-->
+<!--					</template>-->
+<!--					<span>{{onLine ? 'En línea' : 'Sin internet'}}</span>-->
+<!--				</v-tooltip>-->
 				<v-btn icon large @click="toggleFullScreen" class="full-screen ma-0">
 					<v-icon color="grey">mdi-fullscreen</v-icon>
 				</v-btn>

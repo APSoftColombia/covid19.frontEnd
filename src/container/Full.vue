@@ -103,6 +103,7 @@
       </v-card>
     </v-dialog>
     <change-password ref="dialogChangePassword"></change-password>
+    <seguimiento-global/>
   </div>
 </template>
 
@@ -122,6 +123,7 @@ export default {
   },
   components: {
     appHeader: Header,
+    SeguimientoGlobal: () => import('Views/covid19/tamizaje/SeguimientoGlobal'),
     ChangePassword: () => import('../components/Header/ChangePassword.vue')
   },
   computed: {

@@ -221,7 +221,13 @@
               this.$refs.registroTamizaje.open(null, item.id)
             },
             verSeguimiento (item) {
-              if (item && item.tamizaje) this.$refs.seguimiento.open(item.tamizaje.id)
+              if (item && item.tamizaje) {
+                if (this.esMovil) {
+                  this.$store.commit('abrirSeguimientoGlobal', item.tamizaje.id)
+                } else {
+                  this.$refs.seguimiento.open(item.tamizaje.id)
+                }
+              }
             },
             verDetalle(item) {
                 this.$refs.detalleNexo.open(item)

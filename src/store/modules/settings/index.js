@@ -29,11 +29,17 @@ const state = {                                       // dark mode
 	headerFilters,                                         // header filters
 	activeHeaderFilter: headerFilters[1],                  // selected header filter
 	mobileSearchForm: false,								// Is Mobile Search Form Open
-	loginImages
+	loginImages,
+	enSeguimientoGlobal: 0,
+	actualizadorGlobal: 0,
+	tamizajeIdSeleccionado: null
 }
 
 // getters
 const getters = {
+	enSeguimientoGlobal: state => {
+		return state.enSeguimientoGlobal
+	},
 	collapseSidebar: state => {
 		return state.collapseSidebar
 	},
@@ -138,6 +144,13 @@ const actions = {
 
 // mutations
 const mutations = {
+	actualizaGlobal(state) {
+		state.actualizadorGlobal++
+	},
+	abrirSeguimientoGlobal(state, tamizajeId) {
+		state.tamizajeIdSeleccionado = tamizajeId
+		state.enSeguimientoGlobal++
+	},
 	collapseSidebarHandler(state) {
 		state.collapseSidebar = !state.collapseSidebar
 	},
