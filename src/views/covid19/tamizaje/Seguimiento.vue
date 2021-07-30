@@ -52,10 +52,10 @@
             :tamizaje="tamizaje"
             @actualizarTamizaje="val => changeTamizaje(val.id)"
         />
-<!--        <datos-tamizaje-->
-<!--            class="mt-3"-->
-<!--            :tamizaje="tamizaje"-->
-<!--        />-->
+        <datos-tamizaje
+            class="mt-3"
+            :tamizaje="tamizaje"
+        />
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
           <v-alert
               v-if="verAlertAislamiento"
@@ -72,7 +72,7 @@
           <template v-if="tamizaje && tamizaje.id">
             <template v-if="tamizaje.medico">
               <v-tabs
-                  class="mt-3"
+                  class="mt-8"
                   id="tabsSeguimiento"
                   v-model="tab"
                   fixed-tabs
@@ -82,15 +82,6 @@
                   :color="tab === 'tab-1' ? 'primary' : tab === 'tab-2' ? 'warning' : tab === 'tab-3' ? 'error' : tab === 'tab-4' ? 'deep-purple' : tab === 'tab-5' ? 'indigo' : 'teal'"
               >
                 <v-tabs-slider></v-tabs-slider>
-                <v-tab
-                    href="#tab-0"
-                >
-                  <span class="subtitle-1">
-                    ERP
-                    {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}
-                  </span>
-                  <v-icon>{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
-                </v-tab>
                 <v-tab
                     href="#tab-1"
                 >
@@ -171,14 +162,6 @@
                 </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
-                <v-tab-item
-                    value="tab-0"
-                >
-                  <datos-tamizaje
-                      v-if="tab === 'tab-0'"
-                      :tamizaje="tamizaje"
-                  />
-                </v-tab-item>
                 <v-tab-item
                     value="tab-1"
                 >
@@ -285,15 +268,6 @@
               >
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab
-                    href="#tab-0"
-                >
-                  <span class="subtitle-1">
-                    ERP
-                    {{ tamizaje.id ? ` No. ${tamizaje.id}` : '' }}
-                  </span>
-                  <v-icon>{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
-                </v-tab>
-                <v-tab
                     href="#tab-1"
                 >
                   <v-badge
@@ -334,14 +308,6 @@
                 </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
-                <v-tab-item
-                    value="tab-0"
-                >
-                  <datos-tamizaje
-                      v-if="tab === 'tab-0'"
-                      :tamizaje="tamizaje"
-                  />
-                </v-tab-item>
                 <v-tab-item
                     value="tab-1"
                 >

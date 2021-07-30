@@ -1,8 +1,10 @@
 <template>
-  <v-card tile flat>
-    <v-list two-line class="notification-wrap">
+  <v-card>
+    <v-list two-line>
       <v-list-item>
-        <v-icon color="blue" large class="mr-2">{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
+        <v-list-item-avatar>
+          <v-icon color="blue" size="34">{{ tamizaje.infoviajero ? 'mdi-bus-marker' : 'fas fa-file-medical' }}</v-icon>
+        </v-list-item-avatar>
         <v-list-item-content class="pa-0">
           <v-list-item-title class="grey--text fs-12 fw-normal">
             <h4 class="ma-0" v-if="$vuetify.breakpoint.smAndDown">
@@ -28,19 +30,18 @@
             <h6 v-else class="mb-0">Realizado en: {{ tamizaje.tamizador.nombre }}</h6>
           </v-list-item-title>
         </v-list-item-content>
-<!--        <v-list-item-action-text>-->
-<!--          <v-btn-->
-<!--              class="ml-2"-->
-<!--              icon-->
-<!--              @click="panel= !panel"-->
-<!--          >-->
-<!--            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>-->
-<!--          </v-btn>-->
-<!--        </v-list-item-action-text>-->
+        <v-list-item-action-text>
+          <v-btn
+              icon
+              @click="panel= !panel"
+          >
+            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>
+          </v-btn>
+        </v-list-item-action-text>
       </v-list-item>
     </v-list>
     <v-expand-transition>
-      <div v-if="!panel">
+      <div v-if="panel">
         <v-card-text>
           <v-row no-gutters>
             <v-col cols="12" v-if="tamizaje.tamizador_id === 897">
@@ -325,7 +326,7 @@
               </template>
               <template v-else>
                 <v-col cols="12">
-                  <v-list class="notification-wrap">
+                  <v-list>
                     <v-list-item @click="click = null">
                       <v-list-item-avatar class="my-1">
                         <v-icon color="red">mdi-file-cancel</v-icon>
@@ -366,7 +367,7 @@
               </v-list>
             </v-col>
             <v-col cols="12" v-if="tamizaje.user">
-              <v-list two-line class="notification-wrap">
+              <v-list two-line>
                 <v-list-item @click="click = null">
                   <v-list-item-avatar class="my-1 align-self-center">
                     <v-icon color="primary">fas fa-user</v-icon>
@@ -383,7 +384,7 @@
               </v-list>
             </v-col>
             <v-col cols="12" v-if="tamizaje.medico">
-              <v-list two-line class="notification-wrap">
+              <v-list two-line>
                 <v-list-item @click="click = null">
                   <v-list-item-avatar class="my-1 align-self-center">
                     <v-icon color="pink">fas fa-user-md</v-icon>
@@ -455,7 +456,7 @@ export default {
   },
   methods: {
     assign() {
-      // this.panel = (!this.tamizaje.medico_id || (this.tamizaje.medico_id && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0))
+      this.panel = (!this.tamizaje.medico_id || (this.tamizaje.medico_id && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length === 0))
       // this.comorbilidades = this.tamizaje.evoluciones.find(x => x.comorbilidades.length) ? this.tamizaje.evoluciones.find(x => x.comorbilidades.length).comorbilidades : []
       this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
       this.datos = []

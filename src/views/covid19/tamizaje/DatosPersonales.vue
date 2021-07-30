@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-list two-line class="notification-wrap">
+    <v-list two-line>
       <v-list-item>
         <v-list-item-avatar>
           <v-icon color="teal" large>{{ tamizaje.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
