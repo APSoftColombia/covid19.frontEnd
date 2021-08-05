@@ -51,6 +51,19 @@
                 @actualizarTamizaje="val => $emit('actualizarTamizaje', val)"
                 view="RegistroEvolucion"
             />
+            <v-alert
+                v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                dark
+                class="my-3"
+                color="warning"
+                border="left"
+                elevation="2"
+                icon="mdi-alert"
+            >
+              El estado de afiliación actual es
+              <strong>{{ estadosAfiliacion && estadosAfiliacion.length ? estadosAfiliacion.find(x => x.value === tamizaje.estado_afiliado).text : tamizaje.estado_afiliado }}</strong>,
+              El caso será cerrado al registrar este seguimiento.
+            </v-alert>
             <ValidationObserver
                 ref="formEvolucion" v-slot="{ invalid, validated, passes, validate }"
                 autocomplete="off"
@@ -658,6 +671,19 @@
                 </template>
               </template>
               <v-divider></v-divider>
+              <v-alert
+                  v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                  dark
+                  class="my-3"
+                  color="warning"
+                  border="left"
+                  elevation="2"
+                  icon="mdi-alert"
+              >
+                El estado de afiliación actual es
+                <strong>{{ estadosAfiliacion && estadosAfiliacion.length ? estadosAfiliacion.find(x => x.value === tamizaje.estado_afiliado).text : tamizaje.estado_afiliado }}</strong>,
+                El caso será cerrado al registrar este seguimiento.
+              </v-alert>
               <v-card-actions>
                 <v-btn
                     large
@@ -811,7 +837,8 @@ export default {
         //// sicología
         'respuestasPsicologicas',
         'protocolosBioseguridad',
-        'alteracionesEmocionales'
+        'alteracionesEmocionales',
+        'estadosAfiliacion'
     ]),
     clasificacionesCovidSeleccionables() {
       if (this && this.evolucion && this.tamizaje && this.clasificacionesCovid) {

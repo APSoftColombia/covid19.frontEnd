@@ -156,6 +156,7 @@ export default {
     },
     ...mapGetters([
       'tiposDocumentoIdentidad',
+        'estadosAfiliacion'
     ])
   },
   methods: {
@@ -256,7 +257,19 @@ export default {
             }
         )
       }
-      // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)
+      if(this.tamizaje.afiliado_id) {
+        const datoAfiliacion = this.estadosAfiliacion && this.estadosAfiliacion.length && this.tamizaje.estado_afiliado ? this.estadosAfiliacion.find(x => x.value === this.tamizaje.estado_afiliado) : null
+        this.datos.push(
+            {
+              label: 'Estado de afiliación',
+              body: datoAfiliacion ? datoAfiliacion.text : '',
+              icon: datoAfiliacion ? datoAfiliacion.icon : 'mdi-file-question',
+              iconColor: datoAfiliacion ? datoAfiliacion.color : 'red',
+              colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+              collg: this.view === 'RegistroEvolucion' ? '6' : '4'
+            }
+        )
+      }
     }
   }
 }

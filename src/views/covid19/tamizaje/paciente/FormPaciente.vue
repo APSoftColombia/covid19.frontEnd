@@ -355,14 +355,6 @@ export default {
       },
       immediate: false
     }
-    // 'value.tamizador_id': {
-    //     handler(val) {
-    //         if (val) {
-    //             this.persona.barrio_id = null
-    //         }
-    //     },
-    //     immediate: false
-    // }
   },
   created() {
     this.assignPerson()
@@ -370,7 +362,6 @@ export default {
   methods: {
     assignPerson() {
       if (this.value) {
-        console.log('this.value', this.value)
         this.value.departamento_id = (this.departamentos && this.value.departamento_id && this.departamentos.find(x => x.id === this.value.departamento_id)) ? this.value.departamento_id : null
         this.value.municipio_id = (this.municipiosTotal && this.value.municipio_id && this.municipiosTotal.find(x => x.id === this.value.municipio_id)) ? this.value.municipio_id : null
         this.persona = this.value
@@ -391,81 +382,6 @@ export default {
             this.loadingBarrios = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar los barrios.`, error: error})
           })
-    },
-    resultAfiliado(response) {
-      this.$emit('responsetamizaje', null)
-      this.identificacionVerificada = 1
-      this.$emit('verificado', this.identificacionVerificada)
-      if ((this.remplazarAfiliadoNull && response.afiliado === null) || response.afiliado !== null) {
-        this.persona.tipo_identificacion = null
-        this.persona.nombre1 = null
-        this.persona.nombre2 = null
-        this.persona.apellido1 = null
-        this.persona.apellido2 = null
-        this.persona.fecha_nacimiento = null
-        this.persona.sexo = null
-        this.persona.celular = null
-        this.persona.celular2 = null
-        this.persona.telefono_sivigila = null
-        this.persona.telefono_ma = null
-        this.persona.email = null
-        this.persona.direccion = null
-        this.persona.departamento_id = null
-        this.persona.municipio_id = null
-        this.persona.barrio_id = null
-        this.persona.si_eps = 1
-        this.persona.eps_id = null
-        this.persona.tipo_afiliacion = null
-      }
-      if (response && response.tamizaje && response.tamizaje.length) {
-        this.identificacionVerificada = 0
-        this.$emit('verificado', this.identificacionVerificada)
-        let tm0 = response.tamizaje[0]
-        let mensaje = null
-        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
-          this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
-        } else if (tm0.total_riesgo && !tm0.medico_id) {
-          this.identificacionVerificada = -1
-          mensaje = {
-            id: 2,
-            mensaje: `El documento ${tm0.identificacion} ya tiene ERP activa y está pendiente por Asignación de Caso de Estudio.`
-          }
-        } else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
-          this.identificacionVerificada = -1
-          mensaje = {
-            id: 3,
-            mensaje: `El documento ${tm0.identificacion} tiene un Caso de Estudio Asignado y no se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
-          }
-        } else {
-          this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con la creación de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
-        }
-        this.$emit('responsetamizaje', {tamizajes: response.tamizaje, mensaje: mensaje})
-      }
-      this.$emit('verificado', this.identificacionVerificada)
-      if (this.identificacionVerificada === 1 && response.afiliado) {
-        this.persona.afiliado_id = response.afiliado.id
-        this.persona.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
-        this.persona.identificacion = response.afiliado.numero_documento_identidad
-        this.persona.nombre1 = response.afiliado.nombre1
-        this.persona.nombre2 = response.afiliado.nombre2
-        this.persona.apellido1 = response.afiliado.apellido1
-        this.persona.apellido2 = response.afiliado.apellido2
-        this.persona.fecha_nacimiento = response.afiliado.fecha_nacimiento
-        this.persona.sexo = response.afiliado.sexo
-        this.persona.celular = response.afiliado.numero_celular
-        this.persona.celular2 = response.afiliado.telefono_opcional
-        this.persona.telefono_sivigila = response.afiliado.telefono_sivigila || null
-        this.persona.telefono_ma = response.afiliado.telefono_ma || null
-        this.persona.email = response.afiliado.email
-        this.persona.direccion = response.afiliado.direccion
-        this.persona.departamento_id = response.afiliado.departamento_id
-        this.persona.municipio_id = response.afiliado.centro_poblado_id
-        this.persona.barrio_id = response.afiliado.barrio_id || null
-        this.persona.eps_id = response.afiliado.eps_id
-        this.persona.tipo_afiliacion = response.afiliado.regimen
-      }
     }
   }
 }

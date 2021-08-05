@@ -71,6 +71,19 @@
           </v-alert>
           <template v-if="tamizaje && tamizaje.id">
             <template v-if="tamizaje.medico">
+              <v-alert
+                  v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                  dark
+                  class="my-3"
+                  color="warning"
+                  border="left"
+                  elevation="2"
+                  icon="mdi-alert"
+              >
+                El estado de afiliación actual es
+                <strong>{{ estadosAfiliacion && estadosAfiliacion.length ? estadosAfiliacion.find(x => x.value === tamizaje.estado_afiliado).text : tamizaje.estado_afiliado }}</strong>,
+                solo se permitirá realizar un seguimiento más y el caso será cerrado de acuerdo a los lineamientos de la EPS.
+              </v-alert>
               <v-tabs
                   class="mt-8"
                   id="tabsSeguimiento"
@@ -403,24 +416,25 @@ export default {
     },
     verAlertAislamiento() {
       if (this && this.tamizaje && (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.filter(x => !x.fallida).length) && (this.tamizaje.aislamientos && !this.tamizaje.aislamientos.length)) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado'
       }
       return false
     },
     editable() {
       if (this && this.tamizaje && this.tamizaje.medico_id) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
+        return (!(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado') || this.esSuperAdmin
       }
       return false
     },
     editableNexos() {
       if (this && this.tamizaje) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
+        return (!(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado') || this.esSuperAdmin
       }
       return false
     },
     ...mapGetters([
-      'modelTamizaje'
+      'modelTamizaje',
+        'estadosAfiliacion'
     ]),
     sonNexos() {
       return !!(this.tamizaje.muestras && this.tamizaje.muestras.filter(x => x.resultado).length)

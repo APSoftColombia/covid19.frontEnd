@@ -1,5 +1,19 @@
 <template>
   <v-row>
+    <v-col
+        v-if="persona && !persona.afiliado_id && identificacionVerificada"
+        cols="12"
+        class="py-0"
+    >
+      <v-alert
+          dense
+          border="left"
+          color="orange"
+          icon="mdi-alert-circle"
+      >
+        No se encuentra información de afiliado para el documento número {{persona.identificacion}}
+      </v-alert>
+    </v-col>
     <v-col class="pb-0" cols="12" sm="6" md="6">
       <c-identificacion
           ref="cIdentificacion"
@@ -223,8 +237,27 @@
             item-value="id"
             item-text="nombre"
             :disabled="identificacionVerificada < 1"
-        >
-        </c-select-complete>
+        />
+        <template v-if="identificacionVerificada && persona">
+          <v-alert
+              v-if="(persona.estado_afiliado === 'RE') && (persona.eps_id && persona.eps_id.toString() === this.datosEmpresa.eps_id)"
+              dense
+              border="left"
+              color="orange"
+              icon="mdi-alert"
+          >
+            El afiliado se encuentra como <strong>RETIRADO</strong> en la EPS seleccionada, <strong>el registro no podrá ser guardado</strong>.
+          </v-alert>
+          <v-alert
+              v-if="!persona.afiliado_id && (persona.eps_id && persona.eps_id.toString() === this.datosEmpresa.eps_id)"
+              dense
+              border="left"
+              color="orange"
+              icon="mdi-alert"
+          >
+            La EPS seleccionada es sujeto de validación de afiliados y no se encuentra información con el documento número {{persona.identificacion}}, <strong>el registro no podrá ser guardado</strong>.
+          </v-alert>
+        </template>
       </v-col>
       <template v-if="persona.eps_id">
         <v-col class="pb-0" cols="12" sm="12" md="6">
@@ -300,7 +333,8 @@ export default {
       'tiposAfiliacion',
       'epss',
       'regimenesEspeciales',
-      'modelPersona'
+      'modelPersona',
+      'datosEmpresa'
     ])
   },
   watch: {
@@ -404,6 +438,7 @@ export default {
       this.identificacionVerificada = 1
       this.$emit('verificado', this.identificacionVerificada)
       if ((this.remplazarAfiliadoNull && response.afiliado === null) || response.afiliado !== null) {
+        this.persona.afiliado_id = null
         this.persona.tipo_identificacion = null
         this.persona.nombre1 = null
         this.persona.nombre2 = null
@@ -423,34 +458,80 @@ export default {
         this.persona.si_eps = 1
         this.persona.eps_id = null
         this.persona.tipo_afiliacion = null
+        this.persona.estado_afiliado = null
       }
+
+      let mensaje = null
       if (response && response.tamizaje && response.tamizaje.length) {
         this.identificacionVerificada = 0
         this.$emit('verificado', this.identificacionVerificada)
         let tm0 = response.tamizaje[0]
-        let mensaje = null
-        if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
+        if (this.tipo === 'tamizaje' && tm0.estado_afectacion === 'Fallecido') {
+          this.identificacionVerificada = -1
+          mensaje = {
+            id: 4,
+            mensaje: `La ERP más reciente del documento ${tm0.identificacion}, registra el estado del paciente como fallecido.`
+          }
+        }
+        else if ((!tm0.medico_id && !tm0.total_riesgo) || tm0.clasificacion === '6' || (!tm0.localiza_persona || !tm0.contesta_encuesta)) {
           this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
-        } else if (tm0.total_riesgo && !tm0.medico_id) {
+          mensaje = {
+            id: 1,
+            mensaje: `Se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
+          }
+        }
+        else if (tm0.total_riesgo && !tm0.medico_id) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 2,
             mensaje: `El documento ${tm0.identificacion} ya tiene ERP activa y está pendiente por Asignación de Caso de Estudio.`
           }
-        } else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
+        }
+        else if (tm0.medico_id && (tm0.estado_afectacion !== 'Recuperado' && tm0.estado_afectacion !== 'Fallecido')) {
           this.identificacionVerificada = -1
           mensaje = {
             id: 3,
             mensaje: `El documento ${tm0.identificacion} tiene un Caso de Estudio Asignado y no se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
           }
-        } else {
-          this.identificacionVerificada = 1
-          mensaje = {id: 1, mensaje: `Se puede continuar con la creación de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`}
         }
-        this.$emit('responsetamizaje', {tamizajes: response.tamizaje, mensaje: mensaje})
+        else {
+          this.identificacionVerificada = 1
+          mensaje = {
+            id: 1,
+            mensaje: `Se puede continuar con la creación de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
+          }
+        }
       }
+
+      // AC, RE, AF
+      if (response.afiliado && response.afiliado.estado === 'AF') {
+        this.identificacionVerificada = -1
+        mensaje = {
+          id: 4,
+          mensaje: `El afiliado se encuetra registrado como fallecido, no es posible continuar con el registro.`
+        }
+      }
+
+      let persona = null
+      if (response.tamizaje && response.tamizaje.length) {
+        persona = {
+          nombre: [response.tamizaje[0].nombre1, response.tamizaje[0].nombre2, response.tamizaje[0].apellido1, response.tamizaje[0].apellido2].filter(x => x).join(' '),
+          tipo_identificacion: response.tamizaje[0].tipo_identificacion,
+          identificacion: response.tamizaje[0].identificacion,
+          celular: response.tamizaje[0].celular ? ', Cel. ' + response.tamizaje[0].celular : ''
+        }
+      } else if (response.afiliado) {
+        persona = {
+          nombre: [response.afiliado.nombre1, response.afiliado.nombre2, response.afiliado.apellido1, response.afiliado.apellido2].filter(x => x).join(' '),
+          tipo_identificacion: response.afiliado.tipo_documento_identidad_id,
+          identificacion: response.afiliado.numero_documento_identidad,
+          celular: response.afiliado.numero_celular ? ', Cel. ' + response.afiliado.numero_celular : ''
+        }
+      }
+
+      this.$emit('responsetamizaje', {tamizajes: response.tamizaje, mensaje: mensaje, persona: persona})
       this.$emit('verificado', this.identificacionVerificada)
+
       if (this.identificacionVerificada === 1 && response.afiliado) {
         this.persona.afiliado_id = response.afiliado.id
         this.persona.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
@@ -472,6 +553,7 @@ export default {
         this.persona.barrio_id = response.afiliado.barrio_id || null
         this.persona.eps_id = response.afiliado.eps_id
         this.persona.tipo_afiliacion = response.afiliado.regimen
+        this.persona.estado_afiliado = response.afiliado.estado
       }
     }
   }

@@ -113,7 +113,8 @@ export default {
       return this.$store.getters.getPermissionModule('covid')
     },
     ...mapGetters([
-      'tiposDocumentoIdentidad'
+      'tiposDocumentoIdentidad',
+      'estadosAfiliacion'
     ]),
   },
   watch: {
@@ -270,6 +271,20 @@ export default {
 											`
                     }
                   }
+              )
+            },
+            props: ['value']
+          }
+        },
+        {
+          text: 'Afiliación',
+          align: 'left',
+          sortable: false,
+          component: {
+            render: function (createElement) {
+              return createElement(
+                  `div`,
+                  this.value.afiliado_id && this.value.estado_afiliado ? vm.estadosAfiliacion && vm.estadosAfiliacion.length && vm.estadosAfiliacion.find(x => x.value === this.value.estado_afiliado) ? vm.estadosAfiliacion.find(x => x.value === this.value.estado_afiliado).text : '' : ''
               )
             },
             props: ['value']
