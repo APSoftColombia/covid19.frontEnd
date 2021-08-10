@@ -81,7 +81,6 @@
     methods: {
       aplicaFiltros() {
         let rutaTemp = this.rutaBase
-        console.log("este es el valor: ", rutaTemp)
         if (this.filters.models.municipio_id !== null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[municipio_id]=' + this.filters.models.municipio_id
         }

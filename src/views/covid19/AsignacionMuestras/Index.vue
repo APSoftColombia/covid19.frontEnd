@@ -18,7 +18,7 @@
                 hide-details
                 outlined
                 dense
-                append-icon="mdi-magnify"
+                append-icon="search"
                 @keyup.enter="reloadCurrentPage"
             ></v-text-field>
           </v-card-title>
@@ -160,7 +160,7 @@ export default {
       if (loadingP){
         this.loading = true
       }
-      this.axios.get(this.ruta + `&filter[searchAsignacion]=${this.search}`)
+      this.axios.get(this.ruta + (this.ruta.indexOf('?') > -1 ? '&' : '?') + `filter[searchAsignacion]=${this.search}`)
           .then(response => {
             this.seleccionados = []
             this.muestras = response.data
