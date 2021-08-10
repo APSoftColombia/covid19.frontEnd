@@ -299,28 +299,34 @@
               <p class="headline mb-0">{{ respuestaPersona.mensaje ? respuestaPersona.mensaje.mensaje : '' }}</p>
             </v-card-text>
             <v-card-text>
-              <v-list two-line class="notification-wrap">
+              <v-list
+                  v-if="respuestaPersona && respuestaPersona.persona"
+                  two-line
+                  class="notification-wrap"
+              >
                 <v-list-item
                     style="border-bottom: none !important;"
                 >
                   <v-list-item-avatar class="my-1">
                     <v-icon large color="primary">
-                      {{ respuestaPersona.tamizajes[0].sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman' }}
+                      {{ respuestaPersona.persona.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman' }}
                     </v-icon>
                   </v-list-item-avatar>
                   <v-list-item-content class="pa-0">
                     <v-list-item-title>
                       <h6 class="mb-0 text-justify">
-                        {{ [respuestaPersona.tamizajes[0].nombre1, respuestaPersona.tamizajes[0].nombre2, respuestaPersona.tamizajes[0].apellido1, respuestaPersona.tamizajes[0].apellido2].filter(x => x).join(' ') }}
+                        {{ respuestaPersona.persona.nombre }}
                       </h6>
                     </v-list-item-title>
                     <v-list-item-subtitle class="grey--text fs-12 fw-normal">
-                      {{ tiposDocumentoIdentidad && respuestaPersona.tamizajes[0].tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === respuestaPersona.tamizajes[0].tipo_identificacion).tipo : '' }}{{ respuestaPersona.tamizajes[0].identificacion }}{{ respuestaPersona.tamizajes[0].celular ? ', Cel. ' + respuestaPersona.tamizajes[0].celular : '' }}
+                      {{ tiposDocumentoIdentidad && respuestaPersona.persona.tipo_identificacion ? tiposDocumentoIdentidad.find(x => x.id === respuestaPersona.persona.tipo_identificacion).tipo : '' }}{{ respuestaPersona.persona.identificacion }}{{ respuestaPersona.persona.celular }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
-              <v-simple-table>
+              <v-simple-table
+                  v-if="respuestaPersona && respuestaPersona.tamizajes && respuestaPersona.tamizajes.length"
+              >
                 <template v-slot:default>
                   <thead>
                   <tr>
@@ -624,6 +630,8 @@ export default {
       // this.dialog = false
     },
     verificar(val) {
+      console.log('verificar val', val)
+      console.log('verificar this.respuestaPersona', this.respuestaPersona)
       this.verificado = val
       this.$emit('verificado', val)
       if ((val === -1) || (val === 1 && this.respuestaPersona && this.respuestaPersona.mensaje && this.respuestaPersona.mensaje.id === 1)) this.dialog = true

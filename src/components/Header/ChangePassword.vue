@@ -19,7 +19,7 @@
                                   v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="current_password"
-                    :append-icon="showCurrentPassword ? 'visibility_off' : 'visibility'"
+                    :append-icon="showCurrentPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="showCurrentPassword ? 'text' : 'password'"
                     dense
                     outlined
@@ -39,7 +39,7 @@
                                   vid="password" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="password"
-                    :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="showPassword ? 'text' : 'password'"
                     dense
                     outlined
@@ -59,7 +59,7 @@
                                   vid="passwordConfirmation" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="password_confirmation"
-                    :append-icon="showPasswordConfirmation ? 'visibility_off' : 'visibility'"
+                    :append-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="showPasswordConfirmation ? 'text' : 'password'"
                     dense
                     outlined

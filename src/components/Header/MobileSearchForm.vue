@@ -8,7 +8,7 @@
 				<v-text-field 
 					dark
 					v-model="search"
-					prepend-icon="search"
+					prepend-icon="mdi-magnify"
 					placeholder="What are you looking for.."
 					autocomplete="true"
 					@click.stop="onClickSearch"

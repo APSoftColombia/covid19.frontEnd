@@ -2,15 +2,6 @@
   <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" persistent>
     <v-card>
       <template>
-<!--        <v-chip-->
-<!--            v-if="tamizaje"-->
-<!--            :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"-->
-<!--            color="primary darken-3"-->
-<!--            label-->
-<!--        >-->
-<!--          <v-icon left>mdi-timer</v-icon>-->
-<!--          {{ time }}-->
-<!--        </v-chip>-->
         <v-toolbar dark color="primary">
           <v-icon left>fas fa-file-medical</v-icon>
           <v-toolbar-title>
@@ -235,6 +226,7 @@ export default {
     ...mapGetters([
       'modelTamizaje',
       'signosAlarma',
+      'datosEmpresa'
     ]),
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
@@ -278,27 +270,35 @@ export default {
   },
   methods: {
     guardarTamizaje() {
-      this.$refs.formTamizaje.validate().then(async result => {
-        if (result) {
-          this.loading = true
-          let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
-          if(tamizajeCopia.signos_alarma && tamizajeCopia.signos_alarma.length) tamizajeCopia.sintomas = tamizajeCopia.sintomas.concat(tamizajeCopia.signos_alarma)
-          let request = tamizajeCopia.id
-              ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
-              : this.axios.post(`tamizajes`, tamizajeCopia)
-          !tamizajeCopia.id ? tamizajeCopia.created_at = this.moment().format('YYYY-MM-DD hh:mm:ss') : ''
-          request
-              .then(response => {
-                this.$emit('guardado', response.data)
-                this.$store.commit('snackbar', {color: 'success', message: `El tamizaje se guardo correctamente.`})
-                this.close()
-              })
-              .catch(error => {
-                this.loading = false
-                this.$store.commit('snackbar', {color: 'error', message: `al guardar el tamizaje.`, error: error})
-              })
+      if (!((this.tamizaje.estado_afiliado === 'RE') && (this.tamizaje.eps_id && this.tamizaje.eps_id.toString() === this.datosEmpresa.eps_id))) {
+        if (!(!this.tamizaje.afiliado_id && (this.tamizaje.eps_id && this.tamizaje.eps_id.toString() === this.datosEmpresa.eps_id))) {
+          this.$refs.formTamizaje.validate().then(async result => {
+            if (result) {
+              this.loading = true
+              let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
+              if(tamizajeCopia.signos_alarma && tamizajeCopia.signos_alarma.length) tamizajeCopia.sintomas = tamizajeCopia.sintomas.concat(tamizajeCopia.signos_alarma)
+              let request = tamizajeCopia.id
+                  ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
+                  : this.axios.post(`tamizajes`, tamizajeCopia)
+              !tamizajeCopia.id ? tamizajeCopia.created_at = this.moment().format('YYYY-MM-DD hh:mm:ss') : ''
+              request
+                  .then(response => {
+                    this.$emit('guardado', response.data)
+                    this.$store.commit('snackbar', {color: 'success', message: `El tamizaje se guardo correctamente.`})
+                    this.close()
+                  })
+                  .catch(error => {
+                    this.loading = false
+                    this.$store.commit('snackbar', {color: 'error', message: `al guardar el tamizaje.`, error: error})
+                  })
+            }
+          })
+        } else {
+          this.$store.commit('snackbar', {color: 'warning', message: `La EPS seleccionada es sujeto de validación de afiliados y no se encuentra información con el documento número ${this.tamizaje.identificacion}, <strong>el registro no podrá ser guardado</strong>.`})
         }
-      })
+      } else {
+        this.$store.commit('snackbar', {color: 'warning', message: `El afiliado se encuentra como <strong>RETIRADO</strong> en la EPS seleccionada, <strong>el registro no podrá ser guardado</strong>.`})
+      }
     },
     open(idTamizaje = null, idReporte = null, llamada = null) {
       this.dialog = true

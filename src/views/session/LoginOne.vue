@@ -46,7 +46,7 @@
 										:success="valid"
 										:error-messages="errors"
 										:type="showPassword ? 'text' : 'password'"
-										:append-icon="showPassword ? 'visibility' : 'visibility_off'"
+										:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 										@click:append="showPassword = !showPassword"
 								></v-text-field>
 							</ValidationProvider>
@@ -55,7 +55,7 @@
 									label="Recordarme"
 									v-model="checkbox"
 							></v-checkbox>
-							<router-link class="mb-2" to="/session/forgot-password">¿Se te olvidó tu contraseña?</router-link>
+<!--							<router-link class="mb-2" to="/session/forgot-password">¿Se te olvidó tu contraseña?</router-link>-->
 							<div>
 								<v-btn :loading="loading" large class="mb-2" type="submit" block color="primary">Iniciar sesión</v-btn>
 							</div>

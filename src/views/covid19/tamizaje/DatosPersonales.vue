@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-list two-line class="notification-wrap">
+    <v-list two-line>
       <v-list-item>
         <v-list-item-avatar>
           <v-icon color="teal" large>{{ tamizaje.sexo === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' }}</v-icon>
@@ -33,17 +33,16 @@
           <v-btn
               class="ml-2"
               icon
-              @click="panel = panel.length ? [] : [0]"
+              @click="panel= !panel"
           >
-            <v-icon>mdi-chevron-{{panel.length ? 'up' : 'down'}}</v-icon>
+            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>
           </v-btn>
         </v-list-item-action-text>
       </v-list-item>
     </v-list>
-    <v-expansion-panels class="elevation-0" v-model="panel" multiple style="z-index: 0 !important;">
-      <v-expansion-panel>
-        <v-expansion-panel-content>
-<!--          <v-divider class="ma-0"></v-divider>-->
+    <v-expand-transition>
+      <div v-if="panel">
+        <v-card-text>
           <v-row no-gutters>
             <template v-for="(item, indexItem) in datos">
               <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
@@ -97,9 +96,9 @@
               </v-col>
             </template>
           </v-row>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+        </v-card-text>
+      </div>
+    </v-expand-transition>
   </v-card>
 </template>
 
@@ -131,14 +130,14 @@ export default {
   },
   data: () => ({
     datos: [],
-    panel: [0],
+    panel: false,
     typePhone: ['Principal', 'Opcional', 'Tel. SIVIGILA', 'Tel. Maestro Afiliado']
   }),
   watch: {
     abierto: {
       handler(val) {
         if (this) {
-          this.panel = val ? [0] : []
+          this.panel = val
         }
       },
       immediate: true
@@ -157,6 +156,7 @@ export default {
     },
     ...mapGetters([
       'tiposDocumentoIdentidad',
+        'estadosAfiliacion'
     ])
   },
   methods: {
@@ -257,7 +257,19 @@ export default {
             }
         )
       }
-      // this.$refs.modalPaciente && this.$refs.modalPaciente.assign(this.tamizaje)
+      if(this.tamizaje.afiliado_id) {
+        const datoAfiliacion = this.estadosAfiliacion && this.estadosAfiliacion.length && this.tamizaje.estado_afiliado ? this.estadosAfiliacion.find(x => x.value === this.tamizaje.estado_afiliado) : null
+        this.datos.push(
+            {
+              label: 'Estado de afiliación',
+              body: datoAfiliacion ? datoAfiliacion.text : '',
+              icon: datoAfiliacion ? datoAfiliacion.icon : 'mdi-file-question',
+              iconColor: datoAfiliacion ? datoAfiliacion.color : 'red',
+              colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+              collg: this.view === 'RegistroEvolucion' ? '6' : '4'
+            }
+        )
+      }
     }
   }
 }

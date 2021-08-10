@@ -263,6 +263,11 @@ const state = {
     ipssPruebas: [],
     ipssVacunas: [],
     priorizacionesVacunas: [],
+    estadosAfiliacion: [
+        { value: 'AC', text: 'Activo', icon: 'mdi-file-check', color: 'green' },
+        { value: 'AF', text: 'Fallecido', icon: 'mdi-file-plus', color: 'black' },
+        { value: 'RE', text: 'Retirado', icon: 'mdi-file-cancel', color: 'orange' },
+    ]
 }
 
 // getters
@@ -470,6 +475,9 @@ const getters = {
     priorizacionesVacunas: state => {
       return state.priorizacionesVacunas
     },
+    estadosAfiliacion: state => {
+      return state.estadosAfiliacion
+    }
 }
 // actions
 const actions = {

@@ -1,9 +1,22 @@
 <template>
-  <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" persistent>
-    <v-card>
-      <v-toolbar dark color="primary" v-if="tamizaje">
-        <v-icon left> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
-        <v-list-item>
+  <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      persistent
+      :retain-focus="false"
+  >
+    <v-card tile flat>
+      <v-card-title
+          v-if="tamizaje"
+          class="py-1"
+          style="background-color: #125a9c"
+      >
+        <v-list-item class="pa-0" dark>
+          <v-list-item-avatar class="mr-1">
+            <v-icon> {{ tamizaje.medico_id ? 'fas fa-file-medical-alt' : 'mdi-file-find' }}</v-icon>
+          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">{{ tamizaje.medico_id ? 'Caso de Estudio, ' : '' }}
               <template v-if="tamizaje.id">
@@ -17,37 +30,33 @@
               </template>
             </v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-btn
+                large
+                icon
+                @click="close"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
-        <v-spacer></v-spacer>
-        <v-btn icon dark @click="close">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-container fluid v-if="tamizaje">
+      </v-card-title>
+      <v-card-text class="pa-4">
         <div style="padding-bottom: 15px; text-align: right" v-if="permisos.descargarERPPDF">
           <v-btn :loading="loadingPDF" class="red darken-4" @click.stop="descargarPDF">
             <v-icon color="white" left>fas fa-file-pdf</v-icon>
             <span class="font-weight-bold white--text">Descargar PDF</span>
           </v-btn>
         </div>
-        <datos-personales :tamizaje="tamizaje" @actualizarTamizaje="val => changeTamizaje(val.id)"></datos-personales>
-        <datos-tamizaje class="mt-3" :tamizaje="tamizaje"></datos-tamizaje>
+        <datos-personales
+            :tamizaje="tamizaje"
+            @actualizarTamizaje="val => changeTamizaje(val.id)"
+        />
+        <datos-tamizaje
+            class="mt-3"
+            :tamizaje="tamizaje"
+        />
         <template v-if="tamizaje.localiza_persona && tamizaje.contesta_encuesta">
-<!--          <v-alert-->
-<!--              v-if="tamizaje.medico"-->
-<!--              class="mt-3"-->
-<!--              v-model="alertPurebas"-->
-<!--              dismissible-->
-<!--              close-icon="mdi-delete"-->
-<!--              color="orange"-->
-<!--              border="left"-->
-<!--              elevation="2"-->
-<!--              colored-border-->
-<!--              icon="mdi-alert"-->
-<!--          >-->
-<!--            Recuerde cargar las <strong>muestras y resultados pendientes</strong>, para que los seguimientos y nexos se-->
-<!--            relacionen correctamente.-->
-<!--          </v-alert>-->
           <v-alert
               v-if="verAlertAislamiento"
               dark
@@ -62,8 +71,21 @@
           </v-alert>
           <template v-if="tamizaje && tamizaje.id">
             <template v-if="tamizaje.medico">
+              <v-alert
+                  v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                  dark
+                  class="my-3"
+                  color="warning"
+                  border="left"
+                  elevation="2"
+                  icon="mdi-alert"
+              >
+                El estado de afiliación actual es
+                <strong>{{ estadosAfiliacion && estadosAfiliacion.length ? estadosAfiliacion.find(x => x.value === tamizaje.estado_afiliado).text : tamizaje.estado_afiliado }}</strong>,
+                solo se permitirá realizar un seguimiento más y el caso será cerrado de acuerdo a los lineamientos de la EPS.
+              </v-alert>
               <v-tabs
-                  class="mt-3"
+                  class="mt-8"
                   id="tabsSeguimiento"
                   v-model="tab"
                   fixed-tabs
@@ -87,19 +109,6 @@
                   <v-icon>fas fa-chart-line</v-icon>
                 </v-tab>
                 <v-tab
-                    href="#tab-4"
-                >
-                  <v-badge
-                      overlap
-                      :color="tab === 'tab-4' ? 'deep-purple' : 'grey'"
-                      :content="String(tamizaje.aislamientos.length)"
-                      :class="tab === 'tab-4' ? 'deep-purple--text' : 'text--secondary'"
-                  >
-                    <span class="subtitle-1">Aislamientos</span>
-                  </v-badge>
-                  <v-icon>mdi-door-closed-lock</v-icon>
-                </v-tab>
-                <v-tab
                     href="#tab-2"
                 >
                   <v-badge
@@ -111,6 +120,19 @@
                     <span class="subtitle-1">{{ sonNexos ? 'Nexos' : 'Contactos' }}</span>
                   </v-badge>
                   <v-icon>fas fa-people-arrows</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-4"
+                >
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-4' ? 'deep-purple' : 'grey'"
+                      :content="String(tamizaje.aislamientos.length)"
+                      :class="tab === 'tab-4' ? 'deep-purple--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Aislamientos</span>
+                  </v-badge>
+                  <v-icon>mdi-door-closed-lock</v-icon>
                 </v-tab>
                 <v-tab
                     href="#tab-5"
@@ -157,12 +179,12 @@
                     value="tab-1"
                 >
                   <evoluciones
-                      v-if="permisos.seguimientoVer"
+                      v-if="permisos.seguimientoVer && (tab === 'tab-1')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
                       @actualizarTamizaje="val => changeTamizaje(val.id)"
-                  ></evoluciones>
+                  />
                   <div v-if="!permisos.seguimientoVer"
                        class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                     <v-icon color="primary" large left>mdi-alert-outline</v-icon>
@@ -173,7 +195,7 @@
                     value="tab-4"
                 >
                   <aislamientos
-                      v-if="permisos.aislamientoVer"
+                      v-if="permisos.aislamientoVer && (tab === 'tab-4')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -188,7 +210,7 @@
                     value="tab-2"
                 >
                   <nexos
-                      v-if="permisos.nexoVer"
+                      v-if="permisos.nexoVer && (tab === 'tab-2')"
                       :tamizaje="tamizaje"
                       :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
@@ -204,7 +226,7 @@
                     value="tab-5"
                 >
                   <toma-muestras
-                      v-if="permisos.tomaMuestrasIndex"
+                      v-if="permisos.tomaMuestrasIndex && (tab === 'tab-5')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -219,7 +241,7 @@
                     value="tab-6"
                 >
                   <seguimientos
-                      v-if="permisos.seguimientoPsicologicoVer"
+                      v-if="permisos.seguimientoPsicologicoVer && (tab === 'tab-6')"
                       :tamizaje="tamizaje"
                       :editable="editable"
                       @change="changeTamizaje(tamizaje.id)"
@@ -235,7 +257,7 @@
                     value="tab-3"
                 >
                   <muestras
-                      v-if="permisos.muestraVer"
+                      v-if="permisos.muestraVer && (tab === 'tab-3')"
                       :tamizaje="tamizaje"
                       :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
@@ -303,7 +325,7 @@
                     value="tab-1"
                 >
                   <nexos
-                      v-if="permisos.nexoVer"
+                      v-if="permisos.nexoVer && (tab === 'tab-1')"
                       :tamizaje="tamizaje"
                       :editable="true"
                       @change="changeTamizaje(tamizaje.id)"
@@ -319,7 +341,7 @@
                     value="tab-3"
                 >
                   <toma-muestras
-                      v-if="permisos.tomaMuestrasIndex"
+                      v-if="permisos.tomaMuestrasIndex && (tab === 'tab-3')"
                       :tamizaje="tamizaje"
                       :editable="editableNexos"
                       @change="changeTamizaje(tamizaje.id)"
@@ -334,7 +356,7 @@
                     value="tab-2"
                 >
                   <muestras
-                      v-if="permisos.muestraVer"
+                      v-if="permisos.muestraVer && (tab === 'tab-2')"
                       :tamizaje="tamizaje"
                       :editable="false"
                       @change="changeTamizaje(tamizaje.id)"
@@ -348,17 +370,17 @@
             </template>
           </template>
         </template>
-      </v-container>
-      <app-section-loader :status="loading"></app-section-loader>
+        <app-section-loader :status="loading"/>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
-//import {store} from "../../../store/store";
 const DatosPersonales = () => import('Views/covid19/tamizaje/DatosPersonales')
 const DatosTamizaje = () => import('Views/covid19/tamizaje/DatosTamizaje')
+
 const Evoluciones = () => import('Views/covid19/tamizaje/evolucion/Evoluciones')
 const Aislamientos = () => import('Views/covid19/tamizaje/aislamiento/Aislamientos')
 const Muestras = () => import('Views/covid19/tamizaje/muestra/Muestras')
@@ -386,35 +408,44 @@ export default {
     tab: null
   }),
   computed: {
+    actualizaPorGlobal() {
+      return this.$store.state.settings.actualizadorGlobal
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },
     verAlertAislamiento() {
       if (this && this.tamizaje && (this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.filter(x => !x.fallida).length) && (this.tamizaje.aislamientos && !this.tamizaje.aislamientos.length)) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6')
+        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado'
       }
       return false
     },
     editable() {
       if (this && this.tamizaje && this.tamizaje.medico_id) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
+        return (!(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado') || this.esSuperAdmin
       }
       return false
     },
     editableNexos() {
       if (this && this.tamizaje) {
-        return !(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') || this.esSuperAdmin
+        return (!(this.tamizaje.estado_afectacion === 'Fallecido' || this.tamizaje.estado_afectacion === 'Recuperado' || this.tamizaje.clasificacion === '4' || this.tamizaje.clasificacion === '6') && this.tamizaje.estado !== 'Cerrado') || this.esSuperAdmin
       }
       return false
     },
-    // editable() {
-    //   return this && this.tamizaje && this.tamizaje.id && (this.tamizaje.estado === null || this.tamizaje.estado === 'Abierto')
-    // },
     ...mapGetters([
-      'modelTamizaje'
+      'modelTamizaje',
+        'estadosAfiliacion'
     ]),
     sonNexos() {
       return !!(this.tamizaje.muestras && this.tamizaje.muestras.filter(x => x.resultado).length)
+    }
+  },
+  watch: {
+    actualizaPorGlobal: {
+      handler (val) {
+        if (val && this.tamizaje && this.tamizaje.id) this.getTamizaje(this.tamizaje.id)
+      },
+      immediate: false
     }
   },
   created() {
@@ -478,5 +509,5 @@ export default {
 </script>
 
 <style scoped>
-
+  .v-dialog__content { position: absolute; }
 </style>

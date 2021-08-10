@@ -69,6 +69,7 @@ const state = {
         codIpsBai: null,
         estado_gestacion_lactancia: null,
         edad: null,
+        estado_afiliado: null,
         ////
         user_id: null,
         signos_alarma: [],
@@ -98,7 +99,8 @@ const state = {
         municipio_id: null,
         regimen_especial: null,
         si_eps: 1,
-        barrio_id: null
+        barrio_id: null,
+        estado_afiliado: null
     },
     modelAislamiento: {
         id: null,
