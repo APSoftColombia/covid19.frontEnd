@@ -28,6 +28,16 @@
                     hide-details
                 ></c-select-complete>
               </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <c-select-complete
+                    v-model="filters.models.departamento_id"
+                    label="Departamento"
+                    :items="departamentosPruebas"
+                    item-text="nombre"
+                    item-value="id"
+                    hide-details
+                ></c-select-complete>
+              </v-col>
             </v-row>
           </v-container>
           <v-divider class="ma-0 pa-0"></v-divider>
@@ -57,27 +67,38 @@
       filters: {
         models: {
           municipio_id: null,
+          departamento_id: null
         },
       }
     }),
     computed: {
       ...mapGetters([
         'municipiosPruebas',
+        'departamentosPruebas',
+        'datosEmpresa'
       ])
     },
     methods: {
       aplicaFiltros() {
         let rutaTemp = this.rutaBase
-        console.log(rutaTemp)
+        console.log("este es el valor: ", rutaTemp)
         if (this.filters.models.municipio_id !== null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[municipio_id]=' + this.filters.models.municipio_id
+        }
+        if (this.filters.models.departamento_id !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[departamento_id]=' + this.filters.models.departamento_id
         }
         this.$emit('filtra', rutaTemp)
       },
       limpiarFiltros(){
         this.filters.models.municipio_id = null
+        this.filters.models.departamento_id = null
       },
     },
+    created(){
+      this.filters.models.departamento_id = this.datosEmpresa.departamento_id
+      this.aplicaFiltros()
+    }
   }
 </script>
 

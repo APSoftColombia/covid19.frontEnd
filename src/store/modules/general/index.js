@@ -258,6 +258,7 @@ const state = {
     protocolosBioseguridad: [],
     alteracionesEmocionales: [],
     municipiosPruebas: [],
+    departamentosPruebas: [],
     razonesNoTomaMuestra: [],
     ipssPruebas: [],
     ipssVacunas: [],
@@ -454,6 +455,9 @@ const getters = {
     municipiosPruebas: state => {
       return state.municipiosPruebas
     },
+    departamentosPruebas: state => {
+      return state.departamentosPruebas
+    },
     razonesNoTomaMuestra: state => {
       return state.razonesNoTomaMuestra
     },
@@ -573,6 +577,7 @@ const actions = {
                             context.commit('assignProtocolosBioseguridad', response.data.parametros.protocolos_bioseguridad_respuestas)
                             context.commit('assignAlteracionesEmocionales', response.data.parametros.alteraciones_emocionales_respuestas)
                             context.commit('assignMunicipiosPruebas', response.data.parametros.municipios_pruebas)
+                            context.commit('assignDepartamentosPruebas', response.data.parametros.departamentos_pruebas)
                             context.commit('assignRazonesNoTomaMuestra', response.data.parametros.razones_no_toma_muestra)
                             context.commit('assignIpssPruebas', response.data.parametros.ipss_pruebas)
                             context.commit('assignIpssVacunas', response.data.parametros.ipss_vacunas)
@@ -746,6 +751,9 @@ const mutations = {
     },
     assignMunicipiosPruebas(state, municipiosPruebas){
       state.municipiosPruebas = municipiosPruebas
+    },
+    assignDepartamentosPruebas(state, departamentosPruebas){
+      state.departamentosPruebas = departamentosPruebas
     },
     assignRazonesNoTomaMuestra(state, razonesNoTomaMuestra) {
       state.razonesNoTomaMuestra = razonesNoTomaMuestra

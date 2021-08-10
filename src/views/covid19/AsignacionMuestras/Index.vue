@@ -160,7 +160,7 @@ export default {
       if (loadingP){
         this.loading = true
       }
-      this.axios.get(this.ruta + `?filter[searchAsignacion]=${this.search}`)
+      this.axios.get(this.ruta + `&filter[searchAsignacion]=${this.search}`)
           .then(response => {
             this.seleccionados = []
             this.muestras = response.data
