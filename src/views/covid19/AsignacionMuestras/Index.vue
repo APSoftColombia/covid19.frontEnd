@@ -18,7 +18,7 @@
                 hide-details
                 outlined
                 dense
-                append-icon="search"
+                append-icon="mdi mdi-magnify"
                 @keyup.enter="reloadCurrentPage"
             ></v-text-field>
           </v-card-title>
@@ -138,9 +138,6 @@ export default {
       'departamentos',
       'municipiosTotal'
     ])
-  },
-  created () {
-    this.getTamizajesPendientes()
   },
   watch: {
     'search': {

@@ -20,9 +20,9 @@
             <v-row align="center" justify="end" fill-height>
               <v-col cols="12" sm="6" md="4">
                 <c-select-complete
-                    v-model="filters.models.municipio_id"
-                    label="Municipio"
-                    :items="municipiosPruebas"
+                    v-model="filters.models.departamento_id"
+                    label="Departamento"
+                    :items="departamentosPruebas"
                     item-text="nombre"
                     item-value="id"
                     hide-details
@@ -30,9 +30,9 @@
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <c-select-complete
-                    v-model="filters.models.departamento_id"
-                    label="Departamento"
-                    :items="departamentosPruebas"
+                    v-model="filters.models.municipio_id"
+                    label="Municipio"
+                    :items="municipiosPruebas"
                     item-text="nombre"
                     item-value="id"
                     hide-details
