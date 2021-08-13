@@ -42,17 +42,17 @@
               </ValidationProvider>
             </v-col>
             <v-col class="pb-0" cols="12">
-              <ValidationProvider name="nombre de usuario" rules="required" v-slot="{ errors, valid }">
+              <ValidationProvider name="nombre completo" rules="required" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="usuario.name"
-                    label="Nombre de Usuario"
+                    label="Nombre completo"
                     :error-messages="errors"
                     outlined
                     dense
                 ></v-text-field>
               </ValidationProvider>
             </v-col>
-            <v-col class="pb-0" cols="12" :sm="usuario.id === null ? '12' : '6'">
+            <v-col class="pb-0" cols="12" sm="12">
               <ValidationProvider name="correo electrónico" rules="required|email" v-slot="{ errors, valid }">
                 <v-text-field
                     v-model="usuario.email"
@@ -62,6 +62,26 @@
                     dense
                 ></v-text-field>
               </ValidationProvider>
+            </v-col>
+            <template>
+              <v-col class="pb-0" cols="6">
+                <ValidationProvider name="nombre de usuario" :rules="datosEmpresa && datosEmpresa.to_login === 'username' ? 'required' : ''" v-slot="{ errors, valid }">
+                  <v-text-field
+                      v-model="usuario.username"
+                      label="Nombre de Usuario"
+                      :error-messages="errors"
+                      outlined
+                      dense
+                  ></v-text-field>
+                </ValidationProvider>
+              </v-col>
+            </template>
+            <v-col class="pb-0" cols="6">
+              <c-date
+                  name="fecha vencimiento contrado"
+                  v-model="usuario.expiry_date"
+                  label="Fecha vencimiento contrato"
+              ></c-date>
             </v-col>
             <template v-if="usuario.id === null">
               <v-col class="pb-0" cols="12" sm="6">
@@ -98,7 +118,7 @@
                   dense
               ></v-text-field>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="6">
+            <v-col class="pb-0" cols="12" :sm="usuario.id !== null ? 12 : 6">
               <c-date
                   v-model="usuario.fecha_nacimiento"
                   label="Fecha nacimiento"
@@ -225,7 +245,8 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'epss'
+      'epss',
+      'datosEmpresa'
     ])
   },
   watch: {
