@@ -52,7 +52,7 @@
                 view="RegistroEvolucion"
             />
             <v-alert
-                v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF')"
                 dark
                 class="my-3"
                 color="warning"
@@ -584,7 +584,7 @@
                     </c-select-complete>
                   </v-col>
                   <v-alert
-                      v-if="tamizaje.estado_prueba === 'Requiere Muestra' && ((evolucion.estado_afectacion === 'Recuperado') || (evolucion.estado_afectacion === 'Ninguno') || (evolucion.estado_afectacion === 'Fallecido'))"
+                      v-if="tamizaje.estado_prueba === 'Requiere Muestra' && ((evolucion.estado_afectacion === 'Recuperado') || (evolucion.estado_afectacion === 'Ninguno') || (evolucion.estado_afectacion === 'Fallecido')) && activoEPS"
                       dense
                       border="left"
                       type="error"
@@ -592,7 +592,7 @@
                   >
                     El caso requiere registrar toma de muestra, si cierra el caso, <strong>podría tomar una decisión apresurada según el requerimiento previo</strong>.
                   </v-alert>
-                  <v-col cols="12" v-if="evolucion.clasificacion !== '6'">
+                  <v-col cols="12" v-if="evolucion.clasificacion !== '6' && activoEPS">
                     <v-switch
                         label="Solicitar Toma de Muestra"
                         v-model="evolucion.solicitud_prueba"
@@ -614,65 +614,73 @@
                         hide-details
                     ></v-switch>
                   </v-col>
-                  <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
-                    <v-switch
-                        label="Crear Orden de Aislamiento"
-                        :readonly="evolucion.obligaAislamiento"
-                        v-model="verFormularioAislamiento"
-                        :false-value="0"
-                        :true-value="1"
-                        class="mt-0"
-                        color="primary"
-                        hide-details
-                    ></v-switch>
-                  </v-col>
+                  <template
+                      v-if="activoEPS"
+                  >
+                    <v-col cols="12" v-if="verFormAislamiento || evolucion.obligaAislamiento">
+                      <v-switch
+                          label="Crear Orden de Aislamiento"
+                          :readonly="evolucion.obligaAislamiento"
+                          v-model="verFormularioAislamiento"
+                          :false-value="0"
+                          :true-value="1"
+                          class="mt-0"
+                          color="primary"
+                          hide-details
+                      ></v-switch>
+                    </v-col>
+                  </template>
                 </v-row>
-                <v-expand-transition mode="group">
-                  <div v-if="verFormularioAislamiento && verFormAislamiento && evolucion.aislamiento">
+                <template
+                    v-if="activoEPS"
+                >
+                  <v-expand-transition mode="group">
+                    <div v-if="verFormularioAislamiento && verFormAislamiento && evolucion.aislamiento">
+                      <v-row>
+                        <v-col cols="12" class="pb-0">
+                          <v-card flat>
+                            <v-toolbar dense color="deep-purple">
+                              <v-toolbar-title class="white--text">
+                                <v-icon left>mdi-door-closed-lock</v-icon>
+                                Orden de Aislamiento
+                              </v-toolbar-title>
+                            </v-toolbar>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+                      <form-aislamiento
+                          v-if="evolucion && evolucion.aislamiento && evolucion.seguimiento_aislamiento"
+                          :tamizaje="tamizaje"
+                          :aislamiento="evolucion.aislamiento"
+                          :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
+                      ></form-aislamiento>
+                    </div>
+                  </v-expand-transition>
+                  <template v-if="verFormSeguimientoAislamiento && evolucion.seguimiento_aislamiento">
                     <v-row>
                       <v-col cols="12" class="pb-0">
                         <v-card flat>
                           <v-toolbar dense color="deep-purple">
                             <v-toolbar-title class="white--text">
                               <v-icon left>mdi-door-closed-lock</v-icon>
-                              Orden de Aislamiento
+                              Seguimiento de Aislamiento
                             </v-toolbar-title>
                           </v-toolbar>
                         </v-card>
                       </v-col>
                     </v-row>
-                    <form-aislamiento
-                        v-if="evolucion && evolucion.aislamiento && evolucion.seguimiento_aislamiento"
-                        :tamizaje="tamizaje"
-                        :aislamiento="evolucion.aislamiento"
+                    <form-seguimiento-aislamiento
+                        v-if="evolucion && evolucion.seguimiento_aislamiento"
+                        :aislamiento="aislamientoFinal"
                         :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
-                    ></form-aislamiento>
-                  </div>
-                </v-expand-transition>
-                <template v-if="verFormSeguimientoAislamiento && evolucion.seguimiento_aislamiento">
-                  <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card flat>
-                        <v-toolbar dense color="deep-purple">
-                          <v-toolbar-title class="white--text">
-                            <v-icon left>mdi-door-closed-lock</v-icon>
-                            Seguimiento de Aislamiento
-                          </v-toolbar-title>
-                        </v-toolbar>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <form-seguimiento-aislamiento
-                      v-if="evolucion && evolucion.seguimiento_aislamiento"
-                      :aislamiento="aislamientoFinal"
-                      :seguimiento_aislamiento="evolucion.seguimiento_aislamiento"
-                  >
-                  </form-seguimiento-aislamiento>
+                    >
+                    </form-seguimiento-aislamiento>
+                  </template>
                 </template>
               </template>
               <v-divider></v-divider>
               <v-alert
-                  v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF') && tamizaje.estado === 'Activo'"
+                  v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF')"
                   dark
                   class="my-3"
                   color="warning"
@@ -870,15 +878,18 @@ export default {
       }
       return listado
     },
+    activoEPS () {
+      return !(this && this.tamizaje && this.tamizaje.afiliado_id && this.tamizaje.estado_afiliado && (this.tamizaje.estado_afiliado === 'RE' || this.tamizaje.estado_afiliado === 'AF'))
+    },
     aislamientoFinal() {
       return this && this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length ? this.tamizaje.aislamientos[0] : null
     },
     verFormAislamiento() {
       // return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion && (this.evolucion.estado_afectacion !== 'Recuperado' && this.evolucion.estado_afectacion !== 'Fallecido' && this.evolucion.estado_afectacion !== 'Ninguno')
-      return (!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion
+      return ((!this.aislamientoFinal || this.aislamientoFinal.fecha_egreso) && this.evolucion) && this.activoEPS
     },
     verFormSeguimientoAislamiento() {
-      return !this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso
+      return (!this.verFormAislamiento && this.aislamientoFinal && !this.aislamientoFinal.fecha_egreso) && this.activoEPS
     },
     ultimoSeguimientoOK() {
       return this && !this.solicitaUltimo && this.tamizaje && !this.tamizaje.positivo_covid && this.tamizaje.evoluciones && this.tamizaje.evoluciones.length && this.tamizaje.evoluciones.find(x => !x.fallida)
@@ -1090,8 +1101,10 @@ export default {
         }
         this.comorbilidades = this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length ? this.tamizaje.comorbilidades : []
         evolucion.tipo = 'Seguimiento Médico'
-        evolucion.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
-        if(evolucion.obligaAislamiento) this.verFormularioAislamiento = 1
+        if (this.activoEPS) {
+          evolucion.obligaAislamiento = !(this.tamizaje && this.tamizaje.aislamientos && this.tamizaje.aislamientos.length)
+          if(evolucion.obligaAislamiento) this.verFormularioAislamiento = 1
+        }
         this.evolucion = evolucion
         this.verificaInfoPaciente()
       }

@@ -197,7 +197,7 @@
                   <aislamientos
                       v-if="permisos.aislamientoVer && (tab === 'tab-4')"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="editable && activoEPS"
                       @change="changeTamizaje(tamizaje.id)"
                   ></aislamientos>
                   <div v-if="!permisos.aislamientoVer"
@@ -228,7 +228,7 @@
                   <toma-muestras
                       v-if="permisos.tomaMuestrasIndex && (tab === 'tab-5')"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="editable && activoEPS"
                       @change="changeTamizaje(tamizaje.id)"
                   ></toma-muestras>
                   <div v-if="!permisos.tomaMuestrasIndex"
@@ -243,7 +243,7 @@
                   <seguimientos
                       v-if="permisos.seguimientoPsicologicoVer && (tab === 'tab-6')"
                       :tamizaje="tamizaje"
-                      :editable="editable"
+                      :editable="editable && activoEPS"
                       @change="changeTamizaje(tamizaje.id)"
                       @actualizarTamizaje="val => changeTamizaje(val.id)"
                   ></seguimientos>
@@ -343,7 +343,7 @@
                   <toma-muestras
                       v-if="permisos.tomaMuestrasIndex && (tab === 'tab-3')"
                       :tamizaje="tamizaje"
-                      :editable="editableNexos"
+                      :editable="editableNexos && activoEPS"
                       @change="changeTamizaje(tamizaje.id)"
                   ></toma-muestras>
                   <div v-if="!permisos.tomaMuestrasIndex"
@@ -410,6 +410,9 @@ export default {
   computed: {
     actualizaPorGlobal() {
       return this.$store.state.settings.actualizadorGlobal
+    },
+    activoEPS () {
+      return !(this && this.tamizaje && this.tamizaje.afiliado_id && this.tamizaje.estado_afiliado && (this.tamizaje.estado_afiliado === 'RE' || this.tamizaje.estado_afiliado === 'AF'))
     },
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
