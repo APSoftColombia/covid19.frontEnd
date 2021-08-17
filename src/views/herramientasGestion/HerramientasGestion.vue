@@ -7,7 +7,7 @@
           <v-list two-line>
             <v-list-item>
               <v-list-item-avatar color="red">
-                <v-icon color="white">mdi-alert-plus</v-icon>
+                <v-icon color="white">mdi-alert-circle-check</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="font-weight-bold">Alerta de Actualizaciones</v-list-item-title>
