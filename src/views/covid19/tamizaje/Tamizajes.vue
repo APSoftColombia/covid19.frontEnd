@@ -715,9 +715,10 @@ export default {
       if (item.medico_id) item.options.push({
         event: 'seguimiento',
         icon: 'fas fa-file-medical-alt',
-        color: (item.estado_afectacion === 'Fallecido' || item.estado_afectacion === 'Recuperado' || item.clasificacion === '4' || item.clasificacion === '6') ? 'muted' : 'primary',
+        color: (item.estado_afectacion === 'Fallecido' || item.estado_afectacion === 'Recuperado' || item.clasificacion === '4' || item.clasificacion === '6' || item.estado === 'Cerrado') ? 'muted' : 'primary',
         tooltip: `Caso ${(item.estado_afectacion === 'Fallecido' || item.estado_afectacion === 'Recuperado' || item.clasificacion === '4' || item.clasificacion === '6') ? 'Cerrado' : 'de Estudio'}`
       })
+
       if (!item.medico_id) item.options.push({
         event: 'seguimiento',
         icon: 'mdi-file-find',
