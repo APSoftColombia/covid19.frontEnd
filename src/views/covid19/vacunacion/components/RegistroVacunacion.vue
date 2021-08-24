@@ -47,7 +47,6 @@
                   label="Expedición Documento"
                   :max="moment().format('YYYY-MM-DD')"
                   name="expedición documento"
-                  rules="required"
                   :disabled="identificacionVerificada < 1"
               />
             </v-col>
