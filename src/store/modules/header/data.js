@@ -379,5 +379,13 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'Referencias',
         typeRoute: 'centroRegulador'
+    },
+    {
+        id: 62,
+        title: 'Vacunacion',
+        icon: 'fas fa-shield-virus',
+        color: 'green',
+        routeName: 'Vacunacion',
+        typeRoute: 'covid'
     }
 ]

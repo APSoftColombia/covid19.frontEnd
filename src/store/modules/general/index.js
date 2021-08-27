@@ -267,7 +267,9 @@ const state = {
         { value: 'AC', text: 'Activo', icon: 'mdi-file-check', color: 'green' },
         { value: 'AF', text: 'Fallecido', icon: 'mdi-file-plus', color: 'black' },
         { value: 'RE', text: 'Retirado', icon: 'mdi-file-cancel', color: 'orange' },
-    ]
+    ],
+    dosisVacunas: [],
+    ultimoVacunadorId: null
 }
 
 // getters
@@ -477,6 +479,12 @@ const getters = {
     },
     estadosAfiliacion: state => {
       return state.estadosAfiliacion
+    },
+    dosisVacunas: state => {
+        return state.dosisVacunas
+    },
+    ultimoVacunadorId: state => {
+        return state.ultimoVacunadorId
     }
 }
 // actions
@@ -590,6 +598,7 @@ const actions = {
                             context.commit('assignIpssPruebas', response.data.parametros.ipss_pruebas)
                             context.commit('assignIpssVacunas', response.data.parametros.ipss_vacunas)
                             context.commit('assignPriorizacionesVacunas', response.data.parametros.priorizaciones_vacunas)
+                            context.commit('assignDosisVacunas', response.data.parametros.dosisVacunas)
                             resolve(true)
                         })
                         .catch(error => {
@@ -610,6 +619,9 @@ const actions = {
                 }
             }
         })
+    },
+    setUltimoVacunadorId(context, payload) {
+        context.commit('assignUltimoVacunadorId', payload.ultimoVacunadorId)
     }
 }
 
@@ -774,6 +786,12 @@ const mutations = {
     },
     assignPriorizacionesVacunas(state, priorizacionesVacunas){
       state.priorizacionesVacunas = priorizacionesVacunas
+    },
+    assignDosisVacunas(state, dosisVacunas){
+        state.dosisVacunas = dosisVacunas
+    },
+    assignUltimoVacunadorId(state, ultimoVacunadorId) {
+        state.ultimoVacunadorId = ultimoVacunadorId
     },
     snackbar(state, data) {
         let timeout = 8000

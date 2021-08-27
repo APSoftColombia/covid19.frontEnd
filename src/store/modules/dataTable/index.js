@@ -38,7 +38,9 @@ const state = {
         tablaCuentaAltoCosto: 0,
         tablaCuentaAltoCostoVersion: 1,
         tablaReferencias: 0,
-        tablaReferenciasVersion: 1
+        tablaReferenciasVersion: 1,
+        tablaVacunacionSucre: 0,
+        tablaVacunacionSucreVersion: 0,
     }
 }
 

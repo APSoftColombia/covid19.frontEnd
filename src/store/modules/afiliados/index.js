@@ -9,6 +9,18 @@ const getters = {
 
 // actions
 const actions = {
+    async searchAfiliadoVacunacionIdentidadServer (context, identificacion) {
+        return await new Promise(resolve => {
+            Vue.axios.get(`dosis-persona/${identificacion}`)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(error => {
+                    context.commit('snackbar', {color: 'error', message: `al hacer la búsqueda del afiliado.`, error: error})
+                    resolve(null)
+                })
+        })
+    },
     async searchAfiliadoIdentidadServer (context, identificacion) {
         return await new Promise(resolve => {
             Vue.axios.get(`afiliado_tamizaje/${identificacion}`)

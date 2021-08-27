@@ -48,6 +48,8 @@ const InformeEjecutivo = () => import('Views/aps/rcv/InformeEjecutivo/InformeEje
 const BitacorasRCV = () => import('Views/aps/rcv/bitacorasRcv/Index')
 const CuentaAltoCosto = () => import('Views/aps/rcv/cuentaAltoCosto/index')
 
+const VacunacionSucre = () => import('Views/covid19/vacunacionSucre/Index')
+
 export default {
    path: '/',
    component: Full,
@@ -657,6 +659,20 @@ export default {
             avatar: {
                icon: 'fas fa-book',
                color: 'red',
+            }
+         }
+      },
+      {
+         path: 'vacunacion',
+         name: 'Vacunacion',
+         component: VacunacionSucre,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'vacunacion-index',
+            avatar: {
+               icon: 'fas fa-shield-virus',
+               color: 'green',
             }
          }
       },
