@@ -129,6 +129,7 @@
                   <v-card outlined tile>
                     <v-card-text>
                       <c-radio
+                          :disabled="evolucion.fallida === 0 && enEdicion"
                           v-model="evolucion.fallida"
                           label="¿Se localizó al paciente?"
                           :items="[{value: 0, text: 'SI'}, {value: 1, text: 'NO'}]"
@@ -1144,6 +1145,7 @@ export default {
       this.comorbilidades = []
       this.verFormularioAislamiento = 0
       this.solicitaUltimo = false
+      this.enEdicion = false
     },
     verAyuda(item) {
       this.$refs.helpModal.open(item)
