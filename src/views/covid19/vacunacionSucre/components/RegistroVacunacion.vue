@@ -596,7 +596,7 @@
                           <template>
                             <v-list-item-content class="pa-0">
                               <v-list-item-title>{{ `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}` }}</v-list-item-title>
-                              <v-list-item-subtitle>{{ tiposDocumentoIdentidad.find(x => x.id == item.tipo_identificacion).tipo + ' ' + item.identificacion }}</v-list-item-subtitle>
+                              <v-list-item-subtitle>{{ item.tipo_identificacion + ' ' + item.identificacion }}</v-list-item-subtitle>
                             </v-list-item-content>
                           </template>
                         </template>
