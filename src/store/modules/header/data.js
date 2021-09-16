@@ -387,5 +387,13 @@ export const itemsMenu = [
         color: 'green',
         routeName: 'Vacunacion',
         typeRoute: 'covid'
+    },
+    {
+        id: 63,
+        title: 'Mi Bodega',
+        icon: 'fas fa-warehouse',
+        color: 'blue',
+        routeName: 'Bodega',
+        typeRoute: 'covid'
     }
 ]

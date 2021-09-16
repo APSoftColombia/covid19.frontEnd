@@ -49,6 +49,7 @@ const BitacorasRCV = () => import('Views/aps/rcv/bitacorasRcv/Index')
 const CuentaAltoCosto = () => import('Views/aps/rcv/cuentaAltoCosto/index')
 
 const VacunacionSucre = () => import('Views/covid19/vacunacionSucre/Index')
+const Bodega = () => import('Views/covid19/Bodega/Index')
 
 export default {
    path: '/',
@@ -673,6 +674,20 @@ export default {
             avatar: {
                icon: 'fas fa-shield-virus',
                color: 'green',
+            }
+         }
+      },
+      {
+         path: 'bodega',
+         name: 'Bodega',
+         component: Bodega,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: false,
+            requiresPermission: 'bodega-index',
+            avatar: {
+               icon: 'fas fa-warehouse',
+               color: 'blue',
             }
          }
       },

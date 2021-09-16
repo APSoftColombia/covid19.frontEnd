@@ -9,7 +9,11 @@
     <v-card>
       <v-toolbar dark color="primary">
         <v-icon left>fas fa-shield-virus</v-icon>
-        <v-toolbar-title>{{ vacunacion && vacunacion.id ? `Edicion Registro No. ${vacunacion.id}` : "Nuevo Registro de Vacunacion" }}</v-toolbar-title>
+        <v-toolbar-title>{{
+          vacunacion && vacunacion.id
+            ? `Edicion Registro No. ${vacunacion.id}`
+            : "Nuevo Registro de Vacunacion"
+        }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon dark @click="close">
           <v-icon>mdi-close</v-icon>
@@ -483,27 +487,52 @@
                     >
                     </c-date>
                   </v-col>
+                  <v-col class="pb-0" cols="12" sm="12" md="12">
+                    <c-select-complete
+                      v-model="vacunacion.bodega_id"
+                      label="Bodega"
+                      rules="required"
+                      name="bodega"
+                      :items="bodegas"
+                      item-text="nombre"
+                      item-value="bodega_id"
+                      :disabled="identificacionVerificada < 1"
+                    >
+                    </c-select-complete>
+                  </v-col>
                   <v-col class="pb-0" cols="12" sm="6" md="6">
                     <c-select-complete
                       v-model="vacunacion.biologico"
                       label="Biologico"
                       rules="required"
                       name="biologico"
-                      :items="dosisVacunas.Tipo_biologico"
+                      :items="
+                        vacunacion.bodega_id
+                          ? bodegas.find(
+                              (x) => x.bodega_id == vacunacion.bodega_id
+                            ).biologicos
+                          : []
+                      "
                       item-text="nombre"
                       item-value="codigo"
-                      :disabled="identificacionVerificada < 1"
+                      :disabled="
+                        identificacionVerificada < 1 || !vacunacion.bodega_id
+                      "
                     >
                     </c-select-complete>
                   </v-col>
                   <v-col cols="12" class="pb-0" sm="6" md="6">
-                    <c-texto
+                    <c-select-complete
+                      v-model="vacunacion.lote_biologico"
                       label="Lote"
                       rules="required"
-                      v-model="vacunacion.lote_biologico"
                       name="lote"
-                      :disabled="identificacionVerificada < 1"
-                    />
+                      :items="lotesBiologico"
+                      :disabled="
+                        identificacionVerificada < 1 || !vacunacion.biologico
+                      "
+                    >
+                    </c-select-complete>
                   </v-col>
                   <v-col class="pb-0" cols="12" sm="6" md="6">
                     <c-select-complete
@@ -535,8 +564,9 @@
                       label="Tipo de poblacion"
                       rules="required"
                       name="tipo_poblacion"
-                      :items="dosisVacunas.priorizaciones.filter(x => x.codigo)"
+                      :items="dosisVacunas.priorizaciones"
                       item-text="descripcion"
+                      item-value="codigo"
                       :disabled="identificacionVerificada < 1"
                     >
                     </c-select-complete>
@@ -544,8 +574,8 @@
                   <v-col class="pb-0" cols="12" sm="6" md="6">
                     <c-texto
                       :value="
-                        vacunacion.tipo_poblacion
-                          ? vacunacion.tipo_poblacion.etapa
+                        tipo_poblacion_object
+                          ? tipo_poblacion_object.etapa
                           : '-'
                       "
                       label="Etapa"
@@ -575,28 +605,43 @@
                     </c-texto>
                   </v-col>
                   <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <ValidationProvider name="vacunador" rules="required" v-slot="{ errors, valid }">
+                    <ValidationProvider
+                      name="vacunador"
+                      rules="required"
+                      v-slot="{ errors, valid }"
+                    >
                       <v-autocomplete
-                          label="Vacunador"
-                          name="vacunador"
-                          v-model="vacunacion.vacunador_id"
-                          :items="vacunadores"
-                          outlined
-                          dense
-                          item-value="id"
-                          clearable
-                          :error-messages="errors"
+                        label="Vacunador"
+                        name="vacunador"
+                        v-model="vacunacion.vacunador_id"
+                        :items="vacunadores"
+                        outlined
+                        dense
+                        item-value="id"
+                        clearable
+                        :error-messages="errors"
                       >
                         <template v-slot:selection="{ item, index }">
-                          <div class="pa-0 text-truncate" style="width: 100% !important;">
-                            {{ `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}` }}
+                          <div
+                            class="pa-0 text-truncate"
+                            style="width: 100% !important"
+                          >
+                            {{
+                              `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
+                            }}
                           </div>
                         </template>
                         <template v-slot:item="{ item, index }">
                           <template>
                             <v-list-item-content class="pa-0">
-                              <v-list-item-title>{{ `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}` }}</v-list-item-title>
-                              <v-list-item-subtitle>{{ item.tipo_identificacion + ' ' + item.identificacion }}</v-list-item-subtitle>
+                              <v-list-item-title>{{
+                                `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
+                              }}</v-list-item-title>
+                              <v-list-item-subtitle>{{
+                                item.tipo_identificacion +
+                                " " +
+                                item.identificacion
+                              }}</v-list-item-subtitle>
                             </v-list-item-content>
                           </template>
                         </template>
@@ -658,42 +703,33 @@
                 </v-col>
               </v-row>
             </ValidationObserver>
+            <v-card-actions>
+              <v-btn @click.stop="close">
+                <v-icon>mdi-close</v-icon>
+                Cerrar
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" @click.stop="guardar">
+                <v-icon left>fas fa-save</v-icon>
+                Guardar
+              </v-btn>
+            </v-card-actions>
           </v-col>
         </v-row>
-        <v-card-actions>
-          <v-btn @click.stop="close">
-            <v-icon>mdi-close</v-icon>
-            Cerrar
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click.stop="guardar">
-            <v-icon left>fas fa-save</v-icon>
-            Guardar
-          </v-btn>
-        </v-card-actions>
       </v-container>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
   </v-dialog>
 </template>
-/* 
-  ToDO: crear una nueva propiedad en el state general para el id_vacunador
-  ToDO: que almacene el ultimo vacunador que se registro en el formulario de creacion (POST)
-
-  ToDO: filtro por pendiente de segunda dosis, filtro por tipo de dosis,
-  ToDO: filtro por biologico, filtro por rango de fechas de fecha aplicacion
-
-  ToDO: CRUD para vacunadores en la seccion de Parametros
- */
 <script>
-import SearchIdentidadVacunado from './SearchIdentidadVacunado'
+import SearchIdentidadVacunado from "./SearchIdentidadVacunado";
 import models from "Views/covid19/vacunacionSucre/models";
 import { mapGetters } from "vuex";
 
 export default {
   name: "RegistroVacunacion",
   components: {
-    SearchIdentidadVacunado
+    SearchIdentidadVacunado,
   },
   data: () => ({
     menuHora: false,
@@ -702,7 +738,10 @@ export default {
     loading: false,
     vacunacion: null,
     edad: null,
-    vacunadores: []
+    vacunadores: [],
+    bodegas: [],
+    tipo_poblacion_object: null,
+    flagWaitGetVacunacion: true,
   }),
   computed: {
     ...mapGetters([
@@ -712,8 +751,13 @@ export default {
       "municipiosTotal",
       "epss",
       "dosisVacunas",
-      "ultimoVacunadorId"
+      "ultimoVacunadorId",
     ]),
+    lotesBiologico() {
+      return this.vacunacion.bodega_id && this.vacunacion.biologico
+        ? this.bodegas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos.find((x) => x.codigo === this.vacunacion.biologico)?.lotes
+        : [];
+    },
     calc_segunda_dosis() {
       let days = 0;
       let fecha = null;
@@ -728,10 +772,9 @@ export default {
         days = this.dosisVacunas.Tipo_biologico.find(
           (x) => x.codigo === "1"
         ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD").add(
-          days,
-          "days"
-        ).format("YYYY-MM-DD");
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
+          .add(days, "days")
+          .format("YYYY-MM-DD");
       }
       if (
         this.vacunacion.biologico &&
@@ -743,10 +786,9 @@ export default {
         days = this.dosisVacunas.Tipo_biologico.find(
           (x) => x.codigo === "2"
         ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD").add(
-          days,
-          "days"
-        ).format("YYYY-MM-DD");
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
+          .add(days, "days")
+          .format("YYYY-MM-DD");
       }
       if (
         this.vacunacion.biologico &&
@@ -758,10 +800,9 @@ export default {
         days = this.dosisVacunas.Tipo_biologico.find(
           (x) => x.codigo === "3"
         ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD").add(
-          days,
-          "days"
-        ).format("YYYY-MM-DD");
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
+          .add(days, "days")
+          .format("YYYY-MM-DD");
       }
       if (
         this.vacunacion.biologico &&
@@ -773,22 +814,61 @@ export default {
         days = this.dosisVacunas.Tipo_biologico.find(
           (x) => x.codigo === "5"
         ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD").add(
-          days,
-          "days"
-        ).format("YYYY-MM-DD");
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
+          .add(days, "days")
+          .format("YYYY-MM-DD");
       }
       return fecha;
     },
   },
   watch: {
+    "vacunacion.tipo_poblacion": {
+      handler(value) {
+        if (value) {
+          this.tipo_poblacion_object = this.dosisVacunas.priorizaciones.find(
+            (x) => x.codigo == value
+          );
+        }
+      },
+    },
+    "vacunacion.biologico": {
+      handler() {
+        if (this.flagWaitGetVacunacion) {
+          this.vacunacion.lote_biologico = null;
+        }
+      },
+      immediate: false,
+      /* handler(oldValue, newValue) {
+        if (oldValue == null && oldValue != newValue) {
+          this.vacunacion.lote_biologico = null
+        }
+      } */
+    },
+    "vacunacion.bodega_id": {
+      handler() {
+        if (this.flagWaitGetVacunacion) {
+          this.vacunacion.biologico = null;
+          this.vacunacion.lote_biologico = null;
+        }
+      },
+      immediate: false,
+      /* handler(oldValue, newValue) {
+        if (oldValue == null && oldValue != newValue) {
+          this.vacunacion.biologico = null;
+          this.vacunacion.lote_biologico = null;
+        }
+      } */
+    },
     "vacunacion.acepta_vacuna": {
       handler(value) {
+        console.log("vacunacion.acepta_vacuna out", value);
         if (value) {
           this.vacunacion.motivo_disistimiento = null;
           this.vacunacion.vacunador_id = this.ultimoVacunadorId;
         } else {
+          console.log("vacunacion.acepta_vacuna else");
           this.vacunacion.fecha_aplicacion = null;
+          this.vacunacion.bodega_id = null;
           this.vacunacion.biologico = null;
           this.vacunacion.lote_biologico = null;
           this.vacunacion.tipo_dosis = null;
@@ -831,6 +911,23 @@ export default {
     },
   },
   methods: {
+    // TODO: quitar los campos del responsable
+    getInventarioResponsable() {
+      this.axios
+        .get(`dosis-resources-bodegas`)
+        .then((response) => {
+          // console.log(response.data);
+          this.bodegas = response.data;
+        })
+        .catch((error) => {
+          this.$store.commit("snackbar", {
+            color: "error",
+            message: `al recuperar la info de las bodegas del responsable`,
+            error: error,
+          });
+          this.close();
+        });
+    },
     guardar() {
       this.$refs.formVacunacion.validate().then((result) => {
         if (result) {
@@ -838,15 +935,18 @@ export default {
           let copiaData = this.clone(this.vacunacion);
           delete copiaData.afiliado_id;
           copiaData.fecha_prog_2da_dosis = this.calc_segunda_dosis;
-          copiaData.etapa = copiaData.tipo_poblacion ? copiaData.tipo_poblacion.etapa : null;
-          copiaData.tipo_poblacion = copiaData.tipo_poblacion ? copiaData.tipo_poblacion.codigo : null;
+          copiaData.etapa = this.tipo_poblacion_object
+            ? this.tipo_poblacion_object.etapa
+            : null;
           let request = copiaData.id
             ? this.axios.put(`dosis-aplicadas/${copiaData.id}`, copiaData)
             : this.axios.post(`dosis-aplicadas`, copiaData);
           request
             .then((response) => {
-              if (response.status === 200) {
-                this.$store.dispatch('setUltimoVacunadorId', {ultimoVacunadorId: response.data.vacunador_id})
+              if (response.status === 201) {
+                this.$store.dispatch("setUltimoVacunadorId", {
+                  ultimoVacunadorId: response.data.vacunador_id,
+                });
               }
               this.$emit("guardado", response.data);
               this.$store.commit("snackbar", {
@@ -867,6 +967,7 @@ export default {
       });
     },
     getVacunacion(id) {
+      this.flagWaitGetVacunacion = false;
       this.loading = true;
       this.axios
         .get(`dosis-aplicadas/${id}`)
@@ -874,14 +975,23 @@ export default {
           this.vacunacion = response.data;
           this.vacunacion.cod_mpio = parseInt(this.vacunacion.cod_mpio);
           this.vacunacion.cod_dpto = parseInt(this.vacunacion.cod_dpto);
-          this.vacunacion.tipo_identificacion = parseInt(this.vacunacion.tipo_identificacion);
-          this.vacunacion.tipo_ident_acud = parseInt(this.vacunacion.tipo_ident_acud);
+          this.vacunacion.tipo_identificacion = parseInt(
+            this.vacunacion.tipo_identificacion
+          );
+          this.vacunacion.tipo_ident_acud = parseInt(
+            this.vacunacion.tipo_ident_acud
+          );
           this.vacunacion.codigo_ips = parseInt(this.vacunacion.codigo_ips);
-          this.vacunacion.tipo_poblacion = response.data.poblacion;
+          this.vacunacion.tipo_poblacion = response.data.poblacion.codigo;
           this.identificacionVerificada = 1;
           this.loading = false;
+          setTimeout(() => {
+            this.flagWaitGetVacunacion = true;
+          }, 500);
+          console.log("GET_VACUNACION");
         })
         .catch((error) => {
+          this.flagWaitGetVacunacion = true;
           this.$store.commit("snackbar", {
             color: "error",
             message: `al recuperar el registro de vacunación`,
@@ -891,13 +1001,20 @@ export default {
         });
     },
     open(id = null) {
+      this.flagWaitGetVacunacion = true;
+      this.tipo_poblacion_object = null;
+      this.getInventarioResponsable();
       this.getVacunadores();
-      this.idVerificada = 0;
+      this.identificacionVerificada = 0;
       if (id) {
-        this.getVacunacion(id)
+        // this.vacunacion = this.clone(models.vacunacionSucre);
+        this.getVacunacion(id);
+      } else {
+        this.vacunacion = this.clone(models.vacunacionSucre);
+        this.vacunacion.vacunador_id = this.ultimoVacunadorId;
       }
-      this.vacunacion = this.clone(models.vacunacionSucre);
-      this.vacunacion.vacunador_id = this.ultimoVacunadorId;
+      // this.vacunacion.vacunador_id = this.ultimoVacunadorId;
+      console.log("VACUNADOR_ID");
       this.dialog = true;
     },
     close() {
@@ -927,10 +1044,10 @@ export default {
         this.vacunacion.codigo_ips = null;
       }
       if (this.identificacionVerificada === 1 && response.length) {
-        this.vacunacion.tipo_identificacion =
-          response[0].tipo_identificacion;
-        this.vacunacion.identificacion =
-          response[0].identificacion;
+        this.vacunacion.tipo_identificacion = parseInt(
+          response[0].tipo_identificacion
+        );
+        this.vacunacion.identificacion = response[0].identificacion;
         this.vacunacion.nombre1 = response[0].nombre1;
         this.vacunacion.nombre2 = response[0].nombre2;
         this.vacunacion.apellido1 = response[0].apellido1;

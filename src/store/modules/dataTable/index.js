@@ -41,6 +41,8 @@ const state = {
         tablaReferenciasVersion: 1,
         tablaVacunacionSucre: 0,
         tablaVacunacionSucreVersion: 0,
+        tablaBodegas: 0,
+        tablaBodegasVersion: 0,
     }
 }
 
