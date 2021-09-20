@@ -7,7 +7,7 @@
                     <v-list-item-group v-model="currentOption" color="indigo">
                         <template v-for="option in options">
                             <v-hover v-slot:default="{ hover }" :key="`option-${ option.value }`">
-                                <v-list-item @click="selectTable(option.value)" v-if="option.value === 2 ? datosEmpresa.departamento_id === 70 : true">
+                                <v-list-item @click="selectTable(option.value)" v-if="option.value === 2 ? datosEmpresa.departamento_id === 29 : true">
                                     <v-list-item-avatar class="my-1 align-self-center">{{ (option.value + 1) }}</v-list-item-avatar>
                                     <v-list-item-content class="pa-0">
                                         <v-list-item-title><h5 class="mb-0 text-truncate">{{ option.name }}</h5></v-list-item-title>
