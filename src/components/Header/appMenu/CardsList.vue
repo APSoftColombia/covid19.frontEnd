@@ -19,7 +19,7 @@
                   @click.stop="$emit(encuestaEnCurso? 'goruta' : 'clickitem', item)"
               >
                 <v-list-item-avatar size="50" :color="item.color" :class="item.personalIcon ? 'pa-2' : ''">
-                  <v-icon size="30" color="white" v-if="!item.personalIcon">{{item.icon}}</v-icon>
+                  <v-icon :size="item.iconSize || 30" color="white" v-if="!item.personalIcon">{{item.icon}}</v-icon>
                   <template v-else>
                     <icon-base
                         v-if="item.personalIcon === 'Autopsias'"

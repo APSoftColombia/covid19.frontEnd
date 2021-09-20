@@ -382,7 +382,7 @@ export const itemsMenu = [
     },
     {
         id: 62,
-        title: 'Vacunacion',
+        title: 'Vacunación',
         icon: 'fas fa-shield-virus',
         color: 'green',
         routeName: 'Vacunacion',
@@ -390,8 +390,9 @@ export const itemsMenu = [
     },
     {
         id: 63,
-        title: 'Mi Bodega',
+        title: 'Bodegas Vacunación',
         icon: 'fas fa-warehouse',
+        iconSize: '24',
         color: 'blue',
         routeName: 'Bodega',
         typeRoute: 'covid'
