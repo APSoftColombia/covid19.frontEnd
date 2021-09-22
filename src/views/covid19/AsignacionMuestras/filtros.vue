@@ -38,6 +38,15 @@
                     hide-details
                 ></c-select-complete>
               </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <c-date-range
+                    v-model="filters.models.rango_fecha_solicitud"
+                    label="Fecha de solicitud de muestra"
+                    :max="moment().format('YYYY-MM-DD')"
+                    hide-details
+                >
+                </c-date-range>
+              </v-col>
             </v-row>
           </v-container>
           <v-divider class="ma-0 pa-0"></v-divider>
@@ -67,7 +76,8 @@
       filters: {
         models: {
           municipio_id: null,
-          departamento_id: null
+          departamento_id: null,
+          rango_fecha_solicitud: null
         },
       }
     }),
@@ -86,6 +96,9 @@
         }
         if (this.filters.models.departamento_id !== null) {
           rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[departamento_id]=' + this.filters.models.departamento_id
+        }
+        if (this.filters.models.rango_fecha_solicitud !== null) {
+          rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaMuestra]=' + this.filters.models.rango_fecha_solicitud.join(',')
         }
         this.$emit('filtra', rutaTemp)
       },

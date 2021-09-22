@@ -78,6 +78,14 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
+            <template v-slot:item.fecha_ult_soli_muestra="{ item }">
+              <v-list-item class="pa-0">
+                <v-list-item-content class="pa-0">
+                  <v-list-item-title class="body-2 text-truncate">{{ item.fecha_ult_soli_muestra ? moment(item.fecha_ult_soli_muestra).format('DD-MM-YYYY') : '' }}</v-list-item-title>
+                  <v-list-item-subtitle class="body-2 text-truncate">{{ item.fecha_ult_soli_muestra ? 'A las ' + moment(fechaSolicitud).format('HH:mm') : '' }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
             <template v-slot:top>
               <v-expand-transition>
                 <v-container fluid class="px-2 py-0" v-if="seleccionados.length">
@@ -122,6 +130,11 @@ export default {
         text: 'Ubicación',
         sortable: false,
         value: 'direccion'
+      },
+      {
+        text: 'Fecha de Solicitud',
+        sortable: false,
+        value: 'fecha_ult_soli_muestra'
       },
       {
         text: 'Estado',
