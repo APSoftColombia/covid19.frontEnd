@@ -269,7 +269,10 @@ const state = {
         { value: 'RE', text: 'Retirado', icon: 'mdi-file-cancel', color: 'orange' },
     ],
     dosisVacunas: [],
-    ultimoVacunadorId: null
+    ultimoVacunadorId: null,
+    tipoPoblaciones: [],
+    lastDptoAplicacionVacuna: null,
+    lastMpioAplicacionVacuna: null,
 }
 
 // getters
@@ -485,7 +488,16 @@ const getters = {
     },
     ultimoVacunadorId: state => {
         return state.ultimoVacunadorId
-    }
+    },
+    tipoPoblaciones: state => {
+        return state.tipoPoblaciones
+    },
+    lastDptoAplicacionVacuna: state => {
+        return state.lastDptoAplicacionVacuna
+    },
+    lastMpioAplicacionVacuna: state => {
+        return state.lastMpioAplicacionVacuna
+    },
 }
 // actions
 const actions = {
@@ -599,6 +611,7 @@ const actions = {
                             context.commit('assignIpssVacunas', response.data.parametros.ipss_vacunas)
                             context.commit('assignPriorizacionesVacunas', response.data.parametros.priorizaciones_vacunas)
                             context.commit('assignDosisVacunas', response.data.parametros.dosisVacunas)
+                            context.commit('assignTipoPoblaciones', response.data.parametros.tipo_poblaciones)
                             resolve(true)
                         })
                         .catch(error => {
@@ -622,6 +635,12 @@ const actions = {
     },
     setUltimoVacunadorId(context, payload) {
         context.commit('assignUltimoVacunadorId', payload.ultimoVacunadorId)
+    },
+    setLastDptoAplicacionVacuna(context, payload) {
+        context.commit('assignLastDptoAplicacionVacuna', payload.cod_dpto_aplicacion)
+    },
+    setLastMpioAplicacionVacuna(context, payload) {
+        context.commit('assignLastMpioAplicacionVacuna', payload.cod_mpio_aplicacion)
     }
 }
 
@@ -789,6 +808,15 @@ const mutations = {
     },
     assignDosisVacunas(state, dosisVacunas){
         state.dosisVacunas = dosisVacunas
+    },
+    assignTipoPoblaciones(state, tipoPoblaciones){
+        state.tipoPoblaciones = tipoPoblaciones
+    },
+    assignLastDptoAplicacionVacuna(state, lastDptoAplicacionVacuna){
+        state.lastDptoAplicacionVacuna = lastDptoAplicacionVacuna
+    },
+    assignLastMpioAplicacionVacuna(state, lastMpioAplicacionVacuna){
+        state.lastMpioAplicacionVacuna = lastMpioAplicacionVacuna
     },
     assignUltimoVacunadorId(state, ultimoVacunadorId) {
         state.ultimoVacunadorId = ultimoVacunadorId

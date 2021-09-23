@@ -217,14 +217,23 @@
       </c-select-complete>
     </v-col>
     <v-col class="pb-0" cols="12">
-      <v-checkbox
+      <c-select-complete
+        v-model="persona.tipo_poblacion"
+        label="Tipo de poblacion"
+        rules="required"
+        name="tipo_poblacion"
+        :items="tipoPoblaciones"
+        :disabled="identificacionVerificada < 1"
+      >
+      </c-select-complete>
+      <!-- <v-checkbox
           v-model="persona.si_eps"
           class="shrink mr-2"
           label="¿Está afiliado a una EPS?"
           :false-value="0"
           :true-value="1"
           :disabled="identificacionVerificada < 1"
-      ></v-checkbox>
+      ></v-checkbox> -->
     </v-col>
     <template v-if="persona.si_eps">
       <v-col class="pb-0" cols="12" sm="12" md="12">
@@ -334,10 +343,21 @@ export default {
       'epss',
       'regimenesEspeciales',
       'modelPersona',
-      'datosEmpresa'
+      'datosEmpresa',
+      'tipoPoblaciones'
     ])
   },
   watch: {
+    'persona.tipo_poblacion': {
+      handler(value) {
+        if (value == 'Población Asegurada') {
+          this.persona.si_eps = 1
+        } else {
+          this.persona.si_eps = 0
+        }
+      },
+      immediate: false
+    },
     'value': {
       handler(val) {
         if (val && val.identificacion) {

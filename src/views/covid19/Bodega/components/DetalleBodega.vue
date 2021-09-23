@@ -231,12 +231,12 @@
                                                     </td>
                                                     <td>
                                                     <v-list-item-content class="pa-0">
-                                                        <v-list-item-title>{{ biologico.cantidad ? biologico.cantidad : '' }}</v-list-item-title>
+                                                        <v-list-item-title>{{ biologico.lote ? biologico.lote : '' }}</v-list-item-title>
                                                     </v-list-item-content>
                                                     </td>
                                                     <td>
                                                     <v-list-item-content class="pa-0">
-                                                        <v-list-item-title>{{ biologico.lote ? biologico.lote : '' }}</v-list-item-title>
+                                                        <v-list-item-title>{{ biologico.cantidad ? biologico.cantidad : '' }}</v-list-item-title>
                                                     </v-list-item-content>
                                                     </td>
                                                 </tr>

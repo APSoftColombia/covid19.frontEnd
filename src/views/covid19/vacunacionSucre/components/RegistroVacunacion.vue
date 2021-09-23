@@ -487,6 +487,50 @@
                     >
                     </c-date>
                   </v-col>
+                  <v-col class="pb-0" cols="12" sm="12" md="6">
+                    <c-select-complete
+                      v-model="vacunacion.cod_dpto_aplicacion"
+                      label="Departamento de aplicacion"
+                      name="departamento_aplicacion"
+                      rules="required"
+                      :items="departamentos"
+                      item-text="nombre"
+                      item-value="id"
+                      :disabled="identificacionVerificada < 1"
+                      @change="
+                        (val) =>
+                          (vacunacion.cod_mpio_aplicacion = departamentos
+                            .find((x) => x.id === val)
+                            .municipios.find((z) => z.id === vacunacion.cod_mpio_aplicacion)
+                            ? vacunacion.cod_mpio_aplicacion
+                            : null)
+                      "
+                    >
+                    </c-select-complete>
+                  </v-col>
+                  <v-col class="pb-0" cols="12" sm="12" md="6">
+                    <c-select-complete
+                      :disabled="
+                        !vacunacion.cod_dpto_aplicacion || identificacionVerificada < 1
+                      "
+                      v-model="vacunacion.cod_mpio_aplicacion"
+                      label="Municipio de aplicacion"
+                      name="municipio_aplicacion"
+                      rules="required"
+                      :items="
+                        departamentos.length &&
+                        vacunacion.cod_dpto_aplicacion &&
+                        departamentos.find((x) => x.id === vacunacion.cod_dpto_aplicacion)
+                          ? departamentos.find(
+                              (x) => x.id === vacunacion.cod_dpto_aplicacion
+                            ).municipios
+                          : []
+                      "
+                      item-text="nombre"
+                      item-value="id"
+                    >
+                    </c-select-complete>
+                  </v-col>
                   <v-col class="pb-0" cols="12" sm="12" md="12">
                     <c-select-complete
                       v-model="vacunacion.bodega_id"
@@ -665,7 +709,7 @@
                     </c-text-area>
                   </v-col>
                 </template>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <!-- <v-col class="pb-0" cols="12" sm="6" md="6">
                   <c-texto
                     v-model="vacunacion.responsable_matriz"
                     label="Responsable de la matriz"
@@ -693,7 +737,7 @@
                     lower-case
                   >
                   </c-texto>
-                </v-col>
+                </v-col> -->
                 <v-col cols="12" class="pb-0">
                   <c-text-area
                     label="Observaciones"
@@ -752,6 +796,8 @@ export default {
       "epss",
       "dosisVacunas",
       "ultimoVacunadorId",
+      "lastDptoAplicacionVacuna",
+      "lastMpioAplicacionVacuna",
     ]),
     lotesBiologico() {
       return this.vacunacion.bodega_id && this.vacunacion.biologico
@@ -865,6 +911,8 @@ export default {
         if (value) {
           this.vacunacion.motivo_disistimiento = null;
           this.vacunacion.vacunador_id = this.ultimoVacunadorId;
+          this.vacunacion.cod_dpto_aplicacion = this.lastDptoAplicacionVacuna;
+          this.vacunacion.cod_mpio_aplicacion = this.lastMpioAplicacionVacuna;
         } else {
           console.log("vacunacion.acepta_vacuna else");
           this.vacunacion.fecha_aplicacion = null;
@@ -876,6 +924,8 @@ export default {
           this.vacunacion.estrategia_vacunacion = null;
           this.vacunacion.eventos_atribuidos = null;
           this.vacunacion.vacunador_id = null;
+          this.vacunacion.cod_dpto_aplicacion = null;
+          this.vacunacion.cod_mpio_aplicacion = null;
         }
       },
     },
@@ -911,7 +961,6 @@ export default {
     },
   },
   methods: {
-    // TODO: quitar los campos del responsable
     getInventarioResponsable() {
       this.axios
         .get(`dosis-resources-bodegas`)
@@ -946,6 +995,12 @@ export default {
               if (response.status === 201) {
                 this.$store.dispatch("setUltimoVacunadorId", {
                   ultimoVacunadorId: response.data.vacunador_id,
+                });
+                this.$store.dispatch("setLastDptoAplicacionVacuna", {
+                  cod_dpto_aplicacion: response.data.cod_dpto_aplicacion,
+                });
+                this.$store.dispatch("setLastMpioAplicacionVacuna", {
+                  cod_mpio_aplicacion: response.data.cod_mpio_aplicacion,
                 });
               }
               this.$emit("guardado", response.data);
@@ -1012,6 +1067,8 @@ export default {
       } else {
         this.vacunacion = this.clone(models.vacunacionSucre);
         this.vacunacion.vacunador_id = this.ultimoVacunadorId;
+        this.vacunacion.cod_dpto_aplicacion = this.ultimoVacunadorId;
+        this.vacunacion.cod_mpio_aplicacion = this.ultimoVacunadorId;
       }
       // this.vacunacion.vacunador_id = this.ultimoVacunadorId;
       console.log("VACUNADOR_ID");

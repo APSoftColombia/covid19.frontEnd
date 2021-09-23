@@ -242,6 +242,14 @@ export default {
             iconColor: 'indigo',
             colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
             collg: this.view === 'RegistroEvolucion' ? '6' : '4'
+          },
+          {
+            label: 'Tipo Poblacion',
+            body: this.tamizaje.tipo_poblacion ? this.tamizaje.tipo_poblacion : '',
+            icon: 'mdi-account-card-details',
+            iconColor: 'indigo',
+            colmd: this.view === 'RegistroEvolucion' ? '12' : '6',
+            collg: this.view === 'RegistroEvolucion' ? '6' : '4'
           }
     )
       if(this.tamizaje.ips_medicamentos) {

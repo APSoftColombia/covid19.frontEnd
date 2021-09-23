@@ -55,6 +55,8 @@ const VacunacionSucre = {
     grupo_edad: null,
     esquema: null,
     bodega_id: null,
+    cod_dpto_aplicacion: null,
+    cod_mpio_aplicacion: null
 }
 
 export default {
