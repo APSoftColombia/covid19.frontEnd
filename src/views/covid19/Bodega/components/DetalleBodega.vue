@@ -153,7 +153,7 @@
                                 parseInt(item.responsable.cod_mpio)).nombre}, ${municipiosTotal.find(x => x.id
                                 === parseInt(item.responsable.cod_mpio)).departamento.nombre}` : ''
                             }} <br>
-                            {{ item[0].zona }}
+                            {{ item.zona ? item.zona : '' }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
