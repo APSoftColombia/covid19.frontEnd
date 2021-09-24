@@ -52,7 +52,7 @@
                 <template v-slot:item.paciente="{ item }">
                   <persona-item
                     :sexo="item.sexo"
-                    :nombre="`${item.nombre1} ${item.nombre2} ${item.apellido1} ${item.apellido2}`"
+                    :nombre="`${item.nombre1} ${item.nombre2 ? item.nombre2 : ''} ${item.apellido1} ${item.apellido2 ? item.apellido2 : ''}`"
                     :tipo_identificacion="item.tipo_identificacion"
                     :numero_identificacion="item.identificacion"
                     :fecha_nacimiento="item.fecha_nacimiento"

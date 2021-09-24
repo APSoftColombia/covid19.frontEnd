@@ -358,7 +358,7 @@ export const itemsMenu = [
     {
         id: 44,
         title: 'Vacunación Covid-19',
-        subtitle: 'Gestión de vacunación Covid-19',
+        subtitle: 'Caracterizacion vacunación',
         icon: 'fas fa-syringe',
         color: 'deep-purple',
         routeName: 'VacunacionCovid19',
@@ -382,7 +382,7 @@ export const itemsMenu = [
     },
     {
         id: 62,
-        title: 'Vacunación',
+        title: 'Gestion Vacunación',
         icon: 'fas fa-shield-virus',
         color: 'green',
         routeName: 'Vacunacion',
