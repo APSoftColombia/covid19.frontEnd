@@ -200,21 +200,29 @@
       </c-select-complete>
     </v-col>
     <v-col class="pb-0" cols="12">
-      <v-checkbox
-          v-model="persona.si_eps"
-          class="shrink mr-2"
-          label="¿Está afiliado a una EPS?"
-          :false-value="0"
-          :true-value="1"
+      <c-select-complete
+          v-model="persona.tipo_poblacion"
+          label="Condición inical de aseguramiento"
+          rules="required"
+          name="condición inical de aseguramiento"
+          :items="tipoPoblaciones"
           :disabled="identificacionVerificada < 1"
-      ></v-checkbox>
+      />
+<!--      <v-checkbox-->
+<!--          v-model="persona.si_eps"-->
+<!--          class="shrink mr-2"-->
+<!--          label="¿Está afiliado a una EPS?"-->
+<!--          :false-value="0"-->
+<!--          :true-value="1"-->
+<!--          :disabled="identificacionVerificada < 1"-->
+<!--      ></v-checkbox>-->
     </v-col>
     <template v-if="persona.si_eps">
       <v-col class="pb-0" cols="12" sm="12" md="12">
         <c-select-complete
             v-model="persona.eps_id"
             label="¿A que EPS está afiliado?"
-            rules="required"
+            :rules="persona.tipo_poblacion === 'Población Asegurada' && !persona.id ? 'required' : ''"
             name="EPS de afiliación"
             :items="epss"
             item-value="id"
@@ -293,6 +301,18 @@ export default {
     ])
   },
   watch: {
+    'persona.tipo_poblacion': {
+      handler(value) {
+        if (this.persona && !this.persona.id) {
+          if (value == 'Población Asegurada') {
+            this.persona.si_eps = 1
+          } else {
+            this.persona.si_eps = 0
+          }
+        }
+      },
+      immediate: false
+    },
     'value': {
       handler(val) {
         if (val && val.identificacion) {
@@ -336,7 +356,6 @@ export default {
       handler(val) {
         if(!val) {
           this.persona.eps_id = null
-          this.persona.tipo_afiliacion = null
         }
       },
       immediate: false

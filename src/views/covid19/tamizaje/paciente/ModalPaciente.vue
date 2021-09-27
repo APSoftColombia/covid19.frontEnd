@@ -123,7 +123,8 @@ export default {
       if (elTamizaje && elTamizaje.comorbilidades && elTamizaje.comorbilidades.length) {
         elTamizaje.comorbilidades = elTamizaje.comorbilidades.map(x => x.codigo)
       }
-      elTamizaje.si_eps = elTamizaje.eps_id ? 1 : 0
+      // elTamizaje.si_eps = elTamizaje.eps_id ? 1 : 0
+      elTamizaje.si_eps = 1
       this.tamizaje = elTamizaje
       setTimeout(() => {
         this.$refs.formPaciente.validate()

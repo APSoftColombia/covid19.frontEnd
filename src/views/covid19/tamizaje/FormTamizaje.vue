@@ -587,27 +587,27 @@ export default {
         !val && (this.tamizaje.fecha_diagnostico = null)
       },
       immediate: false
-    },
-    'tamizaje.si_eps': {
-      handler(val) {
-        !val && (this.tamizaje.eps_id = null)
-      },
-      immediate: false
-    },
-    'tamizaje.eps_id': {
-      handler(val) {
-        !val && (this.tamizaje.tipo_afiliacion = null)
-      },
-      immediate: false
-    },
-    'tamizaje.tipo_afiliacion': {
-      handler(val) {
-        if (!val || val !== 'Régimen Especial') {
-          this.tamizaje.regimen_especial = null
-        }
-      },
-      immediate: false
     }
+    // 'tamizaje.si_eps': {
+    //   handler(val) {
+    //     !val && (this.tamizaje.eps_id = null)
+    //   },
+    //   immediate: false
+    // },
+    // 'tamizaje.eps_id': {
+    //   handler(val) {
+    //     !val && (this.tamizaje.tipo_afiliacion = null)
+    //   },
+    //   immediate: false
+    // },
+    // 'tamizaje.tipo_afiliacion': {
+    //   handler(val) {
+    //     if (!val || val !== 'Régimen Especial') {
+    //       this.tamizaje.regimen_especial = null
+    //     }
+    //   },
+    //   immediate: false
+    // }
   },
   created() {
     setTimeout(() => {
@@ -618,20 +618,15 @@ export default {
     verificaGestante() {
       if (this && this.tamizaje) {
         setTimeout(() => {
-          console.log('this.tamizaje', `Edad: ${this.tamizaje.edad}, Sexo:${this.tamizaje.sexo}`)
           this.mujerGestante = (this.tamizaje.sexo === 'F' && this.tamizaje.edad > 12) ? 1 : 0
-          console.log('this.this.mujerGestante', this.mujerGestante)
           if (!this.mujerGestante) this.tamizaje.estado_gestacion_lactancia = null
         }, 1000)
       }
     },
     verSeguimiento(id) {
       this.$refs.seguimiento.open(id)
-      // this.dialog = false
     },
     verificar(val) {
-      console.log('verificar val', val)
-      console.log('verificar this.respuestaPersona', this.respuestaPersona)
       this.verificado = val
       this.$emit('verificado', val)
       if ((val === -1) || (val === 1 && this.respuestaPersona && this.respuestaPersona.mensaje && this.respuestaPersona.mensaje.id === 1)) this.dialog = true

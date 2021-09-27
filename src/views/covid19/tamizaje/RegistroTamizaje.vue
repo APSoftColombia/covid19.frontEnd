@@ -367,7 +367,8 @@ export default {
             this.activaPR = response.data.frecuencia_pulso !== null
             this.activaSPO2 = response.data.saturacion_oxigeno !== null
             this.activaTemperatura = response.data.temperatura !== null
-            response.data.si_eps = response.data.eps_id ? 1 : 0
+            // response.data.si_eps = response.data.eps_id ? 1 : 0
+            response.data.si_eps = 1
             this.muestraPreguntasEfectividad = !(response.data.localiza_persona && response.data.contesta_encuesta)
             this.tamizaje = response.data
             this.loading = false

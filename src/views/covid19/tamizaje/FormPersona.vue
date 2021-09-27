@@ -219,13 +219,12 @@
     <v-col class="pb-0" cols="12">
       <c-select-complete
         v-model="persona.tipo_poblacion"
-        label="Tipo de poblacion"
+        label="Condición inical de aseguramiento"
         rules="required"
-        name="tipo_poblacion"
+        name="condición inical de aseguramiento"
         :items="tipoPoblaciones"
         :disabled="identificacionVerificada < 1"
-      >
-      </c-select-complete>
+      />
       <!-- <v-checkbox
           v-model="persona.si_eps"
           class="shrink mr-2"
@@ -240,7 +239,7 @@
         <c-select-complete
             v-model="persona.eps_id"
             label="¿A que EPS está afiliado?"
-            rules="required"
+            :rules="persona.tipo_poblacion === 'Población Asegurada' && !persona.id ? 'required' : ''"
             name="EPS de afiliación"
             :items="epss"
             item-value="id"
@@ -350,10 +349,12 @@ export default {
   watch: {
     'persona.tipo_poblacion': {
       handler(value) {
-        if (value == 'Población Asegurada') {
-          this.persona.si_eps = 1
-        } else {
-          this.persona.si_eps = 0
+        if (this.persona && !this.persona.id) {
+          if (value == 'Población Asegurada') {
+            this.persona.si_eps = 1
+          } else {
+            this.persona.si_eps = 0
+          }
         }
       },
       immediate: false
@@ -401,7 +402,6 @@ export default {
       handler(val) {
         if(!val) {
           this.persona.eps_id = null
-          this.persona.tipo_afiliacion = null
         }
       },
       immediate: false
@@ -571,6 +571,7 @@ export default {
         this.persona.departamento_id = response.afiliado.departamento_id
         this.persona.municipio_id = response.afiliado.centro_poblado_id
         this.persona.barrio_id = response.afiliado.barrio_id || null
+        this.persona.si_eps = 1
         this.persona.eps_id = response.afiliado.eps_id
         this.persona.tipo_afiliacion = response.afiliado.regimen
         this.persona.estado_afiliado = response.afiliado.estado
