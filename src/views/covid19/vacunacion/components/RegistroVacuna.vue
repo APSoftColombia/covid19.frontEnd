@@ -84,7 +84,6 @@
                 <c-select-complete
                     v-model="vacuna.codhabilitacion_ips"
                     :items="complementos.prestadores_vacunas || []"
-                    rules="required"
                     name="IPS que Aplica"
                     dense
                     label="IPS que Aplica"
@@ -97,7 +96,6 @@
                 <c-texto
                     v-model="vacuna.vacunador"
                     label="Vacunador"
-                    rules="required"
                     name="Vacunador"
                     upper-case
                 >
@@ -179,12 +177,14 @@ export default {
   watch: {
     'vacuna.aplica_vacuna': {
       handler(val){
-        if(val){
-          this.vacuna.causa_id = null
-        } else {
-          this.vacuna.codhabilitacion_ips = null
-          this.vacuna.vacuna_id = null
-          this.vacuna.vacunador = null
+        if (this.vacuna) {
+          if(val){
+            this.vacuna.causa_id = null
+          } else {
+            this.vacuna.codhabilitacion_ips = null
+            this.vacuna.vacuna_id = null
+            this.vacuna.vacunador = null
+          }
         }
       },
       immediate: false
@@ -199,8 +199,10 @@ export default {
         this.vacuna = this.clone(models.vacuna)
       }
       this.vacuna.vacunacion_id = this.vacunacion.id
-      this.vacuna.fecha = vacuna && vacuna.fecha ? this.moment(vacuna.fecha).format('YYYY-MM-DD') : this.moment().format('YYYY-MM-DD')
-      this.vacuna.hora = vacuna && vacuna.hora ? this.moment(vacuna.hora).format('HH:mm') : this.moment().format('HH:mm')
+      // this.vacuna.fecha = vacuna && vacuna.fecha ? this.moment(vacuna.fecha).format('YYYY-MM-DD') : this.moment().format('YYYY-MM-DD')
+      // this.vacuna.hora = vacuna && vacuna.hora ? this.moment(vacuna.hora).format('HH:mm') : this.moment().format('HH:mm')
+      this.vacuna.fecha = vacuna && vacuna.fecha ? this.moment(vacuna.fecha).format('YYYY-MM-DD') : null
+      this.vacuna.hora = vacuna && vacuna.hora ? this.moment(vacuna.hora).format('HH:mm') : '00:00'
       this.dialog = true
     },
     close() {
