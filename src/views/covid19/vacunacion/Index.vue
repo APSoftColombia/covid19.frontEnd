@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Vacunación">
+    <page-title-bar title="Vacunación" subtitle="Caracterizacion de vacunación">
       <template slot="actions">
         <v-tooltip
             v-if="permisos.crear"
