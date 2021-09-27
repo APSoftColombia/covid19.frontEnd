@@ -48,7 +48,7 @@
                   </c-select-complete>
                 </v-col> -->
                 <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <ValidationProvider name="Bodega de IPS" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Bodega de IPS" rules="" v-slot="{ errors }">
                         <v-autocomplete
                             label="Bodega de IPS"
                             v-model="bodega.codigo_ips"
@@ -59,6 +59,7 @@
                             outlined
                             :error-messages="errors"
                             persistent-hint
+                            clearable
                             :hint="ipsSeleccionada ? [ipsSeleccionada.telefono ? `Tel.${ipsSeleccionada.telefono}`: null, `${ipsSeleccionada.direccion} ${ipsSeleccionada.nompio}, ${ipsSeleccionada.nomdepto}`].filter(x => x).join(' | '): null"
                         >
                             <template v-slot:selection="data">
@@ -90,6 +91,36 @@
                             </template>
                         </v-autocomplete>
                     </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider name="Responsable asignado" rules="required" v-slot="{ errors }">
+                    <v-autocomplete
+                        :label="bodega.responsable_id ? 'Responsable' : 'Seleccionar Responsable'"
+                        v-model="bodega.responsable_id"
+                        :items="responsables"
+                        outlined
+                        :error-messages="errors"
+                        :filter="filterResponsables"
+                        item-value="id"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-list-item class="pa-0" style="width: 100% !important;">
+                          <v-list-item-content class="pa-0">
+                            <v-list-item-title>{{item.name}}</v-list-item-title>
+                            <v-list-item-subtitle>{{tiposDocumentoIdentidad && item.tipo_documento_identidad_id ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id).tipo : ''}} {{item.numero_documento_identidad}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                      <template v-slot:item="{ item, index }">
+                        <template>
+                          <v-list-item-content class="pa-0">
+                            <v-list-item-title>{{item.name}}</v-list-item-title>
+                            <v-list-item-subtitle>{{tiposDocumentoIdentidad && item.tipo_documento_identidad_id ? tiposDocumentoIdentidad.find(x => x.id === item.tipo_documento_identidad_id).tipo : ''}} {{item.numero_documento_identidad}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-autocomplete>
+                  </ValidationProvider>
                 </v-col>
               </v-row>
               <v-row>
@@ -137,17 +168,32 @@ export default {
         nombre: null,
         codigo_ips: null,
         descripcion: null,
+        responsable_id: null,
         tipo: null
     },
     prestadores: [],
-    tipoBodega: []
+    tipoBodega: [],
+    responsables: [],
+    filterResponsables (item, queryText) {
+      const hasValue = val => val != null ? val : ''
+      const text = hasValue(item.numero_documento_identidad + ' ' + item.name)
+      const query = hasValue(queryText)
+      return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+    }
   }),
   computed: {
     ipsSeleccionada() {
         return (this && this.prestadores && this.bodega.codigo_ips && this.prestadores.find(x => x.codigohabilitacion === this.bodega.codigo_ips)) || null
     },
   },
-  watch: {},
+  watch: {
+    'bodega.codigo_ips': {
+      handler () {
+        this.bodega.responsable_id = null
+      },
+      immediate: false
+    }
+  },
   created() {
     this.getIps()
   },
@@ -188,6 +234,19 @@ export default {
         }
       });
     },
+    getResponsables() {
+      this.axios.get(`users-role?role=Médico`)
+          .then(response => {
+            this.responsables = response.data
+          })
+          .catch(error => {
+            this.$store.commit('snackbar', {
+              color: 'error',
+              message: `al recuperar los registros de los responsables de bodega.`,
+              error: error
+            })
+          })
+    },
     getBodega(id) {
         this.axios
         .get(`bodegas/${id}`)
@@ -206,8 +265,10 @@ export default {
     open(id = null) {
       if (id) {
         this.getBodega(id);
+      } else {
+        this.bodega = this.clone(this.bodegaModel);
       }
-      this.bodega = this.clone(this.bodegaModel);
+      this.getResponsables()
       this.dialog = true;
     },
     close() {

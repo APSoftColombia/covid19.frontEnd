@@ -309,23 +309,23 @@
                     :disabled="identificacionVerificada < 1"
                 />
               </v-col>
-              <v-col cols="12">
-                <v-card outlined tile>
-                  <v-card-text>
-                    <c-radio
-                        v-model="vacunacion.mivacuna"
-                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
-                        itemValue="value"
-                        itemText="text"
-                        rules="required"
-                        name="registrado en MiVacuna"
-                        label="¿Está Registrado en MiVacuna?"
-                        :column="!$vuetify.breakpoint.smAndUp"
-                        :disabled="identificacionVerificada < 1"
-                    />
-                  </v-card-text>
-                </v-card>
-              </v-col>
+<!--              <v-col cols="12">-->
+<!--                <v-card outlined tile>-->
+<!--                  <v-card-text>-->
+<!--                    <c-radio-->
+<!--                        v-model="vacunacion.mivacuna"-->
+<!--                        :items="[{text: 'Si', value: 'Si'}, {text: 'No', value: 'No'}, {value: 'No sabe', text: 'No sabe'}]"-->
+<!--                        itemValue="value"-->
+<!--                        itemText="text"-->
+<!--                        rules="required"-->
+<!--                        name="registrado en MiVacuna"-->
+<!--                        label="¿Está Registrado en MiVacuna?"-->
+<!--                        :column="!$vuetify.breakpoint.smAndUp"-->
+<!--                        :disabled="identificacionVerificada < 1"-->
+<!--                    />-->
+<!--                  </v-card-text>-->
+<!--                </v-card>-->
+<!--              </v-col>-->
             </template>
           </v-row>
         </ValidationObserver>

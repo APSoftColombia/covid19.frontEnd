@@ -262,11 +262,11 @@
                                                 <template v-slot:default>
                                                 <thead>
                                                 <tr>
+                                                    <th>ID</th>
                                                     <th>Biologico</th>
                                                     <th>Fecha</th>
                                                     <th>Tipo</th>
                                                     <th>Cantidad</th>
-                                                    <th>Motivo</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -274,6 +274,7 @@
                                                     v-for="(movimiento, indexMovimiento) in item.movimientos"
                                                     :key="`movimiento-${indexMovimiento}`"
                                                 >
+                                                  <td>{{ movimiento.id }}</td>
                                                     <td>
                                                     <v-list-item-content class="pa-0">
                                                         <v-list-item-title>{{movimiento.vacuna_id ? dosisVacunas.Tipo_biologico.find(x => parseInt(x.codigo) === movimiento.vacuna_id).nombre : ''}}</v-list-item-title>
@@ -288,16 +289,12 @@
                                                     <td>
                                                     <v-list-item-content class="pa-0">
                                                         <v-list-item-title>{{ movimiento.tipo ? movimiento.tipo : '' }}</v-list-item-title>
+                                                        <v-list-item-subtitle v-if="movimiento.motivo">{{ movimiento.motivo }}</v-list-item-subtitle>
                                                     </v-list-item-content>
                                                     </td>
                                                     <td>
                                                     <v-list-item-content class="pa-0">
                                                         <v-list-item-title>{{ movimiento.cantidad ? movimiento.cantidad : '' }}</v-list-item-title>
-                                                    </v-list-item-content>
-                                                    </td>
-                                                    <td>
-                                                    <v-list-item-content class="pa-0">
-                                                        <v-list-item-title>{{ movimiento.motivo ? movimiento.motivo : '' }}</v-list-item-title>
                                                     </v-list-item-content>
                                                     </td>
                                                 </tr>
