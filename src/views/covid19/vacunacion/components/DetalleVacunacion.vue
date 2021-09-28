@@ -329,9 +329,9 @@
 </template>
 
 <script>
-// TODO: Para la segunda dosis, dejar por defecto, inalterable, el biologico de la primera dosis
+// *Para la segunda dosis, dejar por defecto, inalterable, el biologico de la primera dosis
 // TODO: Cambiar la tabla del index, por la nueva de VacunacionSucre
-// TODO: Añadir el nombre del biologico a la columna Vacuna, y el icono debe repetirse dependiendo la cantidad por cada biologico
+// *Añadir el nombre del biologico a la columna Vacuna, y el icono debe repetirse dependiendo la cantidad por cada biologico
 const DatosPersonales = () => import('Views/covid19/vacunacion/components/DatosPersonales')
 // import AsignacionesMivacuna from 'Views/covid19/vacunacion/components/detalleVacunacion/AsignacionesMivacuna'
 import RegistroVacuna from 'Views/covid19/vacunacion/components/RegistroVacuna'
