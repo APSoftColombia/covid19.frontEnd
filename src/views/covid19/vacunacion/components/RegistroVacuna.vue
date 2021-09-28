@@ -147,11 +147,11 @@
 
 <script>
 // *Cambiar titulo de Vacunacion COVID-19 a Vacunacion. Luego en el interior del modulo cambiar el titulo por: Vacunacion - subtitle: Caracterizacion de vacunacion
-// TODO: Llenar formulario con la info de afiliados, pero si no trae info, se debe revisar la info viene en los tamizajes
-// TODO: Agregar campo de ¿Esta en estado de embarazo? - Sacarla de tamizaje
-// TODO: Agregar campo de comorbilidades - Sacarla de tamizaje
-// TODO: Agregar campo de ¿Tiene covid o Esta presentando sintomatologia?
-// TODO: HAcer alerta con Fecha diagnostico SI tuvo COVID en formulario de creacion. Agregar el mensaje que a partir de la fecha diagnos. imprimir "hace tanto"
+// *Llenar formulario con la info de afiliados, pero si no trae info, se debe revisar la info viene en los tamizajes
+// *Agregar campo de ¿Esta en estado de embarazo? - Sacarla de tamizaje -> estado_gestacion
+// *Agregar campo de comorbilidades - Sacarla de tamizaje -> comorbilidades_vacunacion
+// *Agregar campo de ¿Tiene covid o Esta presentando sintomatologia? -> presenta_covid
+// *HAcer alerta con Fecha diagnostico SI tuvo COVID en formulario de creacion. Agregar el mensaje que a partir de la fecha diagnos. imprimir "hace tanto"
 import models from 'Views/covid19/vacunacion/models'
 import {mapGetters} from 'vuex'
 

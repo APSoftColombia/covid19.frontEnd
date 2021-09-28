@@ -17,6 +17,7 @@
               <v-list dense>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.discapacidad ? 'teal' : 'grey lighten-2'">
+                    <v-icon>mdi-wheelchair-accessibility</v-icon>
                     {{ vacunacion.discapacidad || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -26,6 +27,7 @@
                 </v-list-item>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.puede_desplazarse ? 'teal' : 'grey lighten-2'">
+                    <v-icon>mdi-walk</v-icon>
                     {{ vacunacion.puede_desplazarse || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -34,6 +36,7 @@
                 </v-list-item>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.intencion_vacuna ? 'teal' : 'grey lighten-2'">
+                    <v-icon>mdi-check</v-icon>
                     {{ vacunacion.intencion_vacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -43,6 +46,7 @@
                 </v-list-item>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.mivacuna ? 'teal' : 'grey lighten-2'">
+                    <v-icon>mdi-clipboard-account</v-icon>
                     {{ vacunacion.mivacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>

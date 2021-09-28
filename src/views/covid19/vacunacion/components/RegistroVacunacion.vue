@@ -15,6 +15,12 @@
             v-slot="{ invalid, validated, passes, validate }"
             autocomplete="off"
         >
+        <v-alert
+          type="warning"
+          v-if="identificacionVerificada && positivo_covid && fecha_diagnostico"
+        >
+          Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{verbalTimeAgoDiagnostico}} (Fecha diagnostico: {{fecha_diagnostico}})
+        </v-alert>
           <v-row>
             <v-col class="pb-0" cols="12" sm="6" md="6">
               <c-identificacion
@@ -41,7 +47,7 @@
               >
               </c-select-complete>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="6" md="6">
+            <v-col class="pb-0" cols="12" sm="6" md="12">
               <c-date
                   v-model="vacunacion.fecha_expedicion"
                   label="Expedición Documento"
@@ -217,6 +223,22 @@
                   :disabled="identificacionVerificada < 1"
               />
             </v-col>
+            <v-col cols="12" v-if="mujerGestante">
+              <v-card outlined tile>
+                <v-card-text>
+                  <c-radio
+                      v-model="vacunacion.estado_gestacion"
+                      label="¿Se encuentra en estado de gestación o lactancia?"
+                      rules="required"
+                      name="estado de gestación o lactancia"
+                      :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                      item-text="text"
+                      item-value="value"
+                  >
+                  </c-radio>
+                </v-card-text>
+              </v-card>
+            </v-col>
             <template>
               <v-col class="pb-0" cols="12" sm="12" md="12">
                 <c-select-complete
@@ -296,6 +318,29 @@
                   </v-card-text>
                 </v-card>
               </v-col>
+              <v-col cols="12">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="vacunacion.presenta_covid"
+                        label="¿Tiene COVID o esta presentando sintomatologia?"
+                        rules="required"
+                        name="presenta_covid"
+                        :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                        item-text="text"
+                        item-value="value"
+                        :disabled="identificacionVerificada < 1"
+                    >
+                    </c-radio>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <comorbilidades-vacunacion
+                    v-if="vacunacion && vacunacion.comorbilidades_vacunacion"
+                    :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
+                    @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
+                    :disabled="identificacionVerificada < 1"
+              ></comorbilidades-vacunacion>
               <v-col
                   v-if="vacunacion.intencion_vacuna === 'No'"
                   cols="12"
@@ -349,9 +394,12 @@
 <script>
 import models from 'Views/covid19/vacunacion/models'
 import {mapGetters} from 'vuex'
+import ComorbilidadesVacunacion from './ComorbilidadesVacunacion'
 
 export default {
-  name: 'RegistroVacunacion',
+  components: {
+    ComorbilidadesVacunacion,
+  },
   data: () => ({
     identificacionVerificada: 0,
     loadingBarrios: false,
@@ -360,7 +408,10 @@ export default {
     dialog: false,
     loading: false,
     vacunacion: null,
-    edad: null
+    edad: null,
+    mujerGestante: 0,
+    positivo_covid: null,
+    fecha_diagnostico: null,
   }),
   computed: {
     ...mapGetters([
@@ -369,7 +420,29 @@ export default {
       'departamentos',
       'municipiosTotal',
       'epss'
-    ])
+    ]),
+    verbalTimeAgoDiagnostico() {
+      let stringDate = ``
+      if (this.positivo_covid && this.fecha_diagnostico) {
+        let a = this.moment()
+				let b = this.moment(this.fecha_diagnostico)
+				let years = a.diff(b, 'year')
+				b.add(years, 'years')
+
+				let months = a.diff(b, 'months')
+				b.add(months, 'months')
+
+				let days = a.diff(b, 'days')
+				b.add(days, 'days')
+
+				let hours = a.diff(b, 'hours')
+				b.add(hours, 'hours')
+				stringDate = stringDate + (years ? `${years} año${years === 1 ? '' : 's'}` : '')
+				stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? ''  : 'es'}` : '')
+				stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
+      }
+      return stringDate
+    }
   },
   watch: {
     'vacunacion.fecha_nacimiento': {
@@ -378,6 +451,7 @@ export default {
           let laEdad = this.calculaEdad(val)
           this.vacunacion.edad = laEdad.years
           this.edad = laEdad.stringDate
+          this.verificaGestante()
         }
       },
       immediate: true
@@ -392,9 +466,23 @@ export default {
         }
       },
       immediate: false
-    }
+    },
+    'vacunacion.sexo': {
+      handler() {
+        this.verificaGestante()
+      },
+      immediate: true
+    },
   },
   methods: {
+    verificaGestante() {
+      if (this && this.vacunacion) {
+        setTimeout(() => {
+          this.mujerGestante = (this.vacunacion.sexo === 'F' && this.vacunacion.edad > 12) ? 1 : 0
+          if (!this.mujerGestante) this.vacunacion.estado_gestacion = null
+        }, 1000)
+      }
+    },
     guardar() {
       this.$refs.formVacunacion.validate().then(result => {
         if (result) {
@@ -426,6 +514,9 @@ export default {
     getVacunacion(id) {
       this.loading = true
       this.axios.get(`vacunaciones/${id}`).then(response => {
+        if (response.data && response.data.comorbilidades_vacunacion && response.data.comorbilidades_vacunacion.length) {
+          response.data.comorbilidades_vacunacion = response.data.comorbilidades_vacunacion.map(x => x.codigo)
+        }
         this.vacunacion = response.data
         this.identificacionVerificada = 1
         this.loading = false
@@ -451,6 +542,9 @@ export default {
       this.dialog = false
       setTimeout(() => {
         this.loading = false
+        this.mujerGestante = 0
+        this.positivo_covid = null
+        this.fecha_diagnostico = null
         this.vacunacion = null
         this.$refs.formVacunacion.reset()
       }, 400)
@@ -474,7 +568,7 @@ export default {
         this.vacunacion.eps_id = null
         this.vacunacion.afiliado_id = null
       }
-      if (this.identificacionVerificada === 1 && response.afiliado) {
+      if (response.afiliado) {
         this.vacunacion.afiliado_id = response.afiliado.id
         this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
         this.vacunacion.identificacion = response.afiliado.numero_documento_identidad
@@ -490,7 +584,31 @@ export default {
         this.vacunacion.departamento_id = response.afiliado.departamento_id
         this.vacunacion.municipio_id = response.afiliado.centro_poblado_id
         this.vacunacion.eps_id = response.afiliado.eps_id
+        
+      } else if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
+        this.vacunacion.afiliado_id = response.tamizaje[0].afiliado_id
+        this.vacunacion.tipo_identificacion = response.tamizaje[0].tipo_identificacion
+        this.vacunacion.identificacion = response.tamizaje[0].identificacion
+        this.vacunacion.nombre1 = response.tamizaje[0].nombre1
+        this.vacunacion.nombre2 = response.tamizaje[0].nombre2
+        this.vacunacion.apellido1 = response.tamizaje[0].apellido1
+        this.vacunacion.apellido2 = response.tamizaje[0].apellido2
+        this.vacunacion.fecha_nacimiento = response.tamizaje[0].fecha_nacimiento
+        this.vacunacion.sexo = response.tamizaje[0].sexo
+        this.vacunacion.telefono = response.tamizaje[0].celular
+        this.vacunacion.email = response.tamizaje[0].email
+        this.vacunacion.direccion = response.tamizaje[0].direccion
+        this.vacunacion.departamento_id = response.tamizaje[0].departamento_id
+        this.vacunacion.municipio_id = response.tamizaje[0].municipio_id
+        this.vacunacion.eps_id = response.tamizaje[0].eps_id
+        this.vacunacion.barrio_id = response.tamizaje[0].barrio_id
       }
+
+      if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
+        this.positivo_covid = response.tamizaje[0].positivo_covid
+        this.fecha_diagnostico = response.tamizaje[0].fecha_diagnostico
+      }
+
     },
     getBarrios(municipio_id) {
       this.loadingBarrios = true
