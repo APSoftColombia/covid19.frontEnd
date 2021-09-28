@@ -342,12 +342,12 @@ export default {
         color: 'green'
       })
       // if (this.permisos.gestionarMivacuna && item.eps_id && this.getUser.eps_id && (this.getUser.eps_id === item.eps_id)) item.options.push({
-      if (this.permisos.gestionarMivacuna && item.eps_id && this.getUser.eps_id && (this.getUser.eps_id === item.eps_id) && !item.asignacion) item.options.push({
-        event: 'asignarMivacuna',
-        icon: 'fas fa-hospital-user',
-        tooltip: 'Asignar IPS MiVacuna',
-        color: 'deep-purple'
-      })
+      // if (this.permisos.gestionarMivacuna && item.eps_id && this.getUser.eps_id && (this.getUser.eps_id === item.eps_id) && !item.asignacion) item.options.push({
+      //   event: 'asignarMivacuna',
+      //   icon: 'fas fa-hospital-user',
+      //   tooltip: 'Asignar IPS MiVacuna',
+      //   color: 'deep-purple'
+      // })
     },
     goDatos(val) {
       this.dataTable.route = val;
