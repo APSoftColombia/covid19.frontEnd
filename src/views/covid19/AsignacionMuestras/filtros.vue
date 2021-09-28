@@ -105,6 +105,7 @@
       limpiarFiltros(){
         this.filters.models.municipio_id = null
         this.filters.models.departamento_id = null
+        this.filters.models.rango_fecha_solicitud = null
       },
     },
     created(){
