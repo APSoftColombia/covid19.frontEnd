@@ -34,7 +34,7 @@ const state = {
         tablaTomaMuestrasIPS: 0,
         tablaTomaMuestrasIPSVersion: 3,
         tablaVacunacion: 0,
-        tablaVacunacionVersion: 4,
+        tablaVacunacionVersion: 6,
         tablaCuentaAltoCosto: 0,
         tablaCuentaAltoCostoVersion: 1,
         tablaReferencias: 0,

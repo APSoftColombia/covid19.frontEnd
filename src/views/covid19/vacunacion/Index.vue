@@ -64,7 +64,7 @@ import {mapGetters} from 'vuex'
 import PersonaItemTabla from 'Views/covid19/vacunacion/components/PersonaItemTabla'
 import AsignacionMivacuna from 'Views/covid19/vacunacion/components/AsignacionMivacuna'
 import DosisItemTabla from 'Views/covid19/vacunacion/components/DosisItemTabla.vue'
-import BotonTooltip from '../../../components/Tamizaje/BotonTooltip'
+// import BotonTooltip from '../../../components/Tamizaje/BotonTooltip'
 import RegistroVacunacion from 'Views/covid19/vacunacion/components/RegistroVacunacion'
 import DetalleVacunacion from 'Views/covid19/vacunacion/components/DetalleVacunacion'
 
@@ -93,37 +93,37 @@ export default {
           sortable: false,
           value: 'id'
         },
-        {
-          text: 'ERP',
-          align: 'center',
-          sortable: false,
-          value: 'id',
-          component: {
-            functional: true,
-            render: function (createElement, context) {
-              return context.props.value.tamizaje_id
-                  ? createElement(
-                      BotonTooltip,
-                      {
-                        props: {
-                          tooltip: `Ver ERP No. ${context.props.value.tamizaje_id}`,
-                          text: `ERP ${context.props.value.tamizaje_id}`,
-                          color: 'purple',
-                          textColor: 'white',
-                          value: context.props.value.tamizaje_id
-                        },
-                        on: {
-                          click: (id) => {
-                            vm.verTamizaje(id)
-                          }
-                        }
-                      }
-                  )
-                  : createElement('span', '')
-            }
-          }
-
-        },
+        // {
+        //   text: 'ERP',
+        //   align: 'center',
+        //   sortable: false,
+        //   value: 'id',
+        //   component: {
+        //     functional: true,
+        //     render: function (createElement, context) {
+        //       return context.props.value.tamizaje_id
+        //           ? createElement(
+        //               BotonTooltip,
+        //               {
+        //                 props: {
+        //                   tooltip: `Ver ERP No. ${context.props.value.tamizaje_id}`,
+        //                   text: `ERP ${context.props.value.tamizaje_id}`,
+        //                   color: 'purple',
+        //                   textColor: 'white',
+        //                   value: context.props.value.tamizaje_id
+        //                 },
+        //                 on: {
+        //                   click: (id) => {
+        //                     vm.verTamizaje(id)
+        //                   }
+        //                 }
+        //               }
+        //           )
+        //           : createElement('span', '')
+        //     }
+        //   }
+        //
+        // },
         {
           text: 'Persona',
           align: 'left',
@@ -168,6 +168,7 @@ export default {
           text: 'Priorización',
           align: 'left',
           sortable: false,
+          visibleColumn: false,
           component: {
             render: function (createElement) {
               return createElement(
@@ -240,46 +241,46 @@ export default {
             props: ['value']
           }
         },
-        {
-          text: 'Asignación MiVacuna',
-          align: 'left',
-          sortable: false,
-          visibleColumn: true,
-          component: {
-            functional: true,
-            render: function (createElement, context) {
-              return context.props.value.asignacion
-                  ? createElement(
-                  `div`,
-                  {
-                    domProps: {
-                      innerHTML: `
-												<v-list-item>
-													<v-list-item-content style="display: grid !important;">
-													<v-list-item-subtitle class="body-2">ID: ${context.props.value.asignacion.ID}, Fecha: ${context.props.value.asignacion.FechaRegistro}</v-list-item-subtitle>
-														<v-list-item-title class="body-2">${context.props.value.asignacion.prestador ? context.props.value.asignacion.prestador.nombre : ''}</v-list-item-title>
-													</v-list-item-content>
-												</v-list-item>
-											`
-                    }
-                  }
-              )
-                  : createElement(
-                      `div`,
-                      {
-                        class: ['white-space-normal']
-                      },
-                      !context.props.value.eps_id
-                          ? 'La persona no está vinculada a una EPS.'
-                          : !vm.getUser.eps_id
-                          ? 'El usuario no está vinculado a una EPS.'
-                          : !(vm.getUser.eps_id === context.props.value.eps_id)
-                              ? 'La Eps de la persona no corresponde a la EPS del usuario.' : 'Pendiente'
-                  )
-            },
-            props: ['value']
-          }
-        },
+        // {
+        //   text: 'Asignación MiVacuna',
+        //   align: 'left',
+        //   sortable: false,
+        //   visibleColumn: true,
+        //   component: {
+        //     functional: true,
+        //     render: function (createElement, context) {
+        //       return context.props.value.asignacion
+        //           ? createElement(
+        //           `div`,
+        //           {
+        //             domProps: {
+        //               innerHTML: `
+				// 								<v-list-item>
+				// 									<v-list-item-content style="display: grid !important;">
+				// 									<v-list-item-subtitle class="body-2">ID: ${context.props.value.asignacion.ID}, Fecha: ${context.props.value.asignacion.FechaRegistro}</v-list-item-subtitle>
+				// 										<v-list-item-title class="body-2">${context.props.value.asignacion.prestador ? context.props.value.asignacion.prestador.nombre : ''}</v-list-item-title>
+				// 									</v-list-item-content>
+				// 								</v-list-item>
+				// 							`
+        //             }
+        //           }
+        //       )
+        //           : createElement(
+        //               `div`,
+        //               {
+        //                 class: ['white-space-normal']
+        //               },
+        //               !context.props.value.eps_id
+        //                   ? 'La persona no está vinculada a una EPS.'
+        //                   : !vm.getUser.eps_id
+        //                   ? 'El usuario no está vinculado a una EPS.'
+        //                   : !(vm.getUser.eps_id === context.props.value.eps_id)
+        //                       ? 'La Eps de la persona no corresponde a la EPS del usuario.' : 'Pendiente'
+        //           )
+        //     },
+        //     props: ['value']
+        //   }
+        // },
         {
           text: 'Usuario Registra',
           align: 'left',
