@@ -28,7 +28,6 @@ const Vacunacion = {
     porque_no_vacuna: null,
     barrio_id: null,
     coordenadas: null,
-    mivacuna: null,
     estado_gestacion: null,
     comorbilidades_vacunacion: [],
     presenta_covid: null,

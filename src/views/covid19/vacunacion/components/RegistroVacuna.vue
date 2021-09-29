@@ -77,6 +77,7 @@
                     label="Tipo de Vacuna"
                     item-text="nombre"
                     item-value="id"
+                    :disabled="tipo_vacuna_anterior"
                     :hint="(vacuna.vacuna_id && complementos.vacunas && complementos.vacunas.length && complementos.vacunas.find(x => x.id === vacuna.vacuna_id)) ? complementos.vacunas.find(x => x.id === vacuna.vacuna_id).laboratorio : ''"
                 />
               </v-col>
@@ -166,6 +167,7 @@ export default {
     dialog: false,
     loading: false,
     vacuna: null,
+    tipo_vacuna_anterior: false,
     complementos: {
       causas_no_vacunacion: [],
       priorizaciones: [],
@@ -205,6 +207,11 @@ export default {
         this.vacuna = this.clone(models.vacuna)
       }
       this.vacuna.vacunacion_id = this.vacunacion.id
+
+      if (this.vacunacion && this.vacunacion.dosis && this.vacunacion.dosis.length) {
+        this.tipo_vacuna_anterior = true
+        this.vacuna.vacuna_id = this.vacunacion.dosis[0].vacuna_id
+      }
       // this.vacuna.fecha = vacuna && vacuna.fecha ? this.moment(vacuna.fecha).format('YYYY-MM-DD') : this.moment().format('YYYY-MM-DD')
       // this.vacuna.hora = vacuna && vacuna.hora ? this.moment(vacuna.hora).format('HH:mm') : this.moment().format('HH:mm')
       this.vacuna.fecha = vacuna && vacuna.fecha ? this.moment(vacuna.fecha).format('YYYY-MM-DD') : null
@@ -215,6 +222,7 @@ export default {
       this.dialog = false
       setTimeout(() => {
         this.loading = false
+        this.tipo_vacuna_anterior = false
         this.vacuna = null
         this.$refs.formVacuna.reset()
       }, 400)

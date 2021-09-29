@@ -17,7 +17,7 @@
               <v-list dense>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.discapacidad ? 'teal' : 'grey lighten-2'">
-                    <v-icon>mdi-wheelchair-accessibility</v-icon>
+                    <!-- <v-icon>mdi-wheelchair-accessibility</v-icon> -->
                     {{ vacunacion.discapacidad || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -27,7 +27,7 @@
                 </v-list-item>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.puede_desplazarse ? 'teal' : 'grey lighten-2'">
-                    <v-icon>mdi-walk</v-icon>
+                    <!-- <v-icon>mdi-walk</v-icon> -->
                     {{ vacunacion.puede_desplazarse || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -36,7 +36,7 @@
                 </v-list-item>
                 <v-list-item @click="click = false">
                   <v-list-item-avatar size="42" style="line-height: 12px !important;" class="white--text subtitle-2" :color="vacunacion.intencion_vacuna ? 'teal' : 'grey lighten-2'">
-                    <v-icon>mdi-check</v-icon>
+                    <!-- <v-icon>mdi-check</v-icon> -->
                     {{ vacunacion.intencion_vacuna || '' }}
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -329,6 +329,9 @@
 </template>
 
 <script>
+// *Para la segunda dosis, dejar por defecto, inalterable, el biologico de la primera dosis
+// TODO: Cambiar la tabla del index, por la nueva de VacunacionSucre
+// *Añadir el nombre del biologico a la columna Vacuna, y el icono debe repetirse dependiendo la cantidad por cada biologico
 const DatosPersonales = () => import('Views/covid19/vacunacion/components/DatosPersonales')
 // import AsignacionesMivacuna from 'Views/covid19/vacunacion/components/detalleVacunacion/AsignacionesMivacuna'
 import RegistroVacuna from 'Views/covid19/vacunacion/components/RegistroVacuna'
