@@ -25,7 +25,7 @@
               <v-subheader class="font-weight-bold">REPORTES E INDICADORES PRASS COVID-19</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'reportesIndicadoresCovid')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
-            <v-card-text v-if="datosEmpresa.laboratorio_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'labSP').length">
+            <v-card-text v-if="datosEmpresa.LDSP_activo === '1' && itemsMenu.filter(x => x.typeRoute === 'labSP').length">
               <v-subheader class="font-weight-bold">LABORATORIO DEPARTAMENTAL DE SALUD PÚBLICA</v-subheader>
               <cards-list  :items-menu="itemsMenu.filter(x => x.typeRoute === 'labSP')" @clickitem="dialogMenu = false" @goruta="val => goRuta(val)"></cards-list>
             </v-card-text>
