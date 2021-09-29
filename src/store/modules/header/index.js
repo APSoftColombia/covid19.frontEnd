@@ -51,6 +51,9 @@ const getters = {
         if (getters.getPermission('covidVacunacion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 44))
         if (getters.getPermission('vacunacion-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 62))
         if (getters.getPermission('bodega-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 63))
+
+        //LABORATORIO DE SALUD PÚBLICA
+        if (getters.getPermission('estudiosLabSP-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 70))
         // CENTRO REGULADOR
         if (getters.getPermission('centroRegulador-referenciasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 61))
         // RCV

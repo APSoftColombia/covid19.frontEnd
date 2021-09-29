@@ -43,6 +43,8 @@ const state = {
         tablaVacunacionSucreVersion: 0,
         tablaBodegas: 0,
         tablaBodegasVersion: 0,
+        tablaEstudiosLaboratorioSaludPublica: 0,
+        tablaEstudiosLaboratorioSaludPublicaVersion: 1
     }
 }
 

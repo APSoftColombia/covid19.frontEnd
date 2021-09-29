@@ -396,5 +396,15 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'Bodega',
         typeRoute: 'covid'
+    },
+    {
+        id: 70,
+        title: 'Estudios',
+        subtitle: 'Registro y gestión',
+        icon: 'fas fa-microscope',
+        iconSize: '24',
+        color: 'blue',
+        routeName: 'EstudiosLabSaludPublica',
+        typeRoute: 'labSP'
     }
 ]

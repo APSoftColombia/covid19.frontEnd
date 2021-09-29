@@ -395,7 +395,7 @@ export default {
             .catch(e => {
               this.loading = false
               this.activePetition = true
-              this.$store.commit('SET_SNACKBAR', {
+              this.$store.commit('snackbar', {
                 color: 'error',
                 message: `Error al hacer la búsqueda de registros.`,
                 error: e
