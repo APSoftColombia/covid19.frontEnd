@@ -109,7 +109,7 @@
                   </c-date>
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
-                  <c-select-complete
+                  <!-- <c-select-complete
                     v-model="vacunacion.sexo"
                     label="Sexo"
                     rules="required"
@@ -119,7 +119,18 @@
                     item-value="value"
                     :disabled="identificacionVerificada < 1"
                   >
-                  </c-select-complete>
+                  </c-select-complete> -->
+                  <c-radio
+                    v-model="vacunacion.sexo"
+                    :items="sexosCovid"
+                    itemValue="value"
+                    itemText="text"
+                    rules="required"
+                    name="sexo"
+                    label="Sexo"
+                    :column="!$vuetify.breakpoint.smAndUp"
+                    :disabled="identificacionVerificada < 1"
+                  />
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
                   <c-select-complete
@@ -156,8 +167,8 @@
                 <v-col class="pb-0" cols="12" sm="12" md="6">
                   <c-select-complete
                     v-model="vacunacion.cod_dpto"
-                    label="Departamento"
-                    name="departamento"
+                    label="Departamento de residencia"
+                    name="departamento_residencia"
                     rules="required"
                     :items="departamentos"
                     item-text="nombre"
@@ -180,8 +191,8 @@
                       !vacunacion.cod_dpto || identificacionVerificada < 1
                     "
                     v-model="vacunacion.cod_mpio"
-                    label="Municipio"
-                    name="municipio"
+                    label="Municipio de residencia"
+                    name="municipio_residencia"
                     rules="required"
                     :items="
                       departamentos.length &&
@@ -200,9 +211,9 @@
                 <v-col class="pb-0" cols="12" sm="6" md="6">
                   <c-select-complete
                     v-model="vacunacion.zona"
-                    label="Zona"
+                    label="Zona de residencia"
                     rules="required"
-                    name="zona"
+                    name="zona_residencia"
                     :items="dosisVacunas.zonas"
                     :disabled="identificacionVerificada < 1"
                   >
@@ -467,7 +478,7 @@
                     v-model="vacunacion.regimen"
                     label="Regimen"
                     rules="required"
-                    name="sexo"
+                    name="regimen"
                     :items="dosisVacunas.Regimenes_dosis_vacunas"
                     item-text="nombre"
                     item-value="codigo"

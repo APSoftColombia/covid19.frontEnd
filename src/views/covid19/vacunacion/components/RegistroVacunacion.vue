@@ -167,8 +167,8 @@
             <v-col class="pb-0" cols="12" sm="12" md="6">
               <c-select-complete
                   v-model="vacunacion.departamento_id"
-                  label="Departamento"
-                  name="departamento"
+                  label="Departamento de residencia"
+                  name="departamento_residencia"
                   rules="required"
                   :items="departamentos"
                   item-text="nombre"
@@ -182,8 +182,8 @@
               <c-select-complete
                   :disabled="!vacunacion.departamento_id || identificacionVerificada < 1"
                   v-model="vacunacion.municipio_id"
-                  label="Municipio"
-                  name="municipio"
+                  label="Municipio de residencia"
+                  name="municipio_residencia"
                   rules="required"
                   :items="departamentos.length && vacunacion.departamento_id && departamentos.find(x => x.id === vacunacion.departamento_id) ? departamentos.find(x => x.id === vacunacion.departamento_id).municipios : []"
                   item-text="nombre"
@@ -197,10 +197,11 @@
                   :disabled="!vacunacion.municipio_id || identificacionVerificada < 1"
                   v-model="vacunacion.barrio_id"
                   :loading="loadingBarrios"
-                  label="Barrio"
+                  label="Barrio de residencia"
                   :items="barrios"
                   item-text="nombre"
                   item-value="id"
+                  name="barrio_residencia"
               >
               </c-select-complete>
             </v-col>
@@ -223,22 +224,6 @@
                   :disabled="identificacionVerificada < 1"
               />
             </v-col>
-            <v-col cols="12" v-if="mujerGestante">
-              <v-card outlined tile>
-                <v-card-text>
-                  <c-radio
-                      v-model="vacunacion.estado_gestacion"
-                      label="¿Se encuentra en estado de gestación o lactancia?"
-                      rules="required"
-                      name="estado de gestación o lactancia"
-                      :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
-                      item-text="text"
-                      item-value="value"
-                  >
-                  </c-radio>
-                </v-card-text>
-              </v-card>
-            </v-col>
             <template>
               <v-col class="pb-0" cols="12" sm="12" md="12">
                 <c-select-complete
@@ -251,6 +236,22 @@
                     item-text="nombre"
                     :disabled="identificacionVerificada < 1"
                 />
+              </v-col>
+              <v-col cols="12" v-if="mujerGestante">
+                <v-card outlined tile>
+                  <v-card-text>
+                    <c-radio
+                        v-model="vacunacion.estado_gestacion"
+                        label="¿Se encuentra en estado de gestación o lactancia?"
+                        rules="required"
+                        name="estado de gestación o lactancia"
+                        :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                        item-text="text"
+                        item-value="value"
+                    >
+                    </c-radio>
+                  </v-card-text>
+                </v-card>
               </v-col>
               <v-col cols="12">
                 <v-card outlined tile>
@@ -318,6 +319,19 @@
                   </v-card-text>
                 </v-card>
               </v-col>
+              <v-col
+                  v-if="vacunacion.intencion_vacuna === 'No'"
+                  cols="12"
+                  class="pb-0"
+              >
+                <c-text-area
+                    label="Motivo por el cual no se vacunará"
+                    rules="required"
+                    v-model="vacunacion.porque_no_vacuna"
+                    name="motivo de no vacunación"
+                    :disabled="identificacionVerificada < 1"
+                />
+              </v-col>
               <v-col cols="12">
                 <v-card outlined tile>
                   <v-card-text>
@@ -336,24 +350,10 @@
                 </v-card>
               </v-col>
               <comorbilidades-vacunacion
-                    v-if="vacunacion && vacunacion.comorbilidades_vacunacion"
                     :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
                     @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
                     :disabled="identificacionVerificada < 1"
               ></comorbilidades-vacunacion>
-              <v-col
-                  v-if="vacunacion.intencion_vacuna === 'No'"
-                  cols="12"
-                  class="pb-0"
-              >
-                <c-text-area
-                    label="Motivo por el cual no se vacunará"
-                    rules="required"
-                    v-model="vacunacion.porque_no_vacuna"
-                    name="motivo de no vacunación"
-                    :disabled="identificacionVerificada < 1"
-                />
-              </v-col>
 <!--              <v-col cols="12">-->
 <!--                <v-card outlined tile>-->
 <!--                  <v-card-text>-->
@@ -387,6 +387,46 @@
         </v-card-actions>
       </v-container>
       <app-section-loader :status="loading"></app-section-loader>
+
+      <!-- DIALOG TO PERSONA YA CARACTERIZADA -->
+      <v-dialog
+        v-model="modalPersonaCaracterizada"
+        max-width="500"
+      >
+        <v-card>
+          <v-card-title class="text-h5 warning">
+            Advertencia
+          </v-card-title>
+
+          <v-card-text class="pb-0">
+            <v-container>
+              <v-row>
+                <h4>{{ `El ciudadano identificado con cedula de ciudadania No. ${caracterizacion ? caracterizacion.identificacion : ''} ya cuenta con una Caracterizacion de vacunacion.` }}</h4>
+              </v-row>
+              <v-row justify="center" class="mt-3">
+                <v-btn
+                    color="primary"
+                    dark
+                    @click.stop="redirectDetalleCaracterizacion"
+                    >
+                    Ver detalle
+                </v-btn>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="modalPersonaCaracterizada = false"
+            >
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-dialog>
 </template>
@@ -412,6 +452,8 @@ export default {
     mujerGestante: 0,
     positivo_covid: null,
     fecha_diagnostico: null,
+    caracterizacion: null,
+    modalPersonaCaracterizada: false,
   }),
   computed: {
     ...mapGetters([
@@ -475,6 +517,11 @@ export default {
     },
   },
   methods: {
+    redirectDetalleCaracterizacion() {
+      this.$emit("detalle", this.clone(this.caracterizacion))
+      this.modalPersonaCaracterizada = false
+      this.close();
+    },
     verificaGestante() {
       if (this && this.vacunacion) {
         setTimeout(() => {
@@ -568,45 +615,50 @@ export default {
         this.vacunacion.eps_id = null
         this.vacunacion.afiliado_id = null
       }
-      if (response.afiliado) {
-        this.vacunacion.afiliado_id = response.afiliado.id
-        this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
-        this.vacunacion.identificacion = response.afiliado.numero_documento_identidad
-        this.vacunacion.nombre1 = response.afiliado.nombre1
-        this.vacunacion.nombre2 = response.afiliado.nombre2
-        this.vacunacion.apellido1 = response.afiliado.apellido1
-        this.vacunacion.apellido2 = response.afiliado.apellido2
-        this.vacunacion.fecha_nacimiento = response.afiliado.fecha_nacimiento
-        this.vacunacion.sexo = response.afiliado.sexo
-        this.vacunacion.telefono = response.afiliado.numero_celular
-        this.vacunacion.email = response.afiliado.email
-        this.vacunacion.direccion = response.afiliado.direccion
-        this.vacunacion.departamento_id = response.afiliado.departamento_id
-        this.vacunacion.municipio_id = response.afiliado.centro_poblado_id
-        this.vacunacion.eps_id = response.afiliado.eps_id
-        
-      } else if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
-        this.vacunacion.afiliado_id = response.tamizaje[0].afiliado_id
-        this.vacunacion.tipo_identificacion = response.tamizaje[0].tipo_identificacion
-        this.vacunacion.identificacion = response.tamizaje[0].identificacion
-        this.vacunacion.nombre1 = response.tamizaje[0].nombre1
-        this.vacunacion.nombre2 = response.tamizaje[0].nombre2
-        this.vacunacion.apellido1 = response.tamizaje[0].apellido1
-        this.vacunacion.apellido2 = response.tamizaje[0].apellido2
-        this.vacunacion.fecha_nacimiento = response.tamizaje[0].fecha_nacimiento
-        this.vacunacion.sexo = response.tamizaje[0].sexo
-        this.vacunacion.telefono = response.tamizaje[0].celular
-        this.vacunacion.email = response.tamizaje[0].email
-        this.vacunacion.direccion = response.tamizaje[0].direccion
-        this.vacunacion.departamento_id = response.tamizaje[0].departamento_id
-        this.vacunacion.municipio_id = response.tamizaje[0].municipio_id
-        this.vacunacion.eps_id = response.tamizaje[0].eps_id
-        this.vacunacion.barrio_id = response.tamizaje[0].barrio_id
-      }
+      if (response.caracterizacion) {
+        this.caracterizacion = response.caracterizacion;
+        this.modalPersonaCaracterizada = true;
+      } else {
+        if (response.afiliado) {
+          this.vacunacion.afiliado_id = response.afiliado.id
+          this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
+          this.vacunacion.identificacion = response.afiliado.numero_documento_identidad
+          this.vacunacion.nombre1 = response.afiliado.nombre1
+          this.vacunacion.nombre2 = response.afiliado.nombre2
+          this.vacunacion.apellido1 = response.afiliado.apellido1
+          this.vacunacion.apellido2 = response.afiliado.apellido2
+          this.vacunacion.fecha_nacimiento = response.afiliado.fecha_nacimiento
+          this.vacunacion.sexo = response.afiliado.sexo
+          this.vacunacion.telefono = response.afiliado.numero_celular
+          this.vacunacion.email = response.afiliado.email
+          this.vacunacion.direccion = response.afiliado.direccion
+          this.vacunacion.departamento_id = response.afiliado.departamento_id
+          this.vacunacion.municipio_id = response.afiliado.centro_poblado_id
+          this.vacunacion.eps_id = response.afiliado.eps_id
+          
+        } else if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
+          this.vacunacion.afiliado_id = response.tamizaje[0].afiliado_id
+          this.vacunacion.tipo_identificacion = response.tamizaje[0].tipo_identificacion
+          this.vacunacion.identificacion = response.tamizaje[0].identificacion
+          this.vacunacion.nombre1 = response.tamizaje[0].nombre1
+          this.vacunacion.nombre2 = response.tamizaje[0].nombre2
+          this.vacunacion.apellido1 = response.tamizaje[0].apellido1
+          this.vacunacion.apellido2 = response.tamizaje[0].apellido2
+          this.vacunacion.fecha_nacimiento = response.tamizaje[0].fecha_nacimiento
+          this.vacunacion.sexo = response.tamizaje[0].sexo
+          this.vacunacion.telefono = response.tamizaje[0].celular
+          this.vacunacion.email = response.tamizaje[0].email
+          this.vacunacion.direccion = response.tamizaje[0].direccion
+          this.vacunacion.departamento_id = response.tamizaje[0].departamento_id
+          this.vacunacion.municipio_id = response.tamizaje[0].municipio_id
+          this.vacunacion.eps_id = response.tamizaje[0].eps_id
+          this.vacunacion.barrio_id = response.tamizaje[0].barrio_id
+        }
 
-      if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
-        this.positivo_covid = response.tamizaje[0].positivo_covid
-        this.fecha_diagnostico = response.tamizaje[0].fecha_diagnostico
+        if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
+          this.positivo_covid = response.tamizaje[0].positivo_covid
+          this.fecha_diagnostico = response.tamizaje[0].fecha_diagnostico
+        }
       }
 
     },
