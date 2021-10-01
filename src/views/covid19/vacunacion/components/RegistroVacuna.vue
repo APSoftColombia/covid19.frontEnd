@@ -18,6 +18,7 @@
                   rules="required"
                   name="fecha"
                   :max="moment().format('YYYY-MM-DD')"
+                  :min="moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')"
               />
             </v-col>
             <v-col cols="12" md="6" class="pb-0">

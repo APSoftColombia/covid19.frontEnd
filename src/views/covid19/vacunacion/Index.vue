@@ -48,6 +48,7 @@
     <registro-vacunacion
         ref="registroVacunacion"
         @guardado="val => vacunaRegistrada(val)"
+        @detalle="val => verdetalle(val)"
     />
     <asignacion-mivacuna
         ref="asignacionMivacuna"
@@ -328,6 +329,10 @@ export default {
     }
   },
   methods: {
+    prueba(item) {
+      console.log("Bueeeenaas");
+      console.log(item);
+    },
     resetOptions(item) {
       item.options = []
       if (this.permisos.editar) item.options.push({

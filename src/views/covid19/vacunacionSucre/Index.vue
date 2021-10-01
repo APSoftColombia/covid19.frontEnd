@@ -181,7 +181,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <registro-vacunacion ref="registroItem" @guardado="itemGuardado" @detalle="val => prueba(val)" />
+    <registro-vacunacion ref="registroItem" @guardado="itemGuardado" />
     <detalle-vacunacion ref="detalleItem" @guardado="itemGuardado" />
     <c-dialog ref="cdialog" @save="eliminarItem" />
   </v-container>
@@ -195,17 +195,17 @@
 
 // *Pregunta lactancia despues de la EPS - Caracterizacion
 // *Dejar todas las comorbilidades para cuando vaya a editar, por que no se estan mostrando - Caracterizacion
-// TODO: No permitir registrar con cedula que ya tenga un registro previo - Caracterizacion
+// *No permitir registrar con cedula que ya tenga un registro previo - Caracterizacion
 
-// *ambiar el genero para radio buttons - Gestion Vacunacion
+// *cambiar el genero para radio buttons - Gestion Vacunacion
 // *Cambiar label de Departamento, Municipio y barrio agregandole "... de residencia"
 // ! TODO: Revisar el campo telefonos de ERP y dejarlo igual en Vacunacion - NOTA. El campo de telefono esta tal cual que en ERP
 // TODO: Validar que si ya se aplico una dosis, en la siguiente solo pueda aplicarse el mismo biologico de la anteriors
 // TODO: Mostrar un listado de las dosis anteriores cuando vaya a registrar una nueva aplicacion
+// *Fecha aplicacion no inferior al 17/02/2021
 // TODO: Bloquear fecha aplicacion min = de la ultima aplicacion
-// TODO: Cambiar el formulario de Editar para que solo me permita editar hasta el campo REGIMEN y Observaciones
+// *Cambiar el formulario de Editar para que solo me permita editar hasta el campo REGIMEN y Observaciones
 // TODO: Agregar parentesco para el acudiente
-// TODO: Fecha aplicacion no inferior al 17/02/2021
 // TODO: Generar alerta si usuario esta fallecido de acuerdo a info de afiliado y no permitir guardar (Buscar componente de InfoPersona Modal)
 // TODO: Agregar columna de Fecha de creacion y actualizacion, visible = false. Despues de la columna ID en Index - Gestion Vacunacion
 // TODO: Quitar el campo de Condicion si el genero es Masculino
@@ -289,10 +289,6 @@ export default {
     },
   },
   methods: {
-    prueba(item) {
-      console.log("Bueeeenaas");
-      console.log(item);
-    },
     crearItem() {
       this.$refs.registroItem.open();
     },

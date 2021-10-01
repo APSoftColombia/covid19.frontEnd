@@ -263,6 +263,18 @@
                       </v-row>
                       <template v-if="vacunacion.necesita_acudiente == 'SI'">
                         <v-row>
+                          <v-col class="pb-0" cols="12" sm="12" md="12">
+                            <c-select-complete
+                              v-model="vacunacion.tipo_ident_acud"
+                              label="Parentesco del acudiente"
+                              rules="required"
+                              name="parentesco acudiente"
+                              :items="parentescoAcudiente"
+                              item-text="descripcion"
+                              item-value="id"
+                            >
+                            </c-select-complete>
+                          </v-col>
                           <v-col class="pb-0" cols="12" sm="6" md="6">
                             <c-texto
                               ref="idenfiticacion_acudiente"
@@ -374,59 +386,83 @@
                   >
                   </c-select-complete>
                 </v-col>
-                <template>
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <c-select-complete
-                      v-model="vacunacion.codigo_ips"
-                      label="¿A que EPS está afiliado?"
-                      rules="required"
-                      name="EPS de afiliación"
-                      :items="epss"
-                      item-value="id"
-                      item-text="nombre"
-                      :disabled="identificacionVerificada < 1"
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-card outlined tile>
-                      <v-card-text>
-                        <c-radio
-                          v-model="vacunacion.condicion_discapacidad"
-                          :items="[
-                            { text: 'Si', value: 'SI' },
-                            { text: 'No', value: 'NO' },
-                          ]"
-                          itemValue="value"
-                          itemText="text"
-                          rules="required"
-                          name="Discapacidad"
-                          label="Discapacidad"
-                          :column="!$vuetify.breakpoint.smAndUp"
-                          :disabled="identificacionVerificada < 1"
-                        />
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-card outlined tile>
-                      <v-card-text>
-                        <c-radio
-                          v-model="vacunacion.condicion_desplazamiento"
-                          :items="[
-                            { text: 'Si', value: 'SI' },
-                            { text: 'No', value: 'NO' },
-                          ]"
-                          itemValue="value"
-                          itemText="text"
-                          rules="required"
-                          name="desplazamiento a la ESE/IPS"
-                          label="¿Puede desplazarse a la ESE/IPS?"
-                          :column="!$vuetify.breakpoint.smAndUp"
-                          :disabled="identificacionVerificada < 1"
-                        />
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
+                <v-col class="pb-0" cols="12" sm="12" md="12">
+                  <c-select-complete
+                    v-model="vacunacion.codigo_ips"
+                    label="¿A que EPS está afiliado?"
+                    rules="required"
+                    name="EPS de afiliación"
+                    :items="epss"
+                    item-value="id"
+                    item-text="nombre"
+                    :disabled="identificacionVerificada < 1"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                        v-model="vacunacion.condicion_discapacidad"
+                        :items="[
+                          { text: 'Si', value: 'SI' },
+                          { text: 'No', value: 'NO' },
+                        ]"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="Discapacidad"
+                        label="Discapacidad"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                        :disabled="identificacionVerificada < 1"
+                      />
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="12">
+                  <v-card outlined tile>
+                    <v-card-text>
+                      <c-radio
+                        v-model="vacunacion.condicion_desplazamiento"
+                        :items="[
+                          { text: 'Si', value: 'SI' },
+                          { text: 'No', value: 'NO' },
+                        ]"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="desplazamiento a la ESE/IPS"
+                        label="¿Puede desplazarse a la ESE/IPS?"
+                        :column="!$vuetify.breakpoint.smAndUp"
+                        :disabled="identificacionVerificada < 1"
+                      />
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="6" md="6">
+                  <c-select-complete
+                    v-model="vacunacion.estado_adres"
+                    label="Estado ADRES"
+                    rules="required"
+                    name="estado_adres"
+                    :items="dosisVacunas.estadoAdres"
+                    :disabled="identificacionVerificada < 1"
+                  >
+                  </c-select-complete>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="6" md="6">
+                  <c-select-complete
+                    v-model="vacunacion.regimen"
+                    label="Regimen"
+                    rules="required"
+                    name="regimen"
+                    :items="dosisVacunas.Regimenes_dosis_vacunas"
+                    item-text="nombre"
+                    item-value="codigo"
+                    :disabled="identificacionVerificada < 1"
+                  >
+                  </c-select-complete>
+                </v-col>
+                <template v-if="!isEdit">
                   <v-col cols="12">
                     <v-card outlined tile>
                       <v-card-text>
@@ -461,264 +497,242 @@
                       </v-col>
                     </v-card>
                   </v-col>
-                </template>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
-                  <c-select-complete
-                    v-model="vacunacion.estado_adres"
-                    label="Estado ADRES"
-                    rules="required"
-                    name="estado_adres"
-                    :items="dosisVacunas.estadoAdres"
-                    :disabled="identificacionVerificada < 1"
-                  >
-                  </c-select-complete>
-                </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
-                  <c-select-complete
-                    v-model="vacunacion.regimen"
-                    label="Regimen"
-                    rules="required"
-                    name="regimen"
-                    :items="dosisVacunas.Regimenes_dosis_vacunas"
-                    item-text="nombre"
-                    item-value="codigo"
-                    :disabled="identificacionVerificada < 1"
-                  >
-                  </c-select-complete>
-                </v-col>
-                <template v-if="vacunacion.acepta_vacuna">
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <c-date
-                      v-model="vacunacion.fecha_aplicacion"
-                      label="Fecha de aplicacion biologico"
-                      rules="required"
-                      name="fecha aplicacion biologico"
-                      :disabled="identificacionVerificada < 1"
-                      :max="moment().format('YYYY-MM-DD')"
-                    >
-                    </c-date>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="6">
-                    <c-select-complete
-                      v-model="vacunacion.cod_dpto_aplicacion"
-                      label="Departamento de aplicacion"
-                      name="departamento_aplicacion"
-                      rules="required"
-                      :items="departamentos"
-                      item-text="nombre"
-                      item-value="id"
-                      :disabled="identificacionVerificada < 1"
-                      @change="
-                        (val) =>
-                          (vacunacion.cod_mpio_aplicacion = departamentos
-                            .find((x) => x.id === val)
-                            .municipios.find((z) => z.id === vacunacion.cod_mpio_aplicacion)
-                            ? vacunacion.cod_mpio_aplicacion
-                            : null)
-                      "
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="6">
-                    <c-select-complete
-                      :disabled="
-                        !vacunacion.cod_dpto_aplicacion || identificacionVerificada < 1
-                      "
-                      v-model="vacunacion.cod_mpio_aplicacion"
-                      label="Municipio de aplicacion"
-                      name="municipio_aplicacion"
-                      rules="required"
-                      :items="
-                        departamentos.length &&
-                        vacunacion.cod_dpto_aplicacion &&
-                        departamentos.find((x) => x.id === vacunacion.cod_dpto_aplicacion)
-                          ? departamentos.find(
-                              (x) => x.id === vacunacion.cod_dpto_aplicacion
-                            ).municipios
-                          : []
-                      "
-                      item-text="nombre"
-                      item-value="id"
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <c-select-complete
-                      v-model="vacunacion.bodega_id"
-                      label="Bodega"
-                      rules="required"
-                      name="bodega"
-                      :items="bodegas"
-                      item-text="nombre"
-                      item-value="bodega_id"
-                      :disabled="identificacionVerificada < 1"
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-select-complete
-                      v-model="vacunacion.biologico"
-                      label="Biologico"
-                      rules="required"
-                      name="biologico"
-                      :items="
-                        vacunacion.bodega_id
-                          ? bodegas.find(
-                              (x) => x.bodega_id == vacunacion.bodega_id
-                            ).biologicos
-                          : []
-                      "
-                      item-text="nombre"
-                      item-value="codigo"
-                      :disabled="
-                        identificacionVerificada < 1 || !vacunacion.bodega_id
-                      "
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col cols="12" class="pb-0" sm="6" md="6">
-                    <c-select-complete
-                      v-model="vacunacion.lote_biologico"
-                      label="Lote"
-                      rules="required"
-                      name="lote"
-                      :items="lotesBiologico"
-                      :disabled="
-                        identificacionVerificada < 1 || !vacunacion.biologico
-                      "
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-select-complete
-                      v-model="vacunacion.tipo_dosis"
-                      label="Tipo de dosis"
-                      rules="required"
-                      name="tipo_dosis"
-                      :items="dosisVacunas.Tipo_dosis"
-                      item-text="nombre"
-                      item-value="codigo"
-                      :disabled="identificacionVerificada < 1"
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-select-complete
-                      v-model="vacunacion.estrategia_vacunacion"
-                      label="Estrategia de vacunacion"
-                      rules="required"
-                      name="estrategia_vacunacion"
-                      :items="dosisVacunas.estrategiasVacunacion"
-                      :disabled="identificacionVerificada < 1"
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <c-select-complete
-                      v-model="vacunacion.tipo_poblacion"
-                      label="Tipo de poblacion"
-                      rules="required"
-                      name="tipo_poblacion"
-                      :items="dosisVacunas.priorizaciones"
-                      item-text="descripcion"
-                      item-value="codigo"
-                      :disabled="identificacionVerificada < 1"
-                    >
-                    </c-select-complete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-texto
-                      :value="
-                        tipo_poblacion_object
-                          ? tipo_poblacion_object.etapa
-                          : '-'
-                      "
-                      label="Etapa"
-                      name="etapa"
-                      upper-case
-                      disabled
-                    >
-                    </c-texto>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-date
-                      v-if="calc_segunda_dosis"
-                      :value="calc_segunda_dosis"
-                      label="Fecha 2da Dosis"
-                      name="fecha segunda dosis"
-                      upper-case
-                      disabled
-                    >
-                    </c-date>
-                    <c-texto
-                      v-else
-                      value="NO APLICA"
-                      label="Fecha 2da Dosis"
-                      upper-case
-                      disabled
-                    >
-                    </c-texto>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <ValidationProvider
-                      name="vacunador"
-                      rules="required"
-                      v-slot="{ errors, valid }"
-                    >
-                      <v-autocomplete
+                  <template v-if="vacunacion.acepta_vacuna">
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <c-date
+                        v-model="vacunacion.fecha_aplicacion"
+                        label="Fecha de aplicacion biologico"
+                        rules="required"
+                        name="fecha aplicacion biologico"
+                        :disabled="identificacionVerificada < 1"
+                        :max="moment().format('YYYY-MM-DD')"
+                        :min="moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')"
+                      >
+                      </c-date>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="6">
+                      <c-select-complete
+                        v-model="vacunacion.cod_dpto_aplicacion"
+                        label="Departamento de aplicacion"
+                        name="departamento_aplicacion"
+                        rules="required"
+                        :items="departamentos"
+                        item-text="nombre"
+                        item-value="id"
+                        :disabled="identificacionVerificada < 1"
+                        @change="
+                          (val) =>
+                            (vacunacion.cod_mpio_aplicacion = departamentos
+                              .find((x) => x.id === val)
+                              .municipios.find((z) => z.id === vacunacion.cod_mpio_aplicacion)
+                              ? vacunacion.cod_mpio_aplicacion
+                              : null)
+                        "
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="6">
+                      <c-select-complete
+                        :disabled="
+                          !vacunacion.cod_dpto_aplicacion || identificacionVerificada < 1
+                        "
+                        v-model="vacunacion.cod_mpio_aplicacion"
+                        label="Municipio de aplicacion"
+                        name="municipio_aplicacion"
+                        rules="required"
+                        :items="
+                          departamentos.length &&
+                          vacunacion.cod_dpto_aplicacion &&
+                          departamentos.find((x) => x.id === vacunacion.cod_dpto_aplicacion)
+                            ? departamentos.find(
+                                (x) => x.id === vacunacion.cod_dpto_aplicacion
+                              ).municipios
+                            : []
+                        "
+                        item-text="nombre"
+                        item-value="id"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <c-select-complete
+                        v-model="vacunacion.bodega_id"
+                        label="Bodega"
+                        rules="required"
+                        name="bodega"
+                        :items="bodegas"
+                        item-text="nombre"
+                        item-value="bodega_id"
+                        :disabled="identificacionVerificada < 1"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-select-complete
+                        v-model="vacunacion.biologico"
+                        label="Biologico"
+                        rules="required"
+                        name="biologico"
+                        :items="
+                          vacunacion.bodega_id
+                            ? bodegas.find(
+                                (x) => x.bodega_id == vacunacion.bodega_id
+                              ).biologicos
+                            : []
+                        "
+                        item-text="nombre"
+                        item-value="codigo"
+                        :disabled="
+                          identificacionVerificada < 1 || !vacunacion.bodega_id
+                        "
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col cols="12" class="pb-0" sm="6" md="6">
+                      <c-select-complete
+                        v-model="vacunacion.lote_biologico"
+                        label="Lote"
+                        rules="required"
+                        name="lote"
+                        :items="lotesBiologico"
+                        :disabled="
+                          identificacionVerificada < 1 || !vacunacion.biologico
+                        "
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-select-complete
+                        v-model="vacunacion.tipo_dosis"
+                        label="Tipo de dosis"
+                        rules="required"
+                        name="tipo_dosis"
+                        :items="dosisVacunas.Tipo_dosis"
+                        item-text="nombre"
+                        item-value="codigo"
+                        :disabled="identificacionVerificada < 1"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-select-complete
+                        v-model="vacunacion.estrategia_vacunacion"
+                        label="Estrategia de vacunacion"
+                        rules="required"
+                        name="estrategia_vacunacion"
+                        :items="dosisVacunas.estrategiasVacunacion"
+                        :disabled="identificacionVerificada < 1"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <c-select-complete
+                        v-model="vacunacion.tipo_poblacion"
+                        label="Tipo de poblacion"
+                        rules="required"
+                        name="tipo_poblacion"
+                        :items="dosisVacunas.priorizaciones"
+                        item-text="descripcion"
+                        item-value="codigo"
+                        :disabled="identificacionVerificada < 1"
+                      >
+                      </c-select-complete>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-texto
+                        :value="
+                          tipo_poblacion_object
+                            ? tipo_poblacion_object.etapa
+                            : '-'
+                        "
+                        label="Etapa"
+                        name="etapa"
+                        upper-case
+                        disabled
+                      >
+                      </c-texto>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-date
+                        v-if="calc_segunda_dosis"
+                        :value="calc_segunda_dosis"
+                        label="Fecha 2da Dosis"
+                        name="fecha segunda dosis"
+                        upper-case
+                        disabled
+                      >
+                      </c-date>
+                      <c-texto
+                        v-else
+                        value="NO APLICA"
+                        label="Fecha 2da Dosis"
+                        upper-case
+                        disabled
+                      >
+                      </c-texto>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <ValidationProvider
+                        name="vacunador"
+                        rules="required"
+                        v-slot="{ errors, valid }"
+                      >
+                        <v-autocomplete
+                          label="Vacunador"
+                          name="vacunador"
+                          v-model="vacunacion.vacunador_id"
+                          :items="vacunadores"
+                          outlined
+                          dense
+                          item-value="id"
+                          clearable
+                          :error-messages="errors"
+                        >
+                          <template v-slot:selection="{ item, index }">
+                            <div
+                              class="pa-0 text-truncate"
+                              style="width: 100% !important"
+                            >
+                              {{
+                                `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
+                              }}
+                            </div>
+                          </template>
+                          <template v-slot:item="{ item, index }">
+                            <template>
+                              <v-list-item-content class="pa-0">
+                                <v-list-item-title>{{
+                                  `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
+                                }}</v-list-item-title>
+                                <v-list-item-subtitle>{{
+                                  item.tipo_identificacion +
+                                  " " +
+                                  item.identificacion
+                                }}</v-list-item-subtitle>
+                              </v-list-item-content>
+                            </template>
+                          </template>
+                        </v-autocomplete>
+                      </ValidationProvider>
+                      <!-- <c-texto
+                        v-model="vacunacion.vacunador"
                         label="Vacunador"
                         name="vacunador"
-                        v-model="vacunacion.vacunador_id"
-                        :items="vacunadores"
-                        outlined
-                        dense
-                        item-value="id"
-                        clearable
-                        :error-messages="errors"
+                        upper-case
                       >
-                        <template v-slot:selection="{ item, index }">
-                          <div
-                            class="pa-0 text-truncate"
-                            style="width: 100% !important"
-                          >
-                            {{
-                              `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
-                            }}
-                          </div>
-                        </template>
-                        <template v-slot:item="{ item, index }">
-                          <template>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-title>{{
-                                `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
-                              }}</v-list-item-title>
-                              <v-list-item-subtitle>{{
-                                item.tipo_identificacion +
-                                " " +
-                                item.identificacion
-                              }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                          </template>
-                        </template>
-                      </v-autocomplete>
-                    </ValidationProvider>
-                    <!-- <c-texto
-                      v-model="vacunacion.vacunador"
-                      label="Vacunador"
-                      name="vacunador"
-                      upper-case
-                    >
-                    </c-texto> -->
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
-                    <c-text-area
-                      v-model="vacunacion.eventos_atribuidos"
-                      label="Eventos atribuidos"
-                      name="eventos_atribuidos"
-                      upper-case
-                    >
-                    </c-text-area>
-                  </v-col>
+                      </c-texto> -->
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <c-text-area
+                        v-model="vacunacion.eventos_atribuidos"
+                        label="Eventos atribuidos"
+                        name="eventos_atribuidos"
+                        rules="required"
+                        upper-case
+                      >
+                      </c-text-area>
+                    </v-col>
+                  </template>
                 </template>
                 <!-- <v-col class="pb-0" cols="12" sm="6" md="6">
                   <c-texto
@@ -773,6 +787,36 @@
         </v-row>
       </v-container>
       <app-section-loader :status="loading"></app-section-loader>
+      <!-- MODAL PARA CIUDADANOS FALLECIDOS -->
+      <v-dialog
+        v-model="modalPersonaFallecida"
+        max-width="500"
+      >
+        <v-card>
+          <v-card-title class="text-h5 warning">
+            Advertencia
+          </v-card-title>
+
+          <v-card-text class="pb-0">
+            <v-container>
+              <v-row>
+                <h4>{{ `El ciudadano identificado con cedula de ciudadania No. ${vacunacion ? vacunacion.identificacion : ''} ya fallecio.` }}</h4>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="modalPersonaFallecida = false"
+            >
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-dialog>
 </template>
@@ -797,6 +841,13 @@ export default {
     bodegas: [],
     tipo_poblacion_object: null,
     flagWaitGetVacunacion: true,
+    isEdit: false,
+    modalPersonaFallecida: false,
+    parentescoAcudiente: [
+      { id: 0, descripcion: 'Padre'},
+      { id: 1, descripcion: 'Madre'},
+      { id: 2, descripcion: 'Hermano'},
+      ]
   }),
   computed: {
     ...mapGetters([
@@ -1074,6 +1125,7 @@ export default {
       this.identificacionVerificada = 0;
       if (id) {
         // this.vacunacion = this.clone(models.vacunacionSucre);
+        this.isEdit = true
         this.getVacunacion(id);
       } else {
         this.vacunacion = this.clone(models.vacunacionSucre);
@@ -1086,6 +1138,7 @@ export default {
       this.dialog = true;
     },
     close() {
+      this.isEdit = false;
       this.dialog = false;
       this.identificacionVerificada = 0;
       setTimeout(() => {
@@ -1111,27 +1164,32 @@ export default {
         this.vacunacion.cod_mpio = null;
         this.vacunacion.codigo_ips = null;
       }
-      if (this.identificacionVerificada === 1 && response.length) {
-        this.vacunacion.tipo_identificacion = parseInt(
-          response[0].tipo_identificacion
-        );
-        this.vacunacion.identificacion = response[0].identificacion;
-        this.vacunacion.nombre1 = response[0].nombre1;
-        this.vacunacion.nombre2 = response[0].nombre2;
-        this.vacunacion.apellido1 = response[0].apellido1;
-        this.vacunacion.apellido2 = response[0].apellido2;
-        this.vacunacion.fecha_nacimiento = response[0].fecha_nacimiento;
-        this.vacunacion.sexo = response[0].sexo;
-        this.vacunacion.telefono_contacto = response[0].telefono_contacto;
-        this.vacunacion.email = response[0].email;
-        this.vacunacion.direccion = response[0].direccion;
-        this.vacunacion.cod_dpto = parseInt(response[0].cod_dpto);
-        this.vacunacion.cod_mpio = parseInt(response[0].cod_mpio);
-        this.vacunacion.codigo_ips = response[0].codigo_ips;
-        this.vacunacion.medio_contacto = response[0].medio_contacto;
-        this.vacunacion.zona = response[0].zona;
-        this.vacunacion.etnia = response[0].etnia;
-        this.vacunacion.condicion = response[0].condicion;
+      if (response.afiliado && response.afiliado == 'AF') {
+        this.modalPersonaFallecida = true;
+
+      } else {
+          if (this.identificacionVerificada === 1 && response.length) {
+            this.vacunacion.tipo_identificacion = parseInt(
+              response[0].tipo_identificacion
+            );
+            this.vacunacion.identificacion = response[0].identificacion;
+            this.vacunacion.nombre1 = response[0].nombre1;
+            this.vacunacion.nombre2 = response[0].nombre2;
+            this.vacunacion.apellido1 = response[0].apellido1;
+            this.vacunacion.apellido2 = response[0].apellido2;
+            this.vacunacion.fecha_nacimiento = response[0].fecha_nacimiento;
+            this.vacunacion.sexo = response[0].sexo;
+            this.vacunacion.telefono_contacto = response[0].telefono_contacto;
+            this.vacunacion.email = response[0].email;
+            this.vacunacion.direccion = response[0].direccion;
+            this.vacunacion.cod_dpto = parseInt(response[0].cod_dpto);
+            this.vacunacion.cod_mpio = parseInt(response[0].cod_mpio);
+            this.vacunacion.codigo_ips = response[0].codigo_ips;
+            this.vacunacion.medio_contacto = response[0].medio_contacto;
+            this.vacunacion.zona = response[0].zona;
+            this.vacunacion.etnia = response[0].etnia;
+            this.vacunacion.condicion = response[0].condicion;
+          }
       }
     },
     getVacunadores() {
