@@ -199,13 +199,18 @@
                                     >
                                     </c-text-area>
                                 </v-col>
-                                <v-col class="pb-0" cols="12">
-                                    <c-texto
-                                            v-model="llamada.responsable"
-                                            label="Responsable"
-                                    >
-                                    </c-texto>
-                                </v-col>
+                              <v-col class="pb-0" cols="12">
+                                <c-select-complete
+                                    v-model="llamada.dependencia_id"
+                                    label="Dependencia"
+                                    rules="required"
+                                    name="dependencia"
+                                    item-value="id"
+                                    item-text="dependencia"
+                                    :items="dependencias"
+                                    :hint="llamada.responsable ? `Responsable: ${llamada.responsable}` : ''"
+                                />
+                              </v-col>
                             </template>
                             <template v-else>
                                 <v-col cols="12">
@@ -283,7 +288,9 @@
             loading: false,
             dialog: false,
             llamada: null,
-            interval: null
+            interval: null,
+          dependencias: [],
+          loadingDependencias: false
         }),
         computed: {
             permisos () {
@@ -323,6 +330,16 @@
                 },
                 immediate: false
             },
+            'llamada.dependencia_id': {
+                handler (val) {
+                    if (!val) {
+                      this.llamada.responsable = null
+                    } else {
+                      this.llamada.responsable = this.dependencias?.find(x => x.id === val)?.responsable?.name || null
+                    }
+                },
+                immediate: false
+            },
             'llamada.covid': {
                 handler (val) {
                     if (!val) {
@@ -330,6 +347,7 @@
                             this.llamada.celular = null
                             this.llamada.nombre = null
                             this.llamada.motivo = null
+                            this.llamada.dependencia_id = null
                             this.llamada.responsable = null
                             this.llamada.tipo_identificacion = null
                             this.llamada.identificacion = null
@@ -403,6 +421,7 @@
                     this.goDuracion()
                 }
                 this.dialog = true
+              this.getDependencias()
             },
             close () {
                 this.$refs.formLlamada.reset()
@@ -416,6 +435,16 @@
                     this.llamada.duracion ++
                 }, 1000)
             },
+          getDependencias () {
+            this.loadingDependencias = true
+            this.axios.get('dependencias').then(response => {
+              this.dependencias = response.data
+              this.loadingDependencias = false
+            }).catch(error => {
+              this.loadingDependencias = false
+              this.$store.commit('snackbar', {color: "error", message: ` al cargar los resgistros de dependencias`, error: error})
+            })
+          },
             getLlamada (idLlamada) {
                 this.loading = true
                 this.axios.get(`llamadas/${idLlamada}`)

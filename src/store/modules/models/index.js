@@ -341,6 +341,7 @@ const state = {
         celular: null,
         nombre: null,
         motivo: null,
+        dependencia_id: null,
         responsable: null,
         tamizaje_id: null,
         user_id: null,

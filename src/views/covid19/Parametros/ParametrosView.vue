@@ -19,13 +19,16 @@
                 </v-list>
             </v-col>
             <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 0">
-                <barrios-veredas></barrios-veredas>
+                <barrios-veredas/>
             </v-col>
             <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 1">
-                <laboratorios></laboratorios>
+                <laboratorios/>
             </v-col>
             <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 2">
-              <Vacunadores></Vacunadores>
+              <Vacunadores/>
+            </v-col>
+          <v-col cols="12" sm="12" md="8" lg="9" v-if="currentOptionC === 3">
+              <Dependencias/>
             </v-col>
         </v-row>
     </v-container>
@@ -37,19 +40,22 @@
     const BarriosVeredas = () => import('./Components/BarriosVeredas')
     const Laboratorios = () => import('./Components/Laboratorios')
     const Vacunadores = () => import('./Components/Vacunadores')
+    const Dependencias = () => import('./Components/dependencias/Index')
     export default {
-        name: "ParametrosView",
+        name: 'ParametrosView',
         components: {
             BarriosVeredas,
             Laboratorios,
-            Vacunadores
+            Vacunadores,
+            Dependencias
         },
         data: () => ({
             currentOption: 0,
             options: [
                 {name: 'Barrios y Veredas', value: 0},
                 {name: 'Laboratorios', value: 1},
-                {name: 'Vacunadores', value: 2}
+                {name: 'Vacunadores', value: 2},
+                {name: 'Dependencias', value: 3}
             ]
         }),
         computed: {
@@ -67,7 +73,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

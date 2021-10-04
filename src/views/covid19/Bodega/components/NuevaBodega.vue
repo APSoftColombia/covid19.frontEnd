@@ -155,6 +155,8 @@
 </template>
 <script>
 
+import {mapGetters} from 'vuex'
+
 export default {
   name: "RegistroNuevaBodega",
   components: {
@@ -182,6 +184,9 @@ export default {
     }
   }),
   computed: {
+    ...mapGetters([
+      'tiposDocumentoIdentidad'
+    ]),
     ipsSeleccionada() {
         return (this && this.prestadores && this.bodega.codigo_ips && this.prestadores.find(x => x.codigohabilitacion === this.bodega.codigo_ips)) || null
     },

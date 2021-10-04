@@ -152,10 +152,29 @@
                         }
                     },
                     {
-                        text: 'Responsable',
+                        text: 'Dependencia',
                         align: 'left',
                         sortable: false,
-                        value: 'responsable'
+                      component: {
+                        render: function (createElement) {
+                          return createElement(
+                              `div`,
+                              {
+                                domProps: {
+                                  innerHTML: `
+												<v-list-item>
+													<v-list-item-content style="display: grid !important;">
+														<v-list-item-title class="body-2">${this.value.dependencia ? this.value.dependencia.dependencia : ''}</v-list-item-title>
+														<v-list-item-subtitle class="body-2">${this.value.responsable || ''}</v-list-item-subtitle>
+													</v-list-item-content>
+												</v-list-item>
+											`
+                                }
+                              }
+                          )
+                        },
+                        props: ['value']
+                      }
                     },
                     {
                         text: 'Usuario',

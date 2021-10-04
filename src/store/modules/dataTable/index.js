@@ -8,7 +8,7 @@ const state = {
         tablaReportesComunitarios: 0,
         tablaReportesComunitariosVersion: 6,
         tablaLlamadas: 0,
-        tablaLlamadasVersion: 2,
+        tablaLlamadasVersion: 3,
         tablaAutopsias: 0,
         tablaAutopsiasVersion: 2,
         tablaHogares: 0,
