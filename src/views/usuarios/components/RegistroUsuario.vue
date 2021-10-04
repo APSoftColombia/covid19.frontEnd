@@ -126,6 +126,18 @@
               >
               </c-date>
             </v-col>
+            <v-col class="pb-0" cols="12" v-if="autorizado">
+              <c-select-complete
+                v-model="usuario.tipo_cliente_id"
+                label="Tipo de cliente"
+                rules="required"
+                name="tipo_cliente"
+                :items="tipo_clientes"
+                item-text="nombre"
+                item-value="id"
+              >
+              </c-select-complete>
+            </v-col>
             <v-col class="pb-0" cols="12">
               <c-combo
                   label="Cargo"
@@ -229,13 +241,15 @@ export default {
       roles: [],
       eps_id: null,
       cod_ips: null,
-      cargo: null
+      cargo: null,
+      tipo_cliente_id: null,
     },
     showPassword: false,
     tiposDocumentoIdentidad: [],
     permisos: [],
     cargos: [],
     rolesx: [],
+    tipo_clientes: [],
     filterEpsTamizajes(item, queryText) {
       const hasValue = val => val != null ? val : ''
       const text = hasValue(item.codigo + ' ' + item.nombre)
@@ -246,13 +260,20 @@ export default {
   computed: {
     ...mapGetters([
       'epss',
-      'datosEmpresa'
-    ])
+      'datosEmpresa',
+      'getUser'
+    ]),
+    autorizado() {
+      return this && this.getUser && !this.getUser.tipo_cliente_id
+    }
   },
   watch: {
     dialog(val) {
       !val && this.$refs.formUsuario.reset()
     }
+  },
+  created() {
+    this.getTiposClientes();
   },
   methods: {
     submitUsuario() {
@@ -289,6 +310,19 @@ export default {
       this.resetUsuario()
       this.getUsuario(id)
       this.dialog = true
+    },
+    getTiposClientes() {
+      this.axios.get('tipos-clientes')
+          .then(response => {
+            this.tipo_clientes = response.data;
+          })
+          .catch(error => {
+            this.$store.commit('snackbar', {
+              color: 'error',
+              message: `al solicitar los complementos.`,
+              error: error
+            })
+          })
     },
     getUsuario(id) {
       this.loading = true
