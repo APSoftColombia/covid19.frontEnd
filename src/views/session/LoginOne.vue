@@ -1,7 +1,7 @@
 <template>
 	<v-container fluid style="height: 100% !important; background-color: white !important;">
 		<v-row style="height: 100% !important;" justify="center" align="center">
-			<v-col cols="12" sm="6" v-if="$vuetify.breakpoint.smAndUp">
+			<v-col cols="12" sm="6" v-if="$vuetify.breakpoint.smAndUp && datos.imagen_inicio !== 'logoSucre.png'">
 				<v-row style="height: 100% !important;" justify="center" align="center">
 					<v-card flat class="transparent" v-if="imagenName">
 						<v-responsive :aspect-ratio="3/4">
@@ -14,13 +14,15 @@
 					</v-card>
 				</v-row>
 			</v-col>
-			<v-col cols="12" sm="6">
+			<v-col
+          cols="12"
+          class="mx-auto"
+          sm="8"
+          md="6"
+          lg="4"
+      >
 				<div class="session-table-cell text-center">
 					<div class="session-content">
-<!--            <img-->
-<!--                :src="`/static/logos/logoLogin.png`"-->
-<!--                class="img-responsive mb-4 rounded"-->
-<!--            />-->
 						<img
 								:src="`/static/logos/logo_apsoft.png`"
 								class="img-responsive mb-2 rounded"
@@ -72,6 +74,7 @@
 	import Vue from "vue";
 	export default {
 		data:() => ({
+      datos: null,
 			loading: false,
 			showPassword: false,
 			checkbox: false,
@@ -91,6 +94,7 @@
 				Vue.axios.get(`${Vue.axios.defaults.baseURL.includes('api') ? '' : 'api/'}configuraciones`)
 						.then(response => {
 							this.imagenName = response.data.imagen_inicio
+              this.datos = response.data
 							this.loading = false
 						})
 						.catch(error => {

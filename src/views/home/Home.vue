@@ -1,12 +1,17 @@
 <template>
-	<v-container fluid class="py-0" style="height: 100% !important;">
+	<v-container fluid class="py-0" style="height: 100% !important; background-color: white">
 		<v-row style="height: 100% !important;" justify="center" align="center">
 			<v-card flat class="transparent">
 				<v-responsive :aspect-ratio="16/9">
+          <template v-if="datosEmpresa.imagen_inicio === 'logoSucre.png'">
+            <v-img
+                :src="`/static/logos/aspect16-9/${user.tipo_cliente_id}${datosEmpresa.imagen_inicio}`"
+            />
+          </template>
 					<v-img
+              v-else
 							:src="`/static/logos/aspect16-9/${datosEmpresa.imagen_inicio}`"
-					>
-					</v-img>
+					/>
 				</v-responsive>
 			</v-card>
 		</v-row>
@@ -14,12 +19,15 @@
 </template>
 
 <script>
-	import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 	export default {
 		data: () => ({
 			loading: false
 		}),
 		computed: {
+      ...mapState({
+        user: state => state.auth.user
+      }),
 			...mapGetters([
 				'datosEmpresa'
 			])
