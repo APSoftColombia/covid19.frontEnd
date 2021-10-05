@@ -139,7 +139,7 @@
                 <template v-slot:item.opciones="{ item }">
                   <div class="optionsButtons">
                     <v-toolbar>
-                      <!-- <c-tooltip bottom tooltip="Editar" v-if="permisos.editarVacunacion && item.puede_editar">
+                      <c-tooltip bottom tooltip="Editar" v-if="permisos.editarVacunacion && item.puede_editar">
                         <v-btn
                           class="ma-1"
                           color="blue"
@@ -150,7 +150,7 @@
                         >
                           <v-icon color="white">mdi-pencil</v-icon>
                         </v-btn>
-                      </c-tooltip> -->
+                      </c-tooltip>
                       <c-tooltip bottom tooltip="Ver Detalle" v-if="permisos.verDetalleVacunacion">
                         <v-btn
                           class="ma-1"

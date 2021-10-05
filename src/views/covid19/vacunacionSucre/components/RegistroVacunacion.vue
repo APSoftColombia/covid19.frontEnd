@@ -427,7 +427,7 @@
                     rules="required"
                     name="EPS de afiliación"
                     :items="epss"
-                    item-value="id"
+                    item-value="codigo"
                     item-text="nombre"
                     :disabled="identificacionVerificada < 1"
                   />
@@ -1092,26 +1092,29 @@ export default {
     "vacunacion.acepta_vacuna": {
       handler(value) {
         console.log("vacunacion.acepta_vacuna out", value);
-        if (value) {
-          this.vacunacion.motivo_disistimiento = null;
-          this.vacunacion.vacunador_id = this.ultimoVacunadorId;
-          this.vacunacion.cod_dpto_aplicacion = this.lastDptoAplicacionVacuna;
-          this.vacunacion.cod_mpio_aplicacion = this.lastMpioAplicacionVacuna;
-        } else {
-          console.log("vacunacion.acepta_vacuna else");
-          this.vacunacion.fecha_aplicacion = null;
-          this.vacunacion.bodega_id = null;
-          this.vacunacion.biologico = null;
-          this.vacunacion.lote_biologico = null;
-          this.vacunacion.tipo_dosis = null;
-          this.vacunacion.tipo_poblacion = null;
-          this.vacunacion.estrategia_vacunacion = null;
-          this.vacunacion.eventos_atribuidos = null;
-          this.vacunacion.vacunador_id = null;
-          this.vacunacion.cod_dpto_aplicacion = null;
-          this.vacunacion.cod_mpio_aplicacion = null;
+        if (!this.isEdit) {
+          if (value) {
+            this.vacunacion.motivo_disistimiento = null;
+            this.vacunacion.vacunador_id = this.ultimoVacunadorId;
+            this.vacunacion.cod_dpto_aplicacion = this.lastDptoAplicacionVacuna;
+            this.vacunacion.cod_mpio_aplicacion = this.lastMpioAplicacionVacuna;
+          } else {
+            console.log("vacunacion.acepta_vacuna else");
+            this.vacunacion.fecha_aplicacion = null;
+            this.vacunacion.bodega_id = null;
+            this.vacunacion.biologico = null;
+            this.vacunacion.lote_biologico = null;
+            this.vacunacion.tipo_dosis = null;
+            this.vacunacion.tipo_poblacion = null;
+            this.vacunacion.estrategia_vacunacion = null;
+            this.vacunacion.eventos_atribuidos = null;
+            this.vacunacion.vacunador_id = null;
+            this.vacunacion.cod_dpto_aplicacion = null;
+            this.vacunacion.cod_mpio_aplicacion = null;
+          }
         }
       },
+      immediate: false
     },
     "vacunacion.necesita_acudiente": {
       handler(value) {
@@ -1124,6 +1127,7 @@ export default {
           this.vacunacion.nombre2_acud = null;
         }
       },
+      immediate: false
     },
     "vacunacion.sexo": {
       handler(val) {
@@ -1144,6 +1148,7 @@ export default {
           this.vacunacion.semanas_embarazo = null;
         }
       },
+      immediate: false
     },
     "vacunacion.fecha_nacimiento": {
       handler(val) {
@@ -1219,7 +1224,6 @@ export default {
         }
       });
     },
-    // ! ERROR. Realiza la peticion correctamente, pero lanza error (Catch Error)
     getVacunacion(id) {
       this.flagWaitGetVacunacion = false;
       this.loading = true;
@@ -1227,12 +1231,6 @@ export default {
         .get(`dosis-aplicadas/${id}`)
         .then((response) => {
           this.vacunacion = response.data;
-          this.vacunacion.cod_mpio = this.vacunacion.cod_mpio;
-          this.vacunacion.cod_dpto = this.vacunacion.cod_dpto;
-          this.vacunacion.tipo_identificacion = this.vacunacion.tipo_identificacion
-          this.vacunacion.tipo_ident_acud = this.vacunacion.tipo_ident_acud
-          this.vacunacion.aseguradora = parseInt(this.vacunacion.aseguradora)
-          this.vacunacion.tipo_poblacion = response.data.poblacion.codigo;
           this.identificacionVerificada = 1;
           this.loading = false;
           setTimeout(() => {
@@ -1320,7 +1318,7 @@ export default {
             this.vacunacion.direccion = response.dosis[0].direccion;
             this.vacunacion.cod_dpto = response.dosis[0].cod_dpto;
             this.vacunacion.cod_mpio = response.dosis[0].cod_mpio;
-            this.vacunacion.aseguradora = parseInt(response.dosis[0].aseguradora);
+            this.vacunacion.aseguradora = response.dosis[0].aseguradora;
             this.vacunacion.medio_contacto = response.dosis[0].medio_contacto;
             this.vacunacion.zona = response.dosis[0].zona;
             this.vacunacion.etnia = response.dosis[0].etnia;

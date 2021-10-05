@@ -10,8 +10,8 @@
       <template>
         <v-toolbar dark color="primary">
           <v-icon left>fas fa-file-medical</v-icon>
-          <v-toolbar-title v-if="item && item.length && item[0].id">
-            {{ `Detalle General No. ${item[0].id}` }}
+          <v-toolbar-title v-if="item && item.length && item[0].identificacion">
+            {{ `Detalle General No. ${item[0].identificacion}` }}
           </v-toolbar-title>
           <v-spacer />
           <v-btn icon dark @click="close">
@@ -309,7 +309,7 @@ export default {
     open(item = null) {
       this.dialog = true;
       if (item) {
-        this.getItem(item.id);
+        this.getItem(item.identificacion);
       } else {
         this.item = this.clone(models.vacunacionSucre);
       }
@@ -320,10 +320,10 @@ export default {
       this.$emit("close");
       this.item = [];
     },
-    getItem(id) {
+    getItem(identificacion) {
       this.loading = true;
       this.axios
-        .get(`dosis-aplicadas/${id}`)
+        .get(`dosis-aplicadas-persona/${identificacion}`)
         .then((response) => {
           this.item = response.data;
           this.loading = false;
