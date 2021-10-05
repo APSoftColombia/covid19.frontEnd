@@ -130,8 +130,6 @@
               <c-select-complete
                 v-model="usuario.tipo_cliente_id"
                 label="Tipo de cliente"
-                rules="required"
-                name="tipo_cliente"
                 :items="tipo_clientes"
                 item-text="nombre"
                 item-value="id"
@@ -314,7 +312,7 @@ export default {
     getTiposClientes() {
       this.axios.get('tipos-clientes')
           .then(response => {
-            this.tipo_clientes = response.data;
+            this.tipo_clientes = response.data
           })
           .catch(error => {
             this.$store.commit('snackbar', {
