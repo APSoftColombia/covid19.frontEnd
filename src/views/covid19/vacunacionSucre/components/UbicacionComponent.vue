@@ -6,9 +6,9 @@
       >
       <v-list-item-subtitle class="body-1">
         {{ municipiosTotal && municipiosTotal.length &&
-        municipio_id && municipiosTotal.find(x => x.id ===
-        municipio_id) ? `${municipiosTotal.find(x => x.id ===
-        municipio_id).nombre}, ${municipiosTotal.find(x => x.id
+        municipio_id && municipiosTotal.find(x => x.codigo ===
+        municipio_id) ? `${municipiosTotal.find(x => x.codigo ===
+        municipio_id).nombre}, ${municipiosTotal.find(x => x.codigo
         === municipio_id).departamento.nombre}` : '' }}
       </v-list-item-subtitle>
     </v-list-item-content>
@@ -21,7 +21,7 @@ export default {
   name: "UbicacionComponent",
   props: {
     municipio_id: {
-      type: Number,
+      type: String,
       required: true,
     },
     direccion: {

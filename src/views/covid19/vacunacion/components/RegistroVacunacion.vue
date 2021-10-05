@@ -17,9 +17,10 @@
         >
         <v-alert
           type="warning"
-          v-if="identificacionVerificada && positivo_covid && fecha_diagnostico"
+          v-if="identificacionVerificada && tamizajePositivo"
         >
-          Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{verbalTimeAgoDiagnostico}} (Fecha diagnostico: {{fecha_diagnostico}})
+          Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{verbalTimeAgoDiagnostico}} (Fecha diagnostico: {{tamizajePositivo.fecha_diagnostico}}) <br>
+          Con Numero de ERP. {{ tamizajePositivo.id }}
         </v-alert>
           <v-row>
             <v-col class="pb-0" cols="12" sm="6" md="6">
@@ -349,11 +350,11 @@
                   </v-card-text>
                 </v-card>
               </v-col>
-              <comorbilidades-vacunacion
+              <!-- <comorbilidades-vacunacion
                     :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
                     @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
                     :disabled="identificacionVerificada < 1"
-              ></comorbilidades-vacunacion>
+              ></comorbilidades-vacunacion> -->
 <!--              <v-col cols="12">-->
 <!--                <v-card outlined tile>-->
 <!--                  <v-card-text>-->
@@ -427,6 +428,63 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- MODAL PARA CIUDADANOS FALLECIDOS -->
+      <v-dialog
+        v-model="modalPersonaFallecida"
+        max-width="500"
+      >
+        <v-card>
+          <v-card-title class="text-h5 warning">
+            Advertencia
+          </v-card-title>
+
+          <v-card-text class="pb-0">
+            <v-container fluid>
+              <v-row>
+
+                <v-card
+                  class="mx-auto"
+                  max-width="344"
+                  outlined
+                >
+                  <v-list-item three-line>
+                    <v-list-item-content v-if="afiliadoFallecido">
+                      <div class="text-overline mb-4">
+                        <b>Ciudadano Fallecido</b>
+                      </div>
+                      <v-list-item-title class="text-h5 mb-1">
+                        {{ `${afiliadoFallecido.nombre1} ${afiliadoFallecido.nombre2} ${afiliadoFallecido.apellido1} ${afiliadoFallecido.apellido2}` }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>{{ `${tiposDocumentoIdentidad.find(x => x.id == afiliadoFallecido.tipo_documento_identidad_id).descripcion}. ${afiliadoFallecido.numero_documento_identidad}` }}</v-list-item-subtitle>
+                    </v-list-item-content>
+
+                    <v-list-item-avatar
+                      tile
+                      size="80"
+                      color="grey"
+                      round
+                      style="border-radius: 10px"
+                    >
+                      <v-icon color="white">fas fa-address-card</v-icon>
+                    </v-list-item-avatar>
+                  </v-list-item>
+                </v-card>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="modalPersonaFallecida = false"
+            >
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-dialog>
 </template>
@@ -434,11 +492,11 @@
 <script>
 import models from 'Views/covid19/vacunacion/models'
 import {mapGetters} from 'vuex'
-import ComorbilidadesVacunacion from './ComorbilidadesVacunacion'
+// import ComorbilidadesVacunacion from './ComorbilidadesVacunacion'
 
 export default {
   components: {
-    ComorbilidadesVacunacion,
+    // ComorbilidadesVacunacion,
   },
   data: () => ({
     identificacionVerificada: 0,
@@ -450,10 +508,11 @@ export default {
     vacunacion: null,
     edad: null,
     mujerGestante: 0,
-    positivo_covid: null,
-    fecha_diagnostico: null,
     caracterizacion: null,
     modalPersonaCaracterizada: false,
+    modalPersonaFallecida: false,
+    afiliadoFallecido: null,
+    tamizajePositivo: null,
   }),
   computed: {
     ...mapGetters([
@@ -465,9 +524,9 @@ export default {
     ]),
     verbalTimeAgoDiagnostico() {
       let stringDate = ``
-      if (this.positivo_covid && this.fecha_diagnostico) {
+      if (this.tamizajePositivo.positivo_covid && this.tamizajePositivo.fecha_diagnostico) {
         let a = this.moment()
-				let b = this.moment(this.fecha_diagnostico)
+				let b = this.moment(this.tamizajePositivo.fecha_diagnostico)
 				let years = a.diff(b, 'year')
 				b.add(years, 'years')
 
@@ -561,9 +620,9 @@ export default {
     getVacunacion(id) {
       this.loading = true
       this.axios.get(`vacunaciones/${id}`).then(response => {
-        if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
-          response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo.toString())
-        }
+        // if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
+        //   response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo.toString())
+        // }
         this.vacunacion = response.data
         this.identificacionVerificada = 1
         this.loading = false
@@ -590,8 +649,8 @@ export default {
       setTimeout(() => {
         this.loading = false
         this.mujerGestante = 0
-        this.positivo_covid = null
-        this.fecha_diagnostico = null
+        this.tamizajePositivo = null
+        this.afiliadoFallecido = null
         this.vacunacion = null
         this.$refs.formVacunacion.reset()
       }, 400)
@@ -615,11 +674,18 @@ export default {
         this.vacunacion.eps_id = null
         this.vacunacion.afiliado_id = null
       }
-      if (response.caracterizacion) {
-        this.caracterizacion = response.caracterizacion;
-        this.modalPersonaCaracterizada = true;
+      if (response.afiliado && response.afiliado.estado == 'AF') {
+        this.identificacionVerificada = 0;
+        this.modalPersonaFallecida = true;
+        this.afiliadoFallecido = response.afiliado;
+
       } else {
-        if (response.afiliado) {
+        if (response.caracterizacion) {
+          this.identificacionVerificada = 0;
+          this.caracterizacion = response.caracterizacion;
+          this.modalPersonaCaracterizada = true;
+          
+        } else if (response.afiliado) {
           this.vacunacion.afiliado_id = response.afiliado.id
           this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
           this.vacunacion.identificacion = response.afiliado.numero_documento_identidad
@@ -635,7 +701,7 @@ export default {
           this.vacunacion.departamento_id = response.afiliado.departamento_id
           this.vacunacion.municipio_id = response.afiliado.centro_poblado_id
           this.vacunacion.eps_id = response.afiliado.eps_id
-          
+              
         } else if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
           this.vacunacion.afiliado_id = response.tamizaje[0].afiliado_id
           this.vacunacion.tipo_identificacion = response.tamizaje[0].tipo_identificacion
@@ -655,12 +721,10 @@ export default {
           this.vacunacion.barrio_id = response.tamizaje[0].barrio_id
         }
 
-        if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id) {
-          this.positivo_covid = response.tamizaje[0].positivo_covid
-          this.fecha_diagnostico = response.tamizaje[0].fecha_diagnostico
+        if(response.tamizaje && response.tamizaje.length && response.tamizaje[0].afiliado_id && response.tamizaje[0].positivo_covid) {
+          this.tamizajePositivo = response.tamizaje[0]
         }
       }
-
     },
     getBarrios(municipio_id) {
       this.loadingBarrios = true

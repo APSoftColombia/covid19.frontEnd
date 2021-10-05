@@ -13,10 +13,6 @@
       <v-list-item-subtitle :class="`body-2 text-truncate`"
         >{{
           this.tipo_identificacion
-            ? this.tiposDocumentoIdentidad.find(
-                (x) => x.id == this.tipo_identificacion
-              ).tipo
-            : null
         }}
         {{ this.numero_identificacion }}</v-list-item-subtitle
       >

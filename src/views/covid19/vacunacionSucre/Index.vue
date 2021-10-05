@@ -49,6 +49,9 @@
                 hide-default-footer
                 disable-pagination
               >
+                <template v-slot:item.created_at="{ item }">
+                  <div>{{ item.created_at ? moment(item.created_at).format('DD/MM/YYYY HH:mm') : '' }}</div>
+                </template>
                 <template v-slot:item.paciente="{ item }">
                   <persona-item
                     :sexo="item.sexo"
@@ -61,7 +64,7 @@
                 <template v-slot:item.ubicacion="{ item }">
                   <ubicacion-component
                     :direccion="item.direccion"
-                    :municipio_id="parseInt(item.cod_mpio)"
+                    :municipio_id="item.cod_mpio"
                   ></ubicacion-component>
                 </template>
                 <template v-slot:item.dosis="{ item }">
@@ -136,7 +139,7 @@
                 <template v-slot:item.opciones="{ item }">
                   <div class="optionsButtons">
                     <v-toolbar>
-                      <c-tooltip bottom tooltip="Editar" v-if="permisos.editarVacunacion">
+                      <!-- <c-tooltip bottom tooltip="Editar" v-if="permisos.editarVacunacion && item.puede_editar">
                         <v-btn
                           class="ma-1"
                           color="blue"
@@ -147,7 +150,7 @@
                         >
                           <v-icon color="white">mdi-pencil</v-icon>
                         </v-btn>
-                      </c-tooltip>
+                      </c-tooltip> -->
                       <c-tooltip bottom tooltip="Ver Detalle" v-if="permisos.verDetalleVacunacion">
                         <v-btn
                           class="ma-1"
@@ -205,13 +208,13 @@
 // *Fecha aplicacion no inferior al 17/02/2021
 // TODO: Bloquear fecha aplicacion min = de la ultima aplicacion
 // *Cambiar el formulario de Editar para que solo me permita editar hasta el campo REGIMEN y Observaciones
-// TODO: Agregar parentesco para el acudiente
-// TODO: Generar alerta si usuario esta fallecido de acuerdo a info de afiliado y no permitir guardar (Buscar componente de InfoPersona Modal)
+// *Agregar parentesco para el acudiente
+// *Generar alerta si usuario esta fallecido de acuerdo a info de afiliado y no permitir guardar (Buscar componente de InfoPersona Modal)
 // TODO: Agregar columna de Fecha de creacion y actualizacion, visible = false. Despues de la columna ID en Index - Gestion Vacunacion
-// TODO: Quitar el campo de Condicion si el genero es Masculino
+// *Quitar el campo de Condicion si el genero es Masculino
 // TODO: En el Detalle agregar seccion de Registros fallidos/No desea vacuna con el numero de registros y que muestre una modal con los datos de esos registros. (Puede ser un badge en Vacunas tab)
 // TODO: Hay que enviar todos los registros al detalle, sea que fuese efedctiva la vacuna o no
-// TODO: Campo de Eventos atribuidos requerido
+// *Campo de Eventos atribuidos requerido
 
 const PersonaItem = () => import("./components/ItemListDataAfiliado");
 const RegistroVacunacion = () => import("./components/RegistroVacunacion");
@@ -241,6 +244,12 @@ export default {
           text: "ID",
           sortable: false,
           value: "id",
+        },
+        {
+          text: "Creacion",
+          sortable: false,
+          value: "created_at",
+          visibleColumn: false,
         },
         {
           text: "Paciente",

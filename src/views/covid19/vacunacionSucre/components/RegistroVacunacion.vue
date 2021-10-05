@@ -28,6 +28,13 @@
               v-slot="{ invalid, validated, passes, validate }"
               autocomplete="off"
             >
+              <v-alert
+                type="warning"
+                v-if="identificacionVerificada && tamizajePositivo"
+              >
+                Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{ verbalTimeAgoDiagnostico }} (Fecha diagnostico: {{ tamizajePositivo.fecha_diagnostico }}) <br>
+                Con Numero de ERP. {{ tamizajePositivo.id }}
+              </v-alert>
               <v-row>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
                   <search-identidad-vacunado
@@ -49,7 +56,7 @@
                     name="tipo identificación"
                     :items="tiposDocumentoIdentidad"
                     item-text="descripcion"
-                    item-value="id"
+                    item-value="tipo"
                     :disabled="identificacionVerificada < 1"
                   >
                   </c-select-complete>
@@ -172,13 +179,13 @@
                     rules="required"
                     :items="departamentos"
                     item-text="nombre"
-                    item-value="id"
+                    item-value="codigo"
                     :disabled="identificacionVerificada < 1"
                     @change="
                       (val) =>
                         (vacunacion.cod_mpio = departamentos
-                          .find((x) => x.id === val)
-                          .municipios.find((z) => z.id === vacunacion.cod_mpio)
+                          .find((x) => x.codigo === val)
+                          .municipios.find((z) => z.codigo === vacunacion.cod_mpio)
                           ? vacunacion.cod_mpio
                           : null)
                     "
@@ -197,14 +204,14 @@
                     :items="
                       departamentos.length &&
                       vacunacion.cod_dpto &&
-                      departamentos.find((x) => x.id === vacunacion.cod_dpto)
+                      departamentos.find((x) => x.codigo === vacunacion.cod_dpto)
                         ? departamentos.find(
-                            (x) => x.id === vacunacion.cod_dpto
+                            (x) => x.codigo === vacunacion.cod_dpto
                           ).municipios
                         : []
                     "
                     item-text="nombre"
-                    item-value="id"
+                    item-value="codigo"
                   >
                   </c-select-complete>
                 </v-col>
@@ -265,11 +272,11 @@
                         <v-row>
                           <v-col class="pb-0" cols="12" sm="12" md="12">
                             <c-select-complete
-                              v-model="vacunacion.tipo_ident_acud"
+                              v-model="vacunacion.parentesco_id"
                               label="Parentesco del acudiente"
                               rules="required"
                               name="parentesco acudiente"
-                              :items="parentescoAcudiente"
+                              :items="parentescos"
                               item-text="descripcion"
                               item-value="id"
                             >
@@ -340,7 +347,7 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="12">
+                <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.sexo == 'F'">
                   <c-select-complete
                     v-model="vacunacion.condicion"
                     label="Condicion"
@@ -373,6 +380,24 @@
                     />
                   </v-col>
                 </template>
+                <template v-if="vacunacion.sexo == 'F'">
+                  <v-col class="pb-0" cols="12" sm="12" md="6">
+                    <v-checkbox
+                      v-model="vacunacion.lactancia"
+                      label="Lactancia"
+                      :true-value="true"
+                      :false-value="false"
+                    ></v-checkbox>
+                  </v-col>
+                  <v-col class="pb-0" cols="12" sm="12" md="6">
+                    <v-checkbox
+                      v-model="vacunacion.posparto"
+                      label="PosParto"
+                      :true-value="true"
+                      :false-value="false"
+                    ></v-checkbox>
+                  </v-col>
+                </template>
                 <v-col class="pb-0" cols="12" sm="12" md="12">
                   <c-select-complete
                     v-model="vacunacion.etnia"
@@ -386,9 +411,18 @@
                   >
                   </c-select-complete>
                 </v-col>
+                <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.etnia !== '6'">
+                  <c-texto
+                    v-model="vacunacion.nombre_etnia_poblacion"
+                    label="Nombre de Etnia o Poblacion especial"
+                    name="nombre etnia"
+                    :disabled="identificacionVerificada < 1"
+                  >
+                  </c-texto>
+                </v-col>
                 <v-col class="pb-0" cols="12" sm="12" md="12">
                   <c-select-complete
-                    v-model="vacunacion.codigo_ips"
+                    v-model="vacunacion.aseguradora"
                     label="¿A que EPS está afiliado?"
                     rules="required"
                     name="EPS de afiliación"
@@ -498,6 +532,40 @@
                     </v-card>
                   </v-col>
                   <template v-if="vacunacion.acepta_vacuna">
+                    <v-col class="pb-0" cols="12" sm="12" md="12" v-if="dosisAplicadas && dosisAplicadas.length">
+                      <v-card outlined tile>
+                        <v-card-title>Registros de Vacunacion previa</v-card-title>
+                        <v-card-text>
+                          <v-simple-table>
+                            <template v-slot:default>
+                              <thead>
+                                <tr>
+                                  <th class="text-left">
+                                    ID
+                                  </th>
+                                  <th class="text-left">
+                                    Fecha Aplicacion
+                                  </th>
+                                  <th class="text-left">
+                                    Biologico
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  v-for="item in dosisAplicadas"
+                                  :key="item.id"
+                                >
+                                  <td>{{ item.id ? item.id : '' }}</td>
+                                  <td>{{ item.fecha_aplicacion ? moment(item.fecha_aplicacion).format('DD/MM/YYYY HH:mm') : '' }}</td>
+                                  <td>{{ item.biologico ? item.biologico : '' }}</td>
+                                </tr>
+                              </tbody>
+                            </template>
+                          </v-simple-table>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
                     <v-col class="pb-0" cols="12" sm="12" md="12">
                       <c-date
                         v-model="vacunacion.fecha_aplicacion"
@@ -518,13 +586,13 @@
                         rules="required"
                         :items="departamentos"
                         item-text="nombre"
-                        item-value="id"
+                        item-value="codigo"
                         :disabled="identificacionVerificada < 1"
                         @change="
                           (val) =>
                             (vacunacion.cod_mpio_aplicacion = departamentos
-                              .find((x) => x.id === val)
-                              .municipios.find((z) => z.id === vacunacion.cod_mpio_aplicacion)
+                              .find((x) => x.codigo === val)
+                              .municipios.find((z) => z.codigo === vacunacion.cod_mpio_aplicacion)
                               ? vacunacion.cod_mpio_aplicacion
                               : null)
                         "
@@ -543,14 +611,14 @@
                         :items="
                           departamentos.length &&
                           vacunacion.cod_dpto_aplicacion &&
-                          departamentos.find((x) => x.id === vacunacion.cod_dpto_aplicacion)
+                          departamentos.find((x) => x.codigo === vacunacion.cod_dpto_aplicacion)
                             ? departamentos.find(
-                                (x) => x.id === vacunacion.cod_dpto_aplicacion
+                                (x) => x.codigo === vacunacion.cod_dpto_aplicacion
                               ).municipios
                             : []
                         "
                         item-text="nombre"
-                        item-value="id"
+                        item-value="codigo"
                       >
                       </c-select-complete>
                     </v-col>
@@ -798,9 +866,36 @@
           </v-card-title>
 
           <v-card-text class="pb-0">
-            <v-container>
+            <v-container fluid>
               <v-row>
-                <h4>{{ `El ciudadano identificado con cedula de ciudadania No. ${vacunacion ? vacunacion.identificacion : ''} ya fallecio.` }}</h4>
+
+                <v-card
+                  class="mx-auto"
+                  max-width="344"
+                  outlined
+                >
+                  <v-list-item three-line>
+                    <v-list-item-content v-if="afiliadoFallecido">
+                      <div class="text-overline mb-4">
+                        <b>Ciudadano Fallecido</b>
+                      </div>
+                      <v-list-item-title class="text-h5 mb-1">
+                        {{ `${afiliadoFallecido.nombre1} ${afiliadoFallecido.nombre2} ${afiliadoFallecido.apellido1} ${afiliadoFallecido.apellido2}` }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>{{ `${tiposDocumentoIdentidad.find(x => x.id == afiliadoFallecido.tipo_documento_identidad_id).descripcion}. ${afiliadoFallecido.numero_documento_identidad}` }}</v-list-item-subtitle>
+                    </v-list-item-content>
+
+                    <v-list-item-avatar
+                      tile
+                      size="80"
+                      color="grey"
+                      round
+                      style="border-radius: 10px"
+                    >
+                      <v-icon color="white">fas fa-address-card</v-icon>
+                    </v-list-item-avatar>
+                  </v-list-item>
+                </v-card>
               </v-row>
             </v-container>
           </v-card-text>
@@ -843,11 +938,9 @@ export default {
     flagWaitGetVacunacion: true,
     isEdit: false,
     modalPersonaFallecida: false,
-    parentescoAcudiente: [
-      { id: 0, descripcion: 'Padre'},
-      { id: 1, descripcion: 'Madre'},
-      { id: 2, descripcion: 'Hermano'},
-      ]
+    tamizajePositivo: null,
+    afiliadoFallecido: null,
+    dosisAplicadas: [],
   }),
   computed: {
     ...mapGetters([
@@ -860,7 +953,30 @@ export default {
       "ultimoVacunadorId",
       "lastDptoAplicacionVacuna",
       "lastMpioAplicacionVacuna",
+      'parentescos',
     ]),
+    verbalTimeAgoDiagnostico() {
+      let stringDate = ``
+      if (this.tamizajePositivo && this.tamizajePositivo.positivo_covid && this.tamizajePositivo.fecha_diagnostico) {
+        let a = this.moment()
+				let b = this.moment(this.tamizajePositivo.fecha_diagnostico)
+				let years = a.diff(b, 'year')
+				b.add(years, 'years')
+
+				let months = a.diff(b, 'months')
+				b.add(months, 'months')
+
+				let days = a.diff(b, 'days')
+				b.add(days, 'days')
+
+				let hours = a.diff(b, 'hours')
+				b.add(hours, 'hours')
+				stringDate = stringDate + (years ? `${years} año${years === 1 ? '' : 's'}` : '')
+				stringDate = stringDate + (months ? ` ${months} mes${months === 1 ? ''  : 'es'}` : '')
+				stringDate = stringDate + (years || months ? days ? ` ${days} d${days === 1 ? 'ía' : 'ias'}` : '' : `${days} d${days === 1 ? 'ía' : 'ias'}`)
+      }
+      return stringDate
+    },
     lotesBiologico() {
       return this.vacunacion.bodega_id && this.vacunacion.biologico
         ? this.bodegas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos.find((x) => x.codigo === this.vacunacion.biologico)?.lotes
@@ -930,6 +1046,12 @@ export default {
     },
   },
   watch: {
+    "vacunacion.etnia": {
+      handler(val) {
+        if (val == null || val == '6') this.vacunacion.nombre_etnia_poblacion = null
+      },
+      immediate: false
+    },
     "vacunacion.tipo_poblacion": {
       handler(value) {
         if (value) {
@@ -1003,6 +1125,18 @@ export default {
         }
       },
     },
+    "vacunacion.sexo": {
+      handler(val) {
+        if (val && val == 'M') {
+          this.vacunacion.condicion = null
+          this.vacunacion.fecha_prob_parto = null;
+          this.vacunacion.semanas_embarazo = null;
+          this.vacunacion.lactancia = null;
+          this.vacunacion.posparto = null;
+        }
+      },
+      immediate: true,
+    },
     "vacunacion.condicion": {
       handler(value) {
         if (value && (value == "NO APLICA" || value == "NO GESTANTE")) {
@@ -1049,6 +1183,8 @@ export default {
           copiaData.etapa = this.tipo_poblacion_object
             ? this.tipo_poblacion_object.etapa
             : null;
+          copiaData.lactancia = copiaData.sexo === 'F' && copiaData.lactancia == null ? false : null;
+          copiaData.posparto = copiaData.sexo === 'F' && copiaData.posparto == null ? false : null;
           let request = copiaData.id
             ? this.axios.put(`dosis-aplicadas/${copiaData.id}`, copiaData)
             : this.axios.post(`dosis-aplicadas`, copiaData);
@@ -1083,6 +1219,7 @@ export default {
         }
       });
     },
+    // ! ERROR. Realiza la peticion correctamente, pero lanza error (Catch Error)
     getVacunacion(id) {
       this.flagWaitGetVacunacion = false;
       this.loading = true;
@@ -1090,15 +1227,11 @@ export default {
         .get(`dosis-aplicadas/${id}`)
         .then((response) => {
           this.vacunacion = response.data;
-          this.vacunacion.cod_mpio = parseInt(this.vacunacion.cod_mpio);
-          this.vacunacion.cod_dpto = parseInt(this.vacunacion.cod_dpto);
-          this.vacunacion.tipo_identificacion = parseInt(
-            this.vacunacion.tipo_identificacion
-          );
-          this.vacunacion.tipo_ident_acud = parseInt(
-            this.vacunacion.tipo_ident_acud
-          );
-          this.vacunacion.codigo_ips = parseInt(this.vacunacion.codigo_ips);
+          this.vacunacion.cod_mpio = this.vacunacion.cod_mpio;
+          this.vacunacion.cod_dpto = this.vacunacion.cod_dpto;
+          this.vacunacion.tipo_identificacion = this.vacunacion.tipo_identificacion
+          this.vacunacion.tipo_ident_acud = this.vacunacion.tipo_ident_acud
+          this.vacunacion.aseguradora = parseInt(this.vacunacion.aseguradora)
           this.vacunacion.tipo_poblacion = response.data.poblacion.codigo;
           this.identificacionVerificada = 1;
           this.loading = false;
@@ -1141,6 +1274,9 @@ export default {
       this.isEdit = false;
       this.dialog = false;
       this.identificacionVerificada = 0;
+      this.tamizajePositivo = null
+      this.afiliadoFallecido = null
+      this.dosisAplicadas = []
       setTimeout(() => {
         this.loading = false;
         this.vacunacion = this.clone(models.vacunacionSucre);
@@ -1164,32 +1300,68 @@ export default {
         this.vacunacion.cod_mpio = null;
         this.vacunacion.codigo_ips = null;
       }
-      if (response.afiliado && response.afiliado == 'AF') {
+      if (response.afiliado && response.afiliado.estado == 'AF') {
+        this.identificacionVerificada = 0;
         this.modalPersonaFallecida = true;
+        this.afiliadoFallecido = response.afiliado;
 
       } else {
-          if (this.identificacionVerificada === 1 && response.length) {
-            this.vacunacion.tipo_identificacion = parseInt(
-              response[0].tipo_identificacion
-            );
-            this.vacunacion.identificacion = response[0].identificacion;
-            this.vacunacion.nombre1 = response[0].nombre1;
-            this.vacunacion.nombre2 = response[0].nombre2;
-            this.vacunacion.apellido1 = response[0].apellido1;
-            this.vacunacion.apellido2 = response[0].apellido2;
-            this.vacunacion.fecha_nacimiento = response[0].fecha_nacimiento;
-            this.vacunacion.sexo = response[0].sexo;
-            this.vacunacion.telefono_contacto = response[0].telefono_contacto;
-            this.vacunacion.email = response[0].email;
-            this.vacunacion.direccion = response[0].direccion;
-            this.vacunacion.cod_dpto = parseInt(response[0].cod_dpto);
-            this.vacunacion.cod_mpio = parseInt(response[0].cod_mpio);
-            this.vacunacion.codigo_ips = response[0].codigo_ips;
-            this.vacunacion.medio_contacto = response[0].medio_contacto;
-            this.vacunacion.zona = response[0].zona;
-            this.vacunacion.etnia = response[0].etnia;
-            this.vacunacion.condicion = response[0].condicion;
+          if (response.dosis && response.dosis.length) {
+            this.vacunacion.tipo_identificacion = response.dosis[0].tipo_identificacion
+            this.vacunacion.identificacion = response.dosis[0].identificacion;
+            this.vacunacion.nombre1 = response.dosis[0].nombre1;
+            this.vacunacion.nombre2 = response.dosis[0].nombre2;
+            this.vacunacion.apellido1 = response.dosis[0].apellido1;
+            this.vacunacion.apellido2 = response.dosis[0].apellido2;
+            this.vacunacion.fecha_nacimiento = response.dosis[0].fecha_nacimiento;
+            this.vacunacion.sexo = response.dosis[0].sexo;
+            this.vacunacion.telefono_contacto = response.dosis[0].telefono_contacto;
+            this.vacunacion.email = response.dosis[0].email;
+            this.vacunacion.direccion = response.dosis[0].direccion;
+            this.vacunacion.cod_dpto = response.dosis[0].cod_dpto;
+            this.vacunacion.cod_mpio = response.dosis[0].cod_mpio;
+            this.vacunacion.aseguradora = parseInt(response.dosis[0].aseguradora);
+            this.vacunacion.medio_contacto = response.dosis[0].medio_contacto;
+            this.vacunacion.zona = response.dosis[0].zona;
+            this.vacunacion.etnia = response.dosis[0].etnia;
+            this.vacunacion.condicion = response.dosis[0].condicion;
+
+          } else if (response.tamizaje) {
+            this.vacunacion.tipo_identificacion = this.tiposDocumentoIdentidad.find(x => x.id === response.tamizaje.tipo_identificacion).tipo
+            this.vacunacion.identificacion = response.tamizaje.identificacion
+            this.vacunacion.nombre1 = response.tamizaje.nombre1
+            this.vacunacion.nombre2 = response.tamizaje.nombre2
+            this.vacunacion.apellido1 = response.tamizaje.apellido1
+            this.vacunacion.apellido2 = response.tamizaje.apellido2
+            this.vacunacion.fecha_nacimiento = response.tamizaje.fecha_nacimiento
+            this.vacunacion.sexo = response.tamizaje.sexo
+            this.vacunacion.telefono_contacto = response.tamizaje.celular
+            this.vacunacion.email = response.tamizaje.email
+            this.vacunacion.direccion = response.tamizaje.direccion
+            this.vacunacion.cod_dpto = this.departamentos.find(x => x.id === response.tamizaje.departamento_id).codigo
+            this.vacunacion.cod_mpio = this.municipiosTotal.find(x => x.id === response.tamizaje.municipio_id).codigo
+            this.vacunacion.aseguradora = response.tamizaje.eps_id
+
+          } else if (response.afiliado) {
+            this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
+            this.vacunacion.identificacion = response.afiliado.numero_documento_identidad;
+            this.vacunacion.nombre1 = response.afiliado.nombre1;
+            this.vacunacion.nombre2 = response.afiliado.nombre2;
+            this.vacunacion.apellido1 = response.afiliado.apellido1;
+            this.vacunacion.apellido2 = response.afiliado.apellido2;
+            this.vacunacion.fecha_nacimiento = response.afiliado.fecha_nacimiento;
+            this.vacunacion.sexo = response.afiliado.sexo;
+            this.vacunacion.telefono_contacto = response.afiliado.numero_celular;
+            this.vacunacion.email = response.afiliado.email;
+            this.vacunacion.direccion = response.afiliado.direccion;
+            this.vacunacion.aseguradora = response.afiliado.eps_id;
+          } 
+
+          if(response.tamizaje && response.tamizaje.positivo_covid) {
+            this.tamizajePositivo = response.tamizaje
           }
+
+          if(response.dosisAplicadas && response.dosisAplicadas.length) this.dosisAplicadas = response.dosisAplicadas
       }
     },
     getVacunadores() {

@@ -10,8 +10,8 @@
       <template>
         <v-toolbar dark color="primary">
           <v-icon left>fas fa-file-medical</v-icon>
-          <v-toolbar-title v-if="item[0] && item[0].identificacion">
-            {{ `Detalle General No. ${item[0].identificacion}` }}
+          <v-toolbar-title v-if="item && item.length && item[0].id">
+            {{ `Detalle General No. ${item[0].id}` }}
           </v-toolbar-title>
           <v-spacer />
           <v-btn icon dark @click="close">
@@ -19,7 +19,7 @@
           </v-btn>
         </v-toolbar>
         <v-container fluid>
-          <v-row v-if="item[0]" no-gutters>
+          <v-row v-if="item && item.length" no-gutters>
             <v-col lg="10" md="12" sm="12" class="mx-auto">
               <v-row dense>
                 <v-col cols="12" md="4">
@@ -54,12 +54,7 @@
                         <v-list-item-subtitle>
                           {{
                             [
-                              item[0].tipo_identificacion
-                                ? this.tiposDocumentoIdentidad.find(
-                                    (x) => x.id == item[0].tipo_identificacion
-                                  ).tipo
-                                : null
-                              ,
+                              item[0].tipo_identificacion,
                               item[0].identificacion,
                             ]
                               .filter((x) => x)
@@ -94,9 +89,9 @@
                           {{ item[0].direccion }} <br>
                           {{
                               municipiosTotal && municipiosTotal.length &&
-                              parseInt(item[0].cod_mpio) && municipiosTotal.find(x => x.id ===
-                              parseInt(item[0].cod_mpio)) ? `${municipiosTotal.find(x => x.id ===
-                              parseInt(item[0].cod_mpio)).nombre}, ${municipiosTotal.find(x => x.id
+                              parseInt(item[0].cod_mpio) && municipiosTotal.find(x => x.codigo ===
+                              parseInt(item[0].cod_mpio)) ? `${municipiosTotal.find(x => x.codigo ===
+                              parseInt(item[0].cod_mpio)).nombre}, ${municipiosTotal.find(x => x.codigo
                               === parseInt(item[0].cod_mpio)).departamento.nombre}` : ''
                           }} <br>
                           {{ item[0].zona }}
@@ -181,11 +176,20 @@
                         text-left
                       "
                       >Vacunas
+                      <v-tooltip top v-if="item.filter(x => !x.acepta_vacuna).length">
+                        <template v-slot:activator="{ on }">
+                          <v-btn elevation="0" icon class="ml-3" v-on="on" @click="fallidas">
+                            <v-icon color="orange">mdi mdi-alert-box-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Dosis Fallidas</span>
+                      </v-tooltip>
                     </v-list-item-subtitle>
                     <v-card-text>
-                        <v-list>
+                        <v-list v-if="item.filter(x => x.acepta_vacuna).length">
                           <template v-for="(vacuna, index) in item">
                             <v-card
+                              v-if="vacuna.acepta_vacuna"
                               :key="index"
                               class="mt-2 mx-auto"
                               outlined
@@ -252,9 +256,16 @@
                                   <v-icon :color="vacuna.acepta_vacuna ? 'green' : 'red'">fas fa-syringe</v-icon>
                                 </v-list-item-avatar>
                               </v-list-item>
+                              <v-row class="mx-2" align="center" justify="end">
+                                <span class="caption grey--text">Fecha creacion: {{ vacuna.created_at ? moment(vacuna.created_at).format('DD/MM/YYYY HH:mm') : '-' }}</span>
+                              </v-row>
+                              <v-row class="mx-2" align="center" justify="end">
+                                <span class="caption grey--text">Fecha actualizacion: {{ vacuna.updated_at ? moment(vacuna.updated_at).format('DD/MM/YYYY HH:mm') : '-' }}</span>
+                              </v-row>
                             </v-card>
                           </template>
                         </v-list>
+                        <span v-else>No registra vacunas efectivas</span>
                     </v-card-text>
                   </v-card>
                 </v-col>
@@ -264,6 +275,9 @@
         </v-container>
       </template>
       <app-section-loader :status="loading" />
+      <vacunas-fallidas
+          ref="vacunasFallidas"
+      ></vacunas-fallidas>
     </v-card>
   </v-dialog>
 </template>
@@ -271,9 +285,13 @@
 <script>
 import { mapGetters } from "vuex";
 import models from "Views/covid19/vacunacionSucre/models";
+const vacunasFallidas = () => import("./VacunasFallidasComponent")
 
 export default {
   name: "DetalleReferencia",
+  components: {
+    vacunasFallidas
+  },
   data: () => ({
     loading: false,
     dialog: false,
@@ -283,15 +301,15 @@ export default {
   }),
   computed: {
     ...mapGetters(["municipiosTotal", "tiposDocumentoIdentidad"]),
-    permisos() {
-      return this.$store.getters.getPermissionModule("centroRegulador");
-    },
   },
   methods: {
+    fallidas(){
+      this.$refs.vacunasFallidas.open(this.item.filter(x => !x.acepta_vacuna))
+    },
     open(item = null) {
       this.dialog = true;
       if (item) {
-        this.getItem(item.identificacion);
+        this.getItem(item.id);
       } else {
         this.item = this.clone(models.vacunacionSucre);
       }
@@ -302,14 +320,10 @@ export default {
       this.$emit("close");
       this.item = [];
     },
-    actualizarItem(id) {
-      this.getItem(id);
-      this.$store.commit("reloadTable", "tablaReferencias");
-    },
-    getItem(identificacion) {
+    getItem(id) {
       this.loading = true;
       this.axios
-        .get(`dosis-aplicadas-persona/${identificacion}`)
+        .get(`dosis-aplicadas/${id}`)
         .then((response) => {
           this.item = response.data;
           this.loading = false;
@@ -319,40 +333,6 @@ export default {
           this.$store.commit("snackbar", {
             color: "error",
             message: `al recuperar el registro de la referencia.`,
-            error: error,
-          });
-        });
-    },
-    descargarArchivo(id, button) {
-      const apiAxios = this.axios.create();
-      apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`;
-      apiAxios.defaults.headers.common[
-        "Authorization"
-      ] = `${this.token_type} ${this.access_token}`;
-      if (button === 1) {
-        this.loadingButton = true;
-      } else {
-        this.loadingButton1 = true;
-      }
-      this.axios({
-        url: `download-archivo/${id}`,
-        method: "GET",
-        responseType: "blob",
-      })
-        .then((response) => {
-          const url = window.URL.createObjectURL(
-            new Blob([response.data], { type: "application/pdf" })
-          );
-          window.open(url, "_blank");
-          this.loadingButton = false;
-          this.loadingButton1 = false;
-        })
-        .catch((error) => {
-          this.loadingButton = false;
-          this.loadingButton1 = false;
-          this.$store.commit("snackbar", {
-            color: "error",
-            message: `al descargar el archivo.`,
             error: error,
           });
         });
