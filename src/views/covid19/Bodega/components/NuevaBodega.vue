@@ -3,7 +3,6 @@
     v-model="dialog"
     persistent
     max-width="800"
-    hide-overlay
     transition="dialog-bottom-transition"
   >
     <v-card>

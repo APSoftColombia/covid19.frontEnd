@@ -3,7 +3,6 @@
     v-model="dialog"
     persistent
     max-width="800"
-    hide-overlay
     transition="dialog-bottom-transition"
   >
     <v-card>
@@ -49,17 +48,17 @@
                   >
                   </c-select-complete>
                 </v-col> -->
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="5">
                   <c-number
                     v-model="ingreso.cantidad"
                     label="Cantidad a ingresar"
                     name="cantidad"
                     upper-case
-                    rules="required"
+                    rules="required|min:1"
                   >
                   </c-number>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col class="pb-0" cols="12" sm="12" md="4">
                   <c-texto
                     v-model="ingreso.lote"
                     label="Lote"
@@ -67,6 +66,24 @@
                     upper-case
                   >
                   </c-texto>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="12" md="3">
+                  <v-checkbox
+                    class="mt-0"
+                    v-model="ingreso.ajusteEntrada"
+                    label="Ajuste"
+                    :true-value="true"
+                    :false-value="false"
+                  ></v-checkbox>
+                </v-col>
+                <v-col class="pb-0" cols="12" sm="12" md="12">
+                  <c-text-area
+                    v-model="ingreso.observaciones"
+                    label="Observaciones"
+                    name="observaciones"
+                    rules="required"
+                  >
+                  </c-text-area>
                 </v-col>
               </v-row>
             </ValidationObserver>
@@ -104,7 +121,9 @@ export default {
         bodega_id: null,
         biologico: null,
         cantidad: null,
-        lote: null
+        lote: null,
+        observaciones: null,
+        ajusteEntrada: null,
     },
     biologicos: [],
     bodegas: []

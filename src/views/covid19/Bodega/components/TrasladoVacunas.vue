@@ -3,7 +3,6 @@
     v-model="dialog"
     persistent
     max-width="800"
-    hide-overlay
     transition="dialog-bottom-transition"
   >
     <v-card>
@@ -57,7 +56,7 @@
                     upper-case
                     min="0"
                     :max="inventario && traslado.biologico ? inventario.find(x => x.biologico == traslado.biologico).cantidad : null"
-                    :rules="`required|min:0|max:${inventario && traslado.biologico ? inventario.find(x => x.biologico == traslado.biologico).cantidad : null}`"
+                    :rules="`required|min:1|max:${inventario && traslado.biologico ? inventario.find(x => x.biologico == traslado.biologico).cantidad : null}`"
                     :disabled="!traslado.biologico"
                   >
                   </c-number>

@@ -3,7 +3,6 @@
     v-model="dialog"
     persistent
     max-width="800"
-    hide-overlay
     transition="dialog-bottom-transition"
   >
     <v-card>
@@ -43,19 +42,19 @@
                     label="Motivo salida"
                     rules="required"
                     name="motivo_salida"
-                    :items="dosisVacunas ? dosisVacunas.motivos : []"
+                    :items="dosisVacunas && dosisVacunas.motivos.length ? dosisVacunas.motivos.filter(x => x !== 'Aplicacion' && x !== 'Traslado') : []"
                   >
                   </c-select-complete>
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="12" md="6">
                   <c-number
                     v-model="perdida.cantidad"
-                    label="Cantidad perdida"
+                    label="Cantidad"
                     name="cantidad"
                     upper-case
                     min="0"
                     :max="inventario && perdida.biologico ? inventario.find(x => x.biologico == perdida.biologico).cantidad : null"
-                    :rules="`required|min:0|max:${inventario && perdida.biologico ? inventario.find(x => x.biologico == perdida.biologico).cantidad : null}`"
+                    :rules="`required|min:1|max:${inventario && perdida.biologico ? inventario.find(x => x.biologico == perdida.biologico).cantidad : null}`"
                     :disabled="!perdida.biologico"
                   >
                   </c-number>

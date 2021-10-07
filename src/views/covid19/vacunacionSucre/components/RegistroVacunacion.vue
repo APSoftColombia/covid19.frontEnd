@@ -544,6 +544,9 @@
                                     ID
                                   </th>
                                   <th class="text-left">
+                                    Tipo
+                                  </th>
+                                  <th class="text-left">
                                     Fecha Aplicacion
                                   </th>
                                   <th class="text-left">
@@ -557,6 +560,7 @@
                                   :key="item.id"
                                 >
                                   <td>{{ item.id ? item.id : '' }}</td>
+                                  <td>{{ item.tipo_dosis ? item.tipo_dosis : '' }}</td>
                                   <td>{{ item.fecha_aplicacion ? moment(item.fecha_aplicacion).format('DD/MM/YYYY HH:mm') : '' }}</td>
                                   <td>{{ item.biologico ? item.biologico : '' }}</td>
                                 </tr>
@@ -574,7 +578,7 @@
                         name="fecha aplicacion biologico"
                         :disabled="identificacionVerificada < 1"
                         :max="moment().format('YYYY-MM-DD')"
-                        :min="moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')"
+                        :min="minApplication"
                       >
                       </c-date>
                     </v-col>
@@ -628,7 +632,7 @@
                         label="Bodega"
                         rules="required"
                         name="bodega"
-                        :items="bodegas"
+                        :items="bodegasFiltradas"
                         item-text="nombre"
                         item-value="bodega_id"
                         :disabled="identificacionVerificada < 1"
@@ -643,7 +647,7 @@
                         name="biologico"
                         :items="
                           vacunacion.bodega_id
-                            ? bodegas.find(
+                            ? bodegasFiltradas.find(
                                 (x) => x.bodega_id == vacunacion.bodega_id
                               ).biologicos
                             : []
@@ -675,7 +679,7 @@
                         label="Tipo de dosis"
                         rules="required"
                         name="tipo_dosis"
-                        :items="dosisVacunas.Tipo_dosis"
+                        :items="dosisAplicadas && dosisVacunas.Tipo_dosis && dosisAplicadas.length ? dosisVacunas.Tipo_dosis.filter(x => x.nombre !== dosisAplicadas[0].tipo_dosis) : dosisVacunas.Tipo_dosis"
                         item-text="nombre"
                         item-value="codigo"
                         :disabled="identificacionVerificada < 1"
@@ -941,6 +945,7 @@ export default {
     tamizajePositivo: null,
     afiliadoFallecido: null,
     dosisAplicadas: [],
+    bodegasFiltradas: [],
   }),
   computed: {
     ...mapGetters([
@@ -955,6 +960,13 @@ export default {
       "lastMpioAplicacionVacuna",
       'parentescos',
     ]),
+    minApplication() {
+      let minDate = this.moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')
+      if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
+        minDate = this.dosisAplicadas[0].fecha_aplicacion
+      }
+      return minDate
+    },
     verbalTimeAgoDiagnostico() {
       let stringDate = ``
       if (this.tamizajePositivo && this.tamizajePositivo.positivo_covid && this.tamizajePositivo.fecha_diagnostico) {
@@ -979,7 +991,7 @@ export default {
     },
     lotesBiologico() {
       return this.vacunacion.bodega_id && this.vacunacion.biologico
-        ? this.bodegas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos.find((x) => x.codigo === this.vacunacion.biologico)?.lotes
+        ? this.bodegasFiltradas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos.find((x) => x.codigo === this.vacunacion.biologico)?.lotes
         : [];
     },
     calc_segunda_dosis() {
@@ -1282,6 +1294,7 @@ export default {
       }, 400);
     },
     resultAfiliado(response) {
+      this.vacunacion = this.clone(models.vacunacionSucre);
       this.identificacionVerificada = 1;
       if (response.afiliado !== null) {
         this.vacunacion.tipo_identificacion = null;
@@ -1359,8 +1372,29 @@ export default {
             this.tamizajePositivo = response.tamizaje
           }
 
-          if(response.dosisAplicadas && response.dosisAplicadas.length) this.dosisAplicadas = response.dosisAplicadas
+          if(response.dosisAplicadas && response.dosisAplicadas.length) {
+            this.dosisAplicadas = response.dosisAplicadas
+            this.bodegasFiltradas = this.filterBodegas()
+          } else {
+            this.bodegasFiltradas = this.bodegas
+          }
       }
+    },
+    filterBodegas() {
+      let result = []
+      if (this.dosisAplicadas && this.dosisAplicadas.length && this.bodegas && this.bodegas.length) {
+        for (let bodega of this.bodegas) {
+          let bodegaClone = this.clone(bodega)
+          delete bodegaClone.biologicos
+          for (let biologico of bodega.biologicos) {
+            if (biologico.nombre == this.dosisAplicadas[0].biologico) {
+              bodegaClone.biologicos = [biologico]
+            }
+          }
+          if (bodegaClone.hasOwnProperty("biologicos")) result.push(bodegaClone)
+        }
+      }
+      return result
     },
     getVacunadores() {
       this.axios

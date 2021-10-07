@@ -492,7 +492,12 @@
                     this.llamada.fecha_nacimiento = response.afiliado.fecha_nacimiento
                     this.llamada.celular = response.afiliado.numero_celular
                     this.llamada.municipio_id = response.afiliado.centro_poblado_id
-
+                    this.llamada.sexo = response.afiliado.sexo
+                    this.llamada.celular = response.afiliado.numero_celular
+                    this.llamada.departamento_id = response.afiliado.departamento_id
+                    this.llamada.municipio_id = response.afiliado.municipio ? response.afiliado.municipio.id : null
+                    this.llamada.eps_id = response.afiliado.eps_id
+                    this.llamada.tipo_afiliacion = response.afiliado.regimen
                 }
             }
         }
