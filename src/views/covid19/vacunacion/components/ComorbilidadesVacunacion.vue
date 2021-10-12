@@ -7,7 +7,7 @@
                         label="COMORBILIDADES VACUNACION"
                         :rules="sinComorbilidades ? '' : 'required'"
                         name="comorbilidades_vacunacion"
-                        :items="comorbilidadesVacunas"
+                        :items="comorbilidadesCaracterizacion"
                         item-text="descrip"
                         item-value="codigo"
                         :disabled="sinComorbilidades || disabled"
@@ -46,7 +46,7 @@
         }),
         computed: {
             ...mapGetters([
-                'comorbilidadesVacunas'
+                'comorbilidadesCaracterizacion'
             ])
         },
         watch: {

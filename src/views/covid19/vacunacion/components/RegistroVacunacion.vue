@@ -631,7 +631,7 @@ export default {
       this.loading = true
       this.axios.get(`vacunaciones/${id}`).then(response => {
         if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
-          response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo.toString())
+          response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo)
         }
         this.vacunacion = response.data
         this.identificacionVerificada = 1

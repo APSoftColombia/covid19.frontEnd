@@ -274,6 +274,7 @@ const state = {
     lastDptoAplicacionVacuna: null,
     lastMpioAplicacionVacuna: null,
     comorbilidadesVacunas: [],
+    comorbilidadesCaracterizacion: [],
 }
 
 // getters
@@ -502,6 +503,9 @@ const getters = {
     comorbilidadesVacunas: state => {
         return state.comorbilidadesVacunas
     },
+    comorbilidadesCaracterizacion: state => {
+        return state.comorbilidadesCaracterizacion
+    },
 }
 // actions
 const actions = {
@@ -617,6 +621,7 @@ const actions = {
                             context.commit('assignDosisVacunas', response.data.parametros.dosisVacunas)
                             context.commit('assignTipoPoblaciones', response.data.parametros.tipo_poblaciones)
                             context.commit('assignComorbilidadesVacunas', response.data.parametros.dosisVacunas ? response.data.parametros.dosisVacunas.comorbilidadesVacunas : [])
+                            context.commit('assignComorbilidadesCaracterizacion', response.data.parametros.comorboCaracterizacion ? response.data.parametros.comorboCaracterizacion : [])
                             resolve(true)
                         })
                         .catch(error => {
@@ -828,6 +833,9 @@ const mutations = {
     },
     assignUltimoVacunadorId(state, ultimoVacunadorId) {
         state.ultimoVacunadorId = ultimoVacunadorId
+    },
+    assignComorbilidadesCaracterizacion(state, comorbilidadesCaracterizacion) {
+      state.comorbilidadesCaracterizacion = comorbilidadesCaracterizacion
     },
     snackbar(state, data) {
         let timeout = 8000
