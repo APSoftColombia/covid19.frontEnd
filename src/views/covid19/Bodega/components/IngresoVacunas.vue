@@ -58,16 +58,41 @@
                   >
                   </c-number>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="4">
-                  <c-texto
-                    v-model="ingreso.lote"
-                    label="Lote"
-                    name="lote"
-                    upper-case
-                  >
-                  </c-texto>
+                <v-col class="pb-0" cols="12" sm="12" md="5">
+                  <v-row>
+                    <v-col class="mx-0 my-0 px-0 py-0" cols="12" sm="12" md="8">
+
+                      <c-select-complete
+                        v-model="ingreso.lote"
+                        label="Lote"
+                        rules="required"
+                        name="lote"
+                        :items="lotes"
+                        item-value="codigo"
+                        item-text="codigo"
+                      />
+                    </v-col>
+                    <v-col class="mx-0 my-0 py-0" cols="12" sm="12" md="4">
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="primary"
+                            dark
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="openModalNuevoLote"
+                          >
+                            <v-icon dark>
+                              mdi-plus
+                            </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Crear lote</span>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="3">
+                <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-checkbox
                     class="mt-0"
                     v-model="ingreso.ajusteEntrada"
@@ -103,47 +128,55 @@
       </v-container>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
+    <crear-nuevo-lote ref="nuevoLote" @guardado="val => loteGuardado(val)"></crear-nuevo-lote>
   </v-dialog>
 </template>
 <script>
 import { mapGetters } from "vuex";
+import CrearNuevoLote from './../lotes/CrearNuevoLote'
 
 export default {
   name: "IngresoVacunas",
   components: {
+    CrearNuevoLote
   },
   data: () => ({
     dialog: false,
     loading: false,
     ingreso: null,
     ingresoModel: {
-        id: null,
-        bodega_id: null,
-        biologico: null,
-        cantidad: null,
-        lote: null,
-        observaciones: null,
-        ajusteEntrada: null,
+      id: null,
+      bodega_id: null,
+      biologico: null,
+      cantidad: null,
+      lote: null,
+      observaciones: null,
+      ajusteEntrada: null,
     },
     biologicos: [],
-    bodegas: []
+    bodegas: [],
+    lotes: [],
+    modalLote: false,
   }),
   computed: {
     ...mapGetters([
       "dosisVacunas",
     ]),
   },
-  watch: {},
-  created() {
-    this.getIps()
-  },
   methods: {
-    getIps() {
-        this.axios.get(`prestadores?filter[vacunador_covid]=1`)
+    loteGuardado(codigo) {
+      this.getLotes()
+      this.ingreso.lote = codigo
+    },
+    openModalNuevoLote() {
+      this.$refs.nuevoLote.open();
+    },
+    getLotes() {
+        this.axios.get(`lotes`)
             .then(response => {
-                this.prestadores = response.data
+                this.lotes = response.data
             }).catch(e => {
-            this.$store.commit('snackbar', {color: 'error', message: `al recuperar las IPS que vacunan covid.`, error: e})
+            this.$store.commit('snackbar', {color: 'error', message: `al recuperar los lotes.`, error: e})
         })
     },
     guardar() {
@@ -151,6 +184,7 @@ export default {
         if (result) {
           this.loading = true;
           let copiaData = this.clone(this.ingreso);
+          if (!copiaData.lote) copiaData.lote_object = this.lote_object;
           let request = copiaData.id
             ? this.axios.put(`registrar-entrada/${copiaData.id}`, copiaData)
             : this.axios.post(`registrar-entrada`, copiaData);
@@ -175,6 +209,7 @@ export default {
       });
     },
     open(id = null) {
+      this.getLotes()
       this.ingreso = this.clone(this.ingresoModel);
       this.ingreso.bodega_id = id;
       this.dialog = true;
