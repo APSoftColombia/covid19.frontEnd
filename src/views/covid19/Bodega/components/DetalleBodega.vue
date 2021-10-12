@@ -141,7 +141,7 @@
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
-                      <v-list-item class="py-0 mh-30">
+                      <v-list-item class="py-0 mh-30" v-if="item.responsable && item.responsable.direccion">
                         <v-icon small class="mr-1">fas fa-map-signs</v-icon>
                         <v-list-item-content class="pa-0">
                           <v-list-item-subtitle class="body-2">

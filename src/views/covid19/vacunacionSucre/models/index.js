@@ -60,6 +60,7 @@ const VacunacionSucre = {
     nombre_etnia_poblacion: null,
     lactancia: null,
     posparto: null,
+    comorbilidades_vacunacion: [],
 }
 
 export default {

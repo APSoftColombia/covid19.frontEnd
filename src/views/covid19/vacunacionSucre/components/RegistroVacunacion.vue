@@ -45,6 +45,7 @@
                     name="identificación"
                     @responsepersona="(val) => resultAfiliado(val)"
                     @keyup="identificacionVerificada = 0"
+                    :disabled="isEdit"
                   >
                   </search-identidad-vacunado>
                 </v-col>
@@ -703,7 +704,7 @@
                         label="Tipo de poblacion"
                         rules="required"
                         name="tipo_poblacion"
-                        :items="dosisVacunas.priorizaciones"
+                        :items="filterTipoPoblacion"
                         item-text="descripcion"
                         item-value="codigo"
                         :disabled="identificacionVerificada < 1"
@@ -794,6 +795,11 @@
                       >
                       </c-texto> -->
                     </v-col>
+                    <comorbilidades-gestion-vacunacion
+                      :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
+                      @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
+                      :disabled="identificacionVerificada < 1"
+                    ></comorbilidades-gestion-vacunacion>
                     <v-col class="pb-0" cols="12" sm="12" md="12">
                       <c-text-area
                         v-model="vacunacion.eventos_atribuidos"
@@ -922,12 +928,14 @@
 <script>
 import SearchIdentidadVacunado from "./SearchIdentidadVacunado";
 import models from "Views/covid19/vacunacionSucre/models";
+import ComorbilidadesGestionVacunacion from "./ComorbilidadesGestionVacunacion"
 import { mapGetters } from "vuex";
 
 export default {
   name: "RegistroVacunacion",
   components: {
     SearchIdentidadVacunado,
+    ComorbilidadesGestionVacunacion
   },
   data: () => ({
     menuHora: false,
@@ -960,6 +968,26 @@ export default {
       "lastMpioAplicacionVacuna",
       'parentescos',
     ]),
+    filterTipoPoblacion() {
+      let result = [];
+      if (this && this.dosisVacunas && this.dosisVacunas.priorizaciones && this.vacunacion.edad) {
+        result = this.dosisVacunas.priorizaciones.filter(x => {
+          if (!x.edad_min && !x.edad_max) {
+            return x;
+          }
+          if ((x.edad_min && this.vacunacion.edad >= x.edad_min) && (x.edad_max && this.vacunacion.edad < x.edad_max)) {
+            return x;
+          }
+          if ((x.edad_min && this.vacunacion.edad >= x.edad_min) && !x.edad_max) {
+            return x;
+          }
+          if ((x.edad_max && this.vacunacion.edad < x.edad_max) && !x.edad_min) {
+            return x;
+          }
+        })
+      }
+      return result;
+    },
     minApplication() {
       let minDate = this.moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')
       if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
@@ -1281,7 +1309,6 @@ export default {
       this.dialog = true;
     },
     close() {
-      this.isEdit = false;
       this.dialog = false;
       this.identificacionVerificada = 0;
       this.tamizajePositivo = null
@@ -1291,10 +1318,11 @@ export default {
         this.loading = false;
         this.vacunacion = this.clone(models.vacunacionSucre);
         this.$refs.formVacunacion.reset();
+        this.isEdit = false;
       }, 400);
     },
     resultAfiliado(response) {
-      this.vacunacion = this.clone(models.vacunacionSucre);
+      // this.vacunacion = this.clone(models.vacunacionSucre);
       this.identificacionVerificada = 1;
       if (response.afiliado !== null) {
         this.vacunacion.tipo_identificacion = null;

@@ -358,7 +358,8 @@ const state = {
         municipio_id: null,
         departamento_id: null,
         sexo: null,
-        direccion: null
+        direccion: null,
+        tipo_poblacion: null,
     }
 }
 

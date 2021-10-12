@@ -146,6 +146,15 @@
                                     </c-select-complete>
                                 </v-col>
                                 <v-col class="pb-0" cols="12">
+                                    <c-select-complete
+                                        v-model="llamada.tipo_poblacion"
+                                        label="Tipo población"
+                                        rules="required"
+                                        name="Tipo población"
+                                        :items="tipoPoblaciones"
+                                    />
+                                </v-col>
+                                <v-col class="pb-0" cols="12" v-if="llamada.tipo_poblacion == 'Población Asegurada'">
                                     <v-checkbox
                                             v-model="llamada.si_eps"
                                             class="shrink mr-2"
@@ -304,7 +313,8 @@
                 'epss',
                 'regimenesEspeciales',
                 'departamentos',
-                'sexosCovid'
+                'sexosCovid',
+                'tipoPoblaciones',
             ]),
             time () {
                 let h = 0
@@ -322,6 +332,16 @@
             }
         },
         watch: {
+            'llamada.tipo_poblacion': {
+                handler(val) {
+                    if (val == 'Población Asegurada') {
+                        this.llamada.si_eps = 1
+                    } else {
+                        this.llamada.si_eps = 0
+                    }
+                },
+                immediate: false
+            },
             'llamada.departamento_id': {
                 handler (val) {
                     if (!val) {
@@ -381,6 +401,9 @@
             'llamada.eps_id': {
                 handler(val) {
                     !val && (this.llamada.tipo_afiliacion = null)
+                    if (val) {
+                        this.llamada.tipo_poblacion = 'Población Asegurada'
+                    }
                 },
                 immediate: false
             },

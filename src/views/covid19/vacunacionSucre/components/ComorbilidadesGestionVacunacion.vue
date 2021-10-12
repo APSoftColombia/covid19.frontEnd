@@ -29,7 +29,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: 'ComorbilidadesVacunacion',
+        name: 'ComorbilidadesGestionVacunacion',
         props: {
             arrayComorbilidades: {
                 type: [Array, String, Number, Boolean],

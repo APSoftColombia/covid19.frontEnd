@@ -190,14 +190,14 @@ export default {
         return (this && this.prestadores && this.bodega.codigo_ips && this.prestadores.find(x => x.codigohabilitacion === this.bodega.codigo_ips)) || null
     },
   },
-  watch: {
+  /* watch: {
     'bodega.codigo_ips': {
       handler () {
         this.bodega.responsable_id = null
       },
       immediate: false
     }
-  },
+  }, */
   created() {
     this.getIps()
   },

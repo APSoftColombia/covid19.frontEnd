@@ -32,6 +32,7 @@
                   name="identificación"
                   @responsepersona="val => resultAfiliado(val)"
                   @keyup="identificacionVerificada = 0"
+                  :disabled="isEdit"
               >
               </c-identificacion>
             </v-col>
@@ -350,11 +351,11 @@
                   </v-card-text>
                 </v-card>
               </v-col>
-              <!-- <comorbilidades-vacunacion
+              <comorbilidades-vacunacion
                     :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
                     @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
                     :disabled="identificacionVerificada < 1"
-              ></comorbilidades-vacunacion> -->
+              ></comorbilidades-vacunacion>
 <!--              <v-col cols="12">-->
 <!--                <v-card outlined tile>-->
 <!--                  <v-card-text>-->
@@ -492,11 +493,11 @@
 <script>
 import models from 'Views/covid19/vacunacion/models'
 import {mapGetters} from 'vuex'
-// import ComorbilidadesVacunacion from './ComorbilidadesVacunacion'
+import ComorbilidadesVacunacion from './ComorbilidadesVacunacion'
 
 export default {
   components: {
-    // ComorbilidadesVacunacion,
+    ComorbilidadesVacunacion,
   },
   data: () => ({
     identificacionVerificada: 0,
@@ -513,6 +514,7 @@ export default {
     modalPersonaFallecida: false,
     afiliadoFallecido: null,
     tamizajePositivo: null,
+    isEdit: false,
   }),
   computed: {
     ...mapGetters([
@@ -546,6 +548,14 @@ export default {
     }
   },
   watch: {
+    'vacunacion.intencion_vacuna': {
+      handler(val) {
+        if (val) {
+          this.vacunacion.porque_no_vacuna = null
+        }
+      },
+      immediate: false
+    },
     'vacunacion.fecha_nacimiento': {
       handler(val) {
         if (this && this.vacunacion) {
@@ -620,9 +630,9 @@ export default {
     getVacunacion(id) {
       this.loading = true
       this.axios.get(`vacunaciones/${id}`).then(response => {
-        // if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
-        //   response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo.toString())
-        // }
+        if (response.data && response.data.comorbilidades && response.data.comorbilidades.length) {
+          response.data.comorbilidades_vacunacion = response.data.comorbilidades.map(x => x.codigo.toString())
+        }
         this.vacunacion = response.data
         this.identificacionVerificada = 1
         this.loading = false
@@ -639,6 +649,7 @@ export default {
       this.identificacionVerificada = 0
       if(vacunacion) {
         this.vacunacion = this.getVacunacion(vacunacion.id)
+        this.isEdit = true
       } else {
         this.vacunacion = this.clone(models.vacunacion)
       }
@@ -646,6 +657,7 @@ export default {
     },
     close() {
       this.dialog = false
+      this.isEdit = false
       setTimeout(() => {
         this.loading = false
         this.mujerGestante = 0

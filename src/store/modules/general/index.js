@@ -273,6 +273,7 @@ const state = {
     tipoPoblaciones: [],
     lastDptoAplicacionVacuna: null,
     lastMpioAplicacionVacuna: null,
+    comorbilidadesVacunas: [],
 }
 
 // getters
@@ -498,6 +499,9 @@ const getters = {
     lastMpioAplicacionVacuna: state => {
         return state.lastMpioAplicacionVacuna
     },
+    comorbilidadesVacunas: state => {
+        return state.comorbilidadesVacunas
+    },
 }
 // actions
 const actions = {
@@ -612,6 +616,7 @@ const actions = {
                             context.commit('assignPriorizacionesVacunas', response.data.parametros.priorizaciones_vacunas)
                             context.commit('assignDosisVacunas', response.data.parametros.dosisVacunas)
                             context.commit('assignTipoPoblaciones', response.data.parametros.tipo_poblaciones)
+                            context.commit('assignComorbilidadesVacunas', response.data.parametros.dosisVacunas ? response.data.parametros.dosisVacunas.comorbilidadesVacunas : [])
                             resolve(true)
                         })
                         .catch(error => {
@@ -811,6 +816,9 @@ const mutations = {
     },
     assignTipoPoblaciones(state, tipoPoblaciones){
         state.tipoPoblaciones = tipoPoblaciones
+    },
+    assignComorbilidadesVacunas(state, comorbilidadesVacunas){
+        state.comorbilidadesVacunas = comorbilidadesVacunas
     },
     assignLastDptoAplicacionVacuna(state, lastDptoAplicacionVacuna){
         state.lastDptoAplicacionVacuna = lastDptoAplicacionVacuna
