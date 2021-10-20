@@ -297,7 +297,8 @@ export default {
       'tiposAfiliacion',
       'epss',
       'regimenesEspeciales',
-      'modelPersona'
+      'modelPersona',
+       'tipoPoblaciones'
     ])
   },
   watch: {
