@@ -154,7 +154,7 @@
                                         :items="tipoPoblaciones"
                                     />
                                 </v-col>
-                                <v-col class="pb-0" cols="12" v-if="llamada.tipo_poblacion == 'Población Asegurada'">
+                                <!-- <v-col class="pb-0" cols="12" v-if="llamada.tipo_poblacion == 'Población Asegurada'">
                                     <v-checkbox
                                             v-model="llamada.si_eps"
                                             class="shrink mr-2"
@@ -162,7 +162,7 @@
                                             :false-value="0"
                                             :true-value="1"
                                     ></v-checkbox>
-                                </v-col>
+                                </v-col> -->
                                 <template v-if="llamada.si_eps">
                                     <v-col class="pb-0" cols="12" sm="12" md="12">
                                         <c-select-complete
@@ -374,7 +374,7 @@
                             this.llamada.fecha_nacimiento = null
                             this.llamada.edad = null
                             this.llamada.municipio_id = null
-                            this.llamada.si_eps = 1
+                            this.llamada.si_eps = 0
                             this.llamada.eps_id = null
 
                         })

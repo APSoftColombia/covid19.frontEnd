@@ -354,7 +354,7 @@ const state = {
         eps_id: null,
         tipo_afiliacion: null,
         regimen_especial: null,
-        si_eps: 1,
+        si_eps: 0,
         municipio_id: null,
         departamento_id: null,
         sexo: null,
