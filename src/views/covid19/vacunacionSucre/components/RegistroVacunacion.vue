@@ -35,6 +35,12 @@
                 Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{ verbalTimeAgoDiagnostico }} (Fecha diagnostico: {{ tamizajePositivo.fecha_diagnostico }}) <br>
                 Con Numero de ERP. {{ tamizajePositivo.id }}
               </v-alert>
+              <v-alert
+                type="warning"
+                v-if="validationGestanteFail"
+              >
+                La mujer se encuentra en esatado de Gestacion temprana y no es posible la vacunacion.
+              </v-alert>
               <v-row>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
                   <search-identidad-vacunado
@@ -348,52 +354,100 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.sexo == 'F'">
-                  <c-select-complete
-                    v-model="vacunacion.condicion"
-                    label="Condicion"
-                    rules="required"
-                    name="condicion"
-                    :items="dosisVacunas.condiciones"
-                    :disabled="identificacionVerificada < 1"
-                  >
-                  </c-select-complete>
-                </v-col>
-                <template v-if="vacunacion.condicion == 'GESTANTE'">
-                  <v-col class="pb-0" cols="12" sm="6" md="6">
-                    <c-date
-                      v-model="vacunacion.fecha_prob_parto"
-                      label="Fecha probable parto"
+                <template v-if="vacunacion.sexo == 'F'">
+                  <v-col cols="12" sm="12" md="12">
+                    <!-- <c-select-complete
+                      v-model="vacunacion.condicion"
+                      label="Condicion"
                       rules="required"
-                      name="fecha probable parto"
+                      name="condicion"
+                      :items="dosisVacunas.condiciones"
                       :disabled="identificacionVerificada < 1"
-                      :max="moment().format('YYYY-MM-DD')"
                     >
-                    </c-date>
-                  </v-col>
-                  <v-col cols="12" class="pb-0" sm="6" md="6">
-                    <c-texto
-                      label="Semanas de Embarazo"
+                    </c-select-complete> -->
+                    <c-radio
+                      v-model="vacunacion.condicion"
+                      :items="condionesGestante"
+                      itemValue="value"
+                      itemText="text"
                       rules="required"
-                      v-model="vacunacion.semanas_embarazo"
-                      name="motivo de no vacunación"
+                      name="condicion"
+                      label="Condicion Gestante: "
+                      :column="!$vuetify.breakpoint.smAndUp"
                       :disabled="identificacionVerificada < 1"
                     />
                   </v-col>
-                </template>
-                <template v-if="vacunacion.sexo == 'F'">
-                  <v-col class="pb-0" cols="12" sm="12" md="6">
+                  <template v-if="vacunacion.condicion == 'GESTANTE'">
+                    <v-col class="pb-0" cols="12" sm="12" md="12">
+                      <c-date
+                          v-model="vacunacion.fecha_ult_regla"
+                          placeholder="Fecha de ultima menstruacion"
+                          :max="moment().format('YYYY-MM-DD')"
+                          rules="required"
+                          name="fecha ultima menstruacion"
+                      >
+                      </c-date>
+                    </v-col>
+                    <v-col class="pb-0" cols="12" sm="6" md="6">
+                      <c-date
+                        v-model="vacunacion.fecha_prob_parto"
+                        label="Fecha probable parto"
+                        rules="required"
+                        name="fecha probable parto"
+                        disabled
+                      >
+                      </c-date>
+                    </v-col>
+                    <v-col cols="12" class="pb-0" sm="6" md="6">
+                      <c-texto
+                        label="Semanas de Embarazo"
+                        rules="required"
+                        v-model="vacunacion.semanas_embarazo"
+                        name="semanas de embarazo"
+                        disabled
+                      />
+                    </v-col>
+                  </template>
+                
+                  <template v-if="vacunacion.condicion != 'GESTANTE'">
+                    <v-col cols="12" sm="12" md="6">
+                      <!-- <v-checkbox
+                        v-model="vacunacion.posparto"
+                        label="PosParto"
+                        :true-value="true"
+                        :false-value="false"
+                      ></v-checkbox> -->
+                      <c-radio
+                        v-model="vacunacion.posparto"
+                        :items="condicionesPosparto"
+                        itemValue="value"
+                        itemText="text"
+                        rules="required"
+                        name="porparto"
+                        label="Condicion de Posparto: "
+                        :column="!$vuetify.breakpoint.smAndUp"
+                        :disabled="identificacionVerificada < 1"
+                      />
+                    </v-col>
+                    <template v-if="vacunacion.posparto">
+                      <v-col class="pb-0" cols="12" sm="12" md="6">
+                        <c-date
+                          v-model="vacunacion.fecha_parto"
+                          label="Fecha del parto"
+                          rules="required"
+                          name="fecha del parto"
+                          :disabled="identificacionVerificada < 1"
+                          :max="moment().format('YYYY-MM-DD')"
+                          :min="moment().subtract(40, 'days').format('YYYY-MM-DD')"
+                        >
+                        </c-date>
+                      </v-col>
+                    </template>
+                  </template>
+                  <v-col class="pb-0" cols="12" sm="12" md="12">
                     <v-checkbox
                       v-model="vacunacion.lactancia"
                       label="Lactancia"
-                      :true-value="true"
-                      :false-value="false"
-                    ></v-checkbox>
-                  </v-col>
-                  <v-col class="pb-0" cols="12" sm="12" md="6">
-                    <v-checkbox
-                      v-model="vacunacion.posparto"
-                      label="PosParto"
                       :true-value="true"
                       :false-value="false"
                     ></v-checkbox>
@@ -578,7 +632,6 @@
                         rules="required"
                         name="fecha aplicacion biologico"
                         :disabled="identificacionVerificada < 1"
-                        :max="moment().format('YYYY-MM-DD')"
                         :min="minApplication"
                       >
                       </c-date>
@@ -856,7 +909,7 @@
                 Cerrar
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click.stop="guardar">
+              <v-btn color="primary" :disabled="validationGestanteFail" @click.stop="guardar">
                 <v-icon left>fas fa-save</v-icon>
                 Guardar
               </v-btn>
@@ -954,6 +1007,15 @@ export default {
     afiliadoFallecido: null,
     dosisAplicadas: [],
     bodegasFiltradas: [],
+    condionesGestante: [
+      {text: 'SI', value: 'GESTANTE'},
+      {text: 'NO', value: 'NO GESTANTE'},
+    ],
+    condicionesPosparto: [
+      {text: 'SI', value: 1},
+      {text: 'NO', value: 0},
+    ],
+    validationGestanteFail: false
   }),
   computed: {
     ...mapGetters([
@@ -1086,6 +1148,15 @@ export default {
     },
   },
   watch: {
+    "vacunacion.fecha_ult_regla": {
+      handler(val) {
+        if (val) {
+          this.vacunacion.fecha_prob_parto = this.calcFechaProbableParto(val)
+          this.vacunacion.semanas_embarazo = this.calcSemanasEmbarazo(val)
+        }
+      },
+      immediate: false
+    },
     "vacunacion.etnia": {
       handler(val) {
         if (val == null || val == '6') this.vacunacion.nombre_etnia_poblacion = null
@@ -1187,6 +1258,19 @@ export default {
           this.vacunacion.fecha_prob_parto = null;
           this.vacunacion.semanas_embarazo = null;
         }
+        if(value && (value == 'GESTANTE')) this.vacunacion.posparto = null
+      },
+      immediate: false
+    },
+    "vacunacion.posparto": {
+      handler(val) {
+        if (val) {
+          this.vacunacion.condicion = 'NO GESTANTE'
+          this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER'])
+        } else {
+          this.vacunacion.fecha_parto = null
+          this.bodegasFiltradas = this.filterBodegas()
+        }
       },
       immediate: false
     },
@@ -1200,8 +1284,61 @@ export default {
       },
       immediate: true,
     },
+    "vacunacion.edad": {
+      handler(val) {
+        if (val && (val >= 12 && val < 18 && this.dosisAplicadas && !this.dosisAplicadas.length)) {
+          this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER', 'MODERNA'])
+        } else {
+          this.bodegasFiltradas = this.filterBodegas()
+        }
+      },
+      immediate: false
+    },
+    "vacunacion.semanas_embarazo": {
+      handler(val) {
+        if (val && val < 12) {
+          this.validationGestanteFail = true;
+        } else {
+          this.validationGestanteFail = false;
+        }
+        if (val && val >= 12 && val <= 40 && this.vacunacion.condicion == 'GESTANTE') {
+          this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER'])
+        } else {
+          this.bodegasFiltradas = this.filterBodegas()
+        }
+      },
+      immediate: false
+    },
   },
   methods: {
+    filterBodegasToPrimeraAplicacion(arrayBiologicos) {
+      let result = []
+      if (this.bodegas && this.bodegas.length) {
+        for (let bodega of this.bodegas) {
+          let bodegaClone = this.clone(bodega)
+          delete bodegaClone.biologicos
+          for (let biologico of bodega.biologicos) {
+            // biologico.nombre == this.dosisAplicadas[0].biologico
+            if (arrayBiologicos.includes(biologico.nombre)) {
+              bodegaClone.biologicos = [biologico]
+            }
+          }
+          if (bodegaClone.hasOwnProperty("biologicos")) result.push(bodegaClone)
+        }
+      }
+      return result
+    },
+    calcFechaProbableParto(fechaUltimaRegla) {
+      // días que dura la gestación 7 días * 40 semanas + 10 días
+      let diasGestacion = (7 * 40) + 10
+      return this.moment(fechaUltimaRegla, 'YYYY-MM-DD').add(diasGestacion, 'days').format('YYYY[-]MM[-]DD')
+    },
+    calcSemanasEmbarazo(fechaUltimaRegla) {
+      let fecha1 = this.moment(fechaUltimaRegla, 'YYYY-MM-DD').add(10, 'days')
+      let fecha2 = this.moment()
+      let resultado = fecha2.diff(fecha1, 'weeks')
+      return resultado
+    },
     getInventarioResponsable() {
       this.axios
         .get(`dosis-resources-bodegas`)
@@ -1408,6 +1545,13 @@ export default {
           }
       }
     },
+    /* 
+      Fuction: FilterBodegas
+      Args: none
+      Description: This function is to filter and choose only the Bodegas who has
+      the same biologic that the most recent biologic applied.
+      Return: Array's bodegas
+    */
     filterBodegas() {
       let result = []
       if (this.dosisAplicadas && this.dosisAplicadas.length && this.bodegas && this.bodegas.length) {
@@ -1421,6 +1565,8 @@ export default {
           }
           if (bodegaClone.hasOwnProperty("biologicos")) result.push(bodegaClone)
         }
+      } else {
+        result = this.bodegas
       }
       return result
     },

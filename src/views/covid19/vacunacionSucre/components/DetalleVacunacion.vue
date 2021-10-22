@@ -89,9 +89,9 @@
                           {{ item[0].direccion }} <br>
                           {{
                               municipiosTotal && municipiosTotal.length &&
-                              parseInt(item[0].cod_mpio) && municipiosTotal.find(x => x.codigo ===
-                              parseInt(item[0].cod_mpio)) ? `${municipiosTotal.find(x => x.codigo ===
-                              parseInt(item[0].cod_mpio)).nombre}, ${municipiosTotal.find(x => x.codigo
+                              parseInt(item[0].cod_mpio) && municipiosTotal.find(x => parseInt(x.codigo) ===
+                              parseInt(item[0].cod_mpio)) ? `${municipiosTotal.find(x => parseInt(x.codigo) ===
+                              parseInt(item[0].cod_mpio)).nombre}, ${municipiosTotal.find(x => parseInt(x.codigo)
                               === parseInt(item[0].cod_mpio)).departamento.nombre}` : ''
                           }} <br>
                           {{ item[0].zona }}

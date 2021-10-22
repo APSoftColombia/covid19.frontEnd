@@ -61,6 +61,8 @@ const VacunacionSucre = {
     lactancia: null,
     posparto: null,
     comorbilidades_vacunacion: [],
+    fecha_parto: null,
+    fecha_ult_regla: null,
 }
 
 export default {
