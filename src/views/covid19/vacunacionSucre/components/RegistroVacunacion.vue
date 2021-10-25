@@ -28,7 +28,7 @@
               v-slot="{ invalid, validated, passes, validate }"
               autocomplete="off"
             >
-              <v-alert
+              <!-- <v-alert
                 type="warning"
                 v-if="identificacionVerificada && tamizajePositivo"
               >
@@ -40,7 +40,27 @@
                 v-if="validationGestanteFail"
               >
                 La mujer se encuentra en esatado de Gestacion temprana y no es posible la vacunacion.
+              </v-alert> -->
+              <v-alert
+                type="warning"
+                style="position: fixed; z-index: 9999; margin-right: 27%;"
+                v-if="tamizajePositivo || validationGestanteFail || errorProgramatico || esquemaCompleto"
+              >
+                <ul>
+                  <!-- <li>Faltan 4 para que se pueda aplicar la segunda dosis de PFIZER.</li> -->
+                  <li v-if="errorProgramatico"><div>Error programatico: {{ errorProgramaticoMessage ? errorProgramaticoMessage : '' }}</div></li>
+                  <li v-if="esquemaCompleto"><div>Ciudadano ya cuenta con esquema completo de Vacunacion.</div></li>
+                  <li v-if="validationGestanteFail">La mujer se encuentra en estado de Gestacion temprana 
+                    ({{ vacunacion.semanas_embarazo ? vacunacion.semanas_embarazo : '' }} semanas de embarazo) y no es posible aplicar el Biologico.</li>
+                  <li v-if="tamizajePositivo">Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace sdfgsdgdf 
+                  (Fecha diagnostico: 654654) Con Numero de ERP. 65465</li>
+                </ul>
               </v-alert>
+              <div v-if="errorProgramatico" style="height: 2rem; margin-bottom: 2rem;" />
+              <div v-if="esquemaCompleto" style="height: 2rem; margin-bottom: 2rem;" />
+              <div v-if="validationGestanteFail" style="height: 3rem; margin-bottom: 2rem;" />
+              <div v-if="tamizajePositivo" style="height: 5rem; margin-bottom: 2rem;" />
+              <div v-if="tamizajePositivo" style="height: 5rem; margin-bottom: 2rem;" />
               <v-row>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
                   <search-identidad-vacunado
@@ -632,7 +652,7 @@
                         rules="required"
                         name="fecha aplicacion biologico"
                         :disabled="identificacionVerificada < 1"
-                        :min="minApplication"
+                        :min="minAplication"
                       >
                       </c-date>
                     </v-col>
@@ -733,7 +753,7 @@
                         label="Tipo de dosis"
                         rules="required"
                         name="tipo_dosis"
-                        :items="dosisAplicadas && dosisVacunas.Tipo_dosis && dosisAplicadas.length ? dosisVacunas.Tipo_dosis.filter(x => x.nombre !== dosisAplicadas[0].tipo_dosis) : dosisVacunas.Tipo_dosis"
+                        :items="filterTipoDosis"
                         item-text="nombre"
                         item-value="codigo"
                         :disabled="identificacionVerificada < 1"
@@ -909,7 +929,7 @@
                 Cerrar
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary" :disabled="validationGestanteFail" @click.stop="guardar">
+              <v-btn color="primary" @click.stop="guardar">
                 <v-icon left>fas fa-save</v-icon>
                 Guardar
               </v-btn>
@@ -1015,7 +1035,11 @@ export default {
       {text: 'SI', value: 1},
       {text: 'NO', value: 0},
     ],
-    validationGestanteFail: false
+    validationGestanteFail: false,
+    errorProgramatico: null,
+    errorProgramaticoMessage: null,
+    esquemaCompleto: null,
+    tieneRefuerzo: null,
   }),
   computed: {
     ...mapGetters([
@@ -1030,6 +1054,38 @@ export default {
       "lastMpioAplicacionVacuna",
       'parentescos',
     ]),
+    filterTipoDosis() {
+      let result = this.dosisVacunas.Tipo_dosis
+      if (this.dosisAplicadas.length) {
+        let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
+        let tipoBiologicosAplicadas = this.dosisAplicadas.map(x => x.biologico)
+        // SI el biologico actual es JANSSEN O ya tiene dosis aplicadas de JANSSEN-> Solo habilita los tipos de dosis de REFUERZO
+        if ((this.vacunacion.biologico && this.vacunacion.biologico == '4') || tipoBiologicosAplicadas.includes("JANSSEN")) {
+          console.log("2");
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+        }
+        // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos aplicadas son diferentes de JANSSEN Y no tiene el esquema completo
+        // -> Solo habilita los tipos de dosis diferentes de los que ya tiene (tipoDosisAplicadas)
+        if (((this.vacunacion.biologico && this.vacunacion.biologico != '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && !this.esquemaCompleto) {
+          console.log("3");
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !tipoDosisAplicadas.includes(x.nombre) ? x : null)
+        }
+        // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos son diferentes de JANSSEN Y tiene el esquema completo
+        // -> habilita solo el REFUERZO
+        if (((this.vacunacion.biologico && this.vacunacion.biologico != '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && this.esquemaCompleto) {
+          console.log("4");
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+        }
+      } else {
+        // SI es primera dosis Y el biologico es JANSSEN -> Solo habilita los tipos de dosis de UNICA POR BIOLOGICO
+        if (this.vacunacion.biologico == '4') {
+          console.log("1");
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+        }
+      }
+      
+      return result
+    },
     filterTipoPoblacion() {
       let result = [];
       if (this && this.dosisVacunas && this.dosisVacunas.priorizaciones && this.vacunacion.edad) {
@@ -1050,7 +1106,7 @@ export default {
       }
       return result;
     },
-    minApplication() {
+    minAplication() {
       let minDate = this.moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')
       if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
         minDate = this.dosisAplicadas[0].fecha_aplicacion
@@ -1266,10 +1322,8 @@ export default {
       handler(val) {
         if (val) {
           this.vacunacion.condicion = 'NO GESTANTE'
-          this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER'])
         } else {
           this.vacunacion.fecha_parto = null
-          this.bodegasFiltradas = this.filterBodegas()
         }
       },
       immediate: false
@@ -1450,6 +1504,11 @@ export default {
       this.identificacionVerificada = 0;
       this.tamizajePositivo = null
       this.afiliadoFallecido = null
+      this.validationGestanteFail= false
+      this.errorProgramatico= null
+      this.errorProgramaticoMessage= null
+      this.esquemaCompleto= null
+      this.tieneRefuerzo= null
       this.dosisAplicadas = []
       setTimeout(() => {
         this.loading = false;
@@ -1483,6 +1542,10 @@ export default {
 
       } else {
           if (response.dosis && response.dosis.length) {
+            this.errorProgramatico = response.dosis[0].error_programatico
+            this.errorProgramaticoMessage = response.dosis[0].error_programatico_descrp
+            this.esquemaCompleto = response.dosis[0].esquema_completo
+            this.tieneRefuerzo = response.dosis[0].refuerzo
             this.vacunacion.tipo_identificacion = response.dosis[0].tipo_identificacion
             this.vacunacion.identificacion = response.dosis[0].identificacion;
             this.vacunacion.nombre1 = response.dosis[0].nombre1;
@@ -1542,6 +1605,7 @@ export default {
             this.bodegasFiltradas = this.filterBodegas()
           } else {
             this.bodegasFiltradas = this.bodegas
+            this.dosisAplicadas = []
           }
       }
     },
