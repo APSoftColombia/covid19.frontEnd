@@ -1336,6 +1336,14 @@ export default {
     },
   },
   watch: {
+    "vacunacion.puede_vacunarse": {
+      handler(val) {
+        if (val) {
+          this.vacunacion.motivos_no_puede_vacunarse = []
+        }
+      },
+      immediate: false
+    },
     "forzadoNoVacunacion": {
       handler(val) {
         if (val) {
