@@ -652,7 +652,8 @@ export default {
     }
   }),
   created() {
-    this.dataTable.route = this.esMedico ? null : 'tamizajes'
+    // this.dataTable.route = this.esMedico ? null : 'tamizajes'
+    this.dataTable.route = 'tamizajes'
     // this.rutaBase = this.clone(this.dataTable.route)
     this.getMedicos()
   },

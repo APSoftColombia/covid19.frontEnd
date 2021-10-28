@@ -44,22 +44,27 @@
               <v-alert
                 type="warning"
                 style="position: fixed; z-index: 9999; margin-right: 27%;"
-                v-if="tamizajePositivo || validationGestanteFail || errorProgramatico || esquemaCompleto"
+                v-if="tamizajePositivo || validationGestanteFail || errorProgramatico || tieneRefuerzo || edadNoPermitidaVacuna || fechaAplicacionAnticipada"
               >
                 <ul>
-                  <!-- <li>Faltan 4 para que se pueda aplicar la segunda dosis de PFIZER.</li> -->
+                  <li v-if="edadNoPermitidaVacuna">El ciudadano tiene {{ vacunacion && vacunacion.edad ? vacunacion.edad : '' }} años de edad, y
+                    no esta incluido en ninguno de los planes de vacunacion.
+                  </li>
+                  <li v-if="fechaAplicacionAnticipada"><div>{{ msgFechaAplicacionAnticipada ? msgFechaAplicacionAnticipada : '' }}</div></li>
                   <li v-if="errorProgramatico"><div>Error programatico: {{ errorProgramaticoMessage ? errorProgramaticoMessage : '' }}</div></li>
-                  <li v-if="esquemaCompleto"><div>Ciudadano ya cuenta con esquema completo de Vacunacion.</div></li>
+                  <li v-if="tieneRefuerzo"><div>Ciudadano ya cuenta con esquema completo de Vacunacion y Refuerzo</div></li>
                   <li v-if="validationGestanteFail">La mujer se encuentra en estado de Gestacion temprana 
                     ({{ vacunacion.semanas_embarazo ? vacunacion.semanas_embarazo : '' }} semanas de embarazo) y no es posible aplicar el Biologico.</li>
-                  <li v-if="tamizajePositivo">Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace sdfgsdgdf 
-                  (Fecha diagnostico: 654654) Con Numero de ERP. 65465</li>
+                  <li v-if="tamizajePositivo">Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{ verbalTimeAgoDiagnostico ? verbalTimeAgoDiagnostico : '' }} 
+                    (Fecha diagnostico: {{ tamizajePositivo ? tamizajePositivo.fecha_diagnostico : '' }}) <br> Con Numero de ERP. {{ tamizajePositivo ? tamizajePositivo.id : '' }}
+                  </li>
                 </ul>
               </v-alert>
-              <div v-if="errorProgramatico" style="height: 2rem; margin-bottom: 2rem;" />
-              <div v-if="esquemaCompleto" style="height: 2rem; margin-bottom: 2rem;" />
+              <div v-if="edadNoPermitidaVacuna" style="height: 4rem; margin-bottom: 2rem;" />
+              <div v-if="fechaAplicacionAnticipada" style="height: 4rem; margin-bottom: 2rem;" />
+              <div v-if="errorProgramatico" style="height: 1rem; margin-bottom: 1rem;" />
+              <div v-if="tieneRefuerzo" style="height: 3rem; margin-bottom: 2rem;" />
               <div v-if="validationGestanteFail" style="height: 3rem; margin-bottom: 2rem;" />
-              <div v-if="tamizajePositivo" style="height: 5rem; margin-bottom: 2rem;" />
               <div v-if="tamizajePositivo" style="height: 5rem; margin-bottom: 2rem;" />
               <v-row>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
@@ -606,7 +611,39 @@
                       </v-col>
                     </v-card>
                   </v-col>
-                  <template v-if="vacunacion.acepta_vacuna">
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                          v-model="vacunacion.puede_vacunarse"
+                          :items="[
+                            { text: 'Si', value: 1 },
+                            { text: 'No', value: 0 },
+                          ]"
+                          itemValue="value"
+                          itemText="text"
+                          rules="required"
+                          name="puede vacunarse"
+                          label="¿Puede Vacunarse?"
+                          :column="!$vuetify.breakpoint.smAndUp"
+                          :disabled="identificacionVerificada < 1 || forzadoNoVacunacion"
+                        />
+                      </v-card-text>
+                      <template v-if="vacunacion.puede_vacunarse == 0">
+                        <no-puede-vacunarse-component
+                          :array-opciones="vacunacion.motivos_no_puede_vacunarse"
+                          @changeOpciones="val => vacunacion.motivos_no_puede_vacunarse = val"
+                          :disabled="identificacionVerificada < 1"
+                        ></no-puede-vacunarse-component>
+                        <!-- <comorbilidades-gestion-vacunacion
+                          :array-comorbilidades="vacunacion.motivos_no_puede_vacuna"
+                          @changeComorbilidades="val => vacunacion.motivos_no_puede_vacuna = val"
+                          :disabled="identificacionVerificada < 1"
+                        ></comorbilidades-gestion-vacunacion> -->
+                      </template>
+                    </v-card>
+                  </v-col>
+                  <template v-if="vacunacion.acepta_vacuna && vacunacion.puede_vacunarse">
                     <v-col class="pb-0" cols="12" sm="12" md="12" v-if="dosisAplicadas && dosisAplicadas.length">
                       <v-card outlined tile>
                         <v-card-title>Registros de Vacunacion previa</v-card-title>
@@ -652,7 +689,8 @@
                         rules="required"
                         name="fecha aplicacion biologico"
                         :disabled="identificacionVerificada < 1"
-                        :min="minAplication"
+                        :min="condicionesAplicacion.minDate"
+                        :max="moment().format('YYYY-MM-DD')"
                       >
                       </c-date>
                     </v-col>
@@ -1002,13 +1040,15 @@
 import SearchIdentidadVacunado from "./SearchIdentidadVacunado";
 import models from "Views/covid19/vacunacionSucre/models";
 import ComorbilidadesGestionVacunacion from "./ComorbilidadesGestionVacunacion"
+import NoPuedeVacunarseComponent from "./NoPuedeVacunarseComponent"
 import { mapGetters } from "vuex";
 
 export default {
   name: "RegistroVacunacion",
   components: {
     SearchIdentidadVacunado,
-    ComorbilidadesGestionVacunacion
+    ComorbilidadesGestionVacunacion,
+    NoPuedeVacunarseComponent,
   },
   data: () => ({
     menuHora: false,
@@ -1040,6 +1080,9 @@ export default {
     errorProgramaticoMessage: null,
     esquemaCompleto: null,
     tieneRefuerzo: null,
+    fechaAplicacionAnticipada: false,
+    msgFechaAplicacionAnticipada: null,
+    edadNoPermitidaVacuna: false,
   }),
   computed: {
     ...mapGetters([
@@ -1054,7 +1097,24 @@ export default {
       "lastMpioAplicacionVacuna",
       'parentescos',
     ]),
+    // *Hacer computed de forzadoNoVacunacion para preguntar por cada una de las variables que bloquean (if || O)
+    // *(edadNoPermiteVacuna, refuerzoAplicado, embarazoTemprano, tiempoEsperaFail)
+    // *Crear campos de puede_vacunarse (radiobutton) debajo de acepta_vacuna, y luego un campo de motivos de no poder vacunarse (select multiple)
+    /* 
+    Listado de motivos no puede vacunarse
+    -no cumple con la edad (menor de 12 años).
+    -en embarazo (menor a 12 semanas).
+    -error programatico.
+    -ya cumple con el esquema completo y refuerzo.
+    -no cumple el tiempo de espera para aplicación de la dosis.
+    */
+    // *SI acepta_vacuna Y puede_vacunarse, muestra todo el resto del formulario de vacunacion.
+    // *Hacer watch de la computed anterior, y si es True, el valor de puede_vacunarse es false y deshabilito la pregunta de puede vacunarse.
+    forzadoNoVacunacion() {
+      return this.edadNoPermitidaVacuna || (this.tieneRefuerzo == 1 ? true : false) || this.validationGestanteFail || this.fechaAplicacionAnticipada
+    },
     filterTipoDosis() {
+      // *Si tiene esquema completo, solo dejar Refuerzo, quitar unica por biologico y unica por covid. Y el refuerso, si aplica para el
       let result = this.dosisVacunas.Tipo_dosis
       if (this.dosisAplicadas.length) {
         let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
@@ -1076,11 +1136,23 @@ export default {
           console.log("4");
           result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
         }
+
+        if (this.esquemaCompleto && (this.edad > 70 || this.vacunacion.comorbilidades_vacunacion.length)) {
+          console.log("5");
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+        }
       } else {
         // SI es primera dosis Y el biologico es JANSSEN -> Solo habilita los tipos de dosis de UNICA POR BIOLOGICO
+        // SINO habilitar unicamente los tipos de dosis de PRIMERA, UNICA POR BIOLOGICO
         if (this.vacunacion.biologico == '4') {
           console.log("1");
           result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+        } else {
+          if (this.tamizajePositivo) {
+            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'REFUERZO'].includes(x.nombre) ? x : null)
+          } else {
+            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+          }
         }
       }
       
@@ -1106,12 +1178,72 @@ export default {
       }
       return result;
     },
-    minAplication() {
-      let minDate = this.moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD')
-      if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
-        minDate = this.dosisAplicadas[0].fecha_aplicacion
+    condicionesAplicacion() {
+      let condicionesFechaAplicaciones = {
+        'ASTRAZENEKA': {
+          '2da_dosis_min_date': 84,
+          '2da_dosis_max_data': 84,
+          '1era_dosis_dias_gracia': 0
+        },
+        'MODERNA': {
+          '2da_dosis_min_date': 28,
+          '2da_dosis_max_data': 84,
+          '1era_dosis_dias_gracia': 4
+        }, 
+        'PFIZER': {
+          '2da_dosis_min_date': 21,
+          '2da_dosis_max_data': 84,
+          '1era_dosis_dias_gracia': 4
+        }, 
+        'SINOVAC': {
+          '2da_dosis_min_date': 28,
+          '2da_dosis_max_data': 28,
+          '1era_dosis_dias_gracia': 0
+        }
       }
-      return minDate
+      // SI no tiene dosis aplicadas -> la fecha minima es el 17/02/2021
+      let result = {
+        minDate: this.moment('17/02/2021', 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        maxDate: null
+      }
+      // SI tiene dosis aplicadas -> la fecha minima es la fecha_aplicacion del ultimo biologico aplicado
+      if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
+        if (this.dosisAplicadas.length == 1) {
+          let ultimoBiologicoAplicado = this.dosisAplicadas[0].biologico
+
+          switch (ultimoBiologicoAplicado) {
+            case 'ASTRAZENEKA':
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
+                condicionesFechaAplicaciones.ASTRAZENEKA['2da_dosis_min_date'] + condicionesFechaAplicaciones.ASTRAZENEKA['1era_dosis_dias_gracia'],
+                'days').format('YYYY-MM-DD')
+              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.ASTRAZENEKA['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
+              break;
+            case 'MODERNA':
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
+                condicionesFechaAplicaciones.MODERNA['2da_dosis_min_date'] + condicionesFechaAplicaciones.MODERNA['1era_dosis_dias_gracia'],
+                'days').format('YYYY-MM-DD')
+              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.MODERNA['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
+              break;
+            case 'PFIZER':
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
+                condicionesFechaAplicaciones.PFIZER['2da_dosis_min_date'] + condicionesFechaAplicaciones.PFIZER['1era_dosis_dias_gracia'],
+                'days').format('YYYY-MM-DD')
+              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.PFIZER['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
+              break;
+            case 'SINOVAC':
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
+                condicionesFechaAplicaciones.SINOVAC['2da_dosis_min_date'] + condicionesFechaAplicaciones.SINOVAC['1era_dosis_dias_gracia'],
+                'days').format('YYYY-MM-DD')
+              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.SINOVAC['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
+              break;
+          }
+        } else {
+          // NO es PRIMERA dosis, entonces solo se aplica la fecha minima a la fecha del ultimo biologico aplicado
+          result.minDate = this.dosisAplicadas[0].fecha_aplicacion
+        }
+      }
+
+      return result
     },
     verbalTimeAgoDiagnostico() {
       let stringDate = ``
@@ -1204,6 +1336,29 @@ export default {
     },
   },
   watch: {
+    "forzadoNoVacunacion": {
+      handler(val) {
+        if (val) {
+          this.vacunacion.puede_vacunarse = 0;
+        } else {
+          this.vacunacion.puede_vacunarse = null
+        }
+      },
+      immediate: false
+    },
+    "condicionesAplicacion": {
+      handler(val) {
+        if (val) {
+          let diasTemprano = this.moment(val.minDate, 'YYYY-MM-DD').diff(this.moment(), 'days')
+          if (diasTemprano > 0 && this.dosisAplicadas && this.dosisAplicadas.length == 1) {
+            this.fechaAplicacionAnticipada = true
+            this.msgFechaAplicacionAnticipada = `Faltan ${diasTemprano} dias para aplicacion de 
+              Segunda dosis del Biologico ${this.dosisAplicadas[0].biologico ? this.dosisAplicadas[0].biologico : ''}`
+          }
+        }
+      },
+      immediate: false
+    },
     "vacunacion.fecha_ult_regla": {
       handler(val) {
         if (val) {
@@ -1313,6 +1468,7 @@ export default {
         if (value && (value == "NO APLICA" || value == "NO GESTANTE")) {
           this.vacunacion.fecha_prob_parto = null;
           this.vacunacion.semanas_embarazo = null;
+          this.vacunacion.fecha_ult_regla = null;
         }
         if(value && (value == 'GESTANTE')) this.vacunacion.posparto = null
       },
@@ -1345,6 +1501,7 @@ export default {
         } else {
           this.bodegasFiltradas = this.filterBodegas()
         }
+        val && val < 12 ? this.edadNoPermitidaVacuna = true : this.edadNoPermitidaVacuna = false
       },
       immediate: false
     },
@@ -1496,20 +1653,25 @@ export default {
         this.vacunacion.cod_mpio_aplicacion = this.ultimoVacunadorId;
       }
       // this.vacunacion.vacunador_id = this.ultimoVacunadorId;
-      console.log("VACUNADOR_ID");
       this.dialog = true;
+    },
+    resetVariablesAlert() {
+      this.tamizajePositivo = null
+      this.validationGestanteFail = false
+      this.errorProgramatico = null
+      this.errorProgramaticoMessage= null
+      this.esquemaCompleto = null
+      this.edadNoPermitidaVacuna = false
+      this.fechaAplicacionAnticipada = false
+      this.msgFechaAplicacionAnticipada = null
+      this.tieneRefuerzo = null
+      this.dosisAplicadas = []
+      this.afiliadoFallecido = null
     },
     close() {
       this.dialog = false;
       this.identificacionVerificada = 0;
-      this.tamizajePositivo = null
-      this.afiliadoFallecido = null
-      this.validationGestanteFail= false
-      this.errorProgramatico= null
-      this.errorProgramaticoMessage= null
-      this.esquemaCompleto= null
-      this.tieneRefuerzo= null
-      this.dosisAplicadas = []
+      this.resetVariablesAlert();
       setTimeout(() => {
         this.loading = false;
         this.vacunacion = this.clone(models.vacunacionSucre);
@@ -1518,7 +1680,7 @@ export default {
       }, 400);
     },
     resultAfiliado(response) {
-      // this.vacunacion = this.clone(models.vacunacionSucre);
+      this.resetVariablesAlert();
       this.identificacionVerificada = 1;
       if (response.afiliado !== null) {
         this.vacunacion.tipo_identificacion = null;

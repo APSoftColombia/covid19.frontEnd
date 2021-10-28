@@ -4,8 +4,8 @@
 		<v-row>
 			<v-col cols="12">
 				<v-card>
-					<tamizajes-light v-if="isCaller"></tamizajes-light>
-					<tamizajes v-else></tamizajes>
+					<!-- <tamizajes-light v-if="isCaller"></tamizajes-light> -->
+					<tamizajes></tamizajes>
 				</v-card>
 			</v-col>
 		</v-row>
@@ -15,11 +15,11 @@
 
 <script>
 	const Tamizajes = () => import('Views/covid19/tamizaje/Tamizajes')
-	const TamizajesLight = () => import('Views/covid19/tamizaje/TamizajesLight')
+	// const TamizajesLight = () => import('Views/covid19/tamizaje/TamizajesLight')
 	export default {
 		components: {
 			Tamizajes,
-			TamizajesLight
+			// TamizajesLight
 		},
 		data: () => ({
 			loading: false

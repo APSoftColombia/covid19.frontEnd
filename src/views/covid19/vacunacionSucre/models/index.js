@@ -35,6 +35,7 @@ const VacunacionSucre = {
     estado_adres: null,
     regimen: null,
     acepta_vacuna: null,
+    puede_vacunarse: null,
     motivo_disistimiento: null,
     fecha_aplicacion: null,
     biologico: null,
@@ -63,6 +64,7 @@ const VacunacionSucre = {
     comorbilidades_vacunacion: [],
     fecha_parto: null,
     fecha_ult_regla: null,
+    motivos_no_puede_vacunarse: [],
 }
 
 export default {
