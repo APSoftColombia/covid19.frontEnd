@@ -5,6 +5,7 @@
             <icon-tooltip v-if="[this.value.tipo_identificacion, this.value.identificacion, this.value.nombre1, this.value.apellido1, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
           </div>
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
+            <v-icon :color="colorText" class="mr-2" v-if="value.tiene_cet">mdi mdi-currency-usd</v-icon>
           <v-card align="center" color="transparent" class="elevation-0">
             <v-icon :color="colorText" large>{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
             <v-card-actions class="py-0 px-1" v-if="value && (typeof value.cantidad_nexos !== 'undefined')">
