@@ -5,7 +5,14 @@
             <icon-tooltip v-if="[this.value.tipo_identificacion, this.value.identificacion, this.value.nombre1, this.value.apellido1, this.value.celular].filter(x => !x).length" tooltip="Hay campos por diligenciar en el registro"></icon-tooltip>
           </div>
             <v-icon :color="colorText" large class="mr-2" v-if="value.positivo_covid && verDiagnosticados">fas fa-virus</v-icon>
-            <v-icon :color="colorText" class="mr-2" v-if="value.tiene_cet">mdi mdi-currency-usd</v-icon>
+            <v-tooltip top v-if="value.tiene_cet">
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" icon text @click="openTableCets(value.tiene_cet)">
+                  <v-icon color="primary">mdi mdi-currency-usd</v-icon>
+                </v-btn>
+              </template>
+              <span>Este registro cuenta con una CET pagada</span>
+            </v-tooltip>
           <v-card align="center" color="transparent" class="elevation-0">
             <v-icon :color="colorText" large>{{this.value.sexo === 'M' ? 'mdi mdi-face' : 'mdi mdi-face-woman'}}</v-icon>
             <v-card-actions class="py-0 px-1" v-if="value && (typeof value.cantidad_nexos !== 'undefined')">
@@ -159,12 +166,15 @@
         <seguimiento
                 ref="seguimiento"
         ></seguimiento>
+      <grupo-familiar-table
+          ref="grupoFamiliar"
+      ></grupo-familiar-table>
     </div>
 </template>
 
 <script>
     import {mapGetters} from "vuex";
-
+    import GrupoFamiliarTable from "../../views/covid19/Cet/Componentes/GrupoFamiliarTable";
     const Seguimiento = () => import('../../views/covid19/tamizaje/Seguimiento')
     export default {
         name: 'PersonaItemTabla',
@@ -181,10 +191,14 @@
         methods: {
             goSeguimiento(){
                 this.$refs.seguimiento.open(this.value.erp_origen)
-            }
+            },
+            openTableCets(cet) {
+              this.$refs.grupoFamiliar.open(cet)
+            },
         },
         components: {
-            Seguimiento
+            GrupoFamiliarTable,
+            Seguimiento,
         },
         computed: {
           ...mapGetters([
