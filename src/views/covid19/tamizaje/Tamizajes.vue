@@ -76,6 +76,9 @@
         @guardado="item => tamizajeGuardado(item)"
     ></asignar-georreferenciacion>
     <help-modal ref="helpModal"></help-modal>
+    <grupo-familiar-table
+        ref="grupoFamiliar"
+    ></grupo-familiar-table>
     <app-section-loader :status="loading"></app-section-loader>
   </div>
 </template>
@@ -97,6 +100,9 @@ const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
 const AsignarGeorreferenciacion = () => import('Views/covid19/tamizaje/georreferenciacion/AsignarGeorreferenciacion')
 const Filtros = () => import('Views/covid19/tamizaje/filtros/Filtros')
 const HelpModal = () => import('../../../components/HelpModal/HelpModal')
+import GrupoFamiliarTable from "Views/covid19/Cet/Componentes/GrupoFamiliarTable";
+import BotonCet from "../Cet/Componentes/BotonCet";
+
 export default {
   name: 'Tamizajes',
   components: {
@@ -106,7 +112,8 @@ export default {
     Seguimiento,
     AsignaMedico,
     HelpModal,
-    Filtros
+    Filtros,
+    GrupoFamiliarTable
   },
   computed: {
     permisos() {
@@ -274,6 +281,33 @@ export default {
               )
             },
             props: ['value']
+          }
+        },
+        {
+          text: 'Cets',
+          align: 'left',
+          sortable: false,
+          visibleColumn: false,
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value.tiene_cet
+                  ? createElement(
+                      BotonCet,
+                      {
+                        props: {
+                          item: context.props.value.tiene_cet,
+                          textColor: '?'
+                        },
+                        on: {
+                          click: (value) => {
+                            vm.openTableCets(value)
+                          }
+                        }
+                      }
+                  )
+                  : createElement('span', '')
+            }
           }
         },
         // {
@@ -741,6 +775,9 @@ export default {
         color: 'deep-purple'
       })
       return item
+    },
+    openTableCets(cet) {
+      this.$refs.grupoFamiliar.open(cet)
     },
     descargarPDF(tamizaje) {
       const apiAxios = axios.create()
