@@ -108,6 +108,23 @@
 					</v-list>
 				</v-card>
 			</v-col>
+
+			<v-col cols="12" v-if="(esSuperAdmin || esCovidAdmin) && datosEmpresa.departamento_id === 29">
+				<v-card>
+					<v-list two-line>
+						<v-list-item>
+							<v-list-item-avatar color="teal darken-2">
+								<v-icon color="white">fas fa-file-archive</v-icon>
+							</v-list-item-avatar>
+							<v-list-item-content>
+								<v-list-item-title class="font-weight-bold">Carga Masiva de Afiliados</v-list-item-title>
+								<v-list-item-subtitle>Carga masiva de registros de archivo Afiliados Comprimido</v-list-item-subtitle>
+							</v-list-item-content>
+							<cargador-afiliados></cargador-afiliados>
+						</v-list-item>
+					</v-list>
+				</v-card>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
@@ -116,10 +133,12 @@
 	import { mapGetters } from 'vuex'
   const CargadorSeguimientos = () => import('Views/complementos/CargadorSeguimientos')
   const CargadorSismuestras = () => import('Views/complementos/CargadorSismuestras')
+  const CargadorAfiliados = () => import('Views/complementos/CargadorAfiliados')
 	export default {
 		components: {
 			CargadorSeguimientos,
-			CargadorSismuestras
+			CargadorSismuestras,
+			CargadorAfiliados
 		},
 		data: () => ({
       enlaceCopiado: false,
