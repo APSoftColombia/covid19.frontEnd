@@ -48,38 +48,38 @@
           ref="filtrosTamizaje"
           :ruta-base="rutaBase"
           @filtra="val => goDatos(val)"
-      ></filtros>
+      />
     </data-table>
     <registro-viajero
         v-if="permisos.tamizajeViajeroCrear"
         ref="registroViajero"
         @guardado="val => tamizajeGuardado(val)"
         @close="loading = false"
-    ></registro-viajero>
+    />
     <registro-tamizaje
         v-if="permisos.tamizajeCrear"
         ref="registroTamizaje"
         @guardado="item => tamizajeGuardado(item)"
         @close="loading = false"
-    ></registro-tamizaje>
+    />
     <seguimiento
         ref="seguimiento"
-    ></seguimiento>
+    />
     <asigna-medico
         v-if="permisos.tamizajeAsignarMedico"
         :medicos="medicos"
         ref="asignaMedico"
         @guardado="item => tamizajeGuardado(item)"
-    ></asigna-medico>
+    />
     <asignar-georreferenciacion
         ref="asignaGeorreferenciacion"
         @guardado="item => tamizajeGuardado(item)"
-    ></asignar-georreferenciacion>
-    <help-modal ref="helpModal"></help-modal>
+    />
+    <help-modal ref="helpModal"/>
     <grupo-familiar-table
         ref="grupoFamiliar"
-    ></grupo-familiar-table>
-    <app-section-loader :status="loading"></app-section-loader>
+    />
+    <app-section-loader :status="loading"/>
   </div>
 </template>
 
@@ -724,7 +724,7 @@ export default {
       this.$refs.seguimiento.open(item.id)
     },
     tamizajeGuardado(tamizaje) {
-      if(tamizaje) this.verSeguimiento(tamizaje)
+      if(tamizaje?.id) this.verSeguimiento(tamizaje)
       this.$store.commit('reloadTable', 'tablaTamizajes')
     },
     resetOptions(item) {
