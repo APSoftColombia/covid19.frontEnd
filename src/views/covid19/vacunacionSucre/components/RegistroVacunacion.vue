@@ -296,7 +296,7 @@
                             name="acudiente"
                             label="¿Necesita acudiente?"
                             :column="!$vuetify.breakpoint.smAndUp"
-                            :disabled="identificacionVerificada < 1"
+                            :disabled="identificacionVerificada < 1 || acudienteObligatorioPorEdad"
                           />
                         </v-col>
                       </v-row>
@@ -559,7 +559,7 @@
                     rules="required"
                     name="estado_adres"
                     :items="dosisVacunas.estadoAdres"
-                    :disabled="identificacionVerificada < 1"
+                    :disabled="identificacionVerificada < 1 || isEdit"
                   >
                   </c-select-complete>
                 </v-col>
@@ -576,7 +576,7 @@
                   >
                   </c-select-complete>
                 </v-col>
-                <template v-if="!isEdit">
+                <template v-if="!isEdit && vacunacion.estado_adres != 'FALLECIDO'">
                   <v-col cols="12">
                     <v-card outlined tile>
                       <v-card-text>
@@ -1097,6 +1097,9 @@ export default {
       "lastMpioAplicacionVacuna",
       'parentescos',
     ]),
+    acudienteObligatorioPorEdad() {
+      return this.vacunacion.edad && this.vacunacion.edad >= 3 && this.vacunacion.edad <= 11
+    },
     // *Hacer computed de forzadoNoVacunacion para preguntar por cada una de las variables que bloquean (if || O)
     // *(edadNoPermiteVacuna, refuerzoAplicado, embarazoTemprano, tiempoEsperaFail)
     // *Crear campos de puede_vacunarse (radiobutton) debajo de acepta_vacuna, y luego un campo de motivos de no poder vacunarse (select multiple)
@@ -1419,6 +1422,29 @@ export default {
         }
       } */
     },
+    "vacunacion.estado_adres": {
+      handler(val) {
+        if (val && val == 'FALLECIDO' && !this.isEdit) {
+          console.log("entre");
+          this.vacunacion.fecha_aplicacion = null;
+          this.vacunacion.bodega_id = null;
+          this.vacunacion.biologico = null;
+          this.vacunacion.lote_biologico = null;
+          this.vacunacion.tipo_dosis = null;
+          this.vacunacion.tipo_poblacion = null;
+          this.vacunacion.estrategia_vacunacion = null;
+          this.vacunacion.eventos_atribuidos = null;
+          this.vacunacion.vacunador_id = null;
+          this.vacunacion.cod_dpto_aplicacion = null;
+          this.vacunacion.cod_mpio_aplicacion = null;
+          this.vacunacion.puede_vacunarse = null;
+          this.vacunacion.acepta_vacuna = null;
+          this.vacunacion.motivos_no_puede_vacunarse = [];
+          this.vacunacion.motivo_disistimiento = null;
+        }
+      },
+      immediate: false
+    },
     "vacunacion.acepta_vacuna": {
       handler(value) {
         console.log("vacunacion.acepta_vacuna out", value);
@@ -1506,10 +1532,13 @@ export default {
       handler(val) {
         if (val && (val >= 12 && val < 18 && this.dosisAplicadas && !this.dosisAplicadas.length)) {
           this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER', 'MODERNA'])
+        } else if (val && (val >= 3 && val <= 11 && this.dosisAplicadas && !this.dosisAplicadas.length)){
+          this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['SINOVAC'])
+          this.vacunacion.necesita_acudiente = 'SI';
         } else {
           this.bodegasFiltradas = this.filterBodegas()
         }
-        val && val < 12 ? this.edadNoPermitidaVacuna = true : this.edadNoPermitidaVacuna = false
+        val && val < 3 ? this.edadNoPermitidaVacuna = true : this.edadNoPermitidaVacuna = false
       },
       immediate: false
     },
