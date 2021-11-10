@@ -2,7 +2,7 @@
 const state = {
     tables: {
         tablaTamizajes: 0,
-        tablaTamizajesVersion: 13,
+        tablaTamizajesVersion: 14,
         tablaTamizajesLight: 0,
         tablaTamizajesLightVersion: 5,
         tablaReportesComunitarios: 0,

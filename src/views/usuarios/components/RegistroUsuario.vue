@@ -145,6 +145,33 @@
                   rules="required"
               />
             </v-col>
+            <template v-if="usuario.cargo === 'MEDICO'">
+              <v-col class="pb-0" cols="12">
+                <ValidationProvider name="firma" rules="size:600" v-slot="{ errors, validate }">
+                  <v-file-input
+                      v-model="usuario.firmaFile"
+                      :error-messages="errors"
+                      :hint="usuario.firma && !usuario.firmaFile ? `Cargado actualmente: ${usuario.firma.split('/')[2]}` : ''"
+                      label="Firma medico"
+                      prepend-icon="mdi-file"
+                      accept=".png,.jpeg"
+                      outlined
+                      dense
+                      persistent-hint
+                      show-size
+                      :truncate-length="$vuetify.breakpoint.xsOnly ? 22 : 44"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-col class="pb-0" cols="12">
+                <v-text-field
+                    v-model="usuario.registro_medico"
+                    label="Registro Médico"
+                    outlined
+                    dense
+                ></v-text-field>
+              </v-col>
+            </template>
             <v-col class="pb-0" cols="12">
               <v-autocomplete
                   label="EPS"
@@ -241,6 +268,9 @@ export default {
       cod_ips: null,
       cargo: null,
       tipo_cliente_id: null,
+      firma: null,
+      firmaFile: null,
+      registro_medico: null
     },
     showPassword: false,
     tiposDocumentoIdentidad: [],
@@ -275,11 +305,20 @@ export default {
   },
   methods: {
     submitUsuario() {
-      this.$refs.formUsuario.validate().then(result => {
+      this.$refs.formUsuario.validate().then(async result => {
         if (result) {
           this.loading = true
           this.usuario.eps_id = this.usuario.eps_id ? this.usuario.eps_id : null
-          let request = this.usuario.id ? this.axios.put(`user/${this.usuario.id}`, this.usuario) : this.axios.post(`user`, this.usuario)
+          let usuarioD = this.clone(this.usuario)
+          if(this.usuario.firmaFile) {
+            usuarioD.firmaFile = await new Promise((resolve, reject) => {
+              const reader = new FileReader()
+              reader.readAsDataURL(this.usuario.firmaFile)
+              reader.onload = () => resolve(reader.result)
+              reader.onerror = error => reject(error)
+            })
+          }
+          let request = this.usuario.id ? this.axios.put(`user/${this.usuario.id}`, usuarioD) : this.axios.post(`user`, usuarioD)
           request
               .then(response => {
                 this.$emit('save', response.data.usuario)
