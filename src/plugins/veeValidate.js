@@ -67,9 +67,17 @@ extend('min', {
 
 extend('dateValid', {
     validate(value) {
-        return value && (value.length === 10) && moment(value, 'DD/MM/YYYY').isValid() ? true : false
+        return !!(value && (value.length === 10) && moment(value, 'DD/MM/YYYY').isValid())
     },
     message: 'La fecha no es válida'
+})
+
+extend('phoneNumber', {
+    validate(value) {
+        console.log('phoneNumber', Number(value))
+        return !!(value && Number(value) && Number(value) > 0)
+    },
+    message: 'El número de teléfono no es válido.'
 })
 
 extend('mindate', {
@@ -94,7 +102,7 @@ extend('maxdate', {
 
 extend('timeValid', {
     validate(value) {
-        return value && (value.length === 5) && moment(value, 'HH:mm').isValid() ? true : false
+        return !!(value && (value.length === 5) && moment(value, 'HH:mm').isValid())
     },
     message: 'La Hora no es válida'
 })

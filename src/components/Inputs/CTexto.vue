@@ -4,6 +4,7 @@
                 :class="upperCase ? 'c-upper-case' : lowerCase ? 'c-lower-case' : null"
                 v-model="model"
                 :label="label"
+                :type="type"
                 :placeholder="placeholder"
                 :outlined="outlined"
                 :dense="dense"
@@ -31,6 +32,10 @@
       label: {
         type: String,
         default: null
+      },
+      type: {
+        type: String,
+        default: 'text'
       },
         placeholder: {
             type: String,
