@@ -1129,7 +1129,7 @@ export default {
       // *Si tiene esquema completo, solo dejar Refuerzo, quitar unica por biologico y unica por covid. Y el refuerso, si aplica para el
       let result = this.dosisVacunas.Tipo_dosis
       if (this.dosisAplicadas.length) {
-        let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
+        // let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
         let tipoBiologicosAplicadas = this.dosisAplicadas.map(x => x.biologico)
         // SI el biologico actual es JANSSEN O ya tiene dosis aplicadas de JANSSEN-> Solo habilita los tipos de dosis de REFUERZO
         if ((this.vacunacion.biologico && this.vacunacion.biologico === '4') || tipoBiologicosAplicadas.includes("JANSSEN")) {
@@ -1140,7 +1140,7 @@ export default {
         // -> Solo habilita los tipos de dosis diferentes de los que ya tiene (tipoDosisAplicadas)
         if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && !this.esquemaCompleto) {
           console.log("3");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !tipoDosisAplicadas.includes(x.nombre) ? x : null)
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
         }
         // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos son diferentes de JANSSEN Y tiene el esquema completo
         // -> habilita solo el REFUERZO
