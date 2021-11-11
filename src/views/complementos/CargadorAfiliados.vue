@@ -76,12 +76,21 @@
       </v-card-text>
       <v-card-text>
         <v-row>
-          <v-col cols="12" align-self="center">
-            <v-btn block class="primary" @click="downloadResultado" :disabled="!enableReporte">
-                <v-icon>mdi-file-table</v-icon>
-                Generar resultado
+          <v-col cols="10" align-self="center">
+            <v-btn block class="primary" @click="executeQuerys" :disabled="!enableQuerys">
+              Generar Resultados
             </v-btn>
 
+          </v-col>
+          <v-col cols="2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <v-btn icon x-large color="green" v-on="on" @click="downloadResultado" :disabled="!enableReporte">
+                  <v-icon>mdi-file-table</v-icon>
+                </v-btn>
+              </template>
+              <span>Descargar resultados</span>
+            </v-tooltip>
           </v-col>
         </v-row>
       </v-card-text>
@@ -187,7 +196,7 @@ export default {
               .then(response => {
                 this.loading = false
                 this.enableSubsidiados = false;
-                this.enableReporte = true;
+                this.enableQuerys = true;
                 console.log('response', response)
                 this.$store.commit('snackbar', {color: 'success', message: `Los registros del archivo se cargaron correctamente.`})
               })
@@ -200,6 +209,23 @@ export default {
                 this.$store.commit('snackbar', {color: 'error', message: `al procesar el archivo.`, error: error})
               })
         }
+      })
+    },
+    executeQuerys() {
+      this.loading = true;
+      this.axios.get('import-afiliados-execute-querys').then(response => {
+        console.log(response);
+        this.loading = false;
+        this.enableQuerys = false;
+        this.enableReporte = true;
+        this.$store.commit('snackbar', {color: 'success', message: `Querys ejecutadas correctamente`})
+      }).catch(error => {
+        console.log('error', error)
+        if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
+          this.errores = error.response.data.errors
+        }
+        this.loading = false
+        this.$store.commit('snackbar', {color: 'error', message: `al ejecutar las querys`, error: error})
       })
     },
     downloadResultado() {
