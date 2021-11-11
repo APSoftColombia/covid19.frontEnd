@@ -94,23 +94,14 @@
                           }}</v-icon>
                         <v-list-item-content class="pb-0">
                           <v-list-item-title class="font-weight-bold grey--text">
-                            {{
-                              [
-                                item.responsable.nombre1,
-                                item.responsable.nombre2,
-                                item.responsable.apellido1,
-                                item.responsable.apellido2,
-                              ]
-                                .filter((x) => x)
-                                .join(" ")
-                            }}
+                            {{item.responsable.name}}
                           </v-list-item-title>
                           <v-list-item-subtitle>
                             {{
                               [
                                 item.responsable.tipo_identificacion
                                   ? this.tiposDocumentoIdentidad.find(
-                                      (x) => x.id == item.responsable.tipo_identificacion
+                                      (x) => x.id === item.responsable.tipo_identificacion
                                     ).tipo
                                   : null
                                 ,
@@ -145,14 +136,21 @@
                         <v-icon small class="mr-1">fas fa-map-signs</v-icon>
                         <v-list-item-content class="pa-0">
                           <v-list-item-subtitle class="body-2">
-                            {{ item.responsable.direccion }} <br>
+                            {{ item.responsable.direccion }}
+                          </v-list-item-subtitle>
+                          <v-list-item-subtitle
+                              v-if="item.responsable.cod_mpio"
+                              class="body-2"
+                          >
                             {{
-                                municipiosTotal && municipiosTotal.length &&
-                                parseInt(item.responsable.cod_mpio) && municipiosTotal.find(x => x.id ===
-                                parseInt(item.responsable.cod_mpio)) ? `${municipiosTotal.find(x => x.id ===
-                                parseInt(item.responsable.cod_mpio)).nombre}, ${municipiosTotal.find(x => x.id
-                                === parseInt(item.responsable.cod_mpio)).departamento.nombre}` : ''
-                            }} <br>
+                              municipiosTotal && municipiosTotal.length &&
+                              parseInt(item.responsable.cod_mpio) && municipiosTotal.find(x => x.id ===
+                                  parseInt(item.responsable.cod_mpio)) ? `${municipiosTotal.find(x => x.id ===
+                                  parseInt(item.responsable.cod_mpio)).nombre}, ${municipiosTotal.find(x => x.id
+                                  === parseInt(item.responsable.cod_mpio)).departamento.nombre}` : ''
+                            }}
+                          </v-list-item-subtitle>
+                          <v-list-item-subtitle v-if="item.zona" class="body-2">
                             {{ item.zona ? item.zona : '' }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
