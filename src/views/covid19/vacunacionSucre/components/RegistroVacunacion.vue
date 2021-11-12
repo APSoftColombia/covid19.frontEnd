@@ -1163,7 +1163,7 @@ export default {
           if (this.tamizajePositivo) {
             result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'REFUERZO'].includes(x.nombre) ? x : null)
           } else {
-            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'UNICA POR BIOLOGICO', 'REFUERZO'].includes(x.nombre) ? x : null)
           }
         }
       }
