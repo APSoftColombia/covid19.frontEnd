@@ -79,6 +79,7 @@
     <grupo-familiar-table
         ref="grupoFamiliar"
     />
+    <detalle-vacunacion ref="detalleDosisAplicada" />
     <app-section-loader :status="loading"/>
   </div>
 </template>
@@ -100,8 +101,10 @@ const AsignaMedico = () => import('Views/covid19/tamizaje/AsignaMedico')
 const AsignarGeorreferenciacion = () => import('Views/covid19/tamizaje/georreferenciacion/AsignarGeorreferenciacion')
 const Filtros = () => import('Views/covid19/tamizaje/filtros/Filtros')
 const HelpModal = () => import('../../../components/HelpModal/HelpModal')
+const DetalleVacunacion = () => import("../vacunacionSucre/components/DetalleVacunacion");
 import GrupoFamiliarTable from "Views/covid19/Cet/Componentes/GrupoFamiliarTable";
 import BotonCet from "../Cet/Componentes/BotonCet";
+import BotonVacunacion from "./BotonVacunacion";
 
 export default {
   name: 'Tamizajes',
@@ -113,7 +116,8 @@ export default {
     AsignaMedico,
     HelpModal,
     Filtros,
-    GrupoFamiliarTable
+    GrupoFamiliarTable,
+    DetalleVacunacion
   },
   computed: {
     permisos() {
@@ -297,11 +301,38 @@ export default {
                       {
                         props: {
                           item: context.props.value.tiene_cet,
-                          textColor: '?'
+                          textColor: context.props.value.total_riesgo > 50 ? 'white' : ''
                         },
                         on: {
                           click: (value) => {
                             vm.openTableCets(value)
+                          }
+                        }
+                      }
+                  )
+                  : createElement('span', '')
+            }
+          }
+        },
+        {
+          text: 'Vacunas',
+          align: 'left',
+          sortable: false,
+          visibleColumn: false,
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return context.props.value.tiene_dosis_aplicadas
+                  ? createElement(
+                      BotonVacunacion,
+                      {
+                        props: {
+                          item: context.props.value.tiene_dosis_aplicadas,
+                          textColor: context.props.value.total_riesgo > 50 ? 'white' : ''
+                        },
+                        on: {
+                          click: (value) => {
+                            vm.openDosisAplicadas(value)
                           }
                         }
                       }
@@ -778,6 +809,9 @@ export default {
     },
     openTableCets(cet) {
       this.$refs.grupoFamiliar.open(cet)
+    },
+    openDosisAplicadas(value){
+      this.$refs.detalleDosisAplicada.open({identificacion: value[0]['identificacion']})
     },
     descargarPDF(tamizaje) {
       const apiAxios = axios.create()
