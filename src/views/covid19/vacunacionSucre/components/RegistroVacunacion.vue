@@ -533,6 +533,13 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
+                <v-col cols="12" v-if="vacunacion.condicion_discapacidad == 'SI'">
+                  <discapacidades-vacunacion
+                    :array-opciones="vacunacion.discapacidades"
+                    @changeOpciones="val => vacunacion.discapacidades = val"
+                    :disabled="identificacionVerificada < 1"
+                  ></discapacidades-vacunacion>
+                </v-col>
                 <v-col cols="12">
                   <v-card outlined tile>
                     <v-card-text>
@@ -1042,6 +1049,7 @@ import SearchIdentidadVacunado from "./SearchIdentidadVacunado";
 import models from "Views/covid19/vacunacionSucre/models";
 import ComorbilidadesGestionVacunacion from "./ComorbilidadesGestionVacunacion"
 import NoPuedeVacunarseComponent from "./NoPuedeVacunarseComponent"
+import DiscapacidadesVacunacion from './DiscapacidadesVacunacion'
 import {mapGetters} from "vuex";
 
 export default {
@@ -1050,6 +1058,7 @@ export default {
     SearchIdentidadVacunado,
     ComorbilidadesGestionVacunacion,
     NoPuedeVacunarseComponent,
+    DiscapacidadesVacunacion,
   },
   data: () => ({
     menuHora: false,
@@ -1353,6 +1362,12 @@ export default {
         if (typeof val !== 'undefined' && this.vacunacion) this.vacunacion.sexo = val
       },
       immediate: true
+    },
+    "vacunacion.condicion_discapacidad": {
+      handler(val) {
+        if (val && val === 'NO') this.vacunacion.discapacidades = [];
+      },
+      immediate: false
     },
     "vacunacion.puede_vacunarse": {
       handler(val) {
@@ -1666,6 +1681,7 @@ export default {
         .get(`dosis-aplicadas/${id}`)
         .then((response) => {
           this.vacunacion = response.data;
+          this.vacunacion.discapacidades = this.vacunacion.discapacidades.map(x => x.id)
           this.identificacionVerificada = 1;
           this.loading = false;
           setTimeout(() => {

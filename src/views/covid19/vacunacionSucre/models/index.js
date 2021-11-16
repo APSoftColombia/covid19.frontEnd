@@ -65,6 +65,7 @@ const VacunacionSucre = {
     fecha_parto: null,
     fecha_ult_regla: null,
     motivos_no_puede_vacunarse: [],
+    discapacidades: [],
 }
 
 export default {
