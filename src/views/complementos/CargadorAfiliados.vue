@@ -17,7 +17,7 @@
       </v-tooltip>
     </template>
     <v-card>
-      <v-card-title class="headline">Cargue masivo Afiliados Contributivo y Subisidiado</v-card-title>
+      <v-card-title class="headline">Cargue masivo Afiliados Contributivo y Subisidiado Departamental</v-card-title>
       <v-card-text>
         <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
           <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">

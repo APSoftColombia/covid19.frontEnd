@@ -109,7 +109,7 @@
 				</v-card>
 			</v-col>
 
-			<v-col cols="12" v-if="(esSuperAdmin || esCovidAdmin) && datosEmpresa.departamento_id === 29">
+			<v-col cols="12" v-if="(permisos.afiliadoDepartamental) && datosEmpresa.departamento_id === 29">
 				<v-card>
 					<v-list two-line>
 						<v-list-item>
@@ -117,8 +117,8 @@
 								<v-icon color="white">fas fa-file-archive</v-icon>
 							</v-list-item-avatar>
 							<v-list-item-content>
-								<v-list-item-title class="font-weight-bold">Carga Masiva de Afiliados</v-list-item-title>
-								<v-list-item-subtitle>Carga masiva de registros de archivo Afiliados Comprimido</v-list-item-subtitle>
+								<v-list-item-title class="font-weight-bold">Carga Masiva de Afiliados Departamental</v-list-item-title>
+								<v-list-item-subtitle>Carga masiva de registros de archivo Afiliados Dpta. Comprimido</v-list-item-subtitle>
 							</v-list-item-content>
 							<cargador-afiliados></cargador-afiliados>
 						</v-list-item>
@@ -147,7 +147,10 @@
     computed: {
       ...mapGetters([
         'datosEmpresa'
-      ])
+      ]),
+      permisos() {
+       return this.$store.getters.getPermissionModule('complementos')
+      },
     },
     methods: {
       copiarEnlace () {
