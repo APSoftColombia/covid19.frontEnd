@@ -168,7 +168,7 @@
                     name="sexo"
                     label="Sexo"
                     :column="!$vuetify.breakpoint.smAndUp"
-                    :disabled="identificacionVerificada < 1 || !!sexoAutomatico"
+                    :disabled="identificacionVerificada < 1 || sexoAutomatico"
                   />
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
@@ -533,7 +533,7 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
-                <v-col cols="12" v-if="vacunacion.condicion_discapacidad == 'SI'">
+                <v-col cols="12" v-if="vacunacion.condicion_discapacidad === 'SI'">
                   <discapacidades-vacunacion
                     :array-opciones="vacunacion.discapacidades"
                     @changeOpciones="val => vacunacion.discapacidades = val"

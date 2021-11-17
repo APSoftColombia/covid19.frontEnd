@@ -60,8 +60,8 @@ const actions = {
             })
     },
     async signIn(context, user){
-        Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${context.state.hostPort}`
-        // Vue.axios.defaults.baseURL = `https://sosaludaps.tk:9000`
+        // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${context.state.hostPort}`
+        Vue.axios.defaults.baseURL = `http://pruebas1.apsoft.io:9000`
         Nprogress.start()
         await new Promise(resolve => {
             Vue.axios.post('/api/login', user)
@@ -138,11 +138,11 @@ const mutations = {
         localStorage.setItem('user',JSON.stringify(state.user))
     },
     assignTokenAxios (state) {
-        Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
-        // Vue.axios.defaults.baseURL = `https://sosaludaps.tk:9000`
+        // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
+        Vue.axios.defaults.baseURL = `http://pruebas1.apsoft.io:9000`
         if (state.access_token && state.token_type) {
-            Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}/api`
-            // Vue.axios.defaults.baseURL = `https://sosaludaps.tk:9000/api`
+            // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}/api`
+            Vue.axios.defaults.baseURL = `http://pruebas1.apsoft.io:9000/api`
             Vue.axios.defaults.headers.common['Authorization'] = `${state.token_type} ${state.access_token}`
         }
     },
@@ -151,8 +151,8 @@ const mutations = {
         setTimeout(() => {
             Nprogress.done()
             router.push({name: 'Login'})
-            Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
-            // Vue.axios.defaults.baseURL = `https://sosaludaps.tk:9000`
+            // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
+            Vue.axios.defaults.baseURL = `http://pruebas1.apsoft.io:9000`
             localStorage.removeItem('user')
             localStorage.removeItem('token_type')
             localStorage.removeItem('access_token')
@@ -169,7 +169,8 @@ const mutations = {
         Nprogress.start()
         setTimeout(() => {
             Nprogress.done()
-            Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
+            // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:${state.hostPort}`
+            Vue.axios.defaults.baseURL = `http://pruebas1.apsoft.io:9000`
             localStorage.removeItem('user')
             localStorage.removeItem('token_type')
             localStorage.removeItem('access_token')

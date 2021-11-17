@@ -2,11 +2,11 @@
 <template>
   <div class="app-default-layout">
     <template v-if="loading">
-      <rotate-square2></rotate-square2>
+      <rotate-square2/>
     </template>
     <template v-else>
       <!-- App Header -->
-      <app-header></app-header>
+<!--      <app-header/>-->
       <!-- App Main Content -->
       <v-content>
         <v-expand-transition>
@@ -20,10 +20,8 @@
               class="mb-0"
           >
             <v-row align="center">
-              <v-col class="grow py-0" v-if="esMovil">Se requiere cerrar y abrir el navegador, luego realizar la
-                descarga de ajustes generales.
-              </v-col>
-              <v-col class="grow py-0" v-else>Se requiere comando CTRL+F5 y realizar la descarga de ajustes generales.
+              <v-col class="grow py-0">
+                Se requiere realizar la descarga de ajustes generales.
               </v-col>
               <v-col class="shrink my-0 py-0">
                 <v-btn @click="getComplementos">
@@ -85,8 +83,6 @@
           <router-view></router-view>
         </transition>
       </v-content>
-      <!-- app customizer -->
-      <!--			<app-customizer></app-customizer>-->
     </template>
     <v-dialog v-model="inactividad" persistent max-width="290">
       <v-card>
@@ -102,14 +98,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <change-password ref="dialogChangePassword"></change-password>
+    <change-password ref="dialogChangePassword"/>
     <seguimiento-global/>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-import Header from 'Components/Header/Header.vue'
+// import Header from 'Components/Header/Header.vue'
 import {store} from '../store/store'
 
 export default {
@@ -122,7 +118,7 @@ export default {
     }
   },
   components: {
-    appHeader: Header,
+    // appHeader: Header,
     SeguimientoGlobal: () => import('Views/covid19/tamizaje/SeguimientoGlobal'),
     ChangePassword: () => import('../components/Header/ChangePassword.vue')
   },
@@ -201,6 +197,7 @@ export default {
 .app-default-layout {
   height: 100vh
 }
+
 .white-space-normal {
   white-space: normal !important;
 }

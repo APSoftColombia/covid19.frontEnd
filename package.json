@@ -1,6 +1,6 @@
 {
   "name": "APSOFT",
-  "version": "5.0.0",
+  "version": "5.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -78,7 +78,6 @@
     "@mdi/font": "^4.9.95",
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
-    "@vue/cli-plugin-pwa": "^4.3.1",
     "@vue/cli-service": "^4.3.1",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",

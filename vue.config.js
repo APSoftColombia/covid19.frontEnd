@@ -3,14 +3,14 @@ const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-    pwa: {
-        workboxPluginMode: 'GenerateSW',
-            workboxOptions: {
-                navigateFallback: 'index.html',
-                exclude: ['.htaccess'],
-        }
-
-    },
+    // pwa: {
+    //     workboxPluginMode: 'GenerateSW',
+    //         workboxOptions: {
+    //             navigateFallback: 'index.html',
+    //             exclude: ['.htaccess'],
+    //     }
+    //
+    // },
   publicPath: process.env.NODE_ENV === 'production' ? '/' :  '/',
   css: {
       sourceMap: true

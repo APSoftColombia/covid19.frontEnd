@@ -39,6 +39,7 @@ extend('numeric', {
 
 extend('email', {
     ...email,
+// /^\w+([\.-]?\w+)*@(?:|hotmail|outlook|yahoo|live|gmail)\.(?:|com|es)+$/.test(campo.value)
     message: 'El correo no es válido'
 })
 
@@ -74,7 +75,6 @@ extend('dateValid', {
 
 extend('phoneNumber', {
     validate(value) {
-        console.log('phoneNumber', Number(value))
         return !!(value && Number(value) && Number(value) > 0)
     },
     message: 'El número de teléfono no es válido.'

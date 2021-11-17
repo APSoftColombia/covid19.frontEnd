@@ -179,11 +179,6 @@
 		methods: {
 			getAjustes () {
 				this.$store.dispatch('reloadStorage')
-				// window.open(window.location, '_blank');
-				// this.loading = true
-				// this.$store.dispatch('getAjustesGenerales', true).then(() => {
-				// 	this.loading = false
-				// })
 			}
 			// getAfiliados () {
 			// 	this.loading = true
