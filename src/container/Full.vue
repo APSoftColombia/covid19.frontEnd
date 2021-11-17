@@ -6,7 +6,7 @@
     </template>
     <template v-else>
       <!-- App Header -->
-<!--      <app-header/>-->
+      <app-header/>
       <!-- App Main Content -->
       <v-content>
         <v-expand-transition>
@@ -105,7 +105,7 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-// import Header from 'Components/Header/Header.vue'
+import Header from 'Components/Header/Header.vue'
 import {store} from '../store/store'
 
 export default {
@@ -118,7 +118,7 @@ export default {
     }
   },
   components: {
-    // appHeader: Header,
+    appHeader: Header,
     SeguimientoGlobal: () => import('Views/covid19/tamizaje/SeguimientoGlobal'),
     ChangePassword: () => import('../components/Header/ChangePassword.vue')
   },
