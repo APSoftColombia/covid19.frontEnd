@@ -53,6 +53,7 @@
                             v-model="bodega.codigo_ips"
                             item-value="codigohabilitacion"
                             :items="prestadores"
+                            :filter="filterIPS"
                             placeholder="Buscar por código de habilitación, NIT o nombre"
                             no-data-text="No hay registros para mostrar"
                             outlined
@@ -178,6 +179,12 @@ export default {
     filterResponsables (item, queryText) {
       const hasValue = val => val != null ? val : ''
       const text = hasValue(item.numero_documento_identidad + ' ' + item.name)
+      const query = hasValue(queryText)
+      return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
+    },
+    filterIPS (item, queryText) {
+      const hasValue = val => val != null ? val : ''
+      const text = hasValue(item.codigohabilitacion + ' ' + item.nombre)
       const query = hasValue(queryText)
       return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1
     }
