@@ -1,7 +1,7 @@
 <template>
 	<v-container fluid style="height: 100% !important; background-color: white !important;">
 		<v-row style="height: 100% !important;" justify="center" align="center">
-			<v-col cols="12" sm="6" v-if="$vuetify.breakpoint.smAndUp && datos.imagen_inicio !== 'logoSucre.png'">
+			<v-col cols="12" sm="6" v-if="$vuetify.breakpoint.smAndUp && datos && datos.imagen_inicio !== 'logoSucre.png'">
 				<v-row style="height: 100% !important;" justify="center" align="center">
 					<v-card flat class="transparent" v-if="imagenName">
 						<v-responsive :aspect-ratio="3/4">

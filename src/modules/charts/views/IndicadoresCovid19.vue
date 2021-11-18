@@ -34,6 +34,7 @@
                     :init-pack="item"
                     external-filters
                     :height-chart="200"
+                    :external-string-filter="externalStringFilter"
                 >
                   <template v-slot:externalfilters>
                     <v-col
@@ -43,11 +44,13 @@
                         class="text-end"
                     >
                       <v-text-field
+                          ref="municipio_id"
                           label="Outlined"
                           placeholder="Placeholder"
                           outlined
+                          clearable
                           dense
-                          @input="val => makeExternalFiltersString(indexItem, val)"
+                          @input="val => makeExternalFiltersString(indexItem)"
                       />
                     </v-col>
                     <v-col
@@ -86,18 +89,18 @@ export default {
     loading: false,
     packs: [],
     tab: null,
-    algo: null
+    externalStringFilter: ''
   }),
   created () {
+    this.makeExternalFiltersString(0)
     this.getPackx()
   },
   methods: {
-    makeExternalFiltersString (indexItem, val) {
-      console.log('indexItemindexItem', `${indexItem} y val = ${val}`)
+    makeExternalFiltersString (indexItem) {
       let string = ''
-      if (val) string = string + `valorfilter[filter]=${val}`
-      console.log('string', string)
-      this.$refs.packNo[indexItem].externalFilterStringDefine(string)
+      console.log('this?.$refs?', this?.$refs?.municipo_id || 'no esta')
+      string = string + `municipio_id=${(this?.$refs?.municipio_id && this.$refs.municipio_id[indexItem]?.internalValue) || ''}`
+      this.externalStringFilter = string
     },
     getPackx () {
       this.loading = true
