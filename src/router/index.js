@@ -8,6 +8,7 @@ import rutasImportadores from 'Views/importadores/router/index'
 import rutasPowerbi from 'Views/powerbi/router/index'
 import rutasCentroRegulador from 'Views/centroRegulador/router/index'
 import rutasLaboratorioSaludPublica from 'Views/laboratorioSaludPublica/router/index'
+import rutasCharts from '@/modules/charts/router'
 // session components
 const SignUpOne = () => import('Views/session/SignUpOne')
 const LoginOne = () => import('Views/session/LoginOne')
@@ -26,6 +27,7 @@ export default new Router({
 		rutasImportadores,
 		rutasCentroRegulador,
 		rutasLaboratorioSaludPublica,
+		rutasCharts,
 		{
 			path: '/session/sign-up',
 			component: SignUpOne,

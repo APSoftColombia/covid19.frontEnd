@@ -369,20 +369,20 @@ export default {
             }
          }
       },
-      {
-         path: 'indicadores-covid19',
-         name: 'IndicadoresCovid',
-         component: Indicadores,
-         meta: {
-            requiresAuth: true,
-            requiresOnLine: true,
-            requiresPermission: 'indicadoresCovid-index',
-            avatar: {
-               icon: 'fas fa-chart-pie',
-               color: 'deep-purple',
-            }
-         }
-      },
+      // {
+      //    path: 'indicadores-covid19',
+      //    name: 'IndicadoresCovid',
+      //    component: Indicadores,
+      //    meta: {
+      //       requiresAuth: true,
+      //       requiresOnLine: true,
+      //       requiresPermission: 'indicadoresCovid-index',
+      //       avatar: {
+      //          icon: 'fas fa-chart-pie',
+      //          color: 'deep-purple',
+      //       }
+      //    }
+      // },
       {
          path: 'reportes-covid19',
          name: 'ReportesCovid',

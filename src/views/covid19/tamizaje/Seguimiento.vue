@@ -277,7 +277,7 @@
                   right
                   icons-and-text
                   show-arrows
-                  :color="tab === 'tab-1' ? 'warning' : tab === 'tab-2' ? 'error' : 'indigo'"
+                  :color="tab === 'tab-1' ? 'warning' : tab === 'tab-2' ? 'error' : tab === 'tab-3' ? 'indigo': 'teal'"
               >
                 <v-tabs-slider></v-tabs-slider>
                 <v-tab
@@ -318,6 +318,19 @@
                     <span class="subtitle-1">SISMUESTRAS</span>
                   </v-badge>
                   <v-icon>fas fa-vials</v-icon>
+                </v-tab>
+                <v-tab
+                    href="#tab-4"
+                >
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-6' ? 'teal' : 'grey'"
+                      :content="String(tamizaje.seguimientos_psicologicos.length)"
+                      :class="tab === 'tab-6' ? 'teal--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Psicología</span>
+                  </v-badge>
+                  <v-icon>fas fa-street-view</v-icon>
                 </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tab" class="mt-2" touchless>
@@ -363,6 +376,22 @@
                   ></muestras>
                   <div v-if="!permisos.muestraVer" class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
                     <v-icon color="error" large left>mdi-alert-outline</v-icon>
+                    No tiene permisos para ver ésta sección.
+                  </div>
+                </v-tab-item>
+                <v-tab-item
+                    value="tab-4"
+                >
+                  <seguimientos
+                      v-if="permisos.seguimientoPsicologicoVer && (tab === 'tab-4')"
+                      :tamizaje="tamizaje"
+                      :editable="editableNexos && activoEPS"
+                      @change="changeTamizaje(tamizaje.id)"
+                      @actualizarTamizaje="val => changeTamizaje(val.id)"
+                  ></seguimientos>
+                  <div v-if="!permisos.seguimientoPsicologicoVer"
+                       class="font-weight-bold grey--text text--lighten-1 text-center mt-10">
+                    <v-icon color="teal" large left>mdi-alert-outline</v-icon>
                     No tiene permisos para ver ésta sección.
                   </div>
                 </v-tab-item>
@@ -412,7 +441,7 @@ export default {
       return this.$store.state.settings.actualizadorGlobal
     },
     activoEPS () {
-      return !(this && this.tamizaje && this.tamizaje.afiliado_id && this.tamizaje.estado_afiliado && (this.tamizaje.estado_afiliado === 'RE' || this.tamizaje.estado_afiliado === 'AF'))
+      return !(this && this.tamizaje && this.tamizaje.afiliado_id && this.tamizaje.estado_afiliado && ((this.tamizaje.estado_afiliado === 'RE' && this.getUser?.tipo_cliente_id === 2) || this.tamizaje.estado_afiliado === 'AF'))
     },
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
@@ -437,7 +466,8 @@ export default {
     },
     ...mapGetters([
       'modelTamizaje',
-        'estadosAfiliacion'
+        'estadosAfiliacion',
+        'getUser'
     ]),
     sonNexos() {
       return !!(this.tamizaje.muestras && this.tamizaje.muestras.filter(x => x.resultado).length)

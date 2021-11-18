@@ -117,7 +117,7 @@ export const itemsMenu = [
         title: 'Indicadores Covid-19',
         icon: 'fas fa-chart-pie',
         color: 'deep-purple',
-        routeName: 'IndicadoresCovid',
+        routeName: 'IndicadoresCovid19',
         typeRoute: 'reportesIndicadoresCovid'
     },
     {
