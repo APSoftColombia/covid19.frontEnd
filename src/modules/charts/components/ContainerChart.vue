@@ -16,6 +16,7 @@
         :options="chart.options"
         :height="heightChart"
       />
+      <div v-else class="text-center text--disabled"> No hay datos para graficar.</div>
     </v-card-text>
   </v-card>
 </template>
@@ -98,6 +99,7 @@ export default {
               responsive: true
             }
           }
+          console.log('response.data xxxxx', response.data)
           this.chart = response.data
           this.loading = false
         })

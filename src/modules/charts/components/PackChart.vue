@@ -53,7 +53,7 @@ export default {
       type: Boolean,
       default: false
     },
-    externalStringFilter: {
+    externalStringFilterInit: {
       type: String,
       default: ''
     }
@@ -65,6 +65,7 @@ export default {
   data: () => ({
     loading: false,
     stringFilter: '',
+    externalStringFilter: '',
     stringFilterTotal: '',
     pack: null
   }),
@@ -77,22 +78,21 @@ export default {
       },
       immediate: true,
       deep: true
-    },
-    externalStringFilter: {
-      handler () {
-        this.stringDefine()
-      },
-      immediate: false
     }
   },
   methods: {
+    externalFilterStringDefine (stringFilter) {
+      this.externalStringFilter = stringFilter
+      this.stringDefine()
+    },
     filterStringDefine (stringFilter) {
       this.stringFilter = stringFilter
       this.stringDefine()
     },
     stringDefine () {
       let string = this.stringFilter ? ((this.stringFilter.indexOf('?') > -1 ? '&' : '?') + this.stringFilter) : ''
-      string = string + (this.externalStringFilter ? ((string ? '&' : (this.externalStringFilter.indexOf('?') > -1 ? '&' : '?')) + this.externalStringFilter) : '')
+      const external = this.externalStringFilter || this.externalStringFilterInit
+      string = string + (external ? ((string ? '&' : (external.indexOf('?') > -1 ? '&' : '?')) + external) : '')
       this.stringFilterTotal = string
     },
     filterDefine () {

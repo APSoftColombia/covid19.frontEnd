@@ -34,7 +34,7 @@
                     :init-pack="item"
                     external-filters
                     :height-chart="200"
-                    :external-string-filter="externalStringFilter"
+                    :external-string-filter-init="externalStringFilterInit"
                 >
                   <template v-slot:externalfilters>
                     <v-col
@@ -89,18 +89,22 @@ export default {
     loading: false,
     packs: [],
     tab: null,
-    externalStringFilter: ''
+    externalStringFilterInit: ''
   }),
   created () {
-    this.makeExternalFiltersString(0)
     this.getPackx()
+    this.makeExternalFiltersString(0)
   },
   methods: {
     makeExternalFiltersString (indexItem) {
       let string = ''
       console.log('this?.$refs?', this?.$refs?.municipo_id || 'no esta')
       string = string + `municipio_id=${(this?.$refs?.municipio_id && this.$refs.municipio_id[indexItem]?.internalValue) || ''}`
-      this.externalStringFilter = string
+      if(this?.$refs?.packNo && this?.$refs?.packNo[indexItem]) {
+        this.$refs.packNo[indexItem].externalFilterStringDefine(string)
+      } else {
+        this.externalStringFilterInit = string
+      }
     },
     getPackx () {
       this.loading = true
