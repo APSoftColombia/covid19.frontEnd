@@ -27,7 +27,7 @@
 					</v-list>
 				</v-card>
 			</v-col>
-			<v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
+			<v-col cols="12" v-if="(esSuperAdmin || esCovidAdmin) && permisos.cargaMasivaRegistros">
 				<v-card>
 					<v-list two-line>
 						<v-list-item>
@@ -92,7 +92,7 @@
           </v-snackbar>
         </v-card>
       </v-col>
-			<v-col cols="12" v-if="esSuperAdmin || esCovidAdmin">
+			<v-col cols="12" v-if="(esSuperAdmin || esCovidAdmin) && permisos.cargaMasivaSismuestras">
 				<v-card>
 					<v-list two-line>
 						<v-list-item>
