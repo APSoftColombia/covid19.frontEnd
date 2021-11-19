@@ -45,12 +45,13 @@
                     >
                       <v-text-field
                           ref="municipio_id"
-                          label="Outlined"
-                          placeholder="Placeholder"
+                          label="municipio_id"
                           outlined
                           clearable
                           dense
-                          @input="val => makeExternalFiltersString(indexItem)"
+                          @input="makeExternalFiltersString(indexItem)"
+                          persistent-hint
+                          hint="utilizar:1002, 1020, 1021, 1022"
                       />
                     </v-col>
                     <v-col
@@ -61,7 +62,7 @@
                       <v-btn
                           color="primary"
                           icon
-                          @click="$refs.packNo[indexItem].packInit(item.id)"
+                          @click="reloadChart(indexItem, item.id)"
                       >
                         <v-icon>mdi-reload</v-icon>
                       </v-btn>
@@ -96,9 +97,14 @@ export default {
     this.makeExternalFiltersString(0)
   },
   methods: {
+    reloadChart(indexItem, id) {
+      this.$refs.packNo[indexItem].packInit(id)
+      if (this?.$refs?.municipio_id && this.$refs.municipio_id[indexItem]) {
+        this.$refs.municipio_id[indexItem].internalValue = ''
+      }
+    },
     makeExternalFiltersString (indexItem) {
       let string = ''
-      console.log('this?.$refs?', this?.$refs?.municipo_id || 'no esta')
       string = string + `municipio_id=${(this?.$refs?.municipio_id && this.$refs.municipio_id[indexItem]?.internalValue) || ''}`
       if(this?.$refs?.packNo && this?.$refs?.packNo[indexItem]) {
         this.$refs.packNo[indexItem].externalFilterStringDefine(string)
@@ -110,7 +116,6 @@ export default {
       this.loading = true
       this.axios.get('graphic_reports')
         .then(response => {
-          console.log('response', response.data)
           this.packs = response.data
           this.loading = false
         })

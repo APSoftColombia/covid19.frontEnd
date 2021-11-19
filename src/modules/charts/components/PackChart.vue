@@ -1,8 +1,8 @@
 <template>
   <v-card tile flat>
     <filters-pack
-      v-if='pack && ((pack.filters && pack.filters.length) || externalFilters)'
-      :filters='pack.filters'
+      v-if='(pack && pack.filters && pack.filters.length) || externalFilters'
+      :filters='pack ? pack.filters : []'
       @reloadFilter='val => filterStringDefine(val)'
     >
       <template v-slot:externalfilters>
@@ -117,7 +117,6 @@ export default {
       this.getPack(id)
     },
     getPack (id) {
-      console.log('entra', id)
       this.loading = true
       this.axios.get(`graphic_reports/${id}`)
         .then(response => {
