@@ -21,7 +21,7 @@
           >
             <v-row align="center">
               <v-col class="grow py-0">
-                Se requiere realizar la descarga de ajustes generales.
+                Se requiere comando CTRL+F5 y realizar la descarga de ajustes generales.
               </v-col>
               <v-col class="shrink my-0 py-0">
                 <v-btn @click="getComplementos">
