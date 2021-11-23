@@ -1,5 +1,8 @@
 <template>
-  <v-card>
+  <v-card
+      :color="chart.color && data.type === 'Quantity' ? chart.color : ''"
+      :dark="!!chart.color && data.type === 'Quantity'"
+  >
     <v-card-subtitle
       v-if="data.title"
       class="text-truncate"
@@ -15,6 +18,7 @@
         :chart-data="chart.data"
         :options="chart.options"
         :height="heightChart"
+        :color="chart.color"
       />
       <div v-else class="text-center text--disabled"> No hay datos para graficar.</div>
     </v-card-text>
@@ -99,7 +103,6 @@ export default {
               responsive: true
             }
           }
-          console.log('response.data xxxxx', response.data)
           this.chart = response.data
           this.loading = false
         })

@@ -1,8 +1,8 @@
 <template>
-  <v-card flat>
+  <div>
     <v-list-item two-line class="pa-0">
       <v-list-item-content>
-        <v-list-item-title class="text-h5">
+        <v-list-item-title class="title font-lg">
           {{ chartData.label }}
         </v-list-item-title>
         <v-list-item-subtitle v-if="chartData.subtitle">
@@ -12,13 +12,13 @@
     </v-list-item>
     <v-row align="center">
       <v-col
-        class="text-h2"
+        class="font-3x"
         cols="12"
       >
         {{ chartData.value }}
       </v-col>
     </v-row>
-  </v-card>
+  </div>
 </template>
 <script>
 export default {
@@ -31,6 +31,10 @@ export default {
     height: {
       type: Number,
       default: 200
+    },
+    color: {
+      type: String,
+      default: ''
     }
   },
   watch: {

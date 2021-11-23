@@ -51,16 +51,6 @@ export default {
       type: Number,
       default: 200
     }
-  },
-  watch: {
-  },
-  mounted () {
-  },
-  methods: {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
