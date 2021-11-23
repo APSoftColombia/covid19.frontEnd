@@ -1,7 +1,7 @@
 <template>
   <v-card
-      :color="chart.color && data.type === 'Quantity' ? chart.color : ''"
-      :dark="!!chart.color && data.type === 'Quantity'"
+      :color="chart && chart.color && data.type === 'Quantity' ? chart.color : ''"
+      :dark="chart && !!chart.color && data.type === 'Quantity'"
   >
     <v-card-subtitle
       v-if="data.title"

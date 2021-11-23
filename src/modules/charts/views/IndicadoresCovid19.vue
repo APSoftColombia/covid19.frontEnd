@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Indicadores Covid-19"/>
+    <page-title-bar title="Indicadores PRASS"/>
     <v-row>
       <v-col
           cols="12"

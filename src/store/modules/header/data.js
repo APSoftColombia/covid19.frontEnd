@@ -114,7 +114,7 @@ export const itemsMenu = [
     },
     {
         id: 15,
-        title: 'Indicadores Covid-19',
+        title: 'Indicadores PRASS',
         icon: 'fas fa-chart-pie',
         color: 'deep-purple',
         routeName: 'IndicadoresCovid19',
