@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Gestion de Vacunacion">
+    <page-title-bar title="Gestión de Vacunación">
       <template slot="actions">
-        <c-tooltip left tooltip="Crear Nueva Vacunacion" v-if="permisos.crearVacunacion">
+        <c-tooltip left tooltip="Crear Nueva Vacunación" v-if="permisos.crearVacunacion">
           <v-btn
             color="primary"
             depressed

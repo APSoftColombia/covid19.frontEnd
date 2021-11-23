@@ -168,7 +168,7 @@
                     name="sexo"
                     label="Sexo"
                     :column="!$vuetify.breakpoint.smAndUp"
-                    :disabled="identificacionVerificada < 1 || sexoAutomatico"
+                    :disabled="identificacionVerificada < 1 || !!sexoAutomatico"
                   />
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="6" md="6">
@@ -297,7 +297,7 @@
                             name="acudiente"
                             label="¿Necesita acudiente?"
                             :column="!$vuetify.breakpoint.smAndUp"
-                            :disabled="identificacionVerificada < 1 || acudienteObligatorioPorEdad"
+                            :disabled="identificacionVerificada < 1 || !!acudienteObligatorioPorEdad"
                           />
                         </v-col>
                       </v-row>
@@ -1505,6 +1505,7 @@ export default {
     "vacunacion.necesita_acudiente": {
       handler(value) {
         if (value && value === "NO") {
+          this.vacunacion.parentesco_id = null;
           this.vacunacion.tipo_ident_acud = null;
           this.vacunacion.identificacion_acud = null;
           this.vacunacion.apellido1_acud = null;
@@ -1513,7 +1514,8 @@ export default {
           this.vacunacion.nombre2_acud = null;
         }
       },
-      immediate: false
+      immediate: false,
+      deep: false
     },
     "vacunacion.sexo": {
       handler(val) {
@@ -1789,6 +1791,9 @@ export default {
             this.vacunacion.zona = response.dosis[0].zona;
             this.vacunacion.etnia = response.dosis[0].etnia;
             this.vacunacion.condicion = response.dosis[0].condicion;
+            // Para embarazadas
+            this.vacunacion.fecha_ult_regla = response.dosis[0].fecha_ult_regla;
+
 
           } else if (response.tamizaje) {
             this.vacunacion.tipo_identificacion = this.tiposDocumentoIdentidad.find(x => x.id === response.tamizaje.tipo_identificacion).tipo
