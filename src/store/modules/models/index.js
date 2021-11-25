@@ -289,7 +289,8 @@ const state = {
         eps_id: null,
         PresupuestoComun: null,
         esConviviente: null,
-        parentesco_id: null
+        parentesco_id: null,
+        tipo_poblacion: null
     },
     modelViajero: {
         id: null,

@@ -193,32 +193,28 @@
                 </v-col>
                 <template v-if="tamizaje">
                   <v-col class="pb-0" cols="12">
-                    <v-autocomplete
-                        label="EPS"
+                    <c-select-complete
+                        v-model="reporte.tipo_poblacion"
+                        label="Tipo población"
+                        rules="required"
+                        name="Tipo población"
+                        :items="tipoPoblaciones"
+                    />
+                  </v-col>
+                  <v-col
+                      v-if="reporte.tipo_poblacion === 'Población Asegurada'"
+                      class="pb-0"
+                      cols="12"
+                  >
+                    <c-select-complete
                         v-model="reporte.eps_id"
+                        label="¿A que EPS está afiliado?"
+                        rules="required"
+                        name="EPS de afiliación"
                         :items="epss"
-                        outlined
-                        dense
-                        :filter="filterEpsReporte"
                         item-value="id"
-                        persistent-hint
-                        clearable
-                        :hint="reporte.eps_id && epss && epss.length && epss.find(x => x.id === reporte.eps_id) ? `Código: ${epss.find(x => x.id === reporte.eps_id).codigo}` : '' "
-                    >
-                      <template v-slot:selection="{ item, index }">
-                        <div class="pa-0 text-truncate" style="width: 100% !important;">
-                          {{item.nombre}}
-                        </div>
-                      </template>
-                      <template v-slot:item="{ item, index }">
-                        <template>
-                          <v-list-item-content class="pa-0">
-                            <v-list-item-title>{{item.nombre}}</v-list-item-title>
-                            <v-list-item-subtitle>{{item.codigo ? `Código: ${item.codigo}` : ''}}</v-list-item-subtitle>
-                          </v-list-item-content>
-                        </template>
-                      </template>
-                    </v-autocomplete>
+                        item-text="nombre"
+                    />
                   </v-col>
                   <v-col cols="12">
                     <v-card outlined tile>
@@ -321,7 +317,8 @@ export default {
       'sexosCovid',
       'datosEmpresa',
       'parentescos',
-      'epss'
+      'epss',
+      'tipoPoblaciones'
     ]),
     time() {
       let h = 0
@@ -339,6 +336,22 @@ export default {
     }
   },
   watch: {
+    'reporte.tipo_poblacion': {
+      handler(val) {
+        if (val !== 'Población Asegurada') {
+          this.reporte.eps_id = null
+        }
+      },
+      immediate: false
+    },
+    'reporte.eps_id': {
+      handler(val) {
+        if (val) {
+          this.reporte.tipo_poblacion = 'Población Asegurada'
+        }
+      },
+      immediate: false
+    },
     'reporte.departamento_id': {
       handler() {
         if (this && this.watcher) {

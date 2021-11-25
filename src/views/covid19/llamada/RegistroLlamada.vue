@@ -334,7 +334,7 @@
         watch: {
             'llamada.tipo_poblacion': {
                 handler(val) {
-                    if (val == 'Población Asegurada') {
+                    if (val === 'Población Asegurada') {
                         this.llamada.si_eps = 1
                     } else {
                         this.llamada.si_eps = 0

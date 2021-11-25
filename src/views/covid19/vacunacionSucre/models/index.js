@@ -43,6 +43,7 @@ const VacunacionSucre = {
     tipo_dosis: null,
     fecha_prog_2da_dosis: null,
     tipo_poblacion: null,
+    priorizacion: null,
     estrategia_vacunacion: null,
     etapa: null,
     eventos_atribuidos: null,
