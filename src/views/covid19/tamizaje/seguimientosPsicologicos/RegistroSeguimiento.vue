@@ -11,16 +11,6 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <!--      <div-->
-      <!--          :style="`right: ${$vuetify.breakpoint.xsOnly ? '84' : '104' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '4' : '14' }px !important; position: fixed !important; z-index: 2 !important;`">-->
-      <!--        <v-chip-->
-      <!--            color="darken-2 primary"-->
-      <!--            label-->
-      <!--        >-->
-      <!--          <v-icon left>mdi-timer</v-icon>-->
-      <!--          {{ time }}-->
-      <!--        </v-chip>-->
-      <!--      </div>-->
       <v-container fluid>
         <v-row no-gutters>
           <jitsi-meet ref="jitsimeet" v-if="enlinea && videollamar" :enlinea="enlinea"
@@ -210,6 +200,38 @@
                         >
                         </c-radio>
                       </v-card-text>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-card outlined tile>
+                      <v-card-text>
+                        <c-radio
+                            v-model="evolucion.acepta_vacuna"
+                            :items="[
+                            { text: 'Si', value: 1 },
+                            { text: 'No', value: 0 },
+                          ]"
+                            itemValue="value"
+                            itemText="text"
+                            rules="required"
+                            name="intención de vacunarse"
+                            label="¿Tiene Intención de Vacunarse?"
+                            :column="!$vuetify.breakpoint.smAndUp"
+                            @input="evolucion.motivo_disistimiento = null"
+                        />
+                      </v-card-text>
+                      <v-col
+                          v-if="evolucion.acepta_vacuna === 0"
+                          cols="12"
+                          class="pb-0"
+                      >
+                        <c-text-area
+                            label="Motivo por el cual no se vacunará"
+                            rules="required"
+                            v-model="evolucion.motivo_disistimiento"
+                            name="motivo de no vacunación"
+                        />
+                      </v-col>
                     </v-card>
                   </v-col>
                 </template>

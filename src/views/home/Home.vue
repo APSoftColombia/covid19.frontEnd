@@ -2,6 +2,7 @@
 	<v-container fluid class="py-0" style="height: 100% !important; background-color: white">
 		<v-row style="height: 100% !important;" justify="center" align="center">
 			<v-card flat class="transparent">
+<!--        <boton-a-p-i/>-->
 				<v-responsive :aspect-ratio="16/9">
           <template v-if="datosEmpresa.imagen_inicio === 'logoSucre.png'">
             <v-img
@@ -20,8 +21,10 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
+// import BotonAPI from "../../components/botonAPI";
 	export default {
-		data: () => ({
+    // components: {BotonAPI},
+    data: () => ({
 			loading: false
 		}),
 		computed: {

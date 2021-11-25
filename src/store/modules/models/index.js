@@ -259,7 +259,9 @@ const state = {
         afectacion_emocional_familiar: null,
         red_apoyo_familiar: null,
         pensamientos_negativos: null,
-        desinteres_actividades_rutinarias: null
+        desinteres_actividades_rutinarias: null,
+        acepta_vacuna: null,
+        motivo_disistimiento: null
 
     },
     modelReporteComunitario: {

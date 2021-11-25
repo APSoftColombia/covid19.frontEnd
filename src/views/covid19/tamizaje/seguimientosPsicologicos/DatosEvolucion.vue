@@ -174,6 +174,18 @@
                       <v-list-item-title class="font-weight-bold">{{evolucion.desinteres_actividades_rutinarias}}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-list-item
+                      flat
+                      style="border-bottom: none !important;"
+                      @click="click = null"
+                  >
+                    <v-list-item-avatar class="my-1"><strong>8</strong></v-list-item-avatar>
+                    <v-list-item-content class="pa-0">
+                      <v-list-item-subtitle class="grey--text fs-12 fw-normal">¿Tiene Intención de Vacunarse?</v-list-item-subtitle>
+                      <v-list-item-title v-if="evolucion.acepta_vacuna === 1" class="font-weight-bold">Si</v-list-item-title>
+                      <p v-else class="mb-0 subtitle-1 font-weight-bold">{{evolucion.acepta_vacuna === 0 ? `No, ${evolucion.motivo_disistimiento}` : ''}}</p>
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list>
               </v-col>
             </template>

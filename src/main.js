@@ -44,7 +44,7 @@ import './lib/VuelyCss'
 import messages from './lang'
 
 //ServiceWorker
-import './registerServiceWorker'
+// import './registerServiceWorker'
 
 // vee-validate
 import './plugins/veeValidate'
