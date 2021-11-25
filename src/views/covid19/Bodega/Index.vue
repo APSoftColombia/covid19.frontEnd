@@ -53,12 +53,12 @@
                   <ips-component :codigo_ips="item.codigo_ips" :prestadores="prestadores"></ips-component>
                 </template>
                 <template v-slot:item.user="{ item }">
-                  <v-list-item-content class="pa-0" v-if="item.user">
+                  <v-list-item-content class="pa-0" v-if="item.responsable">
                     <v-list-item-title>
-                      {{ item.user.name }}
+                      {{ item.responsable.name }}
                     </v-list-item-title>
                     <v-list-item-subtitle class="body-2">
-                      {{ item.user.email }}
+                      {{ item.responsable.email }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </template>

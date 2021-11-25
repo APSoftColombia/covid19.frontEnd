@@ -197,14 +197,14 @@ export default {
         return (this && this.prestadores && this.bodega.codigo_ips && this.prestadores.find(x => x.codigohabilitacion === this.bodega.codigo_ips)) || null
     },
   },
-  /* watch: {
+  watch: {
     'bodega.codigo_ips': {
       handler () {
-        this.bodega.responsable_id = null
+        this.getResponsables()
       },
       immediate: false
     }
-  }, */
+  },
   created() {
     this.getIps()
   },
@@ -248,6 +248,12 @@ export default {
     getResponsables() {
       this.axios.get(`users-role?role=Médico`)
           .then(response => {
+            if(this.bodega.codigo_ips) {
+              response.data = response.data.filter(x => x.cod_ips === this.bodega.codigo_ips)
+            }
+            if (!(this.bodega.responsable_id && response.data.find(x => x.id === this.bodega.responsable_id))){
+              this.bodega.responsable_id = null
+            }
             this.responsables = response.data
           })
           .catch(error => {

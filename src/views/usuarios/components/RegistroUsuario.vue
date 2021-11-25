@@ -292,7 +292,7 @@ export default {
       'getUser'
     ]),
     autorizado() {
-      return this && this.getUser && !this.getUser.tipo_cliente_id
+      return this && this.getUser && !this.getUser.tipo_cliente_id || this.getUser.id === 1
     }
   },
   watch: {
