@@ -61,6 +61,7 @@
                             persistent-hint
                             clearable
                             :hint="ipsSeleccionada ? [ipsSeleccionada.telefono ? `Tel.${ipsSeleccionada.telefono}`: null, `${ipsSeleccionada.direccion} ${ipsSeleccionada.nompio}, ${ipsSeleccionada.nomdepto}`].filter(x => x).join(' | '): null"
+                            :disabled="!!getUser.cod_ips"
                         >
                             <template v-slot:selection="data">
                             <v-list-item class="pa-0" style="width: 100% !important;">
@@ -127,8 +128,9 @@
                 <v-col class="pb-0" cols="12" sm="12" md="12">
                   <c-text-area
                     v-model="bodega.descripcion"
-                    label="Observaciones"
-                    name="observaciones"
+                    label="Descripción"
+                    name="descripción"
+                    rules="required"
                   >
                   </c-text-area>
                 </v-col>
@@ -171,6 +173,8 @@ export default {
         codigo_ips: null,
         descripcion: null,
         responsable_id: null,
+        principal: 0,
+        tipo_cliente_id: null,
         tipo: null
     },
     prestadores: [],
@@ -191,7 +195,8 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'tiposDocumentoIdentidad'
+      'tiposDocumentoIdentidad',
+      'getUser'
     ]),
     ipsSeleccionada() {
         return (this && this.prestadores && this.bodega.codigo_ips && this.prestadores.find(x => x.codigohabilitacion === this.bodega.codigo_ips)) || null
@@ -207,6 +212,7 @@ export default {
   },
   created() {
     this.getIps()
+    console.log('this.getUser', this.getUser)
   },
   methods: {
     getIps() {
@@ -222,6 +228,9 @@ export default {
         if (result) {
           this.loading = true;
           let copiaData = this.clone(this.bodega);
+
+          copiaData.tipo_cliente_id = this.getUser.tipo_cliente_id
+          if(!copiaData.id) copiaData.principal = this.getUser.cod_ips ? 0 : 1
           let request = copiaData.id
             ? this.axios.put(`bodegas/${copiaData.id}`, copiaData)
             : this.axios.post(`bodegas`, copiaData);
@@ -246,11 +255,12 @@ export default {
       });
     },
     getResponsables() {
-      this.axios.get(`users-role?role=Médico`)
+      this.axios.get(`users-tipo-cliente`)
           .then(response => {
             if(this.bodega.codigo_ips) {
               response.data = response.data.filter(x => x.cod_ips === this.bodega.codigo_ips)
             }
+
             if (!(this.bodega.responsable_id && response.data.find(x => x.id === this.bodega.responsable_id))){
               this.bodega.responsable_id = null
             }
@@ -284,8 +294,8 @@ export default {
         this.getBodega(id);
       } else {
         this.bodega = this.clone(this.bodegaModel);
+        if (this.getUser.cod_ips) this.bodega.codigo_ips = this.getUser.cod_ips
       }
-      this.getResponsables()
       this.dialog = true;
     },
     close() {

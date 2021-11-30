@@ -309,6 +309,7 @@ export default {
         if (result) {
           this.loading = true
           this.usuario.eps_id = this.usuario.eps_id ? this.usuario.eps_id : null
+          // this.usuario.tipo_cliente_id = (!this.getUser.tipo_cliente_id || this.getUser.id === 1) ? this.usuario.tipo_cliente_id : this.getUser.tipo_cliente_id
           let usuarioD = this.clone(this.usuario)
           if(this.usuario.firmaFile) {
             usuarioD.firmaFile = await new Promise((resolve, reject) => {
@@ -370,7 +371,6 @@ export default {
             this.rolesx = response.data.roles
             this.cargos = response.data.cargos.map(x => x.cargo)
             if (id) {
-              // if (response.data.usuario.cod_ips) response.data.usuario.cod_ips = parseInt(response.data.usuario.cod_ips)
               this.usuario = response.data.usuario
               setTimeout(() => {
                 if (this.$refs.buscadorips && this.usuario.ips) this.$refs.buscadorips.assign(this.usuario.ips)

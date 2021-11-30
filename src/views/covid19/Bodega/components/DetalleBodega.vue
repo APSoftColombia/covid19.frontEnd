@@ -168,7 +168,7 @@
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="8">
-                  <v-row justify="end">
+                  <v-row v-if="permisos.gestionarBodega" justify="end">
                     <v-col cols="2">
                       <v-btn @click="openIngresoVacunas">Ingresos</v-btn>
                     </v-col>
@@ -344,6 +344,9 @@ export default {
     inventario: [],
   }),
   computed: {
+    permisos() {
+      return this.$store.getters.getPermissionModule('bodegas')
+    },
     ...mapGetters(["municipiosTotal", "tiposDocumentoIdentidad", "dosisVacunas"]),
   },
   created() {

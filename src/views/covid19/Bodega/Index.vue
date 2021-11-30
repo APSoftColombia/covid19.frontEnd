@@ -49,10 +49,14 @@
                 hide-default-footer
                 disable-pagination
               >
+                <template v-slot:item.nombre="{ item }">
+                  <v-icon v-if="item.principal" color="yellow darken-3">mdi-bookmark-check</v-icon>
+                  {{item.nombre}}
+                </template>
                 <template v-slot:item.ips="{ item }">
                   <ips-component :codigo_ips="item.codigo_ips" :prestadores="prestadores"></ips-component>
                 </template>
-                <template v-slot:item.user="{ item }">
+                <template v-slot:item.responsable="{ item }">
                   <v-list-item-content class="pa-0" v-if="item.responsable">
                     <v-list-item-title>
                       {{ item.responsable.name }}
@@ -77,7 +81,7 @@
                           <v-icon color="white">mdi-pencil</v-icon>
                         </v-btn>
                       </c-tooltip>
-                      <c-tooltip bottom tooltip="Ver Detalle" v-if="permisos.gestionarBodega">
+                      <c-tooltip bottom tooltip="Ver Detalle">
                         <v-btn
                           class="ma-1"
                           color="success"
@@ -124,6 +128,7 @@ const IpsComponent = () => import("./components/IPSComponent");
 const DetalleBodega= () => import("./components/DetalleBodega");
 // const UbicacionComponent = () => import("./components/UbicacionComponent");
 import TagsFilters from "./components/TagsFilters";
+
 export default {
   name: "MiBodega",
   components: {
@@ -165,7 +170,7 @@ export default {
           text: "Responsable",
           sortable: false,
           visibleColumn: false,
-          value: "user",
+          value: "responsable",
         },
         {
           text: "Opciones",
