@@ -1,6 +1,6 @@
 const VacunacionSucre = {
     id: null,
-    externa: null,
+    externa: 0,
     codigo_ips: null,
     cod_dpto: null,
     cod_mpio: null,

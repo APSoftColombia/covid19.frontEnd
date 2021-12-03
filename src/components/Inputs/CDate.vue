@@ -6,6 +6,7 @@
             transition="scale-transition"
             offset-y
             min-width="290px"
+            :disabled="disabled"
     >
         <template v-slot:activator="{ on }">
             <ValidationProvider :name="name" :vid="vid" :rules="(rules ? `${rules}|`: '') + 'dateValid'" v-slot="{ errors, valid }">
@@ -33,6 +34,7 @@
                 :min="min"
                 :max="max"
                 scrollable
+                :disabled="disabled"
         ></v-date-picker>
     </v-menu>
 </template>

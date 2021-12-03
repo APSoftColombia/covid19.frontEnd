@@ -4,9 +4,9 @@
             <v-card-text>
                 <c-check
                         v-model="lasComorbilidades"
-                        label="COMORBILIDADES VACUNACION"
+                        label="COMORBILIDADES VACUNACIÓN"
                         :rules="sinComorbilidades ? '' : 'required'"
-                        name="comorbilidades_vacunacion"
+                        name="comorbilidades_vacunación"
                         :items="comorbilidadesVacunas"
                         item-text="descrip"
                         item-value="codigo"

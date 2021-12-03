@@ -54,7 +54,7 @@
                   <li v-if="errorProgramatico"><div>Error programatico: {{ errorProgramaticoMessage ? errorProgramaticoMessage : '' }}</div></li>
                   <li v-if="tieneRefuerzo"><div>Ciudadano ya cuenta con esquema completo de Vacunacion y Refuerzo</div></li>
                   <li v-if="validationGestanteFail">La mujer se encuentra en estado de Gestacion temprana 
-                    ({{ vacunacion.semanas_embarazo ? vacunacion.semanas_embarazo : '' }} semanas de embarazo) y no es posible aplicar el Biologico.</li>
+                    ({{ vacunacion.semanas_embarazo ? vacunacion.semanas_embarazo : '' }} semanas de embarazo) y no es posible aplicar el Biológico.</li>
                   <li v-if="tamizajePositivo">Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{ verbalTimeAgoDiagnostico ? verbalTimeAgoDiagnostico : '' }} 
                     (Fecha diagnostico: {{ tamizajePositivo ? tamizajePositivo.fecha_diagnostico : '' }}) <br> Con Numero de ERP. {{ tamizajePositivo ? tamizajePositivo.id : '' }}
                   </li>
@@ -176,7 +176,7 @@
                     v-model="vacunacion.medio_contacto"
                     label="Medio de contacto"
                     rules="required"
-                    name="medio_contacto"
+                    name="medio de contacto"
                     :items="dosisVacunas.medioContactos"
                     :disabled="identificacionVerificada < 1"
                   >
@@ -208,7 +208,7 @@
                   <c-select-complete
                     v-model="vacunacion.cod_dpto"
                     label="Departamento de residencia"
-                    name="departamento_residencia"
+                    name="departamento de residencia"
                     rules="required"
                     :items="departamentos"
                     item-text="nombre"
@@ -232,7 +232,7 @@
                     "
                     v-model="vacunacion.cod_mpio"
                     label="Municipio de residencia"
-                    name="municipio_residencia"
+                    name="municipio de residencia"
                     rules="required"
                     :items="
                       departamentos.length &&
@@ -253,7 +253,7 @@
                     v-model="vacunacion.zona"
                     label="Zona de residencia"
                     rules="required"
-                    name="zona_residencia"
+                    name="zona de residencia"
                     :items="dosisVacunas.zonas"
                     :disabled="identificacionVerificada < 1"
                   >
@@ -407,10 +407,10 @@
                     <v-col class="pb-0" cols="12" sm="12" md="12">
                       <c-date
                           v-model="vacunacion.fecha_ult_regla"
-                          placeholder="Fecha de ultima menstruacion"
+                          label="Fecha de última regla"
                           :max="moment().format('YYYY-MM-DD')"
                           rules="required"
-                          name="fecha ultima menstruacion"
+                          name="fecha última regla"
                       >
                       </c-date>
                     </v-col>
@@ -508,6 +508,7 @@
                       rules="required"
                       name="Tipo población"
                       :items="tipoPoblaciones"
+                      :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
                 <template v-if="vacunacion.tipo_poblacion === 'Población Asegurada'">
@@ -541,7 +542,7 @@
                       v-model="vacunacion.estado_adres"
                       label="Estado ADRES"
                       rules="required"
-                      name="estado_adres"
+                      name="estado ADRES"
                       :items="dosisVacunas.estadoAdres"
                       :disabled="identificacionVerificada < 1 || isEdit"
                   />
@@ -679,7 +680,7 @@
                                     Fecha Aplicacion
                                   </th>
                                   <th class="text-left">
-                                    Biologico
+                                    Biológico
                                   </th>
                                 </tr>
                               </thead>
@@ -702,20 +703,23 @@
                     <v-col class="pb-0" cols="12" sm="12" md="12">
                       <c-date
                         v-model="vacunacion.fecha_aplicacion"
-                        label="Fecha de aplicacion biologico"
+                        label="Fecha de aplicación biológico"
                         rules="required"
-                        name="fecha aplicacion biologico"
+                        name="fecha aplicación biológico"
                         :disabled="identificacionVerificada < 1"
                         :min="condicionesAplicacion.minDate"
                         :max="moment().format('YYYY-MM-DD')"
                       >
                       </c-date>
                     </v-col>
+                    <v-col cols="12">
+                      <check-externa v-model="vacunacion.externa"/>
+                    </v-col>
                     <v-col class="pb-0" cols="12" sm="12" md="6">
                       <c-select-complete
                         v-model="vacunacion.cod_dpto_aplicacion"
-                        label="Departamento de aplicacion"
-                        name="departamento_aplicacion"
+                        label="Departamento de aplicación"
+                        name="departamento de aplicación"
                         rules="required"
                         :items="departamentos"
                         item-text="nombre"
@@ -738,8 +742,8 @@
                           !vacunacion.cod_dpto_aplicacion || identificacionVerificada < 1
                         "
                         v-model="vacunacion.cod_mpio_aplicacion"
-                        label="Municipio de aplicacion"
-                        name="municipio_aplicacion"
+                        label="Municipio de aplicación"
+                        name="municipio de aplicación"
                         rules="required"
                         :items="
                           departamentos.length &&
@@ -771,9 +775,9 @@
                     <v-col class="pb-0" cols="12" sm="6" md="6">
                       <c-select-complete
                         v-model="vacunacion.biologico"
-                        label="Biologico"
+                        label="Biológico"
                         rules="required"
-                        name="biologico"
+                        name="biológico"
                         :items="
                           vacunacion.bodega_id
                             ? bodegasFiltradas.find(
@@ -807,7 +811,7 @@
                         v-model="vacunacion.tipo_dosis"
                         label="Tipo de dosis"
                         rules="required"
-                        name="tipo_dosis"
+                        name="tipo de dosis"
                         :items="filterTipoDosis"
                         item-text="nombre"
                         item-value="codigo"
@@ -818,9 +822,9 @@
                     <v-col class="pb-0" cols="12" sm="6" md="6">
                       <c-select-complete
                         v-model="vacunacion.estrategia_vacunacion"
-                        label="Estrategia de vacunacion"
+                        label="Estrategia de vacunación"
                         rules="required"
-                        name="estrategia_vacunacion"
+                        name="estrategia de vacunación"
                         :items="dosisVacunas.estrategiasVacunacion"
                         :disabled="identificacionVerificada < 1"
                       >
@@ -932,7 +936,7 @@
                       <c-text-area
                         v-model="vacunacion.eventos_atribuidos"
                         label="Eventos atribuidos"
-                        name="eventos_atribuidos"
+                        name="eventos atribuidos"
                         rules="required"
                         upper-case
                       >
@@ -1054,11 +1058,12 @@
   </v-dialog>
 </template>
 <script>
-import SearchIdentidadVacunado from "./SearchIdentidadVacunado";
-import models from "Views/covid19/vacunacionSucre/models";
+import SearchIdentidadVacunado from './SearchIdentidadVacunado'
+import models from 'Views/covid19/vacunacionSucre/models'
 import ComorbilidadesGestionVacunacion from "./ComorbilidadesGestionVacunacion"
 import NoPuedeVacunarseComponent from "./NoPuedeVacunarseComponent"
 import DiscapacidadesVacunacion from './DiscapacidadesVacunacion'
+import CheckExterna from './CheckExterna'
 import {mapGetters} from "vuex";
 
 export default {
@@ -1068,6 +1073,7 @@ export default {
     ComorbilidadesGestionVacunacion,
     NoPuedeVacunarseComponent,
     DiscapacidadesVacunacion,
+    CheckExterna
   },
   data: () => ({
     menuHora: false,
@@ -1421,7 +1427,7 @@ export default {
           if (diasTemprano > 0 && this.dosisAplicadas && this.dosisAplicadas.length === 1) {
             this.fechaAplicacionAnticipada = true
             this.msgFechaAplicacionAnticipada = `Faltan ${diasTemprano} dias para aplicacion de 
-              Segunda dosis del Biologico ${this.dosisAplicadas[0].biologico ? this.dosisAplicadas[0].biologico : ''}`
+              Segunda dosis del Biológico ${this.dosisAplicadas[0].biologico ? this.dosisAplicadas[0].biologico : ''}`
           }
         }
       },
