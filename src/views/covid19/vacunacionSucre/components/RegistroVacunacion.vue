@@ -11,8 +11,8 @@
         <v-icon left>fas fa-shield-virus</v-icon>
         <v-toolbar-title>{{
           vacunacion && vacunacion.id
-            ? `Edicion Registro No. ${vacunacion.id}`
-            : "Nuevo Registro de Vacunacion"
+            ? `Edición Registro No. ${vacunacion.id}`
+            : "Nuevo Registro de Vacunación"
         }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon dark @click="close">
@@ -47,13 +47,13 @@
                 v-if="tamizajePositivo || validationGestanteFail || errorProgramatico || tieneRefuerzo || edadNoPermitidaVacuna || fechaAplicacionAnticipada"
               >
                 <ul>
-                  <li v-if="edadNoPermitidaVacuna">El ciudadano tiene {{ vacunacion && vacunacion.edad ? vacunacion.edad : '' }} años de edad, y
-                    no esta incluido en ninguno de los planes de vacunacion.
+                  <li v-if="edadNoPermitidaVacuna">El ciudadano tiene {{ vacunacion && vacunacion.edad }} años de edad, y
+                    no esta incluido en ninguno de los planes de vacunación.
                   </li>
                   <li v-if="fechaAplicacionAnticipada"><div>{{ msgFechaAplicacionAnticipada ? msgFechaAplicacionAnticipada : '' }}</div></li>
-                  <li v-if="errorProgramatico"><div>Error programatico: {{ errorProgramaticoMessage ? errorProgramaticoMessage : '' }}</div></li>
-                  <li v-if="tieneRefuerzo"><div>Ciudadano ya cuenta con esquema completo de Vacunacion y Refuerzo</div></li>
-                  <li v-if="validationGestanteFail">La mujer se encuentra en estado de Gestacion temprana 
+                  <li v-if="errorProgramatico"><div>Error programático: {{ errorProgramaticoMessage ? errorProgramaticoMessage : '' }}</div></li>
+                  <li v-if="tieneRefuerzo"><div>Ciudadano ya cuenta con esquema completo de Vacunación y Refuerzo</div></li>
+                  <li v-if="validationGestanteFail">La mujer se encuentra en estado de Gestación temprana
                     ({{ vacunacion.semanas_embarazo ? vacunacion.semanas_embarazo : '' }} semanas de embarazo) y no es posible aplicar el Biológico.</li>
                   <li v-if="tamizajePositivo">Esta persona ha sido diagnosticada como <b> Positivo Covid</b>, hace {{ verbalTimeAgoDiagnostico ? verbalTimeAgoDiagnostico : '' }} 
                     (Fecha diagnostico: {{ tamizajePositivo ? tamizajePositivo.fecha_diagnostico : '' }}) <br> Con Numero de ERP. {{ tamizajePositivo ? tamizajePositivo.id : '' }}
@@ -397,8 +397,8 @@
                       itemValue="value"
                       itemText="text"
                       rules="required"
-                      name="condicion"
-                      label="Condicion Gestante: "
+                      name="gondición gestante"
+                      label="Condición Gestante: "
                       :column="!$vuetify.breakpoint.smAndUp"
                       :disabled="identificacionVerificada < 1"
                     />
@@ -449,8 +449,8 @@
                         itemValue="value"
                         itemText="text"
                         rules="required"
-                        name="porparto"
-                        label="Condicion de Posparto: "
+                        name="posparto"
+                        label="Condición de Posparto: "
                         :column="!$vuetify.breakpoint.smAndUp"
                         :disabled="identificacionVerificada < 1"
                       />
@@ -482,7 +482,7 @@
                 <v-col class="pb-0" cols="12" sm="12" md="12">
                   <c-select-complete
                     v-model="vacunacion.etnia"
-                    label="Etnia o Poblacion especial"
+                    label="Etnia o Población especial"
                     rules="required"
                     name="etnia"
                     :items="dosisVacunas.Etnias"
@@ -495,7 +495,7 @@
                 <v-col class="pb-0" cols="12" sm="12" md="12" v-if="vacunacion.etnia && vacunacion.etnia !== '6'">
                   <c-texto
                     v-model="vacunacion.nombre_etnia_poblacion"
-                    label="Nombre de Etnia o Poblacion especial"
+                    label="Nombre de Etnia o Población especial"
                     name="nombre etnia"
                     :disabled="identificacionVerificada < 1"
                   >
@@ -547,6 +547,11 @@
                       :disabled="identificacionVerificada < 1 || isEdit"
                   />
                 </v-col>
+                <comorbilidades-gestion-vacunacion
+                    :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
+                    @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
+                    :disabled="identificacionVerificada < 1"
+                />
                 <v-col cols="12">
                   <v-card outlined tile>
                     <v-card-text>
@@ -927,11 +932,6 @@
                       >
                       </c-texto> -->
                     </v-col>
-                    <comorbilidades-gestion-vacunacion
-                      :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
-                      @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
-                      :disabled="identificacionVerificada < 1"
-                    ></comorbilidades-gestion-vacunacion>
                     <v-col class="pb-0" cols="12" sm="12" md="12">
                       <c-text-area
                         v-model="vacunacion.eventos_atribuidos"
@@ -1153,42 +1153,46 @@ export default {
     filterTipoDosis() {
       // *Si tiene esquema completo, solo dejar Refuerzo, quitar unica por biologico y unica por covid. Y el refuerso, si aplica para el
       let result = this.dosisVacunas.Tipo_dosis
-      if (this.dosisAplicadas.length) {
+      if (this.tieneRefuerzo) {
+        result = []
+      }
+      else if (this.dosisAplicadas.length) {
         // let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
         let tipoBiologicosAplicadas = this.dosisAplicadas.map(x => x.biologico)
         // SI el biologico actual es JANSSEN O ya tiene dosis aplicadas de JANSSEN-> Solo habilita los tipos de dosis de REFUERZO
-        if ((this.vacunacion.biologico && this.vacunacion.biologico === '4') || tipoBiologicosAplicadas.includes("JANSSEN")) {
-          console.log("2");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
-        }
+        // if ((this.vacunacion.biologico && this.vacunacion.biologico === '4') || tipoBiologicosAplicadas.includes("JANSSEN")) {
+        //   console.log("2");
+        //   result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+        // }
         // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos aplicadas son diferentes de JANSSEN Y no tiene el esquema completo
         // -> Solo habilita los tipos de dosis diferentes de los que ya tiene (tipoDosisAplicadas)
         if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && !this.esquemaCompleto) {
           console.log("3");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : [])
         }
         // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos son diferentes de JANSSEN Y tiene el esquema completo
         // -> habilita solo el REFUERZO
-        if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && this.esquemaCompleto) {
+        // if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && this.esquemaCompleto) {
+        if (this.esquemaCompleto && (this.edad >= 18)) {
           console.log("4");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : [])
         }
 
-        if (this.esquemaCompleto && (this.edad > 70 || this.vacunacion.comorbilidades_vacunacion.length)) {
-          console.log("5");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
-        }
+        // if (this.esquemaCompleto && (this.edad > 70 || this.vacunacion.comorbilidades_vacunacion.length)) {
+        //   console.log("5");
+        //   result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
+        // }
       } else {
         // SI es primera dosis Y el biologico es JANSSEN -> Solo habilita los tipos de dosis de UNICA POR BIOLOGICO
         // SINO habilitar unicamente los tipos de dosis de PRIMERA, UNICA POR BIOLOGICO
         if (this.vacunacion.biologico === '4') {
           console.log("1");
-          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
+          result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : [])
         } else {
           if (this.tamizajePositivo) {
-            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'REFUERZO'].includes(x.nombre) ? x : null)
+            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'REFUERZO'].includes(x.nombre) ? x : [])
           } else {
-            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'UNICA POR BIOLOGICO', 'REFUERZO'].includes(x.nombre) ? x : null)
+            result = this.dosisVacunas.Tipo_dosis.filter(x => !['SEGUNDA', 'UNICA POR BIOLOGICO', 'REFUERZO'].includes(x.nombre) ? x : [])
           }
         }
       }
@@ -1216,26 +1220,41 @@ export default {
       return result;
     },
     condicionesAplicacion() {
-      let condicionesFechaAplicaciones = {
-        'ASTRAZENEKA': {
-          '2da_dosis_min_date': 84,
-          '2da_dosis_max_data': 84,
-          '1era_dosis_dias_gracia': 0
+      let aplayCondition = { // Condiciones por fechas para aplicaciones de dosis segun biológico
+        ASTRAZENEKA: {
+          firstDaysGrace: 0,
+          second: {
+            min: 84,
+            max: 84
+          },
+          booster: 6
         },
-        'MODERNA': {
-          '2da_dosis_min_date': 28,
-          '2da_dosis_max_data': 84,
-          '1era_dosis_dias_gracia': 4
-        }, 
-        'PFIZER': {
-          '2da_dosis_min_date': 21,
-          '2da_dosis_max_data': 84,
-          '1era_dosis_dias_gracia': 4
-        }, 
-        'SINOVAC': {
-          '2da_dosis_min_date': 28,
-          '2da_dosis_max_data': 28,
-          '1era_dosis_dias_gracia': 0
+        MODERNA: {
+          firstDaysGrace: 0, // 4 para personas normales (de edad y sin comorbilidades)
+          second: {
+            min: 25,
+            max: 84
+          },
+          booster: 6
+        },
+        PFIZER: {
+          firstDaysGrace: 0, // 4 para personas normales (de edad y sin comorbilidades)
+          second: {
+            min: 21,
+            max: 84
+          },
+          booster: 4
+        },
+        SINOVAC: {
+          firstDaysGrace: 0,
+          second: {
+            min: 28,
+            max: 28
+          },
+          booster: 6
+        },
+        JANSSEN: {
+          booster: 6
         }
       }
       // SI no tiene dosis aplicadas -> la fecha minima es el 17/02/2021
@@ -1245,41 +1264,29 @@ export default {
       }
       // SI tiene dosis aplicadas -> la fecha minima es la fecha_aplicacion del ultimo biologico aplicado
       if (this && this.dosisAplicadas && this.dosisAplicadas.length) {
-        if (this.dosisAplicadas.length === 1) {
-          let ultimoBiologicoAplicado = this.dosisAplicadas[0].biologico
-
-          switch (ultimoBiologicoAplicado) {
-            case 'ASTRAZENEKA':
-              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
-                condicionesFechaAplicaciones.ASTRAZENEKA['2da_dosis_min_date'] + condicionesFechaAplicaciones.ASTRAZENEKA['1era_dosis_dias_gracia'],
-                'days').format('YYYY-MM-DD')
-              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.ASTRAZENEKA['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
-              break;
-            case 'MODERNA':
-              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
-                condicionesFechaAplicaciones.MODERNA['2da_dosis_min_date'] + condicionesFechaAplicaciones.MODERNA['1era_dosis_dias_gracia'],
-                'days').format('YYYY-MM-DD')
-              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.MODERNA['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
-              break;
-            case 'PFIZER':
-              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
-                condicionesFechaAplicaciones.PFIZER['2da_dosis_min_date'] + condicionesFechaAplicaciones.PFIZER['1era_dosis_dias_gracia'],
-                'days').format('YYYY-MM-DD')
-              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.PFIZER['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
-              break;
-            case 'SINOVAC':
-              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(
-                condicionesFechaAplicaciones.SINOVAC['2da_dosis_min_date'] + condicionesFechaAplicaciones.SINOVAC['1era_dosis_dias_gracia'],
-                'days').format('YYYY-MM-DD')
-              result.maxDate = this.moment(result.minDate).add(condicionesFechaAplicaciones.SINOVAC['2da_dosis_max_data'], 'days').format('YYYY-MM-DD')
-              break;
+        let ultimoBiologicoAplicado = this.dosisAplicadas[0].biologico
+        if (this.dosisAplicadas.length <= 2) {
+          if (this.dosisAplicadas.length === 1) {
+            if (ultimoBiologicoAplicado !== 'JANSSEN') {
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].second.min - aplayCondition[ultimoBiologicoAplicado].firstDaysGrace,'days').format('YYYY-MM-DD')
+              result.maxDate = this.moment(result.minDate).add(aplayCondition[ultimoBiologicoAplicado].second.max, 'days').format('YYYY-MM-DD')
+            } else {
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition.JANSSEN.booster,'months').format('YYYY-MM-DD')
+            }
+          } else {
+            if (ultimoBiologicoAplicado !== 'JANSSEN') {
+              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].booster,'months').format('YYYY-MM-DD')
+            } else {
+              result.minDate = this.moment().format('YYYY-MM-DD')
+              result.maxDate = this.moment().add(-1, 'days').format('YYYY-MM-DD')
+            }
           }
         } else {
-          // NO es PRIMERA dosis, entonces solo se aplica la fecha minima a la fecha del ultimo biologico aplicado
-          result.minDate = this.dosisAplicadas[0].fecha_aplicacion
+          // NO es un número de dosis o refuerzo autorizado
+          result.minDate = this.moment().format('YYYY-MM-DD')
+          result.maxDate = this.moment().add(-1, 'days').format('YYYY-MM-DD')
         }
       }
-
       return result
     },
     verbalTimeAgoDiagnostico() {
@@ -1420,14 +1427,21 @@ export default {
       },
       immediate: false
     },
-    "condicionesAplicacion": {
+    'condicionesAplicacion': {
       handler(val) {
         if (val) {
-          let diasTemprano = this.moment(val.minDate, 'YYYY-MM-DD').diff(this.moment(), 'days')
-          if (diasTemprano > 0 && this.dosisAplicadas && this.dosisAplicadas.length === 1) {
-            this.fechaAplicacionAnticipada = true
-            this.msgFechaAplicacionAnticipada = `Faltan ${diasTemprano} dias para aplicacion de 
-              Segunda dosis del Biológico ${this.dosisAplicadas[0].biologico ? this.dosisAplicadas[0].biologico : ''}`
+          if (this.tieneRefuerzo) {
+            this.fechaAplicacionAnticipada = false
+            this.msgFechaAplicacionAnticipada = null
+          } else {
+            let diasTemprano = this.moment(val.minDate, 'YYYY-MM-DD').diff(this.moment(), 'days')
+            if (diasTemprano > 0 && this.dosisAplicadas && (this.dosisAplicadas.length === 1 || this.dosisAplicadas.length === 2)) {
+              this.fechaAplicacionAnticipada = true
+              this.msgFechaAplicacionAnticipada = `Faltan ${diasTemprano} dia${diasTemprano !== 1 ? 's' : ''} para aplicación de la siguiente dosis.`
+            } else {
+              this.fechaAplicacionAnticipada = false
+              this.msgFechaAplicacionAnticipada = null
+            }
           }
         }
       },
@@ -1603,7 +1617,7 @@ export default {
         } else {
           this.bodegasFiltradas = this.filterBodegas()
         }
-        val && val < 3 ? this.edadNoPermitidaVacuna = true : this.edadNoPermitidaVacuna = false
+        this.edadNoPermitidaVacuna = (val !== null && val < 3)
       },
       immediate: false
     },
@@ -1915,6 +1929,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>
