@@ -912,7 +912,7 @@
                             <template>
                               <v-list-item-content class="pa-0">
                                 <v-list-item-title>{{
-                                  `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
+                                  `${item.apellido1} ${item.apellido2 ? item.apellido2 : ''} ${item.nombre1} ${item.nombre2 ? ${item.nombre2 : ''}`
                                 }}</v-list-item-title>
                                 <v-list-item-subtitle>{{
                                   item.tipo_identificacion +
