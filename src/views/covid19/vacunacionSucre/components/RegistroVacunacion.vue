@@ -382,15 +382,6 @@
                 </v-col>
                 <template v-if="vacunacion.sexo === 'F'">
                   <v-col cols="12" sm="12" md="12">
-                    <!-- <c-select-complete
-                      v-model="vacunacion.condicion"
-                      label="Condicion"
-                      rules="required"
-                      name="condicion"
-                      :items="dosisVacunas.condiciones"
-                      :disabled="identificacionVerificada < 1"
-                    >
-                    </c-select-complete> -->
                     <c-radio
                       v-model="vacunacion.condicion"
                       :items="condionesGestante"
@@ -437,12 +428,6 @@
                 
                   <template v-if="vacunacion.condicion !== 'GESTANTE'">
                     <v-col cols="12" sm="12" md="6">
-                      <!-- <v-checkbox
-                        v-model="vacunacion.posparto"
-                        label="PosParto"
-                        :true-value="true"
-                        :false-value="false"
-                      ></v-checkbox> -->
                       <c-radio
                         v-model="vacunacion.posparto"
                         :items="condicionesPosparto"
@@ -474,8 +459,8 @@
                     <v-checkbox
                       v-model="vacunacion.lactancia"
                       label="Lactancia"
-                      :true-value="true"
-                      :false-value="false"
+                      :true-value="1"
+                      :false-value="0"
                     ></v-checkbox>
                   </v-col>
                 </template>
@@ -548,6 +533,7 @@
                   />
                 </v-col>
                 <comorbilidades-gestion-vacunacion
+                    v-if="dialog"
                     :array-comorbilidades="vacunacion.comorbilidades_vacunacion"
                     @changeComorbilidades="val => vacunacion.comorbilidades_vacunacion = val"
                     :disabled="identificacionVerificada < 1"
@@ -903,22 +889,18 @@
                               class="pa-0 text-truncate"
                               style="width: 100% !important"
                             >
-                              {{
-                                `${item.apellido1} ${item.apellido2} ${item.nombre1} ${item.nombre2}`
-                              }}
+                              {{ [item.apellido1, item.apellido2, item.nombre1, item.nombre2].filter(x => x).join(' ') }}
                             </div>
                           </template>
                           <template v-slot:item="{ item, index }">
                             <template>
                               <v-list-item-content class="pa-0">
-                                <v-list-item-title>{{
-                                  `${item.apellido1} ${item.apellido2 ? item.apellido2 : ''} ${item.nombre1} ${item.nombre2 ? ${item.nombre2 : ''}`
-                                }}</v-list-item-title>
-                                <v-list-item-subtitle>{{
-                                  item.tipo_identificacion +
-                                  " " +
-                                  item.identificacion
-                                }}</v-list-item-subtitle>
+                                <v-list-item-title>
+                                  {{ [item.apellido1, item.apellido2, item.nombre1, item.nombre2].filter(x => x).join(' ') }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle>
+                                  {{ item.tipo_identificacion +" " + item.identificacion }}
+                                </v-list-item-subtitle>
                               </v-list-item-content>
                             </template>
                           </template>
@@ -944,35 +926,6 @@
                     </v-col>
                   </template>
                 </template>
-                <!-- <v-col class="pb-0" cols="12" sm="6" md="6">
-                  <c-texto
-                    v-model="vacunacion.responsable_matriz"
-                    label="Responsable de la matriz"
-                    name="responsable_matriz"
-                    upper-case
-                    rules="required"
-                  >
-                  </c-texto>
-                </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
-                  <c-texto
-                    v-model="vacunacion.telefono_responsable"
-                    label="Celular responsable"
-                    rules="required|numeric|minlength:10|maxlength:10"
-                    name="celular_responsable"
-                  >
-                  </c-texto>
-                </v-col>
-                <v-col class="pb-0" cols="12">
-                  <c-texto
-                    v-model="vacunacion.email_responsable"
-                    label="Email responsable"
-                    rules="required|email"
-                    name="email_responsable"
-                    lower-case
-                  >
-                  </c-texto>
-                </v-col> -->
                 <v-col cols="12" class="pb-0">
                   <c-text-area
                     label="Observaciones"
@@ -1060,14 +1013,14 @@
 <script>
 import SearchIdentidadVacunado from './SearchIdentidadVacunado'
 import models from 'Views/covid19/vacunacionSucre/models'
-import ComorbilidadesGestionVacunacion from "./ComorbilidadesGestionVacunacion"
-import NoPuedeVacunarseComponent from "./NoPuedeVacunarseComponent"
+import ComorbilidadesGestionVacunacion from './ComorbilidadesGestionVacunacion'
+import NoPuedeVacunarseComponent from './NoPuedeVacunarseComponent'
 import DiscapacidadesVacunacion from './DiscapacidadesVacunacion'
 import CheckExterna from './CheckExterna'
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex'
 
 export default {
-  name: "RegistroVacunacion",
+  name: 'RegistroVacunacion',
   components: {
     SearchIdentidadVacunado,
     ComorbilidadesGestionVacunacion,
@@ -1119,15 +1072,15 @@ export default {
       }
     },
     ...mapGetters([
-      "sexosCovid",
-      "tiposDocumentoIdentidad",
-      "departamentos",
-      "municipiosTotal",
-      "epss",
-      "dosisVacunas",
-      "ultimoVacunadorId",
-      "lastDptoAplicacionVacuna",
-      "lastMpioAplicacionVacuna",
+      'sexosCovid',
+      'tiposDocumentoIdentidad',
+      'departamentos',
+      'municipiosTotal',
+      'epss',
+      'dosisVacunas',
+      'ultimoVacunadorId',
+      'lastDptoAplicacionVacuna',
+      'lastMpioAplicacionVacuna',
       'parentescos',
       'tipoPoblaciones'
     ]),
@@ -1163,33 +1116,33 @@ export default {
         // let tipoDosisAplicadas = this.dosisAplicadas.map(x => x.tipo_dosis)
         let tipoBiologicosAplicadas = this.dosisAplicadas.map(x => x.biologico)
         // SI el biologico actual es JANSSEN O ya tiene dosis aplicadas de JANSSEN-> Solo habilita los tipos de dosis de REFUERZO
-        // if ((this.vacunacion.biologico && this.vacunacion.biologico === '4') || tipoBiologicosAplicadas.includes("JANSSEN")) {
-        //   console.log("2");
+        // if ((this.vacunacion.biologico && this.vacunacion.biologico === '4') || tipoBiologicosAplicadas.includes('JANSSEN')) {
+        //   console.log('2')
         //   result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
         // }
         // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos aplicadas son diferentes de JANSSEN Y no tiene el esquema completo
         // -> Solo habilita los tipos de dosis diferentes de los que ya tiene (tipoDosisAplicadas)
-        if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && !this.esquemaCompleto) {
-          console.log("3");
+        if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes('JANSSEN')) && !this.esquemaCompleto) {
+          console.log('3')
           result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
         }
         // SI el biologico actual es diferente de JANSSEN O los tipos de biologicos son diferentes de JANSSEN Y tiene el esquema completo
         // -> habilita solo el REFUERZO
-        // if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes("JANSSEN")) && this.esquemaCompleto) {
+        // if (((this.vacunacion.biologico && this.vacunacion.biologico !== '4') || !tipoBiologicosAplicadas.includes('JANSSEN')) && this.esquemaCompleto) {
         if (this.esquemaCompleto && (this.vacunacion.edad >= 18)) {
-          console.log("4", this.dosisVacunas.Tipo_dosis);
+          console.log('4', this.dosisVacunas.Tipo_dosis)
           result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
         }
 
         // if (this.esquemaCompleto && (this.edad > 70 || this.vacunacion.comorbilidades_vacunacion.length)) {
-        //   console.log("5");
+        //   console.log('5')
         //   result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR BIOLOGICO', 'UNICA POR COVID'].includes(x.nombre) ? x : null)
         // }
       } else {
         // SI es primera dosis Y el biologico es JANSSEN -> Solo habilita los tipos de dosis de UNICA POR BIOLOGICO
         // SINO habilitar unicamente los tipos de dosis de PRIMERA, UNICA POR BIOLOGICO
         if (this.vacunacion.biologico === '4') {
-          console.log("1");
+          console.log('1')
           result = this.dosisVacunas.Tipo_dosis.filter(x => !['PRIMERA', 'SEGUNDA', 'UNICA POR COVID', 'REFUERZO'].includes(x.nombre) ? x : null)
         } else {
           if (this.tamizajePositivo) {
@@ -1203,27 +1156,27 @@ export default {
       return result
     },
     filterPriorizacion() {
-      let result = [];
+      let result = []
       if (this && this.dosisVacunas && this.dosisVacunas.priorizaciones && this.vacunacion.edad) {
         result = this.dosisVacunas.priorizaciones.filter(x => {
           if (!x.edad_min && !x.edad_max) {
-            return x;
+            return x
           }
           if ((x.edad_min && this.vacunacion.edad >= x.edad_min) && (x.edad_max && this.vacunacion.edad < x.edad_max)) {
-            return x;
+            return x
           }
           if ((x.edad_min && this.vacunacion.edad >= x.edad_min) && !x.edad_max) {
-            return x;
+            return x
           }
           if ((x.edad_max && this.vacunacion.edad < x.edad_max) && !x.edad_min) {
-            return x;
+            return x
           }
         })
       }
-      return result;
+      return result
     },
     condicionesAplicacion() {
-      const comorbilidades = this.vacunacion?.comorbilidades_vacunacion.length || 0
+      const comorbilidades = this.vacunacion?.comorbilidades_vacunacion?.length || 0
       const booster = this.vacunacion?.edad >= 18 ? comorbilidades ? 1 : this.vacunacion?.edad >= 50 ? 4 : 6 : -1
       let aplayCondition = { // Condiciones por fechas para aplicaciones de dosis segun biológico
         ASTRAZENECA: {
@@ -1274,13 +1227,16 @@ export default {
         if (this.dosisAplicadas.length <= 2) {
           if (this.dosisAplicadas.length === 1) {
             if (ultimoBiologicoAplicado !== 'JANSSEN') {
-              result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].second.min - aplayCondition[ultimoBiologicoAplicado].firstDaysGrace,'days').format('YYYY-MM-DD')
-              result.maxDate = this.moment(result.minDate).add(aplayCondition[ultimoBiologicoAplicado].second.max, 'days').format('YYYY-MM-DD')
+              if (this.dosisAplicadas[0].fecha_aplicacion) {
+                result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].second.min - aplayCondition[ultimoBiologicoAplicado].firstDaysGrace,'days').format('YYYY-MM-DD')
+                result.maxDate = this.moment(result.minDate).add(aplayCondition[ultimoBiologicoAplicado].second.max, 'days').format('YYYY-MM-DD')
+              }
             } else {
               if (aplayCondition.JANSSEN.booster === -1) {
                 result.errorMessage = `NO es posible aplicar el refuerzo, la edad no está autorizada.`
               } else {
-                result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition.JANSSEN.booster,'months').format('YYYY-MM-DD')
+                if (this.dosisAplicadas[0].fecha_aplicacion)
+                  result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition.JANSSEN.booster,'months').format('YYYY-MM-DD')
               }
             }
           } else {
@@ -1288,7 +1244,8 @@ export default {
               if (aplayCondition.JANSSEN.booster === -1) {
                 result.errorMessage = `NO es posible aplicar el refuerzo, la edad no está autorizada.`
               } else {
-                result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].booster,'months').format('YYYY-MM-DD')
+                if (this.dosisAplicadas[0].fecha_aplicacion)
+                  result.minDate = this.moment(this.dosisAplicadas[0].fecha_aplicacion).add(aplayCondition[ultimoBiologicoAplicado].booster,'months').format('YYYY-MM-DD')
               }
             } else {
               result.errorMessage = `NO es un número de dosis o refuerzo autorizado para ${ultimoBiologicoAplicado}`
@@ -1325,69 +1282,69 @@ export default {
     lotesBiologico() {
       return this.vacunacion.bodega_id && this.vacunacion.biologico
         ? this.bodegasFiltradas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos.find((x) => x.codigo === this.vacunacion.biologico)?.lotes
-        : [];
+        : []
     },
     calc_segunda_dosis() {
-      let days = 0;
-      let fecha = null;
+      let days = 0
+      let fecha = null
 
       if (
         this.vacunacion.biologico &&
-        this.vacunacion.biologico === "1" &&
+        this.vacunacion.biologico === '1' &&
         this.vacunacion.tipo_dosis &&
-        this.vacunacion.tipo_dosis === "1" &&
+        this.vacunacion.tipo_dosis === '1' &&
         this.vacunacion.fecha_aplicacion
       ) {
         days = this.dosisVacunas.Tipo_biologico.find(
-          (x) => x.codigo === "1"
-        ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
-          .add(days, "days")
-          .format("YYYY-MM-DD");
+          (x) => x.codigo === '1'
+        ).valor
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, 'YYYY-MM-DD')
+          .add(days, 'days')
+          .format('YYYY-MM-DD')
       }
       if (
         this.vacunacion.biologico &&
-        this.vacunacion.biologico === "2" &&
+        this.vacunacion.biologico === '2' &&
         this.vacunacion.tipo_dosis &&
-        this.vacunacion.tipo_dosis === "1" &&
+        this.vacunacion.tipo_dosis === '1' &&
         this.vacunacion.fecha_aplicacion
       ) {
         days = this.dosisVacunas.Tipo_biologico.find(
-          (x) => x.codigo === "2"
-        ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
-          .add(days, "days")
-          .format("YYYY-MM-DD");
+          (x) => x.codigo === '2'
+        ).valor
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, 'YYYY-MM-DD')
+          .add(days, 'days')
+          .format('YYYY-MM-DD')
       }
       if (
         this.vacunacion.biologico &&
-        this.vacunacion.biologico === "3" &&
+        this.vacunacion.biologico === '3' &&
         this.vacunacion.tipo_dosis &&
-        this.vacunacion.tipo_dosis === "1" &&
+        this.vacunacion.tipo_dosis === '1' &&
         this.vacunacion.fecha_aplicacion
       ) {
         days = this.dosisVacunas.Tipo_biologico.find(
-          (x) => x.codigo === "3"
-        ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
-          .add(days, "days")
-          .format("YYYY-MM-DD");
+          (x) => x.codigo === '3'
+        ).valor
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, 'YYYY-MM-DD')
+          .add(days, 'days')
+          .format('YYYY-MM-DD')
       }
       if (
         this.vacunacion.biologico &&
-        this.vacunacion.biologico === "5" &&
+        this.vacunacion.biologico === '5' &&
         this.vacunacion.tipo_dosis &&
-        this.vacunacion.tipo_dosis === "1" &&
+        this.vacunacion.tipo_dosis === '1' &&
         this.vacunacion.fecha_aplicacion
       ) {
         days = this.dosisVacunas.Tipo_biologico.find(
-          (x) => x.codigo === "5"
-        ).valor;
-        fecha = this.moment(this.vacunacion.fecha_aplicacion, "YYYY-MM-DD")
-          .add(days, "days")
-          .format("YYYY-MM-DD");
+          (x) => x.codigo === '5'
+        ).valor
+        fecha = this.moment(this.vacunacion.fecha_aplicacion, 'YYYY-MM-DD')
+          .add(days, 'days')
+          .format('YYYY-MM-DD')
       }
-      return fecha;
+      return fecha
     },
   },
   watch: {
@@ -1414,13 +1371,13 @@ export default {
       },
       immediate: true
     },
-    "vacunacion.condicion_discapacidad": {
+    'vacunacion.condicion_discapacidad': {
       handler(val) {
-        if (val && val === 'NO') this.vacunacion.discapacidades = [];
+        if (val && val === 'NO') this.vacunacion.discapacidades = []
       },
       immediate: false
     },
-    "vacunacion.puede_vacunarse": {
+    'vacunacion.puede_vacunarse': {
       handler(val) {
         if (val) {
           this.vacunacion.motivos_no_puede_vacunarse = []
@@ -1428,10 +1385,10 @@ export default {
       },
       immediate: false
     },
-    "forzadoNoVacunacion": {
+    'forzadoNoVacunacion': {
       handler(val) {
         if (val) {
-          this.vacunacion.puede_vacunarse = 0;
+          this.vacunacion.puede_vacunarse = 0
         } else {
           this.vacunacion.puede_vacunarse = null
         }
@@ -1450,6 +1407,7 @@ export default {
               this.fechaAplicacionAnticipada = true
               this.msgFechaAplicacionAnticipada = val.errorMessage
             } else {
+              console.log('val.minDate', val.minDate)
               let diasTemprano = this.moment(val.minDate, 'YYYY-MM-DD').diff(this.moment(), 'days')
               console.log('diasTemprano', diasTemprano)
               if (diasTemprano > 0 && this.dosisAplicadas && (this.dosisAplicadas.length === 1 || this.dosisAplicadas.length === 2)) {
@@ -1465,7 +1423,7 @@ export default {
       },
       immediate: false
     },
-    "vacunacion.fecha_ult_regla": {
+    'vacunacion.fecha_ult_regla': {
       handler(val) {
         if (val) {
           this.vacunacion.fecha_prob_parto = this.calcFechaProbableParto(val)
@@ -1474,25 +1432,25 @@ export default {
       },
       immediate: false
     },
-    "vacunacion.etnia": {
+    'vacunacion.etnia': {
       handler(val) {
         if (val === null || val === '6') this.vacunacion.nombre_etnia_poblacion = null
       },
       immediate: false
     },
-    "vacunacion.priorizacion": {
+    'vacunacion.priorizacion': {
       handler(value) {
         if (value) {
           this.priorizacion_object = this.dosisVacunas.priorizaciones.find(
             (x) => x.codigo === value
-          );
+          )
         }
       },
     },
-    "vacunacion.biologico": {
+    'vacunacion.biologico': {
       handler() {
         if (this.flagWaitGetVacunacion) {
-          this.vacunacion.lote_biologico = null;
+          this.vacunacion.lote_biologico = null
         }
       },
       immediate: false,
@@ -1502,110 +1460,114 @@ export default {
         }
       } */
     },
-    "vacunacion.bodega_id": {
+    'vacunacion.bodega_id': {
       handler() {
         if (this.flagWaitGetVacunacion) {
-          this.vacunacion.biologico = null;
-          this.vacunacion.lote_biologico = null;
+          this.vacunacion.biologico = null
+          this.vacunacion.lote_biologico = null
         }
       },
       immediate: false,
       /* handler(oldValue, newValue) {
         if (oldValue === null && oldValue != newValue) {
-          this.vacunacion.biologico = null;
-          this.vacunacion.lote_biologico = null;
+          this.vacunacion.biologico = null
+          this.vacunacion.lote_biologico = null
         }
       } */
     },
-    "vacunacion.estado_adres": {
+    'vacunacion.estado_adres': {
       handler(val) {
+        console.log('essssss', val)
         if (val && val === 'FALLECIDO' && !this.isEdit) {
-          console.log("entre");
-          this.vacunacion.fecha_aplicacion = null;
-          this.vacunacion.bodega_id = null;
-          this.vacunacion.biologico = null;
-          this.vacunacion.lote_biologico = null;
-          this.vacunacion.tipo_dosis = null;
-          this.vacunacion.priorizacion = null;
-          this.vacunacion.estrategia_vacunacion = null;
-          this.vacunacion.eventos_atribuidos = null;
-          this.vacunacion.vacunador_id = null;
-          this.vacunacion.cod_dpto_aplicacion = null;
-          this.vacunacion.cod_mpio_aplicacion = null;
-          this.vacunacion.puede_vacunarse = null;
-          this.vacunacion.acepta_vacuna = null;
-          this.vacunacion.motivos_no_puede_vacunarse = [];
-          this.vacunacion.motivo_disistimiento = null;
+          console.log('entre')
+          this.vacunacion.fecha_aplicacion = null
+          this.vacunacion.bodega_id = null
+          this.vacunacion.biologico = null
+          this.vacunacion.lote_biologico = null
+          this.vacunacion.tipo_dosis = null
+          this.vacunacion.priorizacion = null
+          this.vacunacion.estrategia_vacunacion = null
+          this.vacunacion.eventos_atribuidos = null
+          this.vacunacion.vacunador_id = null
+          this.vacunacion.cod_dpto_aplicacion = null
+          this.vacunacion.cod_mpio_aplicacion = null
+          this.vacunacion.puede_vacunarse = null
+          this.vacunacion.acepta_vacuna = null
+          this.vacunacion.motivos_no_puede_vacunarse = []
+          this.vacunacion.motivo_disistimiento = null
         }
       },
       immediate: false
     },
-    "vacunacion.acepta_vacuna": {
+    'vacunacion.acepta_vacuna': {
       handler(value) {
-        console.log("vacunacion.acepta_vacuna out", value);
+        console.log('vacunacion.acepta_vacuna out', value)
         if (!this.isEdit) {
           if (value) {
-            this.vacunacion.motivo_disistimiento = null;
-            this.vacunacion.vacunador_id = this.ultimoVacunadorId;
-            this.vacunacion.cod_dpto_aplicacion = this.lastDptoAplicacionVacuna;
-            this.vacunacion.cod_mpio_aplicacion = this.lastMpioAplicacionVacuna;
+            this.vacunacion.motivo_disistimiento = null
+            this.vacunacion.vacunador_id = this.ultimoVacunadorId
+            this.vacunacion.cod_dpto_aplicacion = this.lastDptoAplicacionVacuna
+            this.vacunacion.cod_mpio_aplicacion = this.lastMpioAplicacionVacuna
           } else {
-            console.log("vacunacion.acepta_vacuna else");
-            this.vacunacion.fecha_aplicacion = null;
-            this.vacunacion.bodega_id = null;
-            this.vacunacion.biologico = null;
-            this.vacunacion.lote_biologico = null;
-            this.vacunacion.tipo_dosis = null;
-            this.vacunacion.priorizacion = null;
-            this.vacunacion.estrategia_vacunacion = null;
-            this.vacunacion.eventos_atribuidos = null;
-            this.vacunacion.vacunador_id = null;
-            this.vacunacion.cod_dpto_aplicacion = null;
-            this.vacunacion.cod_mpio_aplicacion = null;
+            console.log('vacunacion.acepta_vacuna else')
+            this.vacunacion.fecha_aplicacion = null
+            this.vacunacion.bodega_id = null
+            this.vacunacion.biologico = null
+            this.vacunacion.lote_biologico = null
+            this.vacunacion.tipo_dosis = null
+            this.vacunacion.priorizacion = null
+            this.vacunacion.estrategia_vacunacion = null
+            this.vacunacion.eventos_atribuidos = null
+            this.vacunacion.vacunador_id = null
+            this.vacunacion.cod_dpto_aplicacion = null
+            this.vacunacion.cod_mpio_aplicacion = null
           }
         }
       },
       immediate: false
     },
-    "vacunacion.necesita_acudiente": {
+    'vacunacion.necesita_acudiente': {
       handler(value) {
-        if (value && value === "NO") {
-          this.vacunacion.parentesco_id = null;
-          this.vacunacion.tipo_ident_acud = null;
-          this.vacunacion.identificacion_acud = null;
-          this.vacunacion.apellido1_acud = null;
-          this.vacunacion.apellido2_acud = null;
-          this.vacunacion.nombre1_acud = null;
-          this.vacunacion.nombre2_acud = null;
+        if (value && value === 'NO') {
+          this.vacunacion.parentesco_id = null
+          this.vacunacion.tipo_ident_acud = null
+          this.vacunacion.identificacion_acud = null
+          this.vacunacion.apellido1_acud = null
+          this.vacunacion.apellido2_acud = null
+          this.vacunacion.nombre1_acud = null
+          this.vacunacion.nombre2_acud = null
         }
       },
       immediate: false,
       deep: false
     },
-    "vacunacion.sexo": {
+    'vacunacion.sexo': {
       handler(val) {
         if (val && val === 'M') {
           this.vacunacion.condicion = null
-          this.vacunacion.fecha_prob_parto = null;
-          this.vacunacion.semanas_embarazo = null;
-          this.vacunacion.lactancia = null;
-          this.vacunacion.posparto = null;
+          this.vacunacion.fecha_prob_parto = null
+          this.vacunacion.semanas_embarazo = null
+          this.vacunacion.lactancia = null
+          this.vacunacion.posparto = null
         }
       },
       immediate: true,
     },
-    "vacunacion.condicion": {
+    'vacunacion.condicion': {
       handler(value) {
-        if (value && (value === "NO APLICA" || value === "NO GESTANTE")) {
-          this.vacunacion.fecha_prob_parto = null;
-          this.vacunacion.semanas_embarazo = null;
-          this.vacunacion.fecha_ult_regla = null;
+        if (value) {
+          if (value === 'NO GESTANTE') {
+            this.vacunacion.fecha_prob_parto = null
+            this.vacunacion.semanas_embarazo = null
+            this.vacunacion.fecha_ult_regla = null
+          } else {
+            this.vacunacion.posparto = null
+          }
         }
-        if(value && (value === 'GESTANTE')) this.vacunacion.posparto = null
       },
       immediate: false
     },
-    "vacunacion.posparto": {
+    'vacunacion.posparto': {
       handler(val) {
         if (val) {
           this.vacunacion.condicion = 'NO GESTANTE'
@@ -1615,23 +1577,23 @@ export default {
       },
       immediate: false
     },
-    "vacunacion.fecha_nacimiento": {
+    'vacunacion.fecha_nacimiento': {
       handler(val) {
         if (this && this.vacunacion) {
-          let laEdad = this.calculaEdad(val);
-          this.vacunacion.edad = laEdad.years;
-          this.edad = laEdad.stringDate;
+          let laEdad = this.calculaEdad(val)
+          this.vacunacion.edad = laEdad.years
+          this.edad = laEdad.stringDate
         }
       },
       immediate: true,
     },
-    "vacunacion.edad": {
+    'vacunacion.edad': {
       handler(val) {
         if (val && (val >= 12 && val < 18 && this.dosisAplicadas && !this.dosisAplicadas.length)) {
           this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER', 'MODERNA'])
         } else if (val && (val >= 3 && val <= 11 && this.dosisAplicadas && !this.dosisAplicadas.length)){
           this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['SINOVAC'])
-          this.vacunacion.necesita_acudiente = 'SI';
+          this.vacunacion.necesita_acudiente = 'SI'
         } else {
           this.bodegasFiltradas = this.filterBodegas()
         }
@@ -1639,9 +1601,9 @@ export default {
       },
       immediate: false
     },
-    "vacunacion.semanas_embarazo": {
+    'vacunacion.semanas_embarazo': {
       handler(val) {
-        this.validationGestanteFail = !!(val && val < 12);
+        this.validationGestanteFail = !!(val && val < 12)
         if (val && val >= 12 && val <= 40 && this.vacunacion.condicion === 'GESTANTE') {
           this.bodegasFiltradas = this.filterBodegasToPrimeraAplicacion(['PFIZER'])
         } else {
@@ -1664,7 +1626,7 @@ export default {
               bodegaClone.biologicos = [biologico]
             }
           }
-          if (bodegaClone.hasOwnProperty("biologicos")) result.push(bodegaClone)
+          if (bodegaClone.hasOwnProperty('biologicos')) result.push(bodegaClone)
         }
       }
       return result
@@ -1683,107 +1645,109 @@ export default {
       this.axios
         .get(`dosis-resources-bodegas`)
         .then((response) => {
-          // console.log(response.data);
-          this.bodegas = response.data;
+          // console.log(response.data)
+          this.bodegas = response.data
         })
         .catch((error) => {
-          this.$store.commit("snackbar", {
-            color: "error",
+          this.$store.commit('snackbar', {
+            color: 'error',
             message: `al recuperar la info de las bodegas del responsable`,
             error: error,
-          });
-          this.close();
-        });
+          })
+          this.close()
+        })
     },
     guardar() {
       this.$refs.formVacunacion.validate().then((result) => {
         if (result) {
-          this.loading = true;
-          let copiaData = this.clone(this.vacunacion);
-          delete copiaData.afiliado_id;
-          copiaData.fecha_prog_2da_dosis = this.calc_segunda_dosis;
+          this.loading = true
+          let copiaData = this.clone(this.vacunacion)
+          delete copiaData.afiliado_id
+          copiaData.fecha_prog_2da_dosis = this.calc_segunda_dosis
           copiaData.etapa = this.priorizacion_object
             ? this.priorizacion_object.etapa
-            : null;
-          copiaData.lactancia = copiaData.sexo === 'F' && copiaData.lactancia === null ? false : null;
-          copiaData.posparto = copiaData.sexo === 'F' && copiaData.posparto === null ? false : null;
+            : null
+          // copiaData.lactancia = copiaData.sexo === 'F' && copiaData.lactancia === null ? false : null
+          // copiaData.posparto = copiaData.sexo === 'F' && copiaData.posparto === null ? false : null
           let request = copiaData.id
             ? this.axios.put(`dosis-aplicadas/${copiaData.id}`, copiaData)
-            : this.axios.post(`dosis-aplicadas`, copiaData);
+            : this.axios.post(`dosis-aplicadas`, copiaData)
           request
             .then((response) => {
               if (response.status === 201) {
-                this.$store.dispatch("setUltimoVacunadorId", {
+                this.$store.dispatch('setUltimoVacunadorId', {
                   ultimoVacunadorId: response.data.vacunador_id,
-                });
-                this.$store.dispatch("setLastDptoAplicacionVacuna", {
+                })
+                this.$store.dispatch('setLastDptoAplicacionVacuna', {
                   cod_dpto_aplicacion: response.data.cod_dpto_aplicacion,
-                });
-                this.$store.dispatch("setLastMpioAplicacionVacuna", {
+                })
+                this.$store.dispatch('setLastMpioAplicacionVacuna', {
                   cod_mpio_aplicacion: response.data.cod_mpio_aplicacion,
-                });
+                })
               }
-              this.$emit("guardado", response.data);
-              this.$store.commit("snackbar", {
-                color: "success",
+              this.$emit('guardado', response.data)
+              this.$store.commit('snackbar', {
+                color: 'success',
                 message: `Registro guardado correctamente.`,
-              });
-              this.close();
+              })
+              this.close()
             })
             .catch((error) => {
-              this.loading = false;
-              this.$store.commit("snackbar", {
-                color: "error",
+              this.loading = false
+              this.$store.commit('snackbar', {
+                color: 'error',
                 message: `al guardar el registro.`,
                 error: error,
-              });
-            });
+              })
+            })
         }
-      });
+      })
     },
     getVacunacion(id) {
-      this.flagWaitGetVacunacion = false;
-      this.loading = true;
+      this.flagWaitGetVacunacion = false
+      this.loading = true
       this.axios
         .get(`dosis-aplicadas/${id}`)
         .then((response) => {
-          this.vacunacion = response.data;
-          this.vacunacion.discapacidades = this.vacunacion.discapacidades.map(x => x.id)
-          this.identificacionVerificada = 1;
-          this.loading = false;
+          response.data.comorbilidades_vacunacion = response.data.comorbilidades ? response.data.comorbilidades.map(x => x.codigo) : []
+          console.log('response.data.comorbilidades_vacunacion', response.data.comorbilidades_vacunacion)
+          response.data.discapacidades = response.data.discapacidades.map(x => x.id)
+          this.vacunacion = response.data
+          this.identificacionVerificada = 1
+          this.loading = false
           setTimeout(() => {
-            this.flagWaitGetVacunacion = true;
-          }, 500);
-          console.log("GET_VACUNACION");
+            this.flagWaitGetVacunacion = true
+          }, 500)
+          console.log('GET_VACUNACION')
         })
         .catch((error) => {
-          this.flagWaitGetVacunacion = true;
-          this.$store.commit("snackbar", {
-            color: "error",
+          this.flagWaitGetVacunacion = true
+          this.$store.commit('snackbar', {
+            color: 'error',
             message: `al recuperar el registro de vacunación`,
             error: error,
-          });
-          this.close();
-        });
+          })
+          this.close()
+        })
     },
     open(id = null) {
-      this.flagWaitGetVacunacion = true;
-      this.priorizacion_object = null;
-      this.getInventarioResponsable();
-      this.getVacunadores();
-      this.identificacionVerificada = 0;
+      this.flagWaitGetVacunacion = true
+      this.priorizacion_object = null
+      this.getInventarioResponsable()
+      this.getVacunadores()
+      this.identificacionVerificada = 0
       if (id) {
-        // this.vacunacion = this.clone(models.vacunacionSucre);
+        // this.vacunacion = this.clone(models.vacunacionSucre)
         this.isEdit = true
-        this.getVacunacion(id);
+        this.getVacunacion(id)
       } else {
-        this.vacunacion = this.clone(models.vacunacionSucre);
-        this.vacunacion.vacunador_id = this.ultimoVacunadorId;
-        this.vacunacion.cod_dpto_aplicacion = this.ultimoVacunadorId;
-        this.vacunacion.cod_mpio_aplicacion = this.ultimoVacunadorId;
+        this.vacunacion = this.clone(models.vacunacionSucre)
+        this.vacunacion.vacunador_id = this.ultimoVacunadorId
+        this.vacunacion.cod_dpto_aplicacion = this.ultimoVacunadorId
+        this.vacunacion.cod_mpio_aplicacion = this.ultimoVacunadorId
       }
-      // this.vacunacion.vacunador_id = this.ultimoVacunadorId;
-      this.dialog = true;
+      // this.vacunacion.vacunador_id = this.ultimoVacunadorId
+      this.dialog = true
     },
     resetVariablesAlert() {
       this.tamizajePositivo = null
@@ -1799,38 +1763,39 @@ export default {
       this.afiliadoFallecido = null
     },
     close() {
-      this.dialog = false;
-      this.identificacionVerificada = 0;
-      this.resetVariablesAlert();
+      this.dialog = false
+      this.identificacionVerificada = 0
+      this.resetVariablesAlert()
       setTimeout(() => {
-        this.loading = false;
-        this.vacunacion = this.clone(models.vacunacionSucre);
-        this.$refs.formVacunacion.reset();
-        this.isEdit = false;
-      }, 400);
+        this.loading = false
+        this.vacunacion = this.clone(models.vacunacionSucre)
+        this.$refs.formVacunacion.reset()
+        this.isEdit = false
+      }, 400)
     },
     resultAfiliado(response) {
-      this.resetVariablesAlert();
-      this.identificacionVerificada = 1;
+      this.resetVariablesAlert()
+      this.identificacionVerificada = 1
       if (response.afiliado !== null) {
-        this.vacunacion.tipo_identificacion = null;
-        this.vacunacion.nombre1 = null;
-        this.vacunacion.nombre2 = null;
-        this.vacunacion.apellido1 = null;
-        this.vacunacion.apellido2 = null;
-        this.vacunacion.fecha_nacimiento = null;
-        this.vacunacion.sexo = null;
-        this.vacunacion.telefono_contacto = null;
-        this.vacunacion.email = null;
-        this.vacunacion.direccion = null;
-        this.vacunacion.cod_dpto = null;
-        this.vacunacion.cod_mpio = null;
-        this.vacunacion.codigo_ips = null;
+        this.vacunacion.tipo_identificacion = null
+        this.vacunacion.nombre1 = null
+        this.vacunacion.nombre2 = null
+        this.vacunacion.apellido1 = null
+        this.vacunacion.apellido2 = null
+        this.vacunacion.fecha_nacimiento = null
+        this.vacunacion.sexo = null
+        this.vacunacion.telefono_contacto = null
+        this.vacunacion.email = null
+        this.vacunacion.direccion = null
+        this.vacunacion.cod_dpto = null
+        this.vacunacion.cod_mpio = null
+        this.vacunacion.codigo_ips = null
+        this.vacunacion.comorbilidades_vacunacion = []
       }
       if (response.afiliado && response.afiliado.estado === 'AF') {
-        this.identificacionVerificada = 0;
-        this.modalPersonaFallecida = true;
-        this.afiliadoFallecido = response.afiliado;
+        this.identificacionVerificada = 0
+        this.modalPersonaFallecida = true
+        this.afiliadoFallecido = response.afiliado
 
       } else {
           if (response.dosis && response.dosis.length) {
@@ -1839,25 +1804,27 @@ export default {
             this.esquemaCompleto = response.dosis[0].esquema_completo
             this.tieneRefuerzo = response.dosis[0].refuerzo
             this.vacunacion.tipo_identificacion = response.dosis[0].tipo_identificacion
-            this.vacunacion.identificacion = response.dosis[0].identificacion;
-            this.vacunacion.nombre1 = response.dosis[0].nombre1;
-            this.vacunacion.nombre2 = response.dosis[0].nombre2;
-            this.vacunacion.apellido1 = response.dosis[0].apellido1;
-            this.vacunacion.apellido2 = response.dosis[0].apellido2;
-            this.vacunacion.fecha_nacimiento = response.dosis[0].fecha_nacimiento;
-            this.vacunacion.sexo = response.dosis[0].sexo;
-            this.vacunacion.telefono_contacto = response.dosis[0].telefono_contacto;
-            this.vacunacion.email = response.dosis[0].email;
-            this.vacunacion.direccion = response.dosis[0].direccion;
-            this.vacunacion.cod_dpto = response.dosis[0].cod_dpto;
-            this.vacunacion.cod_mpio = response.dosis[0].cod_mpio;
-            this.vacunacion.aseguradora = response.dosis[0].aseguradora;
-            this.vacunacion.medio_contacto = response.dosis[0].medio_contacto;
-            this.vacunacion.zona = response.dosis[0].zona;
-            this.vacunacion.etnia = response.dosis[0].etnia;
-            this.vacunacion.condicion = response.dosis[0].condicion;
+            this.vacunacion.identificacion = response.dosis[0].identificacion
+            this.vacunacion.nombre1 = response.dosis[0].nombre1
+            this.vacunacion.nombre2 = response.dosis[0].nombre2
+            this.vacunacion.apellido1 = response.dosis[0].apellido1
+            this.vacunacion.apellido2 = response.dosis[0].apellido2
+            this.vacunacion.fecha_nacimiento = response.dosis[0].fecha_nacimiento
+            this.vacunacion.sexo = response.dosis[0].sexo
+            this.vacunacion.telefono_contacto = response.dosis[0].telefono_contacto
+            this.vacunacion.email = response.dosis[0].email
+            this.vacunacion.direccion = response.dosis[0].direccion
+            this.vacunacion.cod_dpto = response.dosis[0].cod_dpto
+            this.vacunacion.cod_mpio = response.dosis[0].cod_mpio
+            this.vacunacion.aseguradora = response.dosis[0].aseguradora
+            this.vacunacion.medio_contacto = response.dosis[0].medio_contacto
+            this.vacunacion.zona = response.dosis[0].zona
+            this.vacunacion.etnia = response.dosis[0].etnia
+            this.vacunacion.condicion = response.dosis[0].condicion
+            //comorbilidades
+            this.vacunacion.comorbilidades_vacunacion = response.dosis[0]?.comorbilidades ? response.dosis[0].comorbilidades.map(x => x.codigo) : []
             // Para embarazadas
-            this.vacunacion.fecha_ult_regla = response.dosis[0].fecha_ult_regla;
+            this.vacunacion.fecha_ult_regla = response.dosis[0].fecha_ult_regla
 
 
           } else if (response.tamizaje) {
@@ -1878,17 +1845,17 @@ export default {
 
           } else if (response.afiliado) {
             this.vacunacion.tipo_identificacion = response.afiliado.tipo_documento_identidad_id
-            this.vacunacion.identificacion = response.afiliado.numero_documento_identidad;
-            this.vacunacion.nombre1 = response.afiliado.nombre1;
-            this.vacunacion.nombre2 = response.afiliado.nombre2;
-            this.vacunacion.apellido1 = response.afiliado.apellido1;
-            this.vacunacion.apellido2 = response.afiliado.apellido2;
-            this.vacunacion.fecha_nacimiento = response.afiliado.fecha_nacimiento;
-            this.vacunacion.sexo = response.afiliado.sexo;
-            this.vacunacion.telefono_contacto = response.afiliado.numero_celular;
-            this.vacunacion.email = response.afiliado.email;
-            this.vacunacion.direccion = response.afiliado.direccion;
-            this.vacunacion.aseguradora = response.afiliado.eps_id;
+            this.vacunacion.identificacion = response.afiliado.numero_documento_identidad
+            this.vacunacion.nombre1 = response.afiliado.nombre1
+            this.vacunacion.nombre2 = response.afiliado.nombre2
+            this.vacunacion.apellido1 = response.afiliado.apellido1
+            this.vacunacion.apellido2 = response.afiliado.apellido2
+            this.vacunacion.fecha_nacimiento = response.afiliado.fecha_nacimiento
+            this.vacunacion.sexo = response.afiliado.sexo
+            this.vacunacion.telefono_contacto = response.afiliado.numero_celular
+            this.vacunacion.email = response.afiliado.email
+            this.vacunacion.direccion = response.afiliado.direccion
+            this.vacunacion.aseguradora = response.afiliado.eps_id
           } 
 
           if(response.tamizaje && response.tamizaje.positivo_covid) {
@@ -1922,7 +1889,7 @@ export default {
               bodegaClone.biologicos = [biologico]
             }
           }
-          if (bodegaClone.hasOwnProperty("biologicos")) result.push(bodegaClone)
+          if (bodegaClone.hasOwnProperty('biologicos')) result.push(bodegaClone)
         }
       } else {
         result = this.bodegas
@@ -1933,17 +1900,17 @@ export default {
       this.axios
         .get(`vacunadores`)
         .then((response) => {
-          this.vacunadores = response.data;
+          this.vacunadores = response.data
         })
         .catch((error) => {
-          this.$store.commit("snackbar", {
-            color: "error",
+          this.$store.commit('snackbar', {
+            color: 'error',
             message: `al recuperar los vacunadores`,
             error: error,
-          });
-          this.close();
-        });
+          })
+          this.close()
+        })
     },
   },
-};
+}
 </script>

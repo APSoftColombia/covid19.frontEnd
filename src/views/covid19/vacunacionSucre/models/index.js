@@ -62,6 +62,7 @@ const VacunacionSucre = {
     nombre_etnia_poblacion: null,
     lactancia: null,
     posparto: null,
+    comorbilidades: [],
     comorbilidades_vacunacion: [],
     fecha_parto: null,
     fecha_ult_regla: null,

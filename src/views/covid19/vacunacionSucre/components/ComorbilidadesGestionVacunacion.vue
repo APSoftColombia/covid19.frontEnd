@@ -11,15 +11,14 @@
                         item-text="descrip"
                         item-value="codigo"
                         :disabled="sinComorbilidades || disabled"
-                >
-                </c-check>
+                />
                 <v-checkbox
                         class="mt-1 ml-2"
                         v-model="sinComorbilidades"
                         label="Ninguna de las anteriores"
                         hide-details
                         :disabled="disabled"
-                ></v-checkbox>
+                />
             </v-card-text>
         </v-card>
     </v-col>
@@ -73,7 +72,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
