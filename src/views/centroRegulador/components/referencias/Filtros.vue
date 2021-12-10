@@ -26,7 +26,15 @@
             hide-details
         />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="12">
+    <v-col class="pb-0" cols="12" sm="12" md="6">
+      <c-select-complete
+          v-model="filters.models.tipo_poblacion"
+          label="Tipo población"
+          :items="ref_cr_tiposPoblacion"
+          hide-details
+      />
+    </v-col>
+    <v-col class="pb-0" cols="12" sm="12" md="6">
         <v-autocomplete
             label="Modalidades de Servicio"
             v-model="filters.models.modServicios"
@@ -122,7 +130,8 @@ export default {
         codigo_prestador_origen: null,
         eps_id: null,
         modServicios: [],
-        regimen: null
+        regimen: null,
+        tipo_poblacion:null
       },
       data: {
           tiposOrigen: [
@@ -159,7 +168,8 @@ export default {
     ...mapGetters([
       'ref_epss',
       'ref_ipss',
-      'ref_modalidadesServicio'
+      'ref_modalidadesServicio',
+      'ref_cr_tiposPoblacion'
     ])
   },
   methods: {
@@ -176,6 +186,9 @@ export default {
       }
       if (this.filters.models.fecha_solicitud.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaSolicitud]=' + this.filters.models.fecha_solicitud.join(',')
+      }
+      if (this.filters.models.tipo_poblacion !== null) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_poblacion]=' + this.filters.models.tipo_poblacion
       }
       if (this.filters.models.fecha_ultima_gestion.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaUltimaGestion]=' + this.filters.models.fecha_ultima_gestion.join(',')

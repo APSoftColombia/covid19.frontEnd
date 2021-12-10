@@ -9,6 +9,7 @@ const Referencia = {
   fecha_nacimiento: null,
   sexo: null,
   celular: null,
+  tipo_poblacion: null,
   eps_id: null,
   tipo_afiliacion: null,
   direccion: null,
@@ -19,7 +20,7 @@ const Referencia = {
   afiliado_id: null,
   codigo_prestador_origen: null,
   codigo_cie10_ingreso: null,
-  modservicio_id: null,
+  modservicio_id: 2,
   observaciones: null,
   orden_medica_id: null,
   historia_clinica_id: null,
@@ -37,7 +38,6 @@ const Referencia = {
   barrio_id: null,
   email: null,
   edad: null,
-  si_eps: null,
   regimen_especial: null
 }
 

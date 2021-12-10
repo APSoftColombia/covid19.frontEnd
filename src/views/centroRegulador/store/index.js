@@ -7,7 +7,8 @@ const state = {
     ref_estadosEgreso: [],
     ref_modalidadesServicio: [],
     ref_tiposAmbulancia: [],
-    ref_tiposTraslados: []
+    ref_tiposTraslados: [],
+    ref_cr_tiposPoblacion: []
 }
 
 // getters
@@ -17,7 +18,8 @@ const getters = {
     ref_estadosEgreso: state => state.ref_estadosEgreso,
     ref_modalidadesServicio: state => state.ref_modalidadesServicio,
     ref_tiposAmbulancia: state => state.ref_tiposAmbulancia,
-    ref_tiposTraslados: state => state.ref_tiposTraslados
+    ref_tiposTraslados: state => state.ref_tiposTraslados,
+    ref_cr_tiposPoblacion: state => state.ref_cr_tiposPoblacion
 }
 
 
@@ -49,6 +51,7 @@ const mutations = {
         state.ref_modalidadesServicio = complementos.mod_servicios
         state.ref_tiposAmbulancia = complementos.tipos_ambulancias
         state.ref_tiposTraslados = complementos.tipos_traslados
+        state.ref_cr_tiposPoblacion = complementos.tipoPoblaciones
     }
 }
 

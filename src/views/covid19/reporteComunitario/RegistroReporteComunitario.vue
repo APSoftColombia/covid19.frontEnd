@@ -209,7 +209,6 @@
                     <c-select-complete
                         v-model="reporte.eps_id"
                         label="¿A que EPS está afiliado?"
-                        rules="required"
                         name="EPS de afiliación"
                         :items="epss"
                         item-value="id"

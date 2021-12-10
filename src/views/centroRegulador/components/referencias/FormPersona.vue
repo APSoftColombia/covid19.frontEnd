@@ -168,17 +168,17 @@
 <!--          item-value="id"-->
 <!--      />-->
 <!--    </v-col>-->
-    <v-col cols="12">
-      <v-checkbox
-          v-model="value.si_eps"
-          class="shrink mr-2"
-          label="¿Está afiliado a una EPS?"
-          :false-value="0"
-          :true-value="1"
+    <v-col class="pb-0" cols="12">
+      <c-select-complete
+          v-model="value.tipo_poblacion"
+          label="Tipo población"
+          rules="required"
+          name="Tipo población"
+          :items="tipoPoblaciones"
           :disabled="identificacionVerificada < 1"
       />
     </v-col>
-    <template v-if="value.si_eps">
+    <template v-if="value.tipo_poblacion === 'Población Asegurada'">
       <v-col cols="12" sm="12" md="12">
         <c-select-complete
             v-model="value.eps_id"
@@ -246,7 +246,8 @@ export default {
       'municipiosTotal',
       'tiposAfiliacion',
       'epss',
-      'regimenesEspeciales'
+      'regimenesEspeciales',
+      'tipoPoblaciones'
     ])
   },
   watch: {
@@ -289,9 +290,9 @@ export default {
       },
       immediate: true
     },
-    'value.si_eps': {
+    'value.tipo_poblacion': {
       handler(val) {
-        if(!val) {
+        if (val !== 'Población Asegurada') {
           this.value.eps_id = null
           this.value.tipo_afiliacion = null
         }
@@ -360,7 +361,7 @@ export default {
         this.value.departamento_id = null
         this.value.municipio_id = null
         this.value.barrio_id = null
-        this.value.si_eps = 1
+        this.value.tipo_poblacion = null
         this.value.eps_id = null
         this.value.tipo_afiliacion = null
       }
@@ -368,7 +369,7 @@ export default {
           this.identificacionVerificada = -2
           this.$emit('responseFallecido', {afiliado: response.afiliado, mensaje: { id: 3, mensaje: 'El paciente buscado se encuentra en esta Fallecidó' }})
       }
-      if (response && response.referencias && response.referencias.length && (response.referencias[0].estado !== 'Proceso terminado' && response.referencias[0].estado !== 'Proceso cancelado')) {
+      if (response && response.referencias && response.referencias.length && (response.referencias[0].estado !== 'Proceso Terminado' && response.referencias[0].estado !== 'Cancelado')) {
         this.identificacionVerificada = -1
         this.$emit('responseReferencia', {referencias: response.referencias, mensaje: { id: 2, mensaje: 'El paciente ya cuenta con una referencia Activa' }})
       }
@@ -389,6 +390,7 @@ export default {
         this.value.departamento_id = response.afiliado.departamento_id
         this.value.municipio_id = response.afiliado.centro_poblado_id
         this.value.barrio_id = response.afiliado.barrio_id || null
+        this.value.tipo_poblacion = response.afiliado.tipo_poblacion
         this.value.eps_id = response.afiliado.eps_id
         this.value.tipo_afiliacion = response.afiliado.regimen
       }

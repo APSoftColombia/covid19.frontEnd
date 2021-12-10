@@ -35,6 +35,8 @@
                           name="Fecha Solicitud"
                           rules="required"
                           :max="moment().format('YYYY-MM-DD')"
+                          :clearable="false"
+                          disabled
                       />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -43,6 +45,8 @@
                           label="Hora Solicitud"
                           name="Hora Solicitud"
                           rules="required"
+                          :clearable="false"
+                          disabled
                       />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -80,8 +84,9 @@
                             outlined
                             dense
                             :disabled="!verificado"
+                            :readonly="item.modservicio_id === 2"
                             :error-messages="errors"
-                            clearable
+                            :clearable="false"
                             persistent-hint
                             :hint="item.modservicio_id && ref_modalidadesServicio && ref_modalidadesServicio.length && ref_modalidadesServicio.find(x => x.id === item.modservicio_id) ? ref_modalidadesServicio.find(x => x.id === item.modservicio_id).modalidad : ''"
                         >
@@ -348,7 +353,7 @@ export default {
             const fechaOrden = this.clone(response.data.fecha_orden)
             response.data.fecha_orden = fechaOrden ? this.moment(fechaOrden).format('YYYY-MM-DD') : null
             response.data.hora_orden = fechaOrden ? this.moment(fechaOrden).format('HH:mm') : null
-            response.data.si_eps = response.data.eps_id ? 1 : 0
+            response.data.tipo_poblacion = response.data.tipo_poblacion || (response.data.eps_id ? 'Población Asegurada' : null)
             this.item = response.data
             this.loading = false
           })
