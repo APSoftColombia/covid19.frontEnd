@@ -769,18 +769,10 @@
                         label="Biológico"
                         rules="required"
                         name="biológico"
-                        :items="
-                          vacunacion.bodega_id
-                            ? bodegasFiltradas.find(
-                                (x) => x.bodega_id === vacunacion.bodega_id
-                              ).biologicos
-                            : []
-                        "
+                        :items="itemsBiologicos"
                         item-text="nombre"
                         item-value="codigo"
-                        :disabled="
-                          identificacionVerificada < 1 || !vacunacion.bodega_id
-                        "
+                        :disabled="identificacionVerificada < 1 || !vacunacion.bodega_id"
                       >
                       </c-select-complete>
                     </v-col>
@@ -791,9 +783,7 @@
                         rules="required"
                         name="lote"
                         :items="lotesBiologico"
-                        :disabled="
-                          identificacionVerificada < 1 || !vacunacion.biologico
-                        "
+                        :disabled="identificacionVerificada < 1 || !vacunacion.biologico"
                       >
                       </c-select-complete>
                     </v-col>
@@ -1063,6 +1053,26 @@ export default {
     edadNoPermitidaVacuna: false,
   }),
   computed: {
+    itemsBiologicos () {
+      if (this.vacunacion?.bodega_id && this.bodegasFiltradas?.length) {
+        let biologicos = this.bodegasFiltradas.find((x) => x.bodega_id === this.vacunacion.bodega_id)?.biologicos || []
+        console.log('biologicos', biologicos)
+        if (this.dosisAplicadas?.length && this.esquemaCompleto && !this.tieneRefuerzo) {
+          return biologicos
+          // let filtrados = []
+          // switch (this.dosisAplicadas[0].biologico) {
+          //   case 'PFIZER':
+          //   case 'MODERNA':
+          //     filtrados = biologicos.filter(x => ['PFIZER', 'MODERNA'].find(z => z === x.nombre))
+          // }
+          // return  filtrados
+        } else {
+          return biologicos
+        }
+      } else {
+        return []
+      }
+    },
     sexoAutomatico () {
       if (!this.vacunacion || this.vacunacion.tipo_identificacion !== 'CC' || !this.vacunacion.identificacion || isNaN(Number(this.vacunacion.identificacion)) || (!isNaN(Number(this.vacunacion.identificacion)) && ((Number(this.vacunacion.identificacion) >= 1000000000) || (Number(this.vacunacion.identificacion) <= 0)))) {
         return null
