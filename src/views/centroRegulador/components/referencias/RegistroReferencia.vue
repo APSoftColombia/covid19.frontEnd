@@ -120,12 +120,38 @@
                             rules="required"
                         />
                     </v-col>
+                    <v-col cols="12" sm="12" md="6">
+                      <c-select-complete
+                          v-model="item.departamento_prestador_origen"
+                          label="Departamento Origen"
+                          name="Departamento Origen"
+                          rules="required"
+                          :items="departamentos"
+                          item-text="nombre"
+                          item-value="id"
+                          @change="val => item.municipio_prestador_origen = departamentos.find(x => x.id === val).municipios.find(z => z.id === item.municipio_prestador_origen) ? item.municipio_prestador_origen : null"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6">
+                      <c-select-complete
+                          :disabled="!item.departamento_prestador_origen"
+                          v-model="item.municipio_prestador_origen"
+                          label="Municipio Origen"
+                          name="Municipio Origen"
+                          rules="required"
+                          :items="municipiosOrigen"
+                          item-text="nombre"
+                          item-value="id"
+                      />
+                    </v-col>
                     <v-col cols="12">
                       <buscador-ips
                           label="IPS de Origen"
                           name="IPS de Origen"
                           v-model="item.codigo_prestador_origen"
                           rules="required"
+                          :disabled="!item.municipio_prestador_origen"
+                          :municipio="municipioOrigen"
                       />
                     </v-col>
                     <v-col cols="12">
@@ -227,6 +253,7 @@ export default {
     DialogFallecido
   },
   data: () => ({
+    ejecutaWatch: true,
     loading: false,
     dialog: false,
     verificado: 0,
@@ -247,8 +274,15 @@ export default {
     permisos() {
       return this.$store.getters.getPermissionModule('centroRegulador')
     },
+    municipiosOrigen () {
+      return this.departamentos.length && this.item.departamento_prestador_origen && this.departamentos.find(x => x.id === this.item.departamento_prestador_origen) ? this.departamentos.find(x => x.id === this.item.departamento_prestador_origen).municipios : []
+    },
+    municipioOrigen () {
+      return this.municipiosOrigen.find(x => x.id === this.item.municipio_prestador_origen) || null
+    },
     ...mapGetters([
-      'ref_modalidadesServicio'
+      'ref_modalidadesServicio',
+      'departamentos'
     ])
   },
   watch: {
@@ -266,6 +300,22 @@ export default {
               }
           }
       },
+        'item.departamento_prestador_origen': {
+          handler() {
+            if(this.ejecutaWatch) {
+              this.item.municipio_prestador_origen = null          
+            }
+          },
+          immediate: false
+        },      
+      'item.municipio_prestador_origen': {
+        handler() {
+          if(this.ejecutaWatch) {
+            this.item.codigo_prestador_origen = null
+          }
+        },
+        immediate: false
+      }    
   },
   methods: {
     guardarItem() {
@@ -344,6 +394,7 @@ export default {
     },
     getItem(id) {
       this.loading = true
+      this.ejecutaWatch = false
       this.axios.get(`referencias/${id}`)
           .then(response => {
             const fechaSolicitud = this.clone(response.data.fecha_solicitud)
@@ -360,6 +411,11 @@ export default {
           .catch(error => {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar el registro de la referencia.`, error: error})
+          })
+          .finally(() => {
+            setTimeout(() => {
+              this.ejecutaWatch = true
+            }, 400)
           })
     },
     verificar(val) {

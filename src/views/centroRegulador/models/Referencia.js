@@ -18,6 +18,8 @@ const Referencia = {
   fecha_orden: null,
   fecha_solicitud: null,
   afiliado_id: null,
+  departamento_prestador_origen: null,
+  municipio_prestador_origen: null,
   codigo_prestador_origen: null,
   codigo_cie10_ingreso: null,
   modservicio_id: 2,

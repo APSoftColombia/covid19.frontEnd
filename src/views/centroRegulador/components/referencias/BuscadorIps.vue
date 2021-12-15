@@ -14,6 +14,7 @@
         outlined
         dense
         :error-messages="errors"
+        :disabled="disabled"
         hide-selected
         persistent-hint
         :hint="seleccionado ? [seleccionado.codigohabilitacion ? `Cód: ${seleccionado.codigohabilitacion}` : null, seleccionado.telefono ? `Tel.${seleccionado.telefono}` : null, seleccionado.email ? `Email:${seleccionado.email}` : null, [seleccionado.direccion, seleccionado.nomdepto, seleccionado.nompio].filter(x => x).join(', ')].filter(x => x).join(' | '): null"
@@ -70,6 +71,14 @@ export default {
     rules: {
       type: String,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    municipio: {
+      type:Object,
+      default: null
     }
   },
   data: () => ({
@@ -84,7 +93,13 @@ export default {
     }
   },
   watch: {
-    'itenSearch': {
+    municipio: {
+      handler(val) {
+        val && this.buscarItem()
+      },
+      immediate: false
+    },
+    itenSearch: {
       handler(val) {
         val && this.buscarItem()
       },
@@ -114,9 +129,9 @@ export default {
       if (item) this.codigos.push(item)
     },
     buscarItem: lodash.debounce(async function (value) {
-      if (value || this.itenSearch) {
+      if (value || this.itenSearch || this.municipio) {
         this.itemLoading = true
-        this.axios.get(`prestadores?filter[search]=${value || this.itenSearch}`)
+        this.axios.get(`prestadores?filter[search]=${value || this.itenSearch || ''}${this.municipio ? `&filter[idmpio]=${this.municipio.codigo}` : ''}`)
             .then(response => {
               this.codigos = response.data
               this.itemLoading = false
