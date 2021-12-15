@@ -59,38 +59,36 @@
                   </c-number>
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="12" md="5">
-                  <v-row>
-                    <v-col class="mx-0 my-0 px-0 py-0" cols="12" sm="12" md="8">
-
-                      <c-select-complete
-                        v-model="ingreso.lote"
+                  <ValidationProvider
+                      name="lote"
+                      rules="required"
+                      v-slot="{ errors }"
+                  >
+                    <v-autocomplete
                         label="Lote"
-                        rules="required"
-                        name="lote"
-                        :items="lotes"
+                        v-model="ingreso.lote"
+                        :items="lotesFiltrados"
+                        outlined
+                        dense
                         item-value="codigo"
                         item-text="codigo"
-                      />
-                    </v-col>
-                    <v-col class="mx-0 my-0 py-0" cols="12" sm="12" md="4">
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
+                        clearable
+                        :error-messages="errors"
+                    >
+                      <template v-slot:append-outer>
+                        <v-btn
+                            style="bottom: 6px !important;"
                             color="primary"
                             dark
-                            v-bind="attrs"
-                            v-on="on"
                             @click="openModalNuevoLote"
-                          >
-                            <v-icon dark>
-                              mdi-plus
-                            </v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Crear lote</span>
-                      </v-tooltip>
-                    </v-col>
-                  </v-row>
+                        >
+                          <v-icon dark>
+                            mdi-plus
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                    </v-autocomplete>
+                  </ValidationProvider>
                 </v-col>
                 <v-col class="pb-0" cols="12" sm="12" md="2">
                   <v-checkbox
@@ -128,7 +126,11 @@
       </v-container>
       <app-section-loader :status="loading"></app-section-loader>
     </v-card>
-    <crear-nuevo-lote ref="nuevoLote" @guardado="val => loteGuardado(val)"></crear-nuevo-lote>
+    <crear-nuevo-lote
+        :biologico="biologicoSeleccionado"
+        ref="nuevoLote"
+        @guardado="val => loteGuardado(val)"
+    />
   </v-dialog>
 </template>
 <script>
@@ -162,6 +164,20 @@ export default {
     ...mapGetters([
       "dosisVacunas",
     ]),
+    biologicoSeleccionado () {
+      return (this.ingreso && this.dosisVacunas?.Tipo_biologico?.length && this.dosisVacunas.Tipo_biologico.find(x => x.nombre === this.ingreso.biologico)) || null
+    },
+    lotesFiltrados () {
+      return (this.biologicoSeleccionado && this.lotes?.length && this.lotes.filter(x => x.biologico_id === this.biologicoSeleccionado.id)) || []
+    }
+  },
+  watch: {
+    biologicoSeleccionado: {
+      handler () {
+        this.ingreso.lote = null
+      },
+      immediate: false
+    }
   },
   methods: {
     loteGuardado(codigo) {
