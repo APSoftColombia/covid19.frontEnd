@@ -169,7 +169,7 @@
                 </v-col>
                 <v-col cols="12" md="8">
                   <v-row v-if="permisos.gestionarBodega" justify="end">
-                    <v-col cols="2" v-if="!getUser || !getUser.cod_ips">
+                    <v-col cols="2" v-if="(!getUser || !getUser.cod_ips) && !item.codigo_ips">
                       <v-btn @click="openIngresoVacunas">Ingresos</v-btn>
                     </v-col>
                     <v-col class="" cols="2">

@@ -1059,13 +1059,6 @@ export default {
         console.log('biologicos', biologicos)
         if (this.dosisAplicadas?.length && this.esquemaCompleto && !this.tieneRefuerzo) {
           return biologicos
-          // let filtrados = []
-          // switch (this.dosisAplicadas[0].biologico) {
-          //   case 'PFIZER':
-          //   case 'MODERNA':
-          //     filtrados = biologicos.filter(x => ['PFIZER', 'MODERNA'].find(z => z === x.nombre))
-          // }
-          // return  filtrados
         } else {
           return biologicos
         }
@@ -1893,11 +1886,26 @@ export default {
       if (this.dosisAplicadas && this.dosisAplicadas.length && this.bodegas && this.bodegas.length) {
         for (let bodega of this.bodegas) {
           let bodegaClone = this.clone(bodega)
-          delete bodegaClone.biologicos
+          bodegaClone.biologicos = []
           for (let biologico of bodega.biologicos) {
-            if (biologico.nombre === this.dosisAplicadas[0].biologico) {
-              bodegaClone.biologicos = [biologico]
+            if(this.esquemaCompleto) {
+              let opcionesRefuerzo = []
+              switch (this.dosisAplicadas[0].biologico) {
+                case 'PFIZER':
+                case 'MODERNA':
+                  opcionesRefuerzo = ['PFIZER', 'MODERNA']
+                  break
+                case 'JANSSEN':
+                case 'ASTRAZENECA':
+                  opcionesRefuerzo = ['PFIZER', 'MODERNA', 'ASTRAZENECA', 'JANSSEN']
+                  break
+                case 'SINOVAC':
+                  opcionesRefuerzo = ['PFIZER', 'MODERNA', 'SINOVAC']
+                  break
+              }
+              if (opcionesRefuerzo.find(z => z === biologico.nombre)) bodegaClone.biologicos.push(biologico)
             }
+            else if (biologico.nombre === this.dosisAplicadas[0].biologico) bodegaClone.biologicos.push(biologico)
           }
           if (bodegaClone.hasOwnProperty('biologicos')) result.push(bodegaClone)
         }
