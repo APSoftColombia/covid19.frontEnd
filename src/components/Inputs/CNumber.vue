@@ -17,7 +17,7 @@
                 :suffix="suffix"
                 persistent-hint
                 :hint="hint"
-        ></v-text-field>
+        />
     </ValidationProvider>
 </template>
 

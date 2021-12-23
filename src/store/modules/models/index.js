@@ -238,7 +238,8 @@ const state = {
         fecha_seguimiento: null,
         lugar_toma_muestra: null,
         obligaAislamiento: null,
-        requiere_tratamiento: 0
+        requiere_tratamiento: 0,
+        mensaje_texto: 0
 
     },
     modelSeguimientoPscologico: {

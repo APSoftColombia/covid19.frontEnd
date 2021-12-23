@@ -679,6 +679,19 @@
                   </template>
                 </template>
               </template>
+              <v-row>
+                <v-col cols="12">
+                  <v-switch
+                      label="Envío de mensaje de texto"
+                      v-model="evolucion.mensaje_texto"
+                      :false-value="0"
+                      :true-value="1"
+                      class="mt-0"
+                      color="primary"
+                      hide-details
+                  />
+                </v-col>
+              </v-row>
               <v-divider></v-divider>
               <v-alert
                   v-if="tamizaje.afiliado_id && (tamizaje.estado_afiliado === 'RE' || tamizaje.estado_afiliado === 'AF')"
@@ -1031,6 +1044,7 @@ export default {
           this.evolucion.observaciones = copia.observaciones
           this.evolucion.tipo = copia.tipo
           this.evolucion.duracion = copia.duracion
+          this.evolucion.mensaje_texto = copia.mensaje_texto
         } else {
           this.evolucion.no_efectividad = null
         }
