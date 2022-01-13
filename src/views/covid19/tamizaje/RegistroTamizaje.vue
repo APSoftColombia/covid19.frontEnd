@@ -129,27 +129,32 @@
                           :readonly="true"
                       />
                     </v-col>
-                    <v-col cols="12">
+                    <v-col
+                        v-if="tamizaje && (tamizaje.edad < 3 || tamizaje.edad >= 60) && ((tamizaje.sintomas && tamizaje.sintomas.length) || (tamizaje.signos_alarma && tamizaje.signos_alarma.length))"
+                        cols="12"
+                    >
                       <v-switch
-                          v-if="permisos.cambiarSolicitudTomaMuestra"
                           class="mt-0"
                           label="Solicitar Toma de Muestra"
                           v-model="tamizaje.estado_prueba"
                           :false-value="null"
                           true-value="Requiere Muestra"
                           color="primary"
-                      ></v-switch>
-                      <v-switch
-                          v-else
-                          class="mt-0"
-                          label="Solicitar Toma de Muestra"
-                          value
-                          :input-value="tamizaje.estado_prueba === 'Requiere Muestra'"
-                          persistent-hint
-                          hint="No cuenta con permisos para interacturar con el control"
-                          color="primary"
-                          readonly
-                      ></v-switch>
+                          :readonly="!permisos.cambiarSolicitudTomaMuestra"
+                          :persistent-hint="!permisos.cambiarSolicitudTomaMuestra"
+                          :hint="permisos.cambiarSolicitudTomaMuestra ? '' : 'No cuenta con permisos para interacturar con el control'"
+                      />
+<!--                      <v-switch-->
+<!--                          v-else-->
+<!--                          class="mt-0"-->
+<!--                          label="Solicitar Toma de Muestra"-->
+<!--                          value-->
+<!--                          :input-value="tamizaje.estado_prueba === 'Requiere Muestra'"-->
+<!--                          persistent-hint-->
+<!--                          hint="No cuenta con permisos para interacturar con el control"-->
+<!--                          color="primary"-->
+<!--                          readonly-->
+<!--                      />-->
                     </v-col>
                   </v-row>
                 </template>
@@ -250,13 +255,23 @@ export default {
     },
     evaluaSolicitaPrueba () {
       if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
-        return (this.tamizaje.riesgo_contacto || (this.tamizaje.sintomas && (this.tamizaje.sintomas.length && ((this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))) || (this.tamizaje.comorbilidades && (this.tamizaje.comorbilidades.length && ((this.tamizaje.sintomas && this.tamizaje.sintomas.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))))
+        console.log('this.tamizaje.edad', this.tamizaje.edad)
+        return this.tamizaje?.sintomas?.length || this.tamizaje?.signos_alarma?.length && (this.tamizaje.edad < 3 || this.tamizaje.edad >= 60)
             ? 'Requiere Muestra'
             : null
       } else {
         return null
       }
     }
+    // evaluaSolicitaPrueba () {
+    //   if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
+    //     return (this.tamizaje.riesgo_contacto || (this.tamizaje.sintomas && (this.tamizaje.sintomas.length && ((this.tamizaje.comorbilidades && this.tamizaje.comorbilidades.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))) || (this.tamizaje.comorbilidades && (this.tamizaje.comorbilidades.length && ((this.tamizaje.sintomas && this.tamizaje.sintomas.length) || (this.tamizaje.riesgo_procedencia || this.tamizaje.riesgo_ocupacional) || this.tamizaje.edad >= 60))))
+    //         ? 'Requiere Muestra'
+    //         : null
+    //   } else {
+    //     return null
+    //   }
+    // }
   },
   watch: {
     evaluaSolicitaPrueba: {

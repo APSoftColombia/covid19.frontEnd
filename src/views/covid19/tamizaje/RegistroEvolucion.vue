@@ -584,16 +584,27 @@
                     >
                     </c-select-complete>
                   </v-col>
-                  <v-alert
-                      v-if="tamizaje.estado_prueba === 'Requiere Muestra' && ((evolucion.estado_afectacion === 'Recuperado') || (evolucion.estado_afectacion === 'Ninguno') || (evolucion.estado_afectacion === 'Fallecido')) && activoEPS"
-                      dense
-                      border="left"
-                      type="error"
-                      class="text-center"
-                  >
-                    El caso requiere registrar toma de muestra, si cierra el caso, <strong>podría tomar una decisión apresurada según el requerimiento previo</strong>.
-                  </v-alert>
-                  <v-col cols="12" v-if="evolucion.clasificacion !== '6' && activoEPS">
+                  <template v-if="tamizaje.estado_prueba === 'Requiere Muestra' && activoEPS">
+                    <v-alert
+                        v-if="evolucion.estado_afectacion === 'Recuperado' || evolucion.estado_afectacion === 'Ninguno' || evolucion.estado_afectacion === 'Fallecido'"
+                        dense
+                        border="left"
+                        type="error"
+                        class="text-center"
+                    >
+                      Si cierra el caso, <strong>podría tomar una decisión apresurada según el requerimiento previo</strong>.
+                    </v-alert>
+                    <v-alert
+                        dense
+                        border="left"
+                        type="info"
+                        style="width: 100%"
+                    >
+                      El caso requiere registrar toma de muestra.
+                    </v-alert>
+                  </template>
+<!--                  <v-col cols="12" v-if="evolucion.clasificacion !== '6' && activoEPS">-->
+                  <v-col cols="12" v-if="activarSolicitudPrueba">
                     <v-switch
                         label="Solicitar Toma de Muestra"
                         v-model="evolucion.solicitud_prueba"
@@ -825,6 +836,14 @@ export default {
     dialogConfirmFormPaciente: false
   }),
   computed: {
+    activarSolicitudPrueba () {
+      // if (((this.evolucion && (this.evolucion?.sintomas?.length && this.evolucion.sintomas.filter(x => x.id)?.length) || (this.evolucion?.signos_alarma?.length)) || (this.tamizaje && this.tamizaje.estado_prueba === 'Requiere Muestra')) && this.activoEPS) {
+      if (this.activoEPS) {
+        return 1
+      } else {
+        return 0
+      }
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },
