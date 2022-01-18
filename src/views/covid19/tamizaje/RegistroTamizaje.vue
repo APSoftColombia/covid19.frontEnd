@@ -27,6 +27,45 @@
                     :remplazar-afiliado-null="remplazarAfiliadoNull"
                 />
                 <template v-if="tamizaje && verificado === 1 && autoriza">
+                  <v-row>
+                    <v-col cols="12">
+                      <v-card outlined tile>
+                        <v-card-text>
+                          <c-radio
+                              v-model="tamizaje.esquema_completo"
+                              label="¿Tiene el esquema completo?"
+                              rules="required"
+                              name="esquema completo"
+                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                              item-text="text"
+                              item-value="value"
+                              :column="!$vuetify.breakpoint.smAndUp"
+                          >
+                          </c-radio>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                        v-if="tamizaje.esquema_completo"
+                        cols="12"
+                    >
+                      <v-card outlined tile>
+                        <v-card-text>
+                          <c-radio
+                              v-model="tamizaje.refuerzo"
+                              label="¿Cuenta con refuerzo aplicado?"
+                              rules="required"
+                              name="refuerzo aplicado"
+                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                              item-text="text"
+                              item-value="value"
+                              :column="!$vuetify.breakpoint.smAndUp"
+                          >
+                          </c-radio>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
                   <form-sintomas
                       :array-sintomas="tamizaje.sintomas"
                       :fecha-sintomas="tamizaje.fecha_sintomas"
@@ -129,8 +168,9 @@
                           :readonly="true"
                       />
                     </v-col>
+
                     <v-col
-                        v-if="tamizaje && (tamizaje.edad < 3 || tamizaje.edad >= 60) && ((tamizaje.sintomas && tamizaje.sintomas.length) || (tamizaje.signos_alarma && tamizaje.signos_alarma.length))"
+                        v-if="muestraHabilitar"
                         cols="12"
                     >
                       <v-switch
@@ -140,10 +180,21 @@
                           :false-value="null"
                           true-value="Requiere Muestra"
                           color="primary"
-                          :readonly="!permisos.cambiarSolicitudTomaMuestra"
-                          :persistent-hint="!permisos.cambiarSolicitudTomaMuestra"
-                          :hint="permisos.cambiarSolicitudTomaMuestra ? '' : 'No cuenta con permisos para interacturar con el control'"
+                          :readonly="evaluaSolicitaPrueba"
+                          persistent-hint
+                          :hint="evaluaSolicitaPrueba ? 'Se selecciona automáticamente según validaciones solicitadas.' : 'El control se habilita para selección manual.'"
                       />
+<!--                      <v-switch-->
+<!--                          class="mt-0"-->
+<!--                          label="Solicitar Toma de Muestra"-->
+<!--                          v-model="tamizaje.estado_prueba"-->
+<!--                          :false-value="null"-->
+<!--                          true-value="Requiere Muestra"-->
+<!--                          color="primary"-->
+<!--                          :readonly="!permisos.cambiarSolicitudTomaMuestra"-->
+<!--                          :persistent-hint="!permisos.cambiarSolicitudTomaMuestra"-->
+<!--                          :hint="permisos.cambiarSolicitudTomaMuestra ? '' : 'No cuenta con permisos para interacturar con el control'"-->
+<!--                      />-->
 <!--                      <v-switch-->
 <!--                          v-else-->
 <!--                          class="mt-0"-->
@@ -253,12 +304,32 @@ export default {
       }
       return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
     },
+    muestraHabilitar () {
+      if (this.tamizaje) {
+        if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
+          return true
+        } else if (this.tamizaje.estado_gestacion_lactancia || this.tamizaje.riesgo_ocupacional) {
+          return true
+        } else if (this.tamizaje.edad < 3 || this.tamizaje.edad >= 60) {
+          return this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length
+        } else {
+          return (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length) && (this.tamizaje.comorbilidades?.length || this.tamizaje.estado_gestacion_lactancia)
+        }
+      } else {
+        return false
+      }
+    },
     evaluaSolicitaPrueba () {
       if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
-        console.log('this.tamizaje.edad', this.tamizaje.edad)
-        return this.tamizaje?.sintomas?.length || this.tamizaje?.signos_alarma?.length && (this.tamizaje.edad < 3 || this.tamizaje.edad >= 60)
-            ? 'Requiere Muestra'
-            : null
+        if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
+          return 'Requiere Muestra'
+        } else if ((this.tamizaje.estado_gestacion_lactancia || this.tamizaje.riesgo_ocupacional) && (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length)) {
+          return 'Requiere Muestra'
+        } else if (this.tamizaje.edad < 3 || this.tamizaje.edad >= 60) {
+          return (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length) ? 'Requiere Muestra' : null
+        } else {
+          return ((this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length) && (this.tamizaje.comorbilidades?.length || this.tamizaje.estado_gestacion_lactancia)) ? 'Requiere Muestra' : null
+        }
       } else {
         return null
       }
@@ -274,6 +345,14 @@ export default {
     // }
   },
   watch: {
+    'tamizaje.esquema_completo': {
+      handler (val) {
+        if (!val) {
+          this.tamizaje.refuerzo = null
+        }
+      },
+      immediate: false
+    },
     evaluaSolicitaPrueba: {
       handler (val) {
         if (this && this.tamizaje) {

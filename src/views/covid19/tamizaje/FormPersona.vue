@@ -213,8 +213,7 @@
           :items="barrios"
           item-text="nombre"
           item-value="id"
-      >
-      </c-select-complete>
+      />
     </v-col>
     <v-col class="pb-0" cols="12">
       <c-select-complete
@@ -276,8 +275,7 @@
               name="régimen"
               :items="tiposAfiliacion"
               :disabled="identificacionVerificada < 1"
-          >
-          </c-select-complete>
+          />
         </v-col>
         <v-col class="pb-0" cols="12" sm="12" md="6" v-if="persona.tipo_afiliacion === 'Régimen Especial'">
           <c-select-complete
@@ -287,8 +285,7 @@
               name="régimen especial"
               :items="regimenesEspeciales"
               :disabled="identificacionVerificada < 1"
-          >
-          </c-select-complete>
+          />
         </v-col>
       </template>
     </template>
@@ -363,6 +360,7 @@ export default {
       handler(val) {
         if (val && val.identificacion) {
           this.identificacionVerificada = 1
+          console.log('pasa por value')
           this.$emit('verificado', 1)
         }
         this.assignPerson()

@@ -456,7 +456,7 @@
             </v-card-text>
           </template>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer/>
             <v-btn @click="dialog = false">Cerrar</v-btn>
           </v-card-actions>
         </v-card>
