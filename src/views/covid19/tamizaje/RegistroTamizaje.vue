@@ -324,7 +324,9 @@ export default {
     },
     muestraHabilitar() {
       if (this.tamizaje) {
-        if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
+        if (this.tamizaje.cirugia) {
+          return true
+        } else if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
           return true
         } else if (this.tamizaje.estado_gestacion_lactancia || this.tamizaje.riesgo_ocupacional) {
           return true
@@ -339,9 +341,10 @@ export default {
     },
     evaluaSolicitaPrueba() {
       if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
-        if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
-          return 'Requiere Muestra'
-        } else if ((this.tamizaje.estado_gestacion_lactancia || this.tamizaje.riesgo_ocupacional) && (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length)) {
+        // if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
+        //   return 'Requiere Muestra'
+        // } else
+        if ((this.tamizaje.estado_gestacion_lactancia || this.tamizaje.riesgo_ocupacional) && (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length)) {
           return 'Requiere Muestra'
         } else if (this.tamizaje.edad < 3 || this.tamizaje.edad >= 60) {
           return (this.tamizaje.sintomas?.length || this.tamizaje.signos_alarma?.length) ? 'Requiere Muestra' : null
