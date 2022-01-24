@@ -5,7 +5,9 @@
         <v-toolbar dark color="primary">
           <v-icon left>fas fa-file-medical</v-icon>
           <v-toolbar-title>
-            {{ tamizaje && tamizaje.id ? `ERP (Encuesta de Riesgo Poblacional) No. ${tamizaje.id}` : 'Nueva ERP (Encuesta de Riesgo Poblacional)' }}
+            {{
+              tamizaje && tamizaje.id ? `ERP (Encuesta de Riesgo Poblacional) No. ${tamizaje.id}` : 'Nueva ERP (Encuesta de Riesgo Poblacional)'
+            }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click="close">
@@ -28,6 +30,22 @@
                 />
                 <template v-if="tamizaje && verificado === 1 && autoriza">
                   <v-row>
+                    <v-col cols="12">
+                      <v-card outlined tile>
+                        <v-card-text>
+                          <c-radio
+                              v-model="tamizaje.cirugia"
+                              label="¿En preparación para cirugía?"
+                              rules="required"
+                              name="preparación para cirugía"
+                              :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                              item-text="text"
+                              item-value="value"
+                              :column="!$vuetify.breakpoint.smAndUp"
+                          />
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
                     <v-col cols="12">
                       <v-card outlined tile>
                         <v-card-text>
@@ -184,28 +202,28 @@
                           persistent-hint
                           :hint="evaluaSolicitaPrueba ? 'Se selecciona automáticamente según validaciones solicitadas.' : 'El control se habilita para selección manual.'"
                       />
-<!--                      <v-switch-->
-<!--                          class="mt-0"-->
-<!--                          label="Solicitar Toma de Muestra"-->
-<!--                          v-model="tamizaje.estado_prueba"-->
-<!--                          :false-value="null"-->
-<!--                          true-value="Requiere Muestra"-->
-<!--                          color="primary"-->
-<!--                          :readonly="!permisos.cambiarSolicitudTomaMuestra"-->
-<!--                          :persistent-hint="!permisos.cambiarSolicitudTomaMuestra"-->
-<!--                          :hint="permisos.cambiarSolicitudTomaMuestra ? '' : 'No cuenta con permisos para interacturar con el control'"-->
-<!--                      />-->
-<!--                      <v-switch-->
-<!--                          v-else-->
-<!--                          class="mt-0"-->
-<!--                          label="Solicitar Toma de Muestra"-->
-<!--                          value-->
-<!--                          :input-value="tamizaje.estado_prueba === 'Requiere Muestra'"-->
-<!--                          persistent-hint-->
-<!--                          hint="No cuenta con permisos para interacturar con el control"-->
-<!--                          color="primary"-->
-<!--                          readonly-->
-<!--                      />-->
+                      <!--                      <v-switch-->
+                      <!--                          class="mt-0"-->
+                      <!--                          label="Solicitar Toma de Muestra"-->
+                      <!--                          v-model="tamizaje.estado_prueba"-->
+                      <!--                          :false-value="null"-->
+                      <!--                          true-value="Requiere Muestra"-->
+                      <!--                          color="primary"-->
+                      <!--                          :readonly="!permisos.cambiarSolicitudTomaMuestra"-->
+                      <!--                          :persistent-hint="!permisos.cambiarSolicitudTomaMuestra"-->
+                      <!--                          :hint="permisos.cambiarSolicitudTomaMuestra ? '' : 'No cuenta con permisos para interacturar con el control'"-->
+                      <!--                      />-->
+                      <!--                      <v-switch-->
+                      <!--                          v-else-->
+                      <!--                          class="mt-0"-->
+                      <!--                          label="Solicitar Toma de Muestra"-->
+                      <!--                          value-->
+                      <!--                          :input-value="tamizaje.estado_prueba === 'Requiere Muestra'"-->
+                      <!--                          persistent-hint-->
+                      <!--                          hint="No cuenta con permisos para interacturar con el control"-->
+                      <!--                          color="primary"-->
+                      <!--                          readonly-->
+                      <!--                      />-->
                     </v-col>
                   </v-row>
                 </template>
@@ -304,7 +322,7 @@ export default {
       }
       return [h > 9 ? h : `0${h}`, m > 9 ? m : `0${m}`, s > 9 ? s : `0${s}`].join(' : ')
     },
-    muestraHabilitar () {
+    muestraHabilitar() {
       if (this.tamizaje) {
         if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
           return true
@@ -319,7 +337,7 @@ export default {
         return false
       }
     },
-    evaluaSolicitaPrueba () {
+    evaluaSolicitaPrueba() {
       if (this && this.tamizaje && this.tamizaje.localiza_persona && this.tamizaje.contesta_encuesta) {
         if (!this.tamizaje.sintomas?.length && !this.tamizaje.signos_alarma?.length && !this.tamizaje.esquema_completo && this.tamizaje.riesgo_contacto) {
           return 'Requiere Muestra'
@@ -346,7 +364,7 @@ export default {
   },
   watch: {
     'tamizaje.esquema_completo': {
-      handler (val) {
+      handler(val) {
         if (!val) {
           this.tamizaje.refuerzo = null
         }
@@ -354,7 +372,7 @@ export default {
       immediate: false
     },
     evaluaSolicitaPrueba: {
-      handler (val) {
+      handler(val) {
         if (this && this.tamizaje) {
           this.tamizaje.estado_prueba = val
         }
@@ -370,7 +388,7 @@ export default {
             if (result) {
               this.loading = true
               let tamizajeCopia = await this.clone(this.cleanTamizajeDesautorizado(this.tamizaje))
-              if(tamizajeCopia.signos_alarma && tamizajeCopia.signos_alarma.length) tamizajeCopia.sintomas = tamizajeCopia.sintomas.concat(tamizajeCopia.signos_alarma)
+              if (tamizajeCopia.signos_alarma && tamizajeCopia.signos_alarma.length) tamizajeCopia.sintomas = tamizajeCopia.sintomas.concat(tamizajeCopia.signos_alarma)
               let request = tamizajeCopia.id
                   ? this.axios.put(`tamizajes/${tamizajeCopia.id}`, tamizajeCopia)
                   : this.axios.post(`tamizajes`, tamizajeCopia)
@@ -388,10 +406,16 @@ export default {
             }
           })
         } else {
-          this.$store.commit('snackbar', {color: 'warning', message: `La EPS seleccionada es sujeto de validación de afiliados y no se encuentra información con el documento número ${this.tamizaje.identificacion}, <strong>el registro no podrá ser guardado</strong>.`})
+          this.$store.commit('snackbar', {
+            color: 'warning',
+            message: `La EPS seleccionada es sujeto de validación de afiliados y no se encuentra información con el documento número ${this.tamizaje.identificacion}, <strong>el registro no podrá ser guardado</strong>.`
+          })
         }
       } else {
-        this.$store.commit('snackbar', {color: 'warning', message: `El afiliado se encuentra como <strong>RETIRADO</strong> en la EPS seleccionada, <strong>el registro no podrá ser guardado</strong>.`})
+        this.$store.commit('snackbar', {
+          color: 'warning',
+          message: `El afiliado se encuentra como <strong>RETIRADO</strong> en la EPS seleccionada, <strong>el registro no podrá ser guardado</strong>.`
+        })
       }
     },
     open(idTamizaje = null, idReporte = null, llamada = null) {

@@ -73,6 +73,7 @@ const state = {
         tipo_poblacion: null,
         esquema_completo: null,
         refuerzo: null,
+        cirugia: null,
         ////
         user_id: null,
         signos_alarma: [],

@@ -304,6 +304,10 @@ Vue.mixin({
 					tamizaje.frecuencia_pulso = null
 					tamizaje.saturacion_oxigeno = null
 					tamizaje.temperatura = null
+
+					tamizaje.esquema_completo = null
+					tamizaje.refuerzo = null
+					tamizaje.cirugia = null
 					if (tamizaje.infoviajero) {
 						tamizaje.infoviajero.pais_procedencia = null
 						tamizaje.infoviajero.municipio_procedencia = null
