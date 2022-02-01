@@ -406,5 +406,15 @@ export const itemsMenu = [
         color: 'blue',
         routeName: 'EstudiosLabSaludPublica',
         typeRoute: 'labSP'
+    },
+    {
+        id: 71,
+        title: 'Atenciones Médicas',
+        subtitle: 'Cargue y gestión',
+        icon: 'fas fa-notes-medical',
+        iconSize: '24',
+        color: 'teal darken-2',
+        routeName: 'AtencionMedicaRCV',
+        typeRoute: 'aps'
     }
 ]
