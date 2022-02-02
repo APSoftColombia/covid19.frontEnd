@@ -8,10 +8,10 @@
       @click:close="$emit('close')"
   >
     <v-list-item-content class="pa-0">
-      <v-list-item-subtitle class="ma-0 font-weight-black">{{ text }}</v-list-item-subtitle>
+      <v-list-item-subtitle class="ma-0 mt-1 font-weight-black">{{ text }}</v-list-item-subtitle>
       <v-list-item-subtitle
           v-if="subtitle"
-          style="line-height:1rem !important;"
+          style="line-height:0.8rem !important; margin-bottom: 0.2rem !important;"
           class="caption text-truncate"
       >
         {{ subtitle }}

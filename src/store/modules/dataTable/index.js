@@ -44,7 +44,9 @@ const state = {
         tablaBodegas: 0,
         tablaBodegasVersion: 0,
         tablaEstudiosLaboratorioSaludPublica: 0,
-        tablaEstudiosLaboratorioSaludPublicaVersion: 1
+        tablaEstudiosLaboratorioSaludPublicaVersion: 1,
+        tablaAtencionMedicaRCV: 0,
+        tablaAtencionMedicaRCVVersion: 1
     }
 }
 
