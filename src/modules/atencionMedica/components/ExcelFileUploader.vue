@@ -59,7 +59,7 @@
       </v-list>
       <v-divider></v-divider>
       <v-card-text style="height: 100%;">
-        <v-container fluid>
+        <v-container fluid class="pb-0">
           <v-row dense>
             <v-col cols="12">
               <ValidationObserver ref="formFile">
@@ -146,6 +146,8 @@ export default {
     },
     close () {
       this.$refs.formFile.reset()
+      this.file = null
+      this.errors = []
       this.dialog = false
     },
     fileUpload () {

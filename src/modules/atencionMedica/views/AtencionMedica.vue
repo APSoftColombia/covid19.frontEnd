@@ -2,10 +2,20 @@
   <v-container fluid>
     <page-title-bar title="Atenciones Médicas RCV">
       <template slot="actions">
+        <excel-file-uploader
+            v-if="permisos.manageFile"
+            @uploaded="savedItem"
+        />
+        <v-divider
+            v-if="permisos.manageFile && permisos.create"
+            class="mx-6"
+            vertical
+            inset
+        />
         <c-tooltip
             v-if="permisos.create"
             tooltip="Crear atención médica"
-            left
+            top
         >
           <v-btn
               color="primary"
@@ -152,10 +162,12 @@
 import PersonaItem from '../components/PersonaItem'
 import TagsFilters from '../components/TagsFilters'
 import Filters from '../components/Filters'
+import ExcelFileUploader from '../components/ExcelFileUploader'
 
 export default {
   name: 'AtencionMedica',
   components: {
+    ExcelFileUploader,
     PersonaItem,
     TagsFilters,
     Filters
