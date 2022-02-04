@@ -46,7 +46,9 @@ const state = {
         tablaEstudiosLaboratorioSaludPublica: 0,
         tablaEstudiosLaboratorioSaludPublicaVersion: 1,
         tablaAtencionMedicaRCV: 0,
-        tablaAtencionMedicaRCVVersion: 1
+        tablaAtencionMedicaRCVVersion: 1,
+        tablaAtencionMedicaLoadsRCV: 0,
+        tablaAtencionMedicaLoadsRCVVersion: 1
     }
 }
 

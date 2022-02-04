@@ -4,7 +4,6 @@
       <template slot="actions">
         <excel-file-uploader
             v-if="permisos.manageFile"
-            @uploaded="savedItem"
         />
         <v-divider
             v-if="permisos.manageFile && permisos.create"
@@ -32,230 +31,92 @@
     <v-row>
       <v-col cols="12">
         <v-card tile flat>
-          <data-tablex
-              v-model="dataTable"
-              items-loading
-              @applyFilters="$refs && $refs.filters && $refs.filters.applyFilters()"
-          >
-            <filters
-                slot="filters"
-                ref="filters"
-                :ruta-base="rutaBase"
-                @filtra="val => dataTable.route = val"
-            />
-            <template v-slot:tagsfilters="{tags}">
-              <tags-filters
-                  :tags="tags"
-                  @change="$refs && $refs.filters && $refs.filters.applyFilters()"
-              />
-            </template>
-            <template v-slot:tabla="{ items, headers, loading }">
-              <v-data-table
-                  :headers="headers"
-                  :items="items"
-                  :loading="loading"
-                  loading-text="Cargando... por favor espere"
-                  class="elevation-1 rounded-0 mb-12"
-                  hide-default-footer
-                  disable-pagination
+          <template v-if="!isPrestador">
+            <v-tabs
+                v-model="tab"
+                fixed-tabs
+                right
+                icons-and-text
+                show-arrows
+            >
+              <v-tabs-slider/>
+              <v-tab
+                  href="#tab-1"
               >
-                <template v-slot:item.created_at="{ item }">
-                  <template v-if="item.created_at">
-                    <v-icon small>mdi-calendar-month</v-icon>
-                    {{ moment(item.created_at).format('DD/MM/YYYY HH:mm') }}
-                  </template>
-                </template>
-                <template v-slot:item.paciente="{ item }">
-                  <persona-item :value="item"/>
-                </template>
-                <template v-slot:item.eps="{ item }">
-                  <v-list-item-content
-                      v-if="item.eps"
-                      class="pa-0"
-                  >
-                    <v-list-item-subtitle>
-                      {{ item.eps }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle class="body-2">
-                      {{ item.codigo_eps }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </template>
-                <template v-slot:item.user="{ item }">
-                  <v-list-item-content class="pa-0" v-if="item.user">
-                    <v-list-item-title>
-                      {{ item.user.name }}
-                    </v-list-item-title>
-                    <v-list-item-subtitle class="body-2">
-                      {{ item.user.email }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </template>
-                <template v-slot:item.opciones="{ item }">
-                  <div class="optionsButtons">
-                    <v-toolbar>
-                      <c-tooltip
-                          v-if="permisos.detail"
-                          bottom
-                          tooltip="Detalle Atención"
-                      >
-                        <v-btn
-                            class="ma-1"
-                            color="success"
-                            depressed
-                            fab
-                            x-small
-                            @click="detailItem(item)"
-                        >
-                          <v-icon>mdi-file-find</v-icon>
-                        </v-btn>
-                      </c-tooltip>
-                      <c-tooltip
-                          v-if="permisos.edit"
-                          bottom
-                          tooltip="Editar Atención"
-                      >
-                        <v-btn
-                            class="ma-1"
-                            color="warning"
-                            depressed
-                            fab
-                            x-small
-                            @click="editItem(item)"
-                        >
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                      </c-tooltip>
-                      <c-tooltip
-                          v-if="permisos.delete"
-                          bottom
-                          tooltip="Eliminar Atención"
-                      >
-                        <v-btn
-                            class="ma-1"
-                            color="error"
-                            depressed
-                            fab
-                            x-small
-                            @click="preDeleteItem(item)"
-                        >
-                          <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                      </c-tooltip>
-                    </v-toolbar>
-                  </div>
-                </template>
-              </v-data-table>
-            </template>
-          </data-tablex>
+                <span class="subtitle-1">Registros de atención</span>
+              </v-tab>
+              <v-tab
+                  href="#tab-2"
+              >
+                <span class="subtitle-1">Cargues masivos</span>
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items
+                v-model="tab"
+                class="mt-2"
+                touchless
+            >
+              <v-tab-item
+                  value="tab-1"
+              >
+                <Attentions/>
+              </v-tab-item>
+              <v-tab-item
+                  value="tab-2"
+              >
+                <loads/>
+              </v-tab-item>
+            </v-tabs-items>
+          </template>
+          <loads v-else/>
         </v-card>
       </v-col>
     </v-row>
-    <c-dialog
-        ref="cdialog"
-        @save="deleteItem"
-    />
   </v-container>
 </template>
 
 <script>
-import PersonaItem from '../components/PersonaItem'
-import TagsFilters from '../components/TagsFilters'
-import Filters from '../components/Filters'
 import ExcelFileUploader from '../components/ExcelFileUploader'
+import Attentions from '../components/Attentions/Attentions'
+import {mapGetters} from 'vuex'
+import Loads from '../components/Loads/Loads'
 
 export default {
   name: 'AtencionMedica',
   components: {
-    ExcelFileUploader,
-    PersonaItem,
-    TagsFilters,
-    Filters
+    Loads,
+    Attentions,
+    ExcelFileUploader
   },
   data: () => ({
-    selectedItem: null,
-    rutaBase: 'seguimientos',
-    dataTable: {
-      advanceFilters: true,
-      titleFilters: 'Filtros para atenciones médicas RCV',
-      nameItemState: 'tablaAtencionMedicaRCV',
-      route: 'seguimientos',
-      makeHeaders: [
-        {
-          text: 'ID',
-          sortable: false,
-          value: 'id'
-        },
-        {
-          text: 'Fecha Registro',
-          sortable: false,
-          value: 'created_at'
-        },
-        {
-          text: 'Estado',
-          sortable: false,
-          value: 'estado'
-        },
-        {
-          text: 'Paciente',
-          sortable: false,
-          value: 'paciente'
-        },
-        {
-          text: 'EPS',
-          sortable: false,
-          value: 'eps'
-        },
-        {
-          text: 'Usuario Registra',
-          sortable: false,
-          visibleColumn: true,
-          value: 'user'
-        },
-        {
-          text: '',
-          value: 'opciones',
-          align: 'center',
-          sortable: false
-        }
-      ]
-    }
+    tab: null
   }),
   computed: {
+    ...mapGetters([
+      'getUser'
+    ]),
+    isPrestador () {
+      return this.getUser?.cod_ips
+    },
     permisos () {
       return this.$store.getters.getPermissionModule('atencionMedicaRCV')
+    }
+  },
+  watch: {
+    isPrestador: {
+      handler (val) {
+        if(val){
+          setTimeout(() => {
+            this.tab === 'tab-2'
+          }, 5000)
+        }
+      },
+      immediate: true
     }
   },
   methods: {
     createItem() {
       // this.$refs.registerItem.open()
-    },
-    editItem(item) {
-      console.log(`Editar Item ${item}`)
-      // this.$refs.registerItem.open(item)
-    },
-    detailItem(item) {
-      console.log(`Ver Item ${item}`)
-      // this.$refs.detailItem.open(item)
-    },
-    preDeleteItem(item) {
-      this.selectedItem = item
-      this.$refs.cdialog.open(`¿Está seguro de eliminar el registro con <strong>ID: ${this.selectedItem.id} de ${this.selectedItem.primer_nombre} ${this.selectedItem.primer_apellido}</strong>?`)
-    },
-    deleteItem() {
-      this.axios.delete(`seguimientos/${this.selectedItem.id}`)
-          .then(() => {
-            this.$store.commit('snackbar', { color: 'success', message: 'Atención médica eliminada correctamente.' })
-            this.$refs.cdialog.close()
-            this.savedItem()
-          })
-          .catch(error => {
-            this.$store.commit('snackbar', { color: 'error', message: ' al eliminar el registro de atención médica.', error: error })
-            this.$refs.cdialog.loading = false
-          })
-    },
-    savedItem() {
-      this.$store.commit('reloadTable', 'tablaAtencionMedicaRCV')
     }
   }
 }

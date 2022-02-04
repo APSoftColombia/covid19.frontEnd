@@ -21,6 +21,7 @@ import RCV from '../views/aps/rcv/store/rcv'
 import loading from 'Components/loading/store'
 import centroRegulador from '../views/centroRegulador/store'
 import laboratorioSaludPublica from '../views/laboratorioSaludPublica/store'
+import atencionMedicaRCVModule from '../modules/atencionMedica/store'
 
 Vue.use(Vuex)
 
@@ -42,7 +43,8 @@ export const store = new Vuex.Store({
         modelsRCV,
         loading,
         centroRegulador,
-        laboratorioSaludPublica
+        laboratorioSaludPublica,
+        atencionMedicaRCVModule
     },
     // plugins: [new VuexPersistence().plugin]
     plugins: [createPersistedState({

@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import {store} from '@/store/store'
 export default {
   name: 'ExcelFileUploader',
   data: () => ({
@@ -161,13 +162,14 @@ export default {
               .then(() => {
                 this.loading = false
                 this.$store.commit('snackbar', {color: 'success', message: 'El cargue del archivo se realizó correctamente.'})
-                this.$emit('uploaded')
+                store.commit('atencionMedicaRCVModule/SET_COUNTER')
                 this.close()
               })
               .catch(error => {
                 this.loading = false
                 if (error?.response?.data?.errors?.length)  {
                   this.errors = error.response.data.errors
+                  store.commit('atencionMedicaRCVModule/SET_LOADS_COUNTER')
                 }
                 else {
                   this.$store.commit('snackbar', {color: 'error', message: ' al cargar el archivo.', error: error})

@@ -9,7 +9,7 @@
             :disabled="disabled"
     >
         <template v-slot:activator="{ on }">
-            <ValidationProvider :name="name" :vid="vid" :rules="(rules ? `${rules}|`: '') + 'dateValid'" v-slot="{ errors, valid }">
+            <ValidationProvider :name="name" :vid="vid" :rules="(rules ? `${rules}`: '') + (rules && type === 'date' ? '|' : '') + (type === 'date' ? 'dateValid' : '')" v-slot="{ errors, valid }">
                 <v-text-field
                         v-model="dateFormatted"
                         :label="label"
@@ -34,6 +34,7 @@
                 :min="min"
                 :max="max"
                 scrollable
+                :type="type"
                 :disabled="disabled"
         ></v-date-picker>
     </v-menu>
@@ -46,6 +47,10 @@
       value: {
         type: String,
         default: null
+      },
+      type: {
+        type: String,
+        default: 'date'
       },
       label: {
         type: String,
@@ -107,7 +112,7 @@
     computed: {
       dateFormatted: {
         get: function () {
-          return this.value ? this.formatDate(this.value) : null
+          return this.value ? this.type === 'date' ? this.formatDate(this.value) : this.value : null
         },
         set: function (newValue) {
           this.$emit('input', newValue)

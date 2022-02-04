@@ -122,6 +122,26 @@
                     </v-list-item>
                   </v-list>
                 </v-col>
+                <v-col cols="12" v-if="tamizaje.estado_prueba === 'Requiere Muestra'">
+                  <v-list two-line class="notification-wrap">
+                    <v-list-item
+                        style="border-bottom: none !important;"
+                        @click="click = null"
+                    >
+                      <v-list-item-avatar class="my-1">
+                        <v-icon color="orange">mdi-alert</v-icon>
+                      </v-list-item-avatar>
+                      <v-list-item-content class="pa-0">
+                        <v-list-item-subtitle class="grey--text fs-12 fw-normal">
+                          Solicitud de prueba
+                        </v-list-item-subtitle>
+                        <v-list-item-title>
+                          <h6 class="mb-0 text-justify">El paciente requiere toma de Muestra</h6>
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-col>
                 <v-col cols="12">
                   <v-list two-line class="notification-wrap">
                     <template v-for="(item, indexItem) in datos">
@@ -511,7 +531,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
