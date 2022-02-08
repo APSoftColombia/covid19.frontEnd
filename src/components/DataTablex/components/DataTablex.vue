@@ -55,7 +55,7 @@
               </template>
             </v-select>
           </v-col>
-          <v-col cols="12" sm="5" md="3" lg="2">
+          <v-col cols="12" sm="5" md="2" lg="2">
             <v-select
                 label="Registros por página"
                 v-model="pagination.per_page"
@@ -66,7 +66,13 @@
                 hide-details
             ></v-select>
           </v-col>
-          <v-col cols="12" sm="12" md="5" lg="6">
+          <v-col
+              v-if="searchable"
+              cols="12"
+              sm="12"
+              md="4"
+              lg="5"
+          >
             <v-container fluid class="py-0">
               <v-row justify="center" align="center">
                 <v-text-field
@@ -79,75 +85,77 @@
                     @keyup.enter="reloadCurrentPage"
                 >
                 </v-text-field>
-                <v-dialog
-                    v-if="value.advanceFilters"
-                    v-model="dialog"
-                    persistent max-width="1020px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        small
-                        class="ml-2"
-                        :class="$vuetify.breakpoint.xsOnly ? 'mt-2' : ''"
-                        color="primary"
-                        v-bind="attrs"
-                        v-on="on"
-                        @click="$emit('openFilters')"
-                    >
-                      <v-icon left class="white--text">mdi-tune</v-icon>
-                      Filtros
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-toolbar class="elevation-0">
-                      <v-toolbar-title>
-                        <v-avatar color="primary" size="40">
-                          <v-icon dark class="white--text">mdi-tune</v-icon>
-                        </v-avatar>
-                        {{ value.titleFilters }}
-                      </v-toolbar-title>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                          icon
-                          @click="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                      >
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
-                    </v-toolbar>
-                    <v-divider class="my-0"></v-divider>
-                    <v-container fluid>
-                      <slot name="filters"></slot>
-                    </v-container>
-                    <loading :value="loadingFilter"/>
-                    <v-card-actions>
-                      <v-btn
-                          text
-                          color="primary"
-                          @click="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                      >
-                        Cerrar
-                      </v-btn>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                          color="primary"
-                          @click.stop="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                      >
-                        Aplicar Filtros
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
               </v-row>
             </v-container>
+          </v-col>
+          <v-col cols="6" sm="4" md="2" lg="2" xl="1">
+            <v-dialog
+                v-if="value.advanceFilters"
+                v-model="dialog"
+                persistent max-width="1020px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    small
+                    :class="$vuetify.breakpoint.xsOnly ? 'mt-2' : ''"
+                    color="primary"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="$emit('openFilters')"
+                    block
+                >
+                  <v-icon left class="white--text">mdi-tune</v-icon>
+                  Filtros
+                </v-btn>
+              </template>
+              <v-card>
+                <v-toolbar class="elevation-0">
+                  <v-toolbar-title>
+                    <v-avatar color="primary" size="40">
+                      <v-icon dark class="white--text">mdi-tune</v-icon>
+                    </v-avatar>
+                    {{ value.titleFilters }}
+                  </v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      icon
+                      @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                  >
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <v-divider class="my-0"></v-divider>
+                <v-container fluid>
+                  <slot name="filters"></slot>
+                </v-container>
+                <loading :value="loadingFilter"/>
+                <v-card-actions>
+                  <v-btn
+                      text
+                      color="primary"
+                      @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                  >
+                    Cerrar
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="primary"
+                      @click.stop="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                  >
+                    Aplicar Filtros
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-container>
@@ -194,6 +202,10 @@ import lodash from 'lodash'
 export default {
   name: 'DataTablex',
   props: {
+    searchable: {
+      type: Boolean,
+      default: true
+    },
     value: {
       type: Object,
       default: null
@@ -375,7 +387,7 @@ export default {
       if (this.activePetition) {
         this.activePetition = false
         this.loading = true
-        this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
+        this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + (this.searchable ? ('&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : ''))
         // this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
             .then(response => {
               this.filtrado = true

@@ -73,10 +73,10 @@
         },
         methods: {
             editarAislamiento(item) {
-                this.$refs.registroAislamiento.open(item, {id: this.tamizaje.id, aislamientos: this.tamizaje.aislamientos})
+                this.$refs.registroAislamiento.open(item, this.tamizaje)
             },
             agregarAislamiento () {
-                this.$refs.registroAislamiento.open(null, {id: this.tamizaje.id, aislamientos: this.tamizaje.aislamientos})
+                this.$refs.registroAislamiento.open(null, this.tamizaje)
             },
             aislamientoGuardado (item) {
                 this.$emit('change', item)

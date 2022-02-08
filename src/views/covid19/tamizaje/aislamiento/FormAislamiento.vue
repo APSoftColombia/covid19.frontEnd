@@ -59,6 +59,25 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col
+          v-if="tamizaje.tipo_afiliacion === 'Régimen Contributivo'"
+          cols="12"
+      >
+        <v-card outlined tile>
+          <v-card-text>
+            <c-radio
+                v-model="aislamiento.teletrabajo"
+                label="¿La persona aislada puede realizar teletrabajo?"
+                rules="required"
+                name="puede realizar teletrabajo"
+                :items="[{value: 1, text: 'SI'}, {value: 0, text: 'NO'}]"
+                item-text="text"
+                item-value="value"
+            >
+            </c-radio>
+          </v-card-text>
+        </v-card>
+      </v-col>
       <v-col cols="12">
         <v-card outlined tile>
           <v-card-text>

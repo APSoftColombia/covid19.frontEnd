@@ -114,6 +114,7 @@ const state = {
         fecha_egreso: null,
         tipo: null,
         individual: null,
+        teletrabajo: null,
         ambito: null,
         ordenado_por: null,
         codigo_habilitacion: null,
