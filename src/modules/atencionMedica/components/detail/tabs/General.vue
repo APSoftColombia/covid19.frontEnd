@@ -136,7 +136,7 @@ export default {
           },
           {
             label: 'HTA',
-            body: [this.item.hta === null ? '' : this.item.hta ? 'SI' : 'NO', this.item.estadio_hta, this.item.fecha_dx_hta].filter(x => x).join(' | '),
+            body: [this.item.hta === null ? '' : this.item.hta === 1 ? 'SI' : 'NO', this.item.estadio_hta, this.item.fecha_dx_hta].filter(x => x).join(' | '),
             subtitle2: this.item.costo_hta.toLocaleString('es-CO', {style: 'currency', currency: 'COP', minimumFractionDigits: 2}) || '',
             colmd: '6',
             collg: '4'
@@ -150,7 +150,7 @@ export default {
           },
           {
             label: 'Insulinorequiriente',
-            body: this.item.insulinorequiriente === null ? '' : this.item.insulinorequiriente ? 'SI' : 'NO',
+            body: this.item.insulinorequiriente === null ? '' : this.item.insulinorequiriente === 1 ? 'SI' : 'NO',
             colmd: '6',
             collg: '4'
           },
@@ -188,20 +188,20 @@ export default {
             collg: '4'
           },
           {
-            label: 'alcohol',
-            body: this.item.alcohol === null ? '' : this.item.alcohol ? 'SI' : 'NO',
+            label: 'Alcohol',
+            body: this.item.alcohol === null ? '' : this.item.alcohol === 1 ? 'SI' : 'NO',
             colmd: '6',
             collg: '4'
           },
           {
             label: 'Tabaquismo',
-            body: this.item.tabaquismo === null ? '' : this.item.tabaquismo ? 'SI' : 'NO',
+            body: this.item.tabaquismo === null ? '' : this.item.tabaquismo === 1 ? 'SI' : 'NO',
             colmd: '6',
             collg: '4'
           },
           {
             label: 'Sedentarismo',
-            body: this.item.sedentarismo === null ? '' : this.item.sedentarismo ? 'SI' : 'NO',
+            body: this.item.sedentarismo === null ? '' : this.item.sedentarismo === 1 ? 'SI' : 'NO',
             colmd: '6',
             collg: '4'
           }

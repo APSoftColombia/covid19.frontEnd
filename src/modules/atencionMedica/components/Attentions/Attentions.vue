@@ -36,6 +36,35 @@
           <template v-slot:item.paciente="{ item }">
             <persona-item :value="item"/>
           </template>
+          <template v-slot:item.domicilio="{ item }">
+            {{[item.direccion_residencia, item.municipio].filter(x => x).join(', ')}}
+          </template>
+          <template v-slot:item.tension="{ item }">
+            {{[item.ta_sistolica, item.ta_diastolica].join('/')}}
+          </template>
+          <template v-slot:item.dm="{ item }">
+            {{ [item.diabetes === null ? null : item.diabetes === 1 ? 'SI' : 'NO', item.fecha_dx_dm].filter(x => x).join(' - ') }}
+          </template>
+          <template v-slot:item.imc="{ item }">
+            <v-list-item-content class="pa-0">
+              <v-list-item-subtitle>
+                {{[item.imc, item.clasificacion_imc].filter(x => x).join(' - ')}}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle class="body-2">
+                Peso:{{ item.peso === null ? '' : `${item.peso}Kg` }} | Talla:{{ item.talla === null ? '' : `${item.talla}cm` }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </template>
+          <template v-slot:item.hta="{ item }">
+            <v-list-item-content class="pa-0">
+              <v-list-item-subtitle>
+                {{ [item.hta === null ? '' : item.hta === 1 ? 'SI' : 'NO', item.estadio_hta].filter(x => x).join(' | ') }}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle class="body-2">
+                Fecha: {{ item.fecha_dx_hta }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </template>
           <template v-slot:item.eps="{ item }">
             <v-list-item-content
                 v-if="item.eps"
@@ -144,6 +173,16 @@ export default {
           value: 'created_at'
         },
         {
+          text: 'Última Consulta',
+          sortable: false,
+          value: 'fecha_ultima_consulta'
+        },
+        {
+          text: 'Nefroprotección EPS',
+          sortable: false,
+          value: 'fecha_nefroproteccion'
+        },
+        {
           text: 'Estado',
           sortable: false,
           value: 'estado'
@@ -154,14 +193,45 @@ export default {
           value: 'paciente'
         },
         {
+          text: 'Domicilio',
+          sortable: false,
+          value: 'domicilio'
+        },
+        {
+          text: 'Tensión Arterial',
+          sortable: false,
+          value: 'tension'
+        },
+        {
+          text: 'HTA',
+          sortable: false,
+          value: 'hta'
+        },
+        {
+          text: 'DM',
+          sortable: false,
+          value: 'dm'
+        },
+        {
+          text: 'IMC',
+          sortable: false,
+          value: 'imc'
+        },
+        {
+          text: 'IPS Primaria',
+          sortable: false,
+          value: 'ips_donde_asiste'
+        },
+        {
           text: 'EPS',
           sortable: false,
-          value: 'eps'
+          value: 'eps',
+          visibleColumn: false
         },
         {
           text: 'Usuario Registra',
           sortable: false,
-          visibleColumn: true,
+          visibleColumn: false,
           value: 'user'
         },
         {

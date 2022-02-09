@@ -30,6 +30,47 @@
           </a>
         </template>
       </v-list-item-subtitle>
+      <v-list-item-action-text v-if="value.alcohol || value.tabaquismo || value.sedentarismo">
+        <c-tooltip
+            v-if="value.alcohol !== null"
+            :disabled="value.alcohol !== 1"
+            top
+            tooltip="Alcohol"
+        >
+          <v-icon
+              class="mr-2"
+              :color="value.alcohol === 1 ? 'orange' : 'grey lighten-2'"
+          >
+            mdi-glass-mug-variant
+          </v-icon>
+        </c-tooltip>
+        <c-tooltip
+            v-if="value.tabaquismo !== null"
+            :disabled="value.tabaquismo !== 1"
+            top
+            tooltip="Tabaquismo"
+        >
+          <v-icon
+              class="mr-2"
+              :color="value.tabaquismo === 1 ? 'orange' : 'grey lighten-2'"
+          >
+            mdi-smoking
+          </v-icon>
+        </c-tooltip>
+        <c-tooltip
+            v-if="value.sedentarismo !== null"
+            :disabled="value.sedentarismo !== 1"
+            top
+            tooltip="Sedentarismo"
+        >
+          <v-icon
+              class="mr-2"
+              :color="value.sedentarismo === 1 ? 'orange' : 'grey lighten-2'"
+          >
+            mdi-seat
+          </v-icon>
+        </c-tooltip>
+      </v-list-item-action-text>
     </v-list-item-content>
   </v-list-item>
 </template>

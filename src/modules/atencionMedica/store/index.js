@@ -10,13 +10,13 @@ const state = {
         estadosLoads: [
             {text: 'Exitoso', value: 'Exitoso'},
             {text: 'Fallido', value: 'Fallido'},
+        ],
+        estados: [
+            {text: 'Activo', value: 'Activo'},
+            {text: 'Inasistente', value: 'Inasistente'},
+            {text: 'Fallecido', value: 'Fallecido'},
+            {text: 'Desafiliado', value: 'Desafiliado'}
         ]
-        // estados: [
-        //     {text: 'Activo', value: 'Activo'},
-        //     {text: 'Inasistente', value: 'Inasistente'},
-        //     {text: 'Fallecido', value: 'Fallecido'},
-        //     {text: 'Desafiliado', value: 'Desafiliado'}
-        // ]
     }
 }
 
