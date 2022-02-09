@@ -43,7 +43,7 @@ export default {
   computed: {
     ...mapState('atencionMedicaRCVModule', ['complementos']),
     nombrePrestador() {
-      return (this.complementos?.prestadores?.length && this.complementos.prestadores.find(x => x.id === this.tags.prestador)?.nombre) || ''
+      return (this.complementos?.prestadores?.length && this.complementos.prestadores.find(x => x.codigohabilitacion === this.tags.prestador)?.nombre) || ''
     },
     nombreUsuario() {
       return (this.complementos?.usuarios?.length && this.complementos.usuarios.find(x => x.id === this.tags.usuario)?.name) || ''
