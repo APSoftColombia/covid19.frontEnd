@@ -144,9 +144,11 @@ export default {
       })
     },
     open(aislamiento = null, tamizaje = null) {
-      if (aislamiento) this.aislamiento = this.clone(aislamiento)
+      this.tamizaje = tamizaje
+      if (aislamiento) {
+        this.aislamiento = this.clone(aislamiento)
+      }
       else if (tamizaje) {
-        this.tamizaje = tamizaje
         this.aislamiento.tamizaje_id = this.tamizaje.id
       }
       this.dialog = true

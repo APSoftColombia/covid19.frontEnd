@@ -60,7 +60,7 @@
         </v-card>
       </v-col>
       <v-col
-          v-if="tamizaje.tipo_afiliacion === 'Régimen Contributivo'"
+          v-if="tamizaje && tamizaje.tipo_afiliacion === 'Régimen Contributivo'"
           cols="12"
       >
         <v-card outlined tile>
