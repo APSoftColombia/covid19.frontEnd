@@ -31,7 +31,46 @@
     <v-container fluid>
       <v-row dense>
         <v-col cols="12">
-          Exámenes de Laboratorios
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+              <tr>
+                <th>Registro</th>
+                <th>Examen</th>
+                <th>Fecha</th>
+                <th>Resultado</th>
+                <th>Prestador</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                  v-for="(examen, examenIndex) in item.examenes"
+                  :key="examenIndex"
+              >
+                <td>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>
+                      Creación: {{examen.created_at || ''}}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      Edición: {{examen.updated_at || ''}}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </td>
+                <td>
+                  {{ (examen.examen && examen.examen.prueba) || '' }}
+                </td>
+                <td>
+                  {{ examen.fecha || '' }}
+                </td>
+                <td>
+                  {{ examen.resultado  }} {{ (examen.examen && examen.examen.unidad) || ''  }}
+                </td>
+                <td></td>
+              </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-col>
       </v-row>
     </v-container>

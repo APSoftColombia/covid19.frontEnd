@@ -512,6 +512,13 @@ export default {
             mensaje: `El documento ${tm0.identificacion} tiene un Caso de Estudio Asignado y no se puede continuar con el registro de la ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
           }
         }
+        else if (tm0.estado === 'Pendiente') {
+          this.identificacionVerificada = -1
+          mensaje = {
+            id: 4,
+            mensaje: `El documento ${tm0.identificacion} tiene un Registro Activo que necesita atención y no es posible continuar con el nuevo registro de ${this.tipo === 'tamizaje' ? 'ERP' : this.tipo === 'fallecido' ? 'Autopsia' : ''}.`
+          }
+        }
         else {
           this.identificacionVerificada = 1
           mensaje = {
@@ -522,7 +529,7 @@ export default {
       }
 
       // AC, RE, AF
-      if (response.afiliado && response.afiliado.estado === 'AF') {
+      if (response?.afiliado?.estado === 'AF') {
         this.identificacionVerificada = -1
         mensaje = {
           id: 4,
