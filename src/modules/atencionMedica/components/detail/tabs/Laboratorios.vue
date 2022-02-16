@@ -53,7 +53,7 @@
                       Creación: {{examen.created_at || ''}}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>
-                      Edición: {{examen.updated_at || ''}}
+                      Actualización: {{examen.updated_at || ''}}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </td>
