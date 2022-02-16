@@ -31,7 +31,7 @@
     <v-container fluid>
       <v-row dense>
         <v-col cols="12">
-          <v-simple-table>
+          <v-simple-table v-if="item">
             <template v-slot:default>
               <thead>
               <tr>
