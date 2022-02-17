@@ -176,10 +176,10 @@ export default {
     aplicaFiltros() {
       let rutaTemp = this.rutaBase
       if (this.filters.models.tiposOrigen.length) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tiposOrigen]=' + this.filters.models.tiposOrigen.map(x => x).join(',')
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_origen]=' + this.filters.models.tiposOrigen.map(x => x).join(',')
       }
       if (this.filters.models.estados.length) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estados]=' + this.filters.models.estados.map(x => x).join(',')
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filters.models.estados.map(x => x).join(',')
       }
       if (this.filters.models.fecha_orden.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaOrden]=' + this.filters.models.fecha_orden.join(',')
@@ -200,7 +200,7 @@ export default {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[eps_id]=' + this.filters.models.eps_id
       }
       if (this.filters.models.modServicios.length) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[modServicios]=' + this.filters.models.modServicios.map(x => x).join(',')
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[modservicio_id]=' + this.filters.models.modServicios.map(x => x).join(',')
       }
       if (this.filters.models.regimen !== null) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_afiliacion]=' + this.filters.models.regimen
