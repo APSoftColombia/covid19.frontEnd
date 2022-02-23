@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar
-        color="blue-grey lighten-4"
+        color="blue-grey lighten-5"
         flat
     >
       <v-chip
@@ -59,9 +59,17 @@
                   flat
               >
                 <v-card-text class="pb-0">
-                  <v-row class="presentado">
+                  <v-row
+                      :class="estadosPresentacion.find(x => x.key === presentacion.estado).color"
+                      style="border-radius: 5px; !important;"
+                  >
                     <v-col cols="8">
-                      <span class="caption "><b>{{ presentacion.estado }}</b></span>
+                      <span class="caption">
+                        <b>{{ presentacion.estado }}</b>
+                        <b v-if="presentacion.estado === 'Seleccionada'  && presentacion.fecha_seleccion">:
+                          {{moment(presentacion.fecha_seleccion).format("DD/MM/YYYY [a las] HH:mm")}}
+                        </b>
+                      </span>
                       <h5>
                         {{
                           presentacion.ips_presentacion
@@ -88,21 +96,9 @@
                         <v-row align="center" justify="start">
                           <div>
                             <div class="font-weight-normal">
-                              <span class="caption"><b>Presentacion</b></span>
-                            </div>
-                            <div>
+                              <span class="caption"><b>Presentacion:</b></span>
                               {{
-                                presentacion.fecha_presentacion
-                                    ? moment(
-                                        presentacion.fecha_presentacion
-                                    ).format("DD/MM/YYYY")
-                                    : "-"
-                              }} a las {{
-                                presentacion.fecha_presentacion
-                                    ? moment(
-                                        presentacion.fecha_presentacion
-                                    ).format("HH:mm")
-                                    : "-"
+                                presentacion.fecha_presentacion ? moment(presentacion.fecha_presentacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
                               }}
                             </div>
                           </div>
@@ -110,50 +106,41 @@
                       </v-col>
                       <v-col class="pb-0" cols="12" v-if="presentacion.fecha_aceptacion">
                         <v-row align="center" justify="start">
+                          <div style="width: 100% !important;">
+                            <div class="font-weight-normal">
+                              <span class="caption"><b>IPS Acepta:</b></span>
+                              {{
+                                presentacion.fecha_aceptacion ? moment(presentacion.fecha_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
+                              }}
+                            </div>
+                          </div>
+                          <div
+                              v-if="presentacion.bitacoras && presentacion.bitacoras.length && presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado')"
+                              style="width: 100% !important;"
+                          >
+                            <p class="ma-0">{{presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado').observaciones}}</p>
+                          </div>
+                        </v-row>
+                      </v-col>
+                      <v-col class="pb-0" cols="12" v-if="presentacion.fecha_no_aceptacion">
+                        <v-row align="center" justify="start">
                           <div>
                             <div class="font-weight-normal">
-                              <span class="caption"><b>IPS Acepta</b></span>
-                            </div>
-                            <div>
+                              <span class="caption"><b>IPS No Acepta:</b></span>
                               {{
-                                presentacion.fecha_aceptacion
-                                    ? moment(
-                                        presentacion.fecha_aceptacion
-                                    ).format("DD/MM/YYYY")
-                                    : "-"
-                              }} a las {{
-                                presentacion.fecha_aceptacion
-                                    ? moment(
-                                        presentacion.fecha_aceptacion
-                                    ).format("HH:mm")
-                                    : "-"
+                                presentacion.fecha_no_aceptacion ? moment(presentacion.fecha_no_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
                               }}
                             </div>
                           </div>
                         </v-row>
                       </v-col>
-                      <v-col class="pb-0" cols="12" v-if="presentacion.fecha_seleccion">
+                      <v-col
+                          v-if="presentacion.bitacoras && presentacion.bitacoras.length"
+                          class="pb-0"
+                          cols="12"
+                      >
                         <v-row align="center" justify="start">
-                          <div>
-                            <div class="font-weight-normal">
-                              <span class="caption"><b>Se selecciona IPS</b></span>
-                            </div>
-                            <div>
-                              {{
-                                presentacion.fecha_seleccion
-                                    ? moment(
-                                        presentacion.fecha_seleccion
-                                    ).format("DD/MM/YYYY")
-                                    : "-"
-                              }} a las {{
-                                presentacion.fecha_seleccion
-                                    ? moment(
-                                        presentacion.fecha_seleccion
-                                    ).format("HH:mm")
-                                    : "-"
-                              }}
-                            </div>
-                          </div>
+                          <ver-bitacoras :presentacion="presentacion"/>
                         </v-row>
                       </v-col>
                     </v-row>
@@ -352,6 +339,7 @@ import RegistroPresentar from 'Views/centroRegulador/components/referencias/evol
 import Presentacion from 'Views/centroRegulador/components/referencias/evolucion/Presentacion'
 import Traslado from 'Views/centroRegulador/components/referencias/evolucion/Traslado'
 import TerminarProceso from 'Views/centroRegulador/components/referencias/evolucion/TerminarProceso'
+import VerBitacoras from 'Views/centroRegulador/components/referencias/evolucion/VerBitacoras'
 export default {
   name: 'Evolucion',
   props: {
@@ -364,6 +352,7 @@ export default {
     ...mapGetters(['tiposDocumentoIdentidad', 'ref_estados']),
   },
   components: {
+    VerBitacoras,
     Presentacion,
     Traslado,
     RegistroBitacora,
@@ -372,6 +361,12 @@ export default {
     TerminarProceso,
   },
   data: () => ({
+    estadosPresentacion: [
+      {key: 'Solicitud Servicio', color: 'amber lighten-3'},
+      {key: 'Servicio Aceptado', color: 'blue lighten-3'},
+      {key: 'Servicio No Aceptado', color: 'grey lighten-3'},
+      {key: 'Seleccionada', color: 'green lighten-3'},
+    ],
     loading: false,
     tab: null,
   }),
