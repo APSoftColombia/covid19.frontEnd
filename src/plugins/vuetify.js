@@ -16,6 +16,7 @@ export default new Vuetify({
 		},
 	},
 	icons: ['mdi', 'fa'],
+	iconfont: 'mdiSvg',
 	lang: {
 		locales: { es },
 		current: 'es'

@@ -37,7 +37,7 @@
                 v-bind="attrs"
                 class="mr-1"
             >
-              mdi-clock-time-four-outline
+              mdi-clock-outline
             </v-icon>
           </template>
           <v-time-picker

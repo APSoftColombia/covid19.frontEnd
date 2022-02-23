@@ -40,7 +40,9 @@ const Referencia = {
   barrio_id: null,
   email: null,
   edad: null,
-  regimen_especial: null
+  regimen_especial: null,
+  medio_solicitud: null,
+  codigo_especialidad: null
 }
 
 export default Referencia

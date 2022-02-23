@@ -49,6 +49,15 @@
                           disabled
                       />
                     </v-col>
+                    <v-col cols="12">
+                      <c-select-complete
+                          v-model="item.medio_solicitud"
+                          label="Medio de Solicitud"
+                          name="Medio de solicitud"
+                          :items="ref_medios || []"
+                          rules="required"
+                      />
+                    </v-col>
                     <v-col cols="12" sm="6">
                       <c-date-manual
                           v-model="item.fecha_orden"
@@ -105,7 +114,7 @@
                                   </v-list-item-subtitle>
                                 </v-list-item-content>
                               </v-list-item>
-                              <v-divider class="ma-0"></v-divider>
+                              <v-divider class="ma-0"/>
                             </div>
                           </template>
                         </v-select>
@@ -161,6 +170,26 @@
                           v-model="item.codigo_cie10_ingreso"
                           rules="required"
                       />
+                    </v-col>
+                    <v-col cols="12">
+                      <c-select-complete
+                          v-model="item.codigo_especialidad"
+                          label="Especialidad"
+                          name="Especialidad"
+                          rules="required"
+                          :items="ref_especialidades || []"
+                          item-text="serv_nombre"
+                          item-value="serv_codigo"
+                      >
+                        <template
+                            v-slot:item="{ item }"
+                        >
+                          <v-list-item-content>
+                            <v-list-item-title>{{item.serv_nombre}}</v-list-item-title>
+                            <v-list-item-subtitle>{{item.tipo_servicio}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </template>
+                      </c-select-complete>
                     </v-col>
                     <v-col cols="12">
                       <buscador-cups
@@ -282,6 +311,8 @@ export default {
     },
     ...mapGetters([
       'ref_modalidadesServicio',
+      'ref_medios',
+      'ref_especialidades',
       'departamentos'
     ])
   },

@@ -201,6 +201,9 @@ Vue.mixin({
 		}
 	},
 	methods: {
+		filterRows (filters, name) {
+			store.commit('SET_FILTERS_ROWS', { filters: filters, name: name})
+		},
 		calculaEdad (fechaNacimiento, inHours = false) {
 			if (fechaNacimiento && this.moment(fechaNacimiento).isValid()) {
 				let a = this.moment()

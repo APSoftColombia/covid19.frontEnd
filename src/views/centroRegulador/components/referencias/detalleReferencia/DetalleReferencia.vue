@@ -7,173 +7,196 @@
       persistent
   >
     <v-card>
-      <template>
-        <v-toolbar dark color="primary">
-          <v-icon left>fas fa-file-medical</v-icon>
-          <v-toolbar-title v-if="item">
-            {{ item.id ? `Referencia No. ${item.id}` : 'Nueva Referencia' }}
-            <v-list-item-subtitle>
-              {{ item.estado }}
-            </v-list-item-subtitle>
-          </v-toolbar-title>
-          <v-spacer/>
-          <v-btn icon dark @click="close">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-container fluid>
-          <v-row v-if="item" no-gutters>
-              <v-col lg="10" md="12" sm="12" class="mx-auto">
-                  <v-row dense>
-                      <v-col cols="12" md="4">
-                        <v-card>
-                          <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Paciente</v-list-item-subtitle>
-                          <v-list-item class="py-0">
-                            <v-list-item-content class="pb-0">
-                              <v-list-item-title class="font-weight-bold grey--text">
-                                {{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}
-                              </v-list-item-title>
-                              <v-list-item-subtitle>
-                                {{ [item.tipo_id ? item.tipo_id.tipo : '', item.identificacion].filter(x => x).join(' ') }}
-                              </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="item.fecha_nacimiento">
-                                {{ calculaEdad(item.fecha_nacimiento).stringDate }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30 mt-3" v-if="item.celular">
-                            <v-icon small class="mr-1">mdi-cellphone</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ item.celular }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30" v-if="item.email">
-                            <v-icon small class="mr-1">mdi-email</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ item.email }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30">
-                            <v-icon small class="mr-1">fas fa-map-signs</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ [item.direccion, item.municipio ? item.municipio.nombre : null, item.municipio && item.municipio.departamento ? item.municipio.departamento.nombre : null].filter(x => x).join(', ') }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30 mt-2" v-if="item.eps">
-                            <v-icon small class="mr-1">fas fa-clinic-medical</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ item.eps.nombre }}
-                              </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="item.tipo_afiliacion" class="body-2">
-                                {{ item.tipo_afiliacion }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-divider></v-divider>
-                          <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Remite</v-list-item-subtitle>
-                          <v-list-item class="py-0" v-if="item.prestador_origen">
-                            <v-list-item-content>
-                              <v-list-item-title class="font-weight-bold grey--text">
-                                {{ item.prestador_origen.nombre }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.telefono">
-                            <v-icon small class="mr-1">mdi-cellphone</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ item.prestador_origen.telefono }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.direccion">
-                            <v-icon small class="mr-1">fas fa-map-signs</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ [item.prestador_origen.direccion, item.prestador_origen.nompio, item.prestador_origen.nomdepto].filter(x => x).join(', ') }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.email">
-                            <v-icon small class="mr-1">mdi-email</v-icon>
-                            <v-list-item-content class="pa-0">
-                              <v-list-item-subtitle class="body-2">
-                                {{ item.prestador_origen.email }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-divider></v-divider>
-                          <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Datos de la Remisión</v-list-item-subtitle>
-                          <v-list-item class="py-0" v-if="item.cie10_ingreso">
-                            <v-list-item-content>
-                              <v-list-item-subtitle class="subtitle-2">
-                                Fecha Orden Médica
-                              </v-list-item-subtitle>
-                              <v-list-item-title>
-                                {{ item.fecha_orden + ' a las ' + item.hora_orden }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0" v-if="item.cie10_ingreso">
-                            <v-list-item-content>
-                              <v-list-item-subtitle class="subtitle-2">
-                                Fecha Recepción de la Solicitud
-                              </v-list-item-subtitle>
-                              <v-list-item-title>
-                                {{ item.fecha_solicitud + ' a las ' + item.hora_solicitud }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0" v-if="item.cie10_ingreso">
-                            <v-list-item-content>
-                              <v-list-item-subtitle class="subtitle-2">
-                                Diagnóstico
-                              </v-list-item-subtitle>
-                              <v-list-item-title>
-                                <span class="font-weight-bold grey--text">{{ item.cie10_ingreso.codigo }}</span> - <span class="body-2">{{ item.cie10_ingreso.descrip }}</span>
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="py-0">
-                            <v-list-item-content>
-                              <v-list-item-subtitle class="subtitle-2">
-                                Observaciones
-                              </v-list-item-subtitle>
-                              <v-list-item-title class="body-2">
-                                {{ item.observaciones }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <div v-if="item.orden_medica && item.orden_medica.id">
-                              <v-btn :disabled="loadingButton" :loading="loadingButton" text class="grey--text" @click="descargarArchivo(item.orden_medica.id, 1)">
-                                  <v-icon left small>mdi-paperclip</v-icon>
-                                  Orden Médica
-                              </v-btn>
-                          </div>
-                          <v-btn :disabled="loadingButton1" :loading="loadingButton1" text class="grey--text mb-4" @click="descargarArchivo(item.historia_clinica.id, 2)" v-if="item.historia_clinica && item.historia_clinica.id">
-                              <v-icon left small>mdi-paperclip</v-icon>
-                              Evolución Médica
-                          </v-btn>
-                        </v-card>
-                      </v-col>
-                      <v-col cols="12" md="8">
-                        <evolucion
-                            :referencia="item"
-                            @guardado="val => actualizarItem(val)"
-                        />
-                      </v-col>
-                  </v-row>
-              </v-col>
-          </v-row>
-        </v-container>
-      </template>
+      <v-toolbar dark color="primary">
+        <v-icon left>fas fa-file-medical</v-icon>
+        <v-toolbar-title v-if="item">
+          {{ item.id ? `Referencia No. ${item.id}` : 'Nueva Referencia' }}
+          <v-list-item-subtitle>
+            {{ item.estado }}
+          </v-list-item-subtitle>
+        </v-toolbar-title>
+        <v-spacer/>
+        <v-btn icon dark @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-container v-if="item">
+        <v-row dense>
+          <v-col cols="12" md="4">
+            <v-card>
+              <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Paciente</v-list-item-subtitle>
+              <v-list-item class="py-0">
+                <v-list-item-content class="pb-0">
+                  <v-list-item-title class="font-weight-bold grey--text">
+                    {{ [item.nombre1, item.nombre2, item.apellido1, item.apellido2].filter(x => x).join(' ') }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{ [item.tipo_id ? item.tipo_id.tipo : '', item.identificacion].filter(x => x).join(' ') }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="item.fecha_nacimiento">
+                    {{ calculaEdad(item.fecha_nacimiento).stringDate }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30 mt-3" v-if="item.celular">
+                <v-icon small class="mr-1">mdi-cellphone</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ item.celular }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30" v-if="item.email">
+                <v-icon small class="mr-1">mdi-email</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ item.email }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30">
+                <v-icon small class="mr-1">fas fa-map-signs</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ [item.direccion, item.municipio ? item.municipio.nombre : null, item.municipio && item.municipio.departamento ? item.municipio.departamento.nombre : null].filter(x => x).join(', ') }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30 mt-2" v-if="item.eps">
+                <v-icon small class="mr-1">fas fa-clinic-medical</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ item.eps.nombre }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="item.tipo_afiliacion" class="body-2">
+                    {{ item.tipo_afiliacion }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Remite</v-list-item-subtitle>
+              <v-list-item class="py-0" v-if="item.prestador_origen">
+                <v-list-item-content>
+                  <v-list-item-title class="font-weight-bold grey--text">
+                    {{ item.prestador_origen.nombre }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.telefono">
+                <v-icon small class="mr-1">mdi-cellphone</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ item.prestador_origen.telefono }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.direccion">
+                <v-icon small class="mr-1">fas fa-map-signs</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ [item.prestador_origen.direccion, item.prestador_origen.nompio, item.prestador_origen.nomdepto].filter(x => x).join(', ') }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0 mh-30" v-if="item.prestador_origen.email">
+                <v-icon small class="mr-1">mdi-email</v-icon>
+                <v-list-item-content class="pa-0">
+                  <v-list-item-subtitle class="body-2">
+                    {{ item.prestador_origen.email }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider/>
+              <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Datos de la Remisión</v-list-item-subtitle>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Fecha Orden Médica
+                  </v-list-item-subtitle>
+                  <v-list-item-title>
+                    {{ item.fecha_orden + ' a las ' + item.hora_orden }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Recepción de la Solicitud
+                  </v-list-item-subtitle>
+                  <v-list-item-title>
+                    {{ item.fecha_solicitud + ' a las ' + item.hora_solicitud }}
+                  </v-list-item-title>
+                  <v-list-item-title v-if="item.medio_solicitud">
+                    Por: {{ item.medio_solicitud }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Diagnóstico
+                  </v-list-item-subtitle>
+                  <v-list-item-title v-if="item.cie10_ingreso">
+                    <span class="font-weight-bold grey--text">{{ item.cie10_ingreso.codigo }}</span> - <span class="body-2">{{ item.cie10_ingreso.descrip }}</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Especialidad
+                  </v-list-item-subtitle>
+                  <v-list-item-title v-if="item.especialidad">
+                    <span class="font-weight-bold grey--text">{{ item.especialidad.serv_codigo }}</span> - <span class="body-2">{{ item.especialidad.serv_nombre }} | {{ item.especialidad.tipo_servicio }}</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Procedimiento
+                  </v-list-item-subtitle>
+                  <v-list-item-title v-if="item.cup">
+                    <span class="font-weight-bold grey--text">{{ item.cup.codigo }}</span> - <span class="body-2">{{ item.cup.descrip }}</span>
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item class="py-0">
+                <v-list-item-content>
+                  <v-list-item-subtitle class="subtitle-2">
+                    Observaciones
+                  </v-list-item-subtitle>
+                  <v-list-item-title class="body-2">
+                    {{ item.observaciones }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <div v-if="item.orden_medica && item.orden_medica.id">
+                <v-btn :disabled="loadingButton" :loading="loadingButton" text class="grey--text" @click="descargarArchivo(item.orden_medica.id, 1)">
+                  <v-icon left small>mdi-paperclip</v-icon>
+                  Orden Médica
+                </v-btn>
+              </div>
+              <v-btn
+                  v-if="item.historia_clinica && item.historia_clinica.id"
+                  :disabled="loadingButton1"
+                  :loading="loadingButton1"
+                  text class="grey--text mb-4"
+                  @click="descargarArchivo(item.historia_clinica.id, 2)"
+              >
+                <v-icon left small>mdi-paperclip</v-icon>
+                Evolución Médica
+              </v-btn>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="8">
+            <evolucion
+                :referencia="item"
+                @guardado="val => actualizarItem(val)"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
       <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>

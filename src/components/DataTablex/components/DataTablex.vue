@@ -93,6 +93,7 @@
                 v-if="value.advanceFilters"
                 v-model="dialog"
                 persistent max-width="1020px"
+                eager
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -191,7 +192,8 @@
         <span class="title grey--text text--darken-1 text-center caption pa-1">
           Registros del {{ pagination.from }} al {{ pagination.to }} de {{ pagination.total }} totales
         </span>
-        <v-pagination v-model="pagination.current_page" :total-visible="7" :length="pagination.last_page" @input="reloadPage"/>
+        <v-pagination v-model="pagination.current_page" :total-visible="7" :length="pagination.last_page"
+                      @input="reloadPage"/>
       </div>
     </template>
   </div>
@@ -217,9 +219,14 @@ export default {
     itemsLoading: {
       type: Boolean,
       default: false
-    }
+    },
+    initialFilter: {
+      type: Boolean,
+      default: false
+    },
   },
   data: () => ({
+    numberPetition: 0,
     tagsfilters: [],
     dialog: false,
     loadingFilter: false,
@@ -346,6 +353,12 @@ export default {
     }
     localStorage.setItem((this.stateItem + 'Version'), this.version)
   },
+  // mounted() {
+  //   setTimeout(() => {
+  //     if (this.initialFilter) {
+  //     }
+  //   }, 1000)
+  // },
   methods: {
     formarSort: lodash.debounce(function () {
       this.stringSort = ''
@@ -385,34 +398,42 @@ export default {
     },
     async reloadPage() {
       if (this.activePetition) {
-        this.activePetition = false
-        this.loading = true
-        this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + (this.searchable ? ('&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : ''))
-        // this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
-            .then(response => {
-              this.filtrado = true
-              response.data.per_page = this.value.optionsPerPage.find(page => page.value === parseInt(response.data.per_page)) ? parseInt(response.data.per_page) : -1
-              this.pagination.last_page = response.data.last_page
-              this.pagination.from = response.data.from
-              this.pagination.to = response.data.to
-              this.pagination.total = response.data.total
-              this.pagination.next = response.data.next_page_url
-              this.pagination.prev = response.data.prev_page_url
-              this.tagsfilters = this.$slots && this.$slots.filters && this.$slots.filters[0] && this.$slots.filters[0].componentInstance ? this.$slots.filters[0].componentInstance.filters.models : []
-              if(this.itemsLoading) response.data.data.map(x => x.loading = false)
-              this.value.items = Object.freeze(response.data.data)
-              this.loading = false
-              this.activePetition = true
-            })
-            .catch(e => {
-              this.loading = false
-              this.activePetition = true
-              this.$store.commit('snackbar', {
-                color: 'error',
-                message: `Error al hacer la búsqueda de registros.`,
-                error: e
+        if (this.numberPetition === 0 && this.initialFilter) {
+          setTimeout(() => {
+            this.$emit('applyFilters')
+            this.numberPetition++
+          }, 500)
+        } else {
+          this.numberPetition++
+          this.activePetition = false
+          this.loading = true
+          this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + (this.searchable ? ('&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : ''))
+              // this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
+              .then(response => {
+                this.filtrado = true
+                response.data.per_page = this.value.optionsPerPage.find(page => page.value === parseInt(response.data.per_page)) ? parseInt(response.data.per_page) : -1
+                this.pagination.last_page = response.data.last_page
+                this.pagination.from = response.data.from
+                this.pagination.to = response.data.to
+                this.pagination.total = response.data.total
+                this.pagination.next = response.data.next_page_url
+                this.pagination.prev = response.data.prev_page_url
+                this.tagsfilters = this.$slots && this.$slots.filters && this.$slots.filters[0] && this.$slots.filters[0].componentInstance ? this.$slots.filters[0].componentInstance.filters.models : []
+                if (this.itemsLoading) response.data.data.map(x => x.loading = false)
+                this.value.items = Object.freeze(response.data.data)
+                this.loading = false
+                this.activePetition = true
               })
-            })
+              .catch(e => {
+                this.loading = false
+                this.activePetition = true
+                this.$store.commit('snackbar', {
+                  color: 'error',
+                  message: `Error al hacer la búsqueda de registros.`,
+                  error: e
+                })
+              })
+        }
       }
     }
   }
@@ -420,12 +441,13 @@ export default {
 </script>
 
 <style>
-.optionsButtons>header {
+.optionsButtons > header {
   position: absolute !important;
   right: 0px !important;
   height: 0px !important;
 }
-.optionsButtons>header .v-toolbar__content, .v-toolbar__extension {
+
+.optionsButtons > header .v-toolbar__content, .v-toolbar__extension {
   padding: 0px !important;
 }
 

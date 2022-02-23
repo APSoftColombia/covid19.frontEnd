@@ -26,6 +26,7 @@
               v-model="dataTable"
               items-loading
               @applyFilters="$refs && $refs.filtros && $refs.filtros.aplicaFiltros()"
+              initial-filter
           >
             <filtros
                 slot="filters"
@@ -64,6 +65,16 @@
                       {{ `Cód: ${item.eps.codigo}` }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
+                </template>
+                <template v-slot:item.estado="{ item }">
+                  <v-chip
+                      label
+                      class="font-weight-bold"
+                      :color="ref_estados && ref_estados.find(x => x.key === item.estado) && ref_estados.find(x => x.key === item.estado).color"
+                      dark
+                  >
+                    {{ item.estado }}
+                  </v-chip>
                 </template>
                 <template v-slot:item.ipsOrigen="{ item }">
                   <v-list-item-content
@@ -229,6 +240,7 @@ import DetalleReferencia from 'Views/centroRegulador/components/referencias/deta
 import RegistroReferencia from 'Views/centroRegulador/components/referencias/RegistroReferencia'
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
 import TagsFilters from 'Views/centroRegulador/components/referencias/TagsFilters'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Referencias',
   components: {
@@ -293,6 +305,7 @@ export default {
     seleccionado: null
   }),
   computed: {
+    ...mapGetters(['ref_estados']),
     permisos () {
       return this.$store.getters.getPermissionModule('centroRegulador')
     }

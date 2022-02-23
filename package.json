@@ -75,6 +75,7 @@
     "@babel/preset-env": "^7.9.5",
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@mdi/font": "^4.9.95",
+    "@mdi/js": "^6.5.95",
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-service": "^4.3.1",

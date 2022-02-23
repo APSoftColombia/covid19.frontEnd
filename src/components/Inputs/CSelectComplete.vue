@@ -26,6 +26,16 @@
             <template v-if="multiple" v-slot:selection="{ item, index }">
               <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRef && itemText ? $refs.theRef.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
             </template>
+          <template
+              v-if="$scopedSlots && $scopedSlots.item"
+              v-slot:item="{ on, item }"
+          >
+            <slot
+                name="item"
+                v-on="on"
+                v-bind="{ item: item }"
+            />
+          </template>
         </v-select>
         <v-autocomplete
                 v-else
@@ -53,6 +63,16 @@
             <template v-if="multiple" v-slot:selection="{ item, index }">
                 <span v-if="index === 0" class="text-truncate" style="width: 99% !important;">{{ $refs && $refs.theRefS && itemText ? $refs.theRefS.selectedItems.map(x => x[itemText]).join(', ') : value.join(', ') }}</span>
             </template>
+          <template
+              v-if="$scopedSlots && $scopedSlots.item"
+              v-slot:item="{ on, item }"
+          >
+            <slot
+                name="item"
+                v-on="on"
+                v-bind="{ item: item }"
+            />
+          </template>
         </v-autocomplete>
     </ValidationProvider>
 </template>

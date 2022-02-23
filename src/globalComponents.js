@@ -37,6 +37,7 @@ import ElementoCalculado from 'Views/formularios/components/ElementoCalculado'
 // DataTable component
 import DataTable from 'Components/DataTable/DataTable'
 import DataTablex from 'Components/DataTablex/components/DataTablex'
+import CRows from 'Components/cDataRows/components/CRows'
 
 // Inputs components
 import CDateRange from 'Components/Inputs/CDateRange'
@@ -64,6 +65,8 @@ import CDialog from 'Components/Inputs/CDialog'
 import CTooltip from 'Components/Inputs/CTooltip'
 import CChipFilters from 'Components/Inputs/CChipFilters'
 import CFile from 'Components/Inputs/CFile'
+import OptionsButtons from 'Components/Inputs/OptionsButtons'
+import CCard from 'Components/Inputs/CCard'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -93,6 +96,7 @@ const GlobalComponents = {
 
       Vue.component('DataTable', DataTable)
       Vue.component('DataTablex', DataTablex)
+      Vue.component('CRows', CRows)
 
       Vue.component('CDate', CDate)
       Vue.component('CDateManual', CDateManual)
@@ -120,6 +124,8 @@ const GlobalComponents = {
       Vue.component('CTooltip', CTooltip)
       Vue.component('CChipFilters', CChipFilters)
       Vue.component('CFile', CFile)
+      Vue.component('OptionsButtons', OptionsButtons)
+      Vue.component('CCard', CCard)
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)

@@ -70,6 +70,13 @@
         subtitle="Fecha de Ultima Gestión"
         @close="closeTag('fechaGestion', 'gestion')"
     />
+    <c-chip-filters
+        v-for="(tag, keytag) in tags.medios"
+        :key="`tag${keytag}`"
+        :text="tag"
+        subtitle="Medio de solicitud"
+        @close="closeTag(keytag, 'medios')"
+    />
   </v-col>
 </template>
 
@@ -121,6 +128,9 @@ export default {
       }
       if (type === 'gestion') {
           this.tags.fecha_ultima_gestion = []
+      }
+      if(type === 'medios'){
+        this.tags.medios.splice(keytag, 1)
       }
 
       this.$emit('change')
