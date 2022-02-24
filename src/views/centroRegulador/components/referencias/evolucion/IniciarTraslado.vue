@@ -50,7 +50,7 @@
             </v-col>
             <v-col cols="12" sm="6">
               <c-time
-                  v-model="item.hora"
+                  v-model="item.hora_traslado"
                   label="Hora"
                   name="Hora"
                   rules="required"
@@ -119,6 +119,7 @@ export default {
           fecha_solicitud: null,
           codigo_prestador_traslado: null,
           fecha_traslado: null,
+          hora_traslado: null,
           fecha_llegada: null,
           fecha_fallido: null,
           contacto: null,
@@ -139,7 +140,7 @@ export default {
             this.item = this.clone(this.makeItem)
             this.item.referencia_id = this.referencia.id
             this.item.fecha_traslado = this.moment().format('YYYY-MM-DD');
-            this.item.hora = this.moment().format('HH:mm');
+            this.item.hora_traslado = this.moment().format('HH:mm');
           } else {
             this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
             this.close()
@@ -156,7 +157,7 @@ export default {
             if (result) {
               this.loading = true
               let itemCopia = await this.clone(this.item)
-              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              itemCopia.fecha_traslado = `${itemCopia.fecha_traslado} ${itemCopia.hora_traslado}`
               this.axios.post(`iniciar-traslado/${this.id}`, itemCopia)
                   .then(() => {
                     this.$emit('guardado', itemCopia.referencia_id)

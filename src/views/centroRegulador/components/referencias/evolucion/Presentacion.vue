@@ -22,7 +22,7 @@ const SeleccionarIPS = () => import('Views/centroRegulador/components/referencia
 const DeseleccionarIPS = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarIps')
 const SeleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/SeleccionarTransporte')
 const DeseleccionarTransporte = () => import('Views/centroRegulador/components/referencias/evolucion/DeseleccionarTransporte')
-import RegistroBitacora from 'Views/centroRegulador/components/referencias/evolucion/RegistroBitacora'
+const RegistroBitacora = () => import('Views/centroRegulador/components/referencias/evolucion/RegistroBitacora')
 export default {
   name: 'Presentacion',
   props: {

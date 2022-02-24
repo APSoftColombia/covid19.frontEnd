@@ -25,7 +25,7 @@
       <v-toolbar dark :color="accion.color">
         <v-icon left>{{ accion.icon }}</v-icon>
         <v-toolbar-title>
-          {{ accion.accion }} Presentación
+          {{ accion.accion }}
         </v-toolbar-title>
         <v-spacer/>
         <v-btn icon dark @click="close">
@@ -50,7 +50,7 @@
             </v-col>
             <v-col cols="12" sm="6">
               <c-time
-                  v-model="item.hora"
+                  v-model="item.hora_llegada"
                   label="Hora"
                   name="Hora"
                   rules="required"
@@ -120,6 +120,7 @@ export default {
           codigo_prestador_traslado: null,
           fecha_traslado: null,
           fecha_llegada: null,
+          hora_llegada: null,
           fecha_fallido: null,
           contacto: null,
           codigo_prestador_destino: null
@@ -139,7 +140,7 @@ export default {
             this.item = this.clone(this.makeItem)
             this.item.referencia_id = this.referencia.id
             this.item.fecha_llegada = this.moment().format('YYYY-MM-DD');
-            this.item.hora = this.moment().format('HH:mm');
+            this.item.hora_llegada = this.moment().format('HH:mm');
           } else {
             this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
             this.close()
@@ -156,7 +157,7 @@ export default {
             if (result) {
               this.loading = true
               let itemCopia = await this.clone(this.item)
-              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              itemCopia.fecha_llegada = `${itemCopia.fecha_llegada} ${itemCopia.hora_llegada}`
               this.axios.post(`finalizar-traslado/${this.id}`, itemCopia)
                   .then(() => {
                     this.$emit('guardado', itemCopia.referencia_id)

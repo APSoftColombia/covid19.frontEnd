@@ -15,8 +15,8 @@
             :color="accion.color"
             depressed
             fab
-            :small="!presentacion"
-            :x-small="!!presentacion"
+            :small="!presentacion && !traslado"
+            :x-small="!!presentacion || !!traslado"
         >
           <v-icon class="white--text">{{ accion.icon }}</v-icon>
         </v-btn>
@@ -104,6 +104,10 @@ export default {
     presentacion: {
       type: Object,
       default: null
+    },
+    traslado: {
+      type: Object,
+      default: null
     }
   },
   data: () => ({
@@ -138,6 +142,7 @@ export default {
         this.item.hora = this.moment().format('HH:mm')
         this.item.referencia_id = this.referencia.id
         if(this.presentacion) this.item.presentacion_id = this.presentacion.id
+        if(this.traslado) this.item.traslado_id = this.traslado.id
       } else {
         this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
         this.close()

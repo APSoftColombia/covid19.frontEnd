@@ -15,7 +15,7 @@
             :color="accion.color"
             depressed
             fab
-            x-small
+            small
         >
           <v-icon class="white--text">{{ accion.icon }}</v-icon>
         </v-btn>
@@ -178,7 +178,7 @@ export default {
             if (result) {
               this.loading = true
               let itemCopia = await this.clone(this.item)
-              itemCopia.fecha = `${itemCopia.fecha} ${itemCopia.hora}`
+              itemCopia.fecha_egreso = `${itemCopia.fecha_egreso} ${itemCopia.hora}`
               this.axios.post(`terminar-proceso/${itemCopia.referencia_id}`, itemCopia).then(() => {
                 this.$emit('guardado', itemCopia.referencia_id)
                 this.$store.commit('snackbar', {color: 'success', message: `El registro se guardo correctamente.`})

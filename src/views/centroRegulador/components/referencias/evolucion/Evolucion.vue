@@ -140,7 +140,7 @@
                           cols="12"
                       >
                         <v-row align="center" justify="start">
-                          <ver-bitacoras :presentacion="presentacion"/>
+                          <ver-bitacoras :item="presentacion"/>
                         </v-row>
                       </v-col>
                     </v-row>
@@ -166,9 +166,13 @@
                   flat
               >
                 <v-card-text class="pb-0">
-                  <v-row class="presentado">
+                  <v-row
+                      :class="estadosTraslado.find(x => x.key === traslado.estado).color"
+                      class="lighten-3"
+                      style="border-radius: 5px; !important;"
+                  >
                     <v-col cols="8">
-                      <span>Transportadora:</span>
+                      <span class="font-weight-bold">{{traslado.estado}}</span>
                       <h5 class="mb-0">
                         {{
                           traslado.ips_traslado
@@ -213,6 +217,15 @@
                           </div>
                         </v-row>
                       </v-col>
+                      <v-col
+                          v-if="traslado.bitacoras && traslado.bitacoras.length"
+                          class="pb-0"
+                          cols="12"
+                      >
+                        <v-row align="center" justify="start">
+                          <ver-bitacoras :item="traslado"/>
+                        </v-row>
+                      </v-col>
                       <v-col class="pb-0" cols="12">
                         <v-row align="center" justify="start">
                           <div>
@@ -222,6 +235,50 @@
                             <div>
                               {{
                                 traslado.ips_destino ? traslado.ips_destino.nombre : '-'
+                              }}
+                            </div>
+                          </div>
+                        </v-row>
+                      </v-col>
+                      <v-col class="pb-0" cols="12" v-if="traslado.fecha_llegada">
+                        <v-row align="center" justify="start">
+                          <div>
+                            <div class="font-weight-normal">
+                              <span class="caption"><b>Llegada:</b></span>
+                              {{moment(traslado.fecha_llegada).format('DD/MM/YYYY [a las] HH:mm')}}
+                            </div>
+                          </div>
+                        </v-row>
+                      </v-col>
+                      <v-col class="pb-0" cols="12" v-if="traslado.fecha_fallido">
+                        <v-row align="center" justify="start">
+                          <div>
+                            <div class="font-weight-normal">
+                              <span class="caption"><b>Falla del traslado:</b></span>
+                              {{moment(traslado.fecha_fallido).format('DD/MM/YYYY [a las] HH:mm')}}
+                            </div>
+                          </div>
+                        </v-row>
+                      </v-col>
+                      <v-col class="pb-0" cols="12" v-if="traslado.fecha_traslado">
+                        <v-row align="center" justify="start">
+                          <div>
+                            <div class="font-weight-normal">
+                              <span class="caption"><b>Salida:</b></span>
+                              {{moment(traslado.fecha_traslado).format('DD/MM/YYYY [a las] HH:mm')}}
+                            </div>
+                          </div>
+                        </v-row>
+                      </v-col>
+                      <v-col class="pb-0" cols="12">
+                        <v-row align="center" justify="start">
+                          <div>
+                            <div class="font-weight-normal">
+                              <span class="caption">
+                                <b>Solicitado:</b>
+                              </span>
+                              {{
+                                traslado.fecha_solicitud ? moment(traslado.fecha_solicitud).format('DD/MM/YYYY [a las] HH:mm') : '-'
                               }}
                             </div>
                           </div>
@@ -366,6 +423,13 @@ export default {
       {key: 'Servicio Aceptado', color: 'blue lighten-3'},
       {key: 'Servicio No Aceptado', color: 'grey lighten-3'},
       {key: 'Seleccionada', color: 'green lighten-3'},
+    ],
+    estadosTraslado: [
+      {key: 'Solicitud Traslado', color: 'amber'},
+      {key: 'Traslado Iniciado', color: 'blue'},
+      {key: 'Traslado Cancelado', color: 'grey'},
+      {key: 'Traslado Completado', color: 'green'},
+      {key: 'Traslado Fallido', color: 'red'},
     ],
     loading: false,
     tab: null,

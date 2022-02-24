@@ -32,7 +32,7 @@
       <v-card-text style="height: 100%;">
         <v-list>
           <template
-              v-for="(bitacora, indexBitacora) in presentacion.bitacoras"
+              v-for="(bitacora, indexBitacora) in item.bitacoras"
           >
             <v-card
                 :key="`bitacora${indexBitacora}`"
@@ -69,7 +69,7 @@
 export default {
   name: 'VerBitacoras',
   props: {
-    presentacion: {
+    item: {
       type: Object,
       default: null
     }
@@ -79,7 +79,7 @@ export default {
   }),
   computed: {
     nombreIPS () {
-      return this.presentacion?.ips_presentacion?.nombre_sede || ''
+      return this.item?.ips_presentacion?.nombre_sede || this.item?.ips_traslado?.nombre_sede || ''
     }
   },
   methods: {
