@@ -56,6 +56,7 @@ const getters = {
         if (getters.getPermission('estudiosLabSP-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 70))
         // CENTRO REGULADOR
         if (getters.getPermission('centroRegulador-referenciasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 61))
+        if (getters.getPermission('centroRegulador-hemocomponentesIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 72))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))

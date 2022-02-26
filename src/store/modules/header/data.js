@@ -1,3 +1,5 @@
+import { mdiBloodBag } from '@mdi/js'
+
 // char data
 export const itemsMenu = [
     {
@@ -416,5 +418,14 @@ export const itemsMenu = [
         color: 'teal darken-2',
         routeName: 'AtencionMedicaRCV',
         typeRoute: 'aps'
+    },
+    {
+        id: 72,
+        title: 'Hemocomponentes',
+        icon: mdiBloodBag,
+        iconSize: '30',
+        color: 'red',
+        routeName: 'Hemocomponentes',
+        typeRoute: 'centroRegulador'
     }
 ]

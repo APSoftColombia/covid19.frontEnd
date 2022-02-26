@@ -278,9 +278,6 @@ export default {
       immediate: false
     }
   },
-  created() {
-    this.axios.get('hemocomponentes')
-  },
   methods: {
     asignar() {
       if(this.referencia) {

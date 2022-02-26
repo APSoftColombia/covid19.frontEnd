@@ -5,7 +5,13 @@
                 elevate-on-scroll
         >
             <v-avatar class="mr-2" :class="$route.meta.avatar.personalIcon && $route.meta.avatar.personalIcon === 'Autopsias' ?'pa-2' : ''" size="40" :color="$route.meta.avatar.color">
-                <v-icon class="white--text" v-if="!$route.meta.avatar.personalIcon">{{$route.meta.avatar.icon}}</v-icon>
+                <v-icon
+                    v-if="!$route.meta.avatar.personalIcon"
+                    class="white--text"
+                    :size="$route.meta.avatar.iconSize || ''"
+                >
+                  {{$route.meta.avatar.icon}}
+                </v-icon>
                 <template v-else>
                     <icon-base
                             v-if="$route.meta.avatar.personalIcon === 'Autopsias'"
