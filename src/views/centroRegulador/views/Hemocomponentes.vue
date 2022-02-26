@@ -2,10 +2,11 @@
   <v-container fluid>
     <page-title-bar title="Hemocomponentes"/>
     <v-row>
-      <v-col cols="12" md="6" class="mx-auto">
+      <v-col cols="12" sm="10" md="6" lg="5" xl="4" class="mx-auto">
         <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
+            class="searchRows"
             label="Buscar"
             single-line
             hide-details
@@ -13,7 +14,18 @@
             filled
             outlined
             rounded
-        />
+        >
+          <template v-slot:prepend>
+            <v-btn
+                icon
+                large
+                color="primary"
+                @click="getItems"
+            >
+              <v-icon large>mdi-sync</v-icon>
+            </v-btn>
+          </template>
+        </v-text-field>
       </v-col>
       <v-col cols="12">
         <v-card>
@@ -21,6 +33,7 @@
               id="table-hemocomponentes"
               :headers="headers"
               :items="items"
+              :loading="loading"
               hide-default-footer
               disable-pagination
               dense
@@ -67,6 +80,7 @@ import lodash from 'lodash'
 export default {
   name: 'Hemocomponentes',
   data: () => ({
+    loading: false,
     search: '',
     headers: [
       {
@@ -206,6 +220,7 @@ export default {
   },
   methods: {
     getItems() {
+      this.loading = true
       this.axios.get('hemocomponentes')
           .then(response => {
             this.originalItems = response.data
@@ -217,12 +232,16 @@ export default {
               error: error
             })
           })
+      .finally(() => this.loading = false)
     }
   }
 }
 </script>
 
 <style>
+.searchRows .v-input__prepend-outer {
+  margin-top: 6px !important;
+}
 #table-hemocomponentes td, th {
   padding-left: 12px !important;
   padding-right: 12px !important;
