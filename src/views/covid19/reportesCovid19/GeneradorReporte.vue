@@ -73,7 +73,13 @@ export default {
   data: () => ({
     dialog: false,
     loading: false,
-    reporte: null
+    reporte: null,
+    mimetypes: {
+      xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      xls: 'application/vnd.ms-excel',
+      csv: 'text/csv',
+      txt: 'text/plain'
+    }
   }),
   methods: {
     descargar() {
@@ -107,7 +113,8 @@ export default {
                 message: `El reporte no contiene registros para exportar.`
               })
             } else {
-              const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))
+              // const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))
+              const url = window.URL.createObjectURL(new Blob([response.data], {type: this.mimetypes[this.reporte.extension]}));
               window.open(url, '_blank')
             }
             this.close()

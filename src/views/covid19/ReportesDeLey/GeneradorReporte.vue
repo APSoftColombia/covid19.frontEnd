@@ -82,6 +82,12 @@
     },
     data: () => ({
       loading: false,
+      mimetypes: {
+        xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        xls: 'application/vnd.ms-excel',
+        csv: 'text/csv',
+        txt: 'text/plain'
+      }
     }),
     methods: {
       descargar () {
@@ -107,7 +113,8 @@
                   if (response.status === 204) {
                     this.$store.commit('snackbar', {color: 'info', message: `El reporte no contiene registros para exportar.`})
                   } else {
-                    var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: this.reporte.mimeType}));
+                    // const fileURL = window.URL.createObjectURL(new Blob([response.data], {type: this.reporte.mimeType}));
+                    const fileURL = window.URL.createObjectURL(new Blob([response.data], {type: this.mimetypes[this.reporte.extension]}));
                     var fileLink = document.createElement('a');
 
                     fileLink.href = fileURL;
