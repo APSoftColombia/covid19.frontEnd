@@ -427,5 +427,14 @@ export const itemsMenu = [
         color: 'red',
         routeName: 'Hemocomponentes',
         typeRoute: 'centroRegulador'
+    },
+    {
+        id: 73,
+        title: 'Censo de Camas',
+        icon: 'mdi-bed-empty',
+        iconSize: '30',
+        color: 'teal',
+        routeName: 'CensoCamas',
+        typeRoute: 'centroRegulador'
     }
 ]

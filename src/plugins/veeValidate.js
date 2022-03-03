@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import moment from 'moment'
 Vue.prototype.moment = moment
-import { required, email, required_if, numeric, is_not, confirmed, size } from 'vee-validate/dist/rules'
+import { required, email, required_if, numeric, is_not, confirmed, size, integer } from 'vee-validate/dist/rules'
 import { extend } from 'vee-validate'
 
 extend('required', {
     ...required,
     message: 'El campo {_field_} es requerido'
+})
+
+extend('integer', {
+    ...integer,
+    message: 'El campo {_field_} debe ser un número entero.'
 })
 
 extend('size', {

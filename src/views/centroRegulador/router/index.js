@@ -32,6 +32,21 @@ export default {
                     color: 'red',
                 }
             }
+        },
+        {
+            name: 'CensoCamas',
+            path: 'centro-regulador/censo-camas',
+            component: () => import('Views/centroRegulador/views/CensoCamas'),
+            meta: {
+                requiresAuth: true,
+                requiresOnLine: true,
+                requiresPermission: 'centroRegulador-censoCamasIndex',
+                avatar: {
+                    icon: 'mdi-bed-empty',
+                    iconSize: 28,
+                    color: 'teal',
+                }
+            }
         }
     ]
 }

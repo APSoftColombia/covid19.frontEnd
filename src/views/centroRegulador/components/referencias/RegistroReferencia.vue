@@ -333,7 +333,7 @@ export default {
       },
         'item.departamento_prestador_origen': {
           handler() {
-            if(this.ejecutaWatch) {
+            if(this.item && this.ejecutaWatch) {
               this.item.municipio_prestador_origen = null          
             }
           },
@@ -341,7 +341,7 @@ export default {
         },      
       'item.municipio_prestador_origen': {
         handler() {
-          if(this.ejecutaWatch) {
+          if(this.item && this.ejecutaWatch) {
             this.item.codigo_prestador_origen = null
           }
         },
