@@ -21,7 +21,8 @@ const state = {
         { key: 'Traslado Finalizado', color: 'orange' },
         { key: 'Proceso Terminado', color: 'green' },
         { key: 'Cancelado', color: 'grey' },
-    ]
+    ],
+    ref_motivos_anulacion: []
 }
 
 // getters
@@ -36,6 +37,7 @@ const getters = {
     ref_tiposTraslados: state => state.ref_tiposTraslados,
     ref_cr_tiposPoblacion: state => state.ref_cr_tiposPoblacion,
     ref_estados: state => state.ref_estados,
+    ref_motivos_anulacion: state => state.ref_motivos_anulacion,
 }
 
 
@@ -68,6 +70,7 @@ const mutations = {
         state.ref_tiposAmbulancia = complementos.tipos_ambulancias
         state.ref_tiposTraslados = complementos.tipos_traslados
         state.ref_cr_tiposPoblacion = complementos.tipoPoblaciones
+        state.ref_motivos_anulacion = complementos.motivos_anulacion
     }
 }
 

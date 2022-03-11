@@ -33,6 +33,7 @@ const Referencia = {
   estado_egreso: null,
   fecha_egreso: null,
   codigo_cup: null,
+  motivo_anulacion_id: null,
   // Sin referencia tabla
   tipo_id: null,
   hora_solicitud: null,

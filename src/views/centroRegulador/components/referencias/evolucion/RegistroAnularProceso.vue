@@ -58,11 +58,13 @@
             </v-col>
             <v-col cols="12">
                 <c-select-complete
-                    name="razon anulación"
-                    label="Razón Anulación"
-                    v-model="item.razon_anulacion"
-                    :items="razonesAnulacion"
+                    name="motivo de  anulación"
+                    label="Motivo de Anulación"
+                    v-model="item.motivo_anulacion_id"
+                    :items="ref_motivos_anulacion || []"
                     rules="required"
+                    item-text="motivo"
+                    item-value="id"
                 />
             </v-col>
             <v-col cols="12">
@@ -98,6 +100,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'RegistroAnularProceso',
   props: {
@@ -122,17 +126,10 @@ export default {
       accion: null,
       observaciones: null,
       user_id: null,
+      motivo_anulacion_id: null,
       presentacion_id: null,
       traslado_id: null
     },
-    razonesAnulacion: [
-          'Fallecido',
-          'Salida',
-          'Salida Voluntaria',
-          'Fugado',
-          'No Aceptó Remisión',
-          'Manejo en la Institución'
-      ]
   }),
   watch: {
     dialog: {
@@ -141,6 +138,11 @@ export default {
       },
       immediate: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'ref_motivos_anulacion'
+    ])
   },
   methods: {
     asignar() {
