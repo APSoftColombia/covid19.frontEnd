@@ -58,21 +58,23 @@
               </template>
               <v-row>
                 <v-col class="pb-0" cols="12" md="6">
-                  <c-texto
-                      v-model="reporte.identificacion"
-                      label="Identificación"
-                  >
-                  </c-texto>
-                </v-col>
-                <v-col class="pb-0" cols="12" md="6">
                   <c-select-complete
                       v-model="reporte.tipo_identificacion"
                       label="Tipo identificación"
+                      name="tipo identificación"
                       :items="tiposDocumentoIdentidad"
                       item-text="descripcion"
                       item-value="id"
-                  >
-                  </c-select-complete>
+                      :rules="tamizaje ? 'required' : ''"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12" md="6">
+                  <c-texto
+                      v-model="reporte.identificacion"
+                      label="Identificación"
+                      name="identificación"
+                      :rules="tamizaje && ![13].find(x => x === reporte.tipo_identificacion) ? 'required' : ''"
+                  />
                 </v-col>
                 <v-col class="pb-0" cols="12" md="6">
                   <c-texto

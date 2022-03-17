@@ -127,7 +127,8 @@ export default {
       'selectedRouterAnimation',
       'reloadComplementos',
       'rF5',
-      'datosEmpresa'
+      'datosEmpresa',
+      'getUser'
     ]),
     isIdle() {
 			return this.$store.state.idleVue.isIdle
@@ -154,8 +155,7 @@ export default {
     isIdle: {
       handler(val){
         if(val) {
-          this.$store.commit('InactivitylogoutUser', this.$router)
-          this.inactividad = true
+          this.verificarIdle()
         }
       }
     }
@@ -182,6 +182,12 @@ export default {
     }, 1000)
   },
   methods: {
+    verificarIdle() {
+      if(this.getUser?.id !== 1) {
+        this.$store.commit('InactivitylogoutUser', this.$router)
+        this.inactividad = true
+      }
+    },
     getComplementos() {
       this.$store.dispatch('reloadStorage')
     },

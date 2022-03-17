@@ -4,15 +4,10 @@
 			<v-card flat class="transparent">
 <!--        <boton-a-p-i/>-->
 				<v-responsive :aspect-ratio="16/9">
-          <template v-if="datosEmpresa.imagen_inicio === 'logoSucre.png'">
-            <v-img
-                :src="`/static/logos/aspect16-9/${user.tipo_cliente_id}${datosEmpresa.imagen_inicio}`"
-            />
-          </template>
-					<v-img
-              v-else
-							:src="`/static/logos/aspect16-9/${datosEmpresa.imagen_inicio}`"
-					/>
+          <v-img
+              v-if="url"
+              :src="url"
+          />
 				</v-responsive>
 			</v-card>
 		</v-row>
@@ -21,11 +16,10 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-// import BotonAPI from "../../components/botonAPI";
 	export default {
-    // components: {BotonAPI},
     data: () => ({
-			loading: false
+			loading: false,
+      url: null
 		}),
 		computed: {
       ...mapState({
@@ -34,6 +28,13 @@ import {mapGetters, mapState} from 'vuex'
 			...mapGetters([
 				'datosEmpresa'
 			])
-		}
-	}
+		},
+    mounted() {
+      if (this.datosEmpresa) {
+        this.url = this.datosEmpresa?.imagen_inicio === 'logoSucre.png'
+            ? `/static/logos/aspect16-9/${this.user?.tipo_cliente_id}${this.datosEmpresa?.imagen_inicio}`
+            : `/static/logos/aspect16-9/${this.datosEmpresa?.imagen_inicio}`
+      }
+    }
+  }
 </script>
