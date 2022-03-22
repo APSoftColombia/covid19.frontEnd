@@ -62,7 +62,7 @@ export default {
         if(val) {
           audio.play()
         } else {
-          audio.load()
+          audio.play()
         }
         console.log('se crea watch', audio)
       },
