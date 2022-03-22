@@ -37,7 +37,6 @@
             {{ notificar ? 'Hay nuevos registros pendientes por atención.' : 'No hay nuevos registros.'}}
           </h3>
           <alerta-solicitudes-content
-              v-if="dialog && news && news.length"
               :news="news"
               :notificar="notificar"
           />
