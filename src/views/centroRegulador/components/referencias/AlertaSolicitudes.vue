@@ -57,6 +57,8 @@
 import {mapState} from 'vuex'
 import AlertaSolicitudesContent from './AlertaSolicitudesContent'
 
+
+
 export default {
   name: 'AlertaSolicitudes',
   components: {AlertaSolicitudesContent},
@@ -102,7 +104,6 @@ export default {
     aceptar() {
       this.$store.commit('notificadoNuevasReferencias')
       this.dialog = false
-      audio.load()
     },
     getNews() {
       this.$store.dispatch('getNuevasReferencias')
