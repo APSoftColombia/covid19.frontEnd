@@ -27,11 +27,13 @@
 <script>
 const audio = new Audio(`${process.env.BASE_URL}files/sounds/telephone.mp3`)
 audio.setAttribute('loop',true)
+// audio.setAttribute('autoplay',true)
+// audio.setAttribute('muted',true)
 
 
 const button = document.createElement('button')
 button.addEventListener('click', function(){
-  audio.play()
+  audio.muted = false
 }, false)
 
 
@@ -53,9 +55,25 @@ export default {
     dialog: false,
     color: 'grey lighten-1'
   }),
+  watch: {
+    notificar: {
+      handler(val) {
+        console.log('se crea notificar', val)
+        if(val) {
+          audio.play()
+        } else {
+          audio.load()
+        }
+        console.log('se crea watch', audio)
+      },
+      immediate: true
+    }
+  },
   mounted() {
-    console.log('se crea')
-    audio.play()
+    console.log('se crea 1', audio)
+    // audio.play()
+    // audio.setAttribute('muted',false)
+    console.log('se crea2', audio)
   },
   methods: {
     disparar() {

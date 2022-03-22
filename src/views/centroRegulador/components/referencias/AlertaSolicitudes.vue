@@ -104,6 +104,7 @@ export default {
     aceptar() {
       this.$store.commit('notificadoNuevasReferencias')
       this.dialog = false
+      // audio.load()
     },
     getNews() {
       this.$store.dispatch('getNuevasReferencias')
