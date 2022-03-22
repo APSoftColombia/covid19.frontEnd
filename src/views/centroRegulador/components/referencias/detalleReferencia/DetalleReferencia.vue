@@ -68,8 +68,8 @@
                   <v-list-item-subtitle class="body-2">
                     {{ item.eps.nombre }}
                   </v-list-item-subtitle>
-                  <v-list-item-subtitle v-if="item.tipo_afiliacion" class="body-2">
-                    {{ item.tipo_afiliacion }}
+                  <v-list-item-subtitle v-if="item.regimen_id" class="body-2">
+                    {{ textRegimen }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -205,6 +205,7 @@
 <script>
 import models from '../../../models'
 import Evolucion from 'Views/centroRegulador/components/referencias/evolucion/Evolucion'
+import {mapGetters} from "vuex";
 export default {
   name: 'DetalleReferencia',
   components: {
@@ -218,6 +219,12 @@ export default {
     loadingButton1: false
   }),
   computed: {
+    ...mapGetters([
+      'ref_regimenes',
+    ]),
+    textRegimen() {
+      return (this.ref_regimenes?.length && this.item?.regimen_id && this.ref_regimenes.find(x => x.id === this.item.regimen_id)?.descripcion) || ''
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('centroRegulador')
     }

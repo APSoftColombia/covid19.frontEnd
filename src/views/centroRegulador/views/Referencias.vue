@@ -2,9 +2,13 @@
   <v-container fluid>
     <page-title-bar title="Referencias">
       <template slot="actions">
+        <alerta-solicitudes
+            @notificar="itemGuardado"
+        />
+        <v-divider vertical inset class="mx-4"/>
         <c-tooltip
             v-if="permisos.referenciasCrear"
-            left
+            top
             tooltip="Crear Referencia"
         >
           <v-btn
@@ -241,9 +245,11 @@ import RegistroReferencia from 'Views/centroRegulador/components/referencias/Reg
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
 import TagsFilters from 'Views/centroRegulador/components/referencias/TagsFilters'
 import { mapGetters } from 'vuex'
+import AlertaSolicitudes from 'Views/centroRegulador/components/referencias/AlertaSolicitudes'
 export default {
   name: 'Referencias',
   components: {
+    AlertaSolicitudes,
     TagsFilters,
     PersonaItem,
     DetalleReferencia,

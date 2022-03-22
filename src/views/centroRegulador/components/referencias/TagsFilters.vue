@@ -44,9 +44,9 @@
     />
     <c-chip-filters
         v-if="tags.regimen"
-        :text="tags.regimen"
+        :text="textRegimen"
         key="tipoAfiliacion"
-        subtitle="Tipo Afiliación"
+        subtitle="Régimen"
         @close="closeTag('tipoAfiliacion', 'regimen')"
     />
     <c-chip-filters
@@ -94,8 +94,12 @@ export default {
         'ref_epss',
         'ref_ipss',
         'ref_modalidadesServicio',
-        'ref_cr_tiposPoblacion'
-      ])
+        'ref_cr_tiposPoblacion',
+        'ref_regimenes',
+      ]),
+    textRegimen() {
+        return (this.ref_regimenes?.length && this.tags.regimen && this.ref_regimenes.find(x => x.id === this.tags.regimen)?.descripcion) || ''
+    }
   },
   methods: {
     closeTag(keytag, type) {

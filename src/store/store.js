@@ -21,6 +21,7 @@ import RCV from '../views/aps/rcv/store/rcv'
 import loading from 'Components/loading/store'
 import cDataRows from 'Components/cDataRows/store'
 import centroRegulador from '../views/centroRegulador/store'
+import centroReguladorPersist from '../views/centroRegulador/store/persist'
 import laboratorioSaludPublica from '../views/laboratorioSaludPublica/store'
 import atencionMedicaRCVModule from '../modules/atencionMedica/store'
 
@@ -45,11 +46,12 @@ export const store = new Vuex.Store({
         loading,
         cDataRows,
         centroRegulador,
+        centroReguladorPersist,
         laboratorioSaludPublica,
         atencionMedicaRCVModule
     },
     // plugins: [new VuexPersistence().plugin]
     plugins: [createPersistedState({
-        paths: ['general', 'encuestas', 'formularios', 'cDataRows']
+        paths: ['general', 'encuestas', 'formularios', 'cDataRows', 'centroReguladorPersist']
     })]
 })

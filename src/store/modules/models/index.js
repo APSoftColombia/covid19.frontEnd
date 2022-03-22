@@ -77,7 +77,9 @@ const state = {
         ////
         user_id: null,
         signos_alarma: [],
-        comorbilidades: []
+        comorbilidades: [],
+        soporte_rastreo: null,
+        soporte_rastreo_uuid: null
     },
     modelPersona: {
         id: null,

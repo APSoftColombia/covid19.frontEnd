@@ -12,6 +12,7 @@ const Referencia = {
   tipo_poblacion: null,
   eps_id: null,
   tipo_afiliacion: null,
+  regimen_id: null,
   direccion: null,
   departamento_id: null,
   municipio_id: null,

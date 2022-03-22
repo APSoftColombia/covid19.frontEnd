@@ -22,7 +22,9 @@
       <c-select-complete
           v-model="filters.models.regimen"
           label="Tipo Afiliación"
-          :items="filters.data.regimenes"
+          item-text="descripcion"
+          item-value="id"
+          :items="ref_regimenes"
           hide-details
       />
     </v-col>
@@ -159,11 +161,6 @@ export default {
           // 'Seleccionada',
           // 'Solicitud Traslado',
           // 'Traslado Iniciado',,
-        regimenes: [
-          'Régimen Subsidiado',
-          'Régimen Contributivo',
-          'Régimen Especial'
-        ]
       }
     }
   }),
@@ -173,7 +170,8 @@ export default {
       'ref_ipss',
       'ref_medios',
       'ref_modalidadesServicio',
-      'ref_cr_tiposPoblacion'
+      'ref_cr_tiposPoblacion',
+      'ref_regimenes',
     ])
   },
   methods: {
@@ -216,7 +214,7 @@ export default {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[modservicio_id]=' + this.filters.models.modServicios.map(x => x).join(',')
       }
       if (this.filters.models.regimen !== null) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_afiliacion]=' + this.filters.models.regimen
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[regimen_id]=' + this.filters.models.regimen
       }
       if (this.filters.models.medios.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[medio_solicitud]=' + this.filters.models.medios.map(x => x).join(',')

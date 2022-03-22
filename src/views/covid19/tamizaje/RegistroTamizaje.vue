@@ -228,6 +228,20 @@
                   </v-row>
                 </template>
                 <v-row v-if="tamizaje">
+                  <v-col
+                      v-if="tamizaje.tamizador_id === 892"
+                      cols="12"
+                      class="pb-0"
+                  >
+                    <c-input-file
+                        label="Formato de rastreo de campo"
+                        name="formato de rastreo de campo"
+                        rules="required"
+                        directory="soportesRastreo"
+                        v-model="tamizaje.soporte_rastreo"
+                        @uuid="val => tamizaje.soporte_rastreo_uuid = val"
+                    />
+                  </v-col>
                   <v-col cols="12" class="pb-0">
                     <c-text-area
                         v-model="tamizaje.observaciones"
@@ -273,6 +287,7 @@
 import {mapGetters} from 'vuex'
 import FormComorbilidades from 'Views/covid19/tamizaje/FormComorbilidades'
 import FormTamizaje from 'Views/covid19/tamizaje/FormTamizaje'
+import CInputFile from '../../../components/Inputs/CInputFile'
 
 const FormSintomas = () => import('Views/covid19/tamizaje/FormSIntomas')
 var intervalo
@@ -281,7 +296,8 @@ export default {
   components: {
     FormComorbilidades,
     FormTamizaje,
-    FormSintomas
+    FormSintomas,
+    CInputFile
   },
   data: () => ({
     muestraPreguntasEfectividad: true,
@@ -366,6 +382,15 @@ export default {
     // }
   },
   watch: {
+    'tamizaje.tamizador_id': {
+      handler(val) {
+        if (!val || val !== 892) {
+          this.tamizaje.soporte_rastreo_uuid = null
+          this.tamizaje.soporte_rastreo = null
+        }
+      },
+      immediate: false
+    },
     'tamizaje.esquema_completo': {
       handler(val) {
         if (!val) {

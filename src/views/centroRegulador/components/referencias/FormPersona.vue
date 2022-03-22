@@ -192,27 +192,18 @@
         />
       </v-col>
       <template v-if="value.eps_id">
-        <v-col cols="12" sm="12" md="6">
+        <v-col cols="12">
           <c-select-complete
-              v-model="value.tipo_afiliacion"
+              v-model="value.regimen_id"
               label="Régimen"
               rules="required"
               name="Régimen"
-              :items="tiposAfiliacion"
+              :items="ref_regimenes"
+              item-text="descripcion"
+              item-value="id"
               :disabled="identificacionVerificada < 1"
           />
         </v-col>
-<!--        <v-col cols="12" sm="12" md="6" v-if="value.tipo_afiliacion === 'Régimen Especial'">-->
-<!--          <c-select-complete-->
-<!--              v-model="value.regimen_especial"-->
-<!--              label="Régimen especial"-->
-<!--              rules="required"-->
-<!--              name="régimen especial"-->
-<!--              :items="regimenesEspeciales"-->
-<!--              :disabled="identificacionVerificada < 1"-->
-<!--          >-->
-<!--          </c-select-complete>-->
-<!--        </v-col>-->
       </template>
     </template>
   </v-row>
@@ -244,9 +235,8 @@ export default {
       'tiposDocumentoIdentidad',
       'departamentos',
       'municipiosTotal',
-      'tiposAfiliacion',
+      'ref_regimenes',
       'epss',
-      'regimenesEspeciales',
       'tipoPoblaciones'
     ])
   },
@@ -294,22 +284,14 @@ export default {
       handler(val) {
         if (val !== 'Población Asegurada') {
           this.value.eps_id = null
-          this.value.tipo_afiliacion = null
+          this.value.regimen_id = null
         }
       },
       immediate: false
     },
     'value.eps_id': {
       handler(val) {
-        !val && (this.value.tipo_afiliacion = null)
-      },
-      immediate: false
-    },
-    'value.tipo_afiliacion': {
-      handler(val) {
-        if (!val || val !== 'Régimen Especial') {
-          this.value.regimen_especial = null
-        }
+        !val && (this.value.regimen_id = null)
       },
       immediate: false
     }
@@ -363,7 +345,7 @@ export default {
         this.value.barrio_id = null
         this.value.tipo_poblacion = null
         this.value.eps_id = null
-        this.value.tipo_afiliacion = null
+        this.value.regimen_id = null
       }
       if(response && response.fallecido && response.afiliado){
           this.identificacionVerificada = -2
@@ -392,7 +374,7 @@ export default {
         this.value.barrio_id = response.afiliado.barrio_id || null
         this.value.tipo_poblacion = response.afiliado.tipo_poblacion
         this.value.eps_id = response.afiliado.eps_id
-        this.value.tipo_afiliacion = response.afiliado.regimen
+        this.value.regimen_id = response.afiliado.regimen
       }
     }
   }
