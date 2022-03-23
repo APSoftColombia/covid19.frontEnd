@@ -4,6 +4,7 @@
       <template slot="actions">
         <alerta-solicitudes
             @notificar="itemGuardado"
+            @seleccionar="val => seleccionarItemAlert(val)"
         />
         <v-divider vertical inset class="mx-4"/>
         <c-tooltip
@@ -322,6 +323,13 @@ export default {
   methods: {
     crearItem() {
       this.$refs.registroItem.open()
+    },
+    seleccionarItemAlert(val) {
+      this.detalleItem({ id: val })
+      this.$store.commit('notificadoNuevasReferenciaId', val)
+      setTimeout(() => {
+        this.$store.dispatch('getNuevasReferencias')
+      }, 2000)
     },
     editarItem(item) {
       this.$refs.registroItem.open(item)

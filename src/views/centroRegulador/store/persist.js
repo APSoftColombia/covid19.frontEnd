@@ -4,7 +4,8 @@ import Vue from 'vue'
 const state = {
     ref_nuevasRerefencias: [],
     ref_nuevasRerefenciasKeys: [],
-    ref_showAlert: false
+    ref_showAlert: false,
+    ref_nuevasNotificar: [],
 }
 
 // getters
@@ -31,17 +32,30 @@ const actions = {
 
 // mutations
 const mutations = {
+    notificadoNuevasReferenciaId (state, id) {
+        const index = state.ref_nuevasNotificar.findIndex(x => x === id)
+        if (index > -1) state.ref_nuevasNotificar.splice(index, 1)
+    },
     notificadoNuevasReferencias (state) {
         state.ref_showAlert = false
+        state.ref_nuevasNotificar = []
     },
     assignNuevasReferencias (state, referencias) {
         let count = 0
+        let paraNotificar = []
         referencias.forEach(x => {
-            count = count + (lodash.includes(state.ref_nuevasRerefenciasKeys, x.id) ? 0 : 1)
+            const esta = (lodash.includes(state.ref_nuevasRerefenciasKeys, x.id) ? 0 : 1)
+            if(esta) {
+                count++
+                paraNotificar.push(x.id)
+            }
         })
         state.ref_nuevasRerefencias = referencias
         state.ref_nuevasRerefenciasKeys = referencias.map(x => x.id)
-        if (count) state.ref_showAlert = true
+        if (count) {
+            state.ref_showAlert = true
+            state.ref_nuevasNotificar = paraNotificar
+        }
     }
 }
 

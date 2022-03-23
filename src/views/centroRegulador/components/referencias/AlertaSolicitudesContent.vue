@@ -5,17 +5,26 @@
       <v-list-item
           v-for="(paciente, indexNew) in news"
           :key="`paciente${indexNew}`"
-          @click="click = false"
+          @click="$emit('seleccionar', paciente.id)"
       >
         <v-list-item-content>
           <v-list-item-subtitle>
-            <v-chip
-                color="primary"
-                label
-                small
+            <v-badge
+                overlap
+                offset-x="10"
+                offset-y="10"
+                color="error"
+                dot
+                :value="!!newsNotificar.find(x => x === paciente.id)"
             >
-              {{ paciente.id }}
-            </v-chip>
+              <v-chip
+                  color="primary"
+                  label
+                  small
+              >
+                {{ paciente.id }}
+              </v-chip>
+            </v-badge>
             {{ paciente.paciente }}
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -33,6 +42,10 @@ export default {
   name: 'AlertaSolicitudesContent',
   props: {
     news: {
+      type: Array,
+      default: () => []
+    },
+    newsNotificar: {
       type: Array,
       default: () => []
     },
@@ -67,6 +80,9 @@ export default {
       },
       immediate: true
     }
-  }
+  },
+  destroyed() {
+    audio.load()
+  },
 }
 </script>
