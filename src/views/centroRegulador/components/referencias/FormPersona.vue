@@ -168,22 +168,35 @@
 <!--          item-value="id"-->
 <!--      />-->
 <!--    </v-col>-->
-    <v-col class="pb-0" cols="12">
+<!--    <v-col class="pb-0" cols="12">-->
+<!--      <c-select-complete-->
+<!--          v-model="value.tipo_poblacion"-->
+<!--          label="Tipo población"-->
+<!--          rules="required"-->
+<!--          name="Tipo población"-->
+<!--          :items="tipoPoblaciones"-->
+<!--          :disabled="identificacionVerificada < 1"-->
+<!--      />-->
+<!--    </v-col>-->
+<!--    <template v-if="value.tipo_poblacion === 'Población Asegurada'">-->
+    <v-col cols="12">
       <c-select-complete
-          v-model="value.tipo_poblacion"
-          label="Tipo población"
+          v-model="value.regimen_id"
+          label="Régimen"
           rules="required"
-          name="Tipo población"
-          :items="tipoPoblaciones"
+          name="Régimen"
+          :items="ref_regimenes"
+          item-text="descripcion"
+          item-value="id"
           :disabled="identificacionVerificada < 1"
       />
     </v-col>
-    <template v-if="value.tipo_poblacion === 'Población Asegurada'">
+    <template v-if="requiereEps">
       <v-col cols="12" sm="12" md="12">
         <c-select-complete
             v-model="value.eps_id"
             label="¿A que EPS está afiliado?"
-            rules="required"
+            :rules="requiereEps === 1 ? 'required' : ''"
             name="EPS de afiliación"
             :items="epss"
             item-value="id"
@@ -191,20 +204,7 @@
             :disabled="identificacionVerificada < 1"
         />
       </v-col>
-      <template v-if="value.eps_id">
-        <v-col cols="12">
-          <c-select-complete
-              v-model="value.regimen_id"
-              label="Régimen"
-              rules="required"
-              name="Régimen"
-              :items="ref_regimenes"
-              item-text="descripcion"
-              item-value="id"
-              :disabled="identificacionVerificada < 1"
-          />
-        </v-col>
-      </template>
+<!--      <template v-if="value.eps_id">-->
     </template>
   </v-row>
 </template>
@@ -230,6 +230,9 @@ export default {
     loadingBarrios: false
   }),
   computed: {
+    requiereEps() {
+      return (this.value?.regimen_id && this.ref_regimenes?.length && this.ref_regimenes.find(x => x.id === this.value.regimen_id)?.eps) || 0
+    },
     ...mapGetters([
       'sexosCovid',
       'tiposDocumentoIdentidad',
@@ -280,21 +283,29 @@ export default {
       },
       immediate: true
     },
-    'value.tipo_poblacion': {
+    // 'value.tipo_poblacion': {
+    //   handler(val) {
+    //     if (val !== 'Población Asegurada') {
+    //       this.value.eps_id = null
+    //       this.value.regimen_id = null
+    //     }
+    //   },
+    //   immediate: false
+    // },
+    requiereEps: {
       handler(val) {
-        if (val !== 'Población Asegurada') {
+        if (!val) {
           this.value.eps_id = null
-          this.value.regimen_id = null
         }
       },
       immediate: false
     },
-    'value.eps_id': {
-      handler(val) {
-        !val && (this.value.regimen_id = null)
-      },
-      immediate: false
-    }
+    // 'value.eps_id': {
+    //   handler(val) {
+    //     !val && (this.value.regimen_id = null)
+    //   },
+    //   immediate: false
+    // }
   },
   created() {
     this.assignPaciente()
@@ -343,7 +354,7 @@ export default {
         this.value.departamento_id = null
         this.value.municipio_id = null
         this.value.barrio_id = null
-        this.value.tipo_poblacion = null
+        // this.value.tipo_poblacion = null
         this.value.eps_id = null
         this.value.regimen_id = null
       }
@@ -372,7 +383,7 @@ export default {
         this.value.departamento_id = response.afiliado.departamento_id
         this.value.municipio_id = response.afiliado.centro_poblado_id
         this.value.barrio_id = response.afiliado.barrio_id || null
-        this.value.tipo_poblacion = response.afiliado.tipo_poblacion
+        // this.value.tipo_poblacion = response.afiliado.tipo_poblacion
         this.value.eps_id = response.afiliado.eps_id
         this.value.regimen_id = response.afiliado.regimen
       }

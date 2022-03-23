@@ -21,13 +21,13 @@
         subtitle="IPS Origen"
         @close="closeTag('ipsOrigen', 'ipsOrigen')"
     />
-    <c-chip-filters
-        v-if="tags.tipo_poblacion"
-        :text="tags.tipo_poblacion"
-        key="tipoPoblacion"
-        subtitle="Tipo Población"
-        @close="closeTag('tipoPoblacion', 'tipoPoblacion')"
-    />
+<!--    <c-chip-filters-->
+<!--        v-if="tags.tipo_poblacion"-->
+<!--        :text="tags.tipo_poblacion"-->
+<!--        key="tipoPoblacion"-->
+<!--        subtitle="Tipo Población"-->
+<!--        @close="closeTag('tipoPoblacion', 'tipoPoblacion')"-->
+<!--    />-->
     <c-chip-filters
         v-if="tags.eps_id"
         :text="ref_epss && ref_epss.length && ref_epss.find(x => x.id === tags.eps_id) ? ref_epss.find(x => x.id === tags.eps_id).nombre : ''"
@@ -94,7 +94,7 @@ export default {
         'ref_epss',
         'ref_ipss',
         'ref_modalidadesServicio',
-        'ref_cr_tiposPoblacion',
+        // 'ref_cr_tiposPoblacion',
         'ref_regimenes',
       ]),
     textRegimen() {
@@ -112,9 +112,9 @@ export default {
       if(type === 'modServicios'){
           this.tags.modServicios.splice(keytag, 1)
       }
-      if(type === 'tipoPoblacion'){
-          this.tags.tipo_poblacion = null
-      }
+      // if(type === 'tipoPoblacion'){
+      //     this.tags.tipo_poblacion = null
+      // }
       if(type === 'eps'){
           this.tags.eps_id = null
       }

@@ -1,124 +1,125 @@
 <template>
-  <v-row justify="end" fill-height>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-select-complete
-          label="Tipo de Atención"
-          v-model="filters.models.tiposOrigen"
-          :items="filters.data.tiposOrigen"
-          multiple
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-select-complete
-          v-model="filters.models.estados"
-          label="Estado de Referencia"
-          :items="filters.data.estados"
-          multiple
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-select-complete
-          v-model="filters.models.regimen"
-          label="Tipo Afiliación"
-          item-text="descripcion"
-          item-value="id"
-          :items="ref_regimenes"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="6">
-      <c-select-complete
-          v-model="filters.models.tipo_poblacion"
-          label="Tipo población"
-          :items="ref_cr_tiposPoblacion"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="6">
-      <v-autocomplete
-          label="Modalidades de Servicio"
-          v-model="filters.models.modServicios"
-          :items="ref_modalidadesServicio"
-          outlined
-          dense
-          multiple
-          chips
-          item-value="id"
-          clearable
-          persistent-hint
-          hide-details
-      >
-        <template v-slot:selection="{ item, index }">
-          <div class="pa-0 text-truncate">
-            {{ item.tipo + ", " }}
-          </div>
-        </template>
-        <template v-slot:item="{ item, index }">
-          <template>
-            <v-list-item-content class="pa-0">
-              <v-list-item-title>{{ item.tipo }}</v-list-item-title>
-              <v-list-item-subtitle>{{ `Modalidad: ${item.modalidad}` }}</v-list-item-subtitle>
-            </v-list-item-content>
+  <div>
+    <v-row justify="end" fill-height>
+      <v-col class="pb-0" cols="12" sm="6">
+        <c-select-complete
+            label="Tipo de Atención"
+            v-model="filters.models.tiposOrigen"
+            :items="filters.data.tiposOrigen"
+            multiple
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6">
+        <c-select-complete
+            v-model="filters.models.estados"
+            label="Estado de Referencia"
+            :items="filters.data.estados"
+            multiple
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6">
+        <c-select-complete
+            v-model="filters.models.regimen"
+            label="Régimen"
+            item-text="descripcion"
+            item-value="id"
+            :items="ref_regimenes"
+            hide-details
+        />
+      </v-col>
+      <!--    <v-col class="pb-0" cols="12" sm="12" md="6">-->
+      <!--      <c-select-complete-->
+      <!--          v-model="filters.models.tipo_poblacion"-->
+      <!--          label="Tipo población"-->
+      <!--          :items="ref_cr_tiposPoblacion"-->
+      <!--          hide-details-->
+      <!--      />-->
+      <!--    </v-col>-->
+      <v-col class="pb-0" cols="12" sm="12" md="6">
+        <c-select-complete
+            v-model="filters.models.codigo_prestador_origen"
+            label="IPS Origen"
+            :items="ref_ipss"
+            item-text="nombre"
+            item-value="id"
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6" md="6">
+        <c-select-complete
+            v-model="filters.models.eps_id"
+            label="EPS"
+            :items="ref_epss"
+            item-text="nombre"
+            item-value="id"
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6">
+        <c-select-complete
+            label="Medio de Solicitud"
+            v-model="filters.models.medios"
+            :items="ref_medios"
+            multiple
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="12">
+        <v-autocomplete
+            label="Modalidades de Servicio"
+            v-model="filters.models.modServicios"
+            :items="ref_modalidadesServicio"
+            outlined
+            dense
+            multiple
+            chips
+            small-chips
+            item-value="id"
+            item-text="tipo"
+            clearable
+            persistent-hint
+            hide-details
+        >
+          <template v-slot:item="{ item, index }">
+            <template>
+              <v-list-item-content class="pa-0">
+                <v-list-item-title>{{ item.tipo }}</v-list-item-title>
+                <v-list-item-subtitle>{{ `Modalidad: ${item.modalidad}` }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
           </template>
-        </template>
-      </v-autocomplete>
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="6">
-      <c-select-complete
-          v-model="filters.models.codigo_prestador_origen"
-          label="IPS Origen"
-          :items="ref_ipss"
-          item-text="nombre"
-          item-value="id"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="6">
-      <c-select-complete
-          v-model="filters.models.eps_id"
-          label="EPS"
-          :items="ref_epss"
-          item-text="nombre"
-          item-value="id"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-date-range
-          v-model="filters.models.fecha_orden"
-          label="Fecha de Orden"
-          :max="moment().format('YYYY-MM-DD')"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-date-range
-          v-model="filters.models.fecha_solicitud"
-          label="Fecha de Solicitud"
-          :max="moment().format('YYYY-MM-DD')"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-date-range
-          v-model="filters.models.fecha_ultima_gestion"
-          label="Fecha de Ultima Gestión"
-          :max="moment().format('YYYY-MM-DD')"
-          hide-details
-      />
-    </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-      <c-select-complete
-          label="Tipo de Atención"
-          v-model="filters.models.medios"
-          :items="ref_medios"
-          multiple
-          hide-details
-      />
-    </v-col>
-  </v-row>
+        </v-autocomplete>
+      </v-col>
+    </v-row>
+    <v-row justify="end" fill-height>
+      <v-col class="pb-0" cols="12" sm="6" md="4">
+        <c-date-range
+            v-model="filters.models.fecha_orden"
+            label="Fecha de Orden"
+            :max="moment().format('YYYY-MM-DD')"
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6" md="4">
+        <c-date-range
+            v-model="filters.models.fecha_solicitud"
+            label="Fecha de Solicitud"
+            :max="moment().format('YYYY-MM-DD')"
+            hide-details
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" sm="6" md="4">
+        <c-date-range
+            v-model="filters.models.fecha_ultima_gestion"
+            label="Fecha de Ultima Gestión"
+            :max="moment().format('YYYY-MM-DD')"
+            hide-details
+        />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -146,7 +147,7 @@ export default {
         eps_id: null,
         modServicios: [],
         regimen: null,
-        tipo_poblacion: null
+        // tipo_poblacion: null
       },
       data: {
         tiposOrigen: [
@@ -170,7 +171,7 @@ export default {
       'ref_ipss',
       'ref_medios',
       'ref_modalidadesServicio',
-      'ref_cr_tiposPoblacion',
+      // 'ref_cr_tiposPoblacion',
       'ref_regimenes',
     ])
   },
@@ -198,9 +199,9 @@ export default {
       if (this.filters.models.fecha_solicitud.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaSolicitud]=' + this.filters.models.fecha_solicitud.join(',')
       }
-      if (this.filters.models.tipo_poblacion !== null) {
-        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_poblacion]=' + this.filters.models.tipo_poblacion
-      }
+      // if (this.filters.models.tipo_poblacion !== null) {
+      //   rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[tipo_poblacion]=' + this.filters.models.tipo_poblacion
+      // }
       if (this.filters.models.fecha_ultima_gestion.length) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[fechaUltimaGestion]=' + this.filters.models.fecha_ultima_gestion.join(',')
       }
