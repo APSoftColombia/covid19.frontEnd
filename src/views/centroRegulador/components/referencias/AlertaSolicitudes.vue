@@ -18,6 +18,7 @@
             color="warning darken-2"
             :content="news.length"
             :value="!!news.length"
+            class="badgeok"
         >
           <v-btn
               :color="color"
@@ -141,6 +142,11 @@ export default {
 }
 </script>
 
+<style>
+.badgeok>.v-badge__wrapper>.v-badge__badge {
+  z-index: -10!important;
+}
+</style>
 
 <style scoped lang="scss">
 .bell{
