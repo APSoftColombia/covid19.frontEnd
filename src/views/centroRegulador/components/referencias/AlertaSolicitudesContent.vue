@@ -37,7 +37,7 @@ button.addEventListener('click', function(){
 }, false)
 
 
-
+import push from 'push.js'
 export default {
   name: 'AlertaSolicitudesContent',
   props: {
@@ -60,9 +60,9 @@ export default {
       handler(val) {
         console.log('se crea notificar', val)
         if(val) {
-          audio.play()
+          // audio.play()
         } else {
-          audio.play()
+          // audio.play()
         }
         console.log('se crea watch', audio)
       },
@@ -74,6 +74,13 @@ export default {
     // audio.play()
     // audio.setAttribute('muted',false)
     console.log('se crea2', audio)
+    push.create(
+        'Nuevas Solicitudes',
+        {
+          body: `Hay ${this.news.length} solicitudes de referencia pendientes por atención.`,
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_alert-yellow.svg/1024px-OOjs_UI_icon_alert-yellow.svg.png'
+        }
+    )
   },
   methods: {
     disparar() {

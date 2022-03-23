@@ -28,6 +28,7 @@
     "moment": "^2.22.2",
     "nprogress": "^0.2.0",
     "powerbi-client": "^2.14.1",
+    "push.js": "^1.0.12",
     "screenfull": "^4.2.1",
     "slick-carousel": "^1.8.1",
     "v-mask": "^2.2.4",
