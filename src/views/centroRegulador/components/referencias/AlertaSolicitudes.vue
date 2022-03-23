@@ -55,9 +55,7 @@
 <script>
 import {mapState} from 'vuex'
 import AlertaSolicitudesContent from './AlertaSolicitudesContent'
-
-
-
+var intervalo
 export default {
   name: 'AlertaSolicitudes',
   components: {AlertaSolicitudesContent},
@@ -95,15 +93,17 @@ export default {
   },
   created() {
     this.getNews()
-    setInterval(() => {
+    intervalo = setInterval(() => {
       this.getNews()
     }, 10000)
+  },
+  destroyed() {
+    clearInterval(intervalo)
   },
   methods: {
     aceptar() {
       this.$store.commit('notificadoNuevasReferencias')
       this.dialog = false
-      // audio.load()
     },
     getNews() {
       this.$store.dispatch('getNuevasReferencias')

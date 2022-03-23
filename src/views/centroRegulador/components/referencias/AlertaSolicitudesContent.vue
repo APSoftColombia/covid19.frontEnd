@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="news && news.length">
     <v-subheader>Pacientes</v-subheader>
     <v-list dense>
       <v-list-item
@@ -27,15 +27,6 @@
 <script>
 const audio = new Audio(`${process.env.BASE_URL}files/sounds/telephone.mp3`)
 audio.setAttribute('loop',true)
-// audio.setAttribute('autoplay',true)
-// audio.setAttribute('muted',true)
-
-
-const button = document.createElement('button')
-button.addEventListener('click', function(){
-  audio.muted = false
-}, false)
-
 
 import push from 'push.js'
 export default {
@@ -58,33 +49,23 @@ export default {
   watch: {
     notificar: {
       handler(val) {
-        console.log('se crea notificar', val)
         if(val) {
-          // audio.play()
+          audio.play()
+          push.create(
+              'Nuevas Solicitudes en centro de referencia',
+              {
+                body: `Hay ${this.news.length} solicitudes de referencia pendientes por atención.`,
+                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_alert-yellow.svg/1024px-OOjs_UI_icon_alert-yellow.svg.png',
+                onClick: function () {
+                  this.close()
+                }
+              }
+          )
         } else {
-          // audio.play()
+          audio.load()
         }
-        console.log('se crea watch', audio)
       },
       immediate: true
-    }
-  },
-  mounted() {
-    console.log('se crea 1', audio)
-    // audio.play()
-    // audio.setAttribute('muted',false)
-    console.log('se crea2', audio)
-    push.create(
-        'Nuevas Solicitudes',
-        {
-          body: `Hay ${this.news.length} solicitudes de referencia pendientes por atención.`,
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/OOjs_UI_icon_alert-yellow.svg/1024px-OOjs_UI_icon_alert-yellow.svg.png'
-        }
-    )
-  },
-  methods: {
-    disparar() {
-      button.click()
     }
   }
 }
