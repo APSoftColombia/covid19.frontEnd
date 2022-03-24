@@ -1,5 +1,29 @@
 <template>
+  <v-list-item v-if="detail" @click="click = false">
+    <v-list-item-avatar size="38">
+      <v-icon color="primary">{{icon}}</v-icon>
+    </v-list-item-avatar>
+    <v-list-item-content>
+      <v-list-item-subtitle>{{label}}</v-list-item-subtitle>
+      <v-list-item-title>{{ vmodel && vmodel.name || '' }}</v-list-item-title>
+    </v-list-item-content>
+    <v-list-item-action v-if="vmodel">
+      <c-tooltip tooltip="Descargar Archivo" top>
+        <v-btn
+            fab
+            small
+            :color="vmodel ? 'primary' : ''"
+            :href="vmodel.url"
+            @click="downloadFile"
+            :target="vmodel.mimetype === 'application/pdf' ? '_blank' : ''"
+        >
+          <v-icon>mdi-download</v-icon>
+        </v-btn>
+      </c-tooltip>
+    </v-list-item-action>
+  </v-list-item>
   <ValidationProvider
+      v-else
       :name="name"
       :vid="vid"
       :rules="rules"
@@ -45,12 +69,17 @@
 </template>
 
 <script>
+
 export default {
   name: 'CInputFile',
   props: {
     value: {
       type: Object,
       default: null
+    },
+    detail: {
+      type: Boolean,
+      default: false
     },
     label: {
       type: String,
@@ -116,7 +145,8 @@ export default {
   data: () => ({
     vmodel: null,
     model: null,
-    loading: false
+    loading: false,
+    click:false
   }),
   watch: {
     value: {
@@ -155,7 +185,7 @@ export default {
         this.$emit('uuid', null)
       } else {
         if (this.model === null) this.model = {}
-        this.vmodel.url = `${window.location.protocol}//${window.location.hostname}:9000/api/upload-file/${this.vmodel.id}`
+        this.vmodel.url = `${this.axios?.defaults?.baseURL}/upload-file/${this.vmodel.id}`
         this.$emit('uuid', this.vmodel.id)
       }
     },

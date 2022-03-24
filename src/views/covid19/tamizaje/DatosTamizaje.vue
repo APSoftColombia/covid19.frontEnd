@@ -25,7 +25,9 @@
           </v-list-item-title>
           <v-list-item-title v-if="tamizaje.tamizador">
             <h6 v-if="tamizaje.tipo_tamizaje === 'telefónico'" class="mb-0">
-              {{ `${tamizaje.llamada_entrante ? 'Llamada recibida en: ' : 'Llamada realizada desde: '}${tamizaje.tamizador.nombre}` }}
+              {{
+                `${tamizaje.llamada_entrante ? 'Llamada recibida en: ' : 'Llamada realizada desde: '}${tamizaje.tamizador.nombre}`
+              }}
             </h6>
             <h6 v-else class="mb-0">Realizado en: {{ tamizaje.tamizador.nombre }}</h6>
           </v-list-item-title>
@@ -35,7 +37,7 @@
               icon
               @click="panel= !panel"
           >
-            <v-icon>mdi-chevron-{{panel ? 'up' : 'down'}}</v-icon>
+            <v-icon>mdi-chevron-{{ panel ? 'up' : 'down' }}</v-icon>
           </v-btn>
         </v-list-item-action-text>
       </v-list-item>
@@ -92,7 +94,9 @@
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">Lugar Encuesta</v-list-item-subtitle>
                         <v-list-item-title><h6 class="mb-0">{{ tamizaje.infoviajero.lugar }}</h6></v-list-item-title>
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">
-                          {{ tamizaje.infoviajero.municipio_de_control ? `${tamizaje.infoviajero.municipio_de_control.nombre}, ${tamizaje.infoviajero.municipio_de_control.departamento.nombre}` : '' }}
+                          {{
+                            tamizaje.infoviajero.municipio_de_control ? `${tamizaje.infoviajero.municipio_de_control.nombre}, ${tamizaje.infoviajero.municipio_de_control.departamento.nombre}` : ''
+                          }}
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
@@ -105,14 +109,17 @@
                         @click="click = null"
                     >
                       <v-list-item-avatar class="my-1">
-                        <v-icon :color="tamizaje.grupo_atencion_especial_id === 1 ? 'cyan darken-2' : 'orange darken-1'">
+                        <v-icon
+                            :color="tamizaje.grupo_atencion_especial_id === 1 ? 'cyan darken-2' : 'orange darken-1'">
                           {{ tamizaje.grupo_atencion_especial_id === 1 ? 'mdi-account-switch' : 'mdi-alert' }}
                         </v-icon>
                       </v-list-item-avatar>
                       <v-list-item-content class="pa-0">
                         <v-list-item-subtitle class="grey--text fs-12 fw-normal">Grupo de atención especial
                         </v-list-item-subtitle>
-                        <v-list-item-title><h6 class="mb-0 text-justify">{{ tamizaje.grupo_atencion_especial.nombre }}</h6>
+                        <v-list-item-title><h6 class="mb-0 text-justify">{{
+                            tamizaje.grupo_atencion_especial.nombre
+                          }}</h6>
                         </v-list-item-title>
                         <v-list-item-subtitle class="orange--text fs-12 fw-normal"
                                               v-if="tamizaje.grupo_atencion_especial_id !== 1">Según el instructivo del
@@ -156,7 +163,10 @@
                         </v-list-item-avatar>
                         <v-list-item-content class="pa-0">
                           <v-list-item-title><h6 class="mb-0 text-justify">{{ item.body }}</h6></v-list-item-title>
-                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{ item.label }}</v-list-item-subtitle>
+                          <v-list-item-subtitle class="grey--text fs-12 fw-normal">{{
+                              item.label
+                            }}
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                     </template>
@@ -168,11 +178,13 @@
                       <v-card-title>
                         <span class="title">Síntomas</span>
                       </v-card-title>
-                      <v-card-text class="text-center" v-if="!tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha).length">
+                      <v-card-text class="text-center"
+                                   v-if="!tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha).length">
                         No registra síntomas
                       </v-card-text>
                       <v-card-text v-else>
-                        <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha)">
+                        <template
+                            v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && x.solicita_fecha)">
                           <v-chip label class="mr-2 mb-2 white--text" color="indigo" :key="`chip${indexChip}`">
                             {{ chip.descripcion }}
                           </v-chip>
@@ -193,8 +205,10 @@
                         No registra signos de alarma
                       </v-card-text>
                       <v-card-text v-else>
-                        <template v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && !x.solicita_fecha)">
-                          <v-chip label class="mr-2 mb-2 white--text" color="cyan darken-4" :key="`chipSigno${indexChip}`">
+                        <template
+                            v-for="(chip, indexChip) in tamizaje.sintomas.filter(x => x.aplica_covid && !x.solicita_fecha)">
+                          <v-chip label class="mr-2 mb-2 white--text" color="cyan darken-4"
+                                  :key="`chipSigno${indexChip}`">
                             {{ chip.descripcion }}
                           </v-chip>
                         </template>
@@ -242,7 +256,8 @@
                     </v-col>
                     <v-col cols="12" sm="12" md="4">
                       <v-list two-line class="notification-wrap">
-                        <v-list-item style="border-bottom: none !important;" v-if="tamizaje.saturacion_oxigeno !== null">
+                        <v-list-item style="border-bottom: none !important;"
+                                     v-if="tamizaje.saturacion_oxigeno !== null">
                           <v-list-item-avatar class="my-1 align-self-center">
                             <v-icon color="purple">fas fa-tachometer-alt</v-icon>
                           </v-list-item-avatar>
@@ -300,7 +315,9 @@
                                         <v-tooltip v-if="iconosMedios && tamizaje.infoviajero.transporte_llegada" top>
                                             <template v-slot:activator="{on}">
                                                 <v-icon color="primary" v-on="on">
-                                                    {{ iconosMedios.find(x => x.key === tamizaje.infoviajero.transporte_llegada).icon }}
+                                                    {{
+                                                    iconosMedios.find(x => x.key === tamizaje.infoviajero.transporte_llegada).icon
+                                                  }}
                                                 </v-icon>
                                             </template>
                                             <span>{{ tamizaje.infoviajero.transporte_llegada }}</span>
@@ -316,7 +333,9 @@
                           }}
                                     </span>
                         <span class="d-block">
-                                        {{ [(tamizaje.infoviajero.transporte_llegada === 'Aereo' ? tamizaje.infoviajero.numero_vuelo ? `Número vuelo: ${tamizaje.infoviajero.numero_vuelo}` : null : null), tamizaje.infoviajero.placa ? `Placa: ${tamizaje.infoviajero.placa}` : null, tamizaje.infoviajero.empresa ? `Empresa: ${tamizaje.infoviajero.empresa}` : null].filter(x => x).join(', ') }}
+                                        {{
+                            [(tamizaje.infoviajero.transporte_llegada === 'Aereo' ? tamizaje.infoviajero.numero_vuelo ? `Número vuelo: ${tamizaje.infoviajero.numero_vuelo}` : null : null), tamizaje.infoviajero.placa ? `Placa: ${tamizaje.infoviajero.placa}` : null, tamizaje.infoviajero.empresa ? `Empresa: ${tamizaje.infoviajero.empresa}` : null].filter(x => x).join(', ')
+                          }}
                                     </span>
                       </v-col>
                       <v-col class="text-center" cols="12" sm="6">
@@ -325,7 +344,9 @@
                                         <v-tooltip v-if="iconosMedios && tamizaje.infoviajero.transporte_destino" top>
                                             <template v-slot:activator="{on}">
                                                 <v-icon color="primary" v-on="on">
-                                                    {{ iconosMedios.find(x => x.key === tamizaje.infoviajero.transporte_destino).icon }}
+                                                    {{
+                                                    iconosMedios.find(x => x.key === tamizaje.infoviajero.transporte_destino).icon
+                                                  }}
                                                 </v-icon>
                                             </template>
                                             <span>{{ tamizaje.infoviajero.transporte_destino }}</span>
@@ -352,7 +373,8 @@
                         <v-icon color="red">mdi-file-cancel</v-icon>
                       </v-list-item-avatar>
                       <v-list-item-content class="pa-0">
-                        <v-list-item-title><h6 class="mb-0">El paciente no diligencia la Encuesta de Riesgo Poblacional</h6></v-list-item-title>
+                        <v-list-item-title><h6 class="mb-0">El paciente no diligencia la Encuesta de Riesgo
+                          Poblacional</h6></v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -384,6 +406,15 @@
                     <p class="fs-12 mb-0 fw-normal">{{ tamizaje.observaciones }}</p>
                   </v-list-item-content>
                 </v-list-item>
+              </v-list>
+            </v-col>
+            <v-col cols="12" v-if="tamizaje.soporte_rastreo">
+              <v-list two-line class="notification-wrap">
+                <c-input-file
+                    detail
+                    label="Formato de rastreo de campo"
+                    v-model="tamizaje.soporte_rastreo"
+                />
               </v-list>
             </v-col>
             <v-col cols="12" v-if="tamizaje.user">
