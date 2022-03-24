@@ -67,6 +67,7 @@ import CChipFilters from 'Components/Inputs/CChipFilters'
 import CFile from 'Components/Inputs/CFile'
 import OptionsButtons from 'Components/Inputs/OptionsButtons'
 import CCard from 'Components/Inputs/CCard'
+import CInputFile from 'Components/Inputs/CInputFile'
 
 import IconTooltip from 'Components/Inputs/IconTooltip'
 
@@ -126,6 +127,8 @@ const GlobalComponents = {
       Vue.component('CFile', CFile)
       Vue.component('OptionsButtons', OptionsButtons)
       Vue.component('CCard', CCard)
+      Vue.component('CInputFile', CInputFile)
+
       //Iconos SVG
       Vue.component('IconBase', IconBase)
       Vue.component('Autopsia', Autopsia)
