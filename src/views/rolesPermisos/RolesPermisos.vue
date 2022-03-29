@@ -1,8 +1,14 @@
 <template>
-  <v-container fluid class="grid-list-md">
+  <v-container
+      fluid
+      class="grid-list-md"
+  >
     <page-title-bar title="Roles y Permisos">
       <template slot="actions">
-        <v-btn color="primary" @click="createRol">
+        <v-btn
+            color="primary"
+            @click="createRol"
+        >
           <v-icon left>mdi-plus</v-icon>
           Crear Rol
         </v-btn>
@@ -21,13 +27,22 @@
               </tr>
               </thead>
               <tbody v-if="rolesD && rolesD.roles.length">
-              <tr v-for="rol in rolesD.roles" :key="rol.id">
+              <tr
+                  v-for="rol in rolesD.roles"
+                  :key="rol.id"
+              >
                 <td>{{ rol.id }}</td>
                 <td>{{ rol.nombre }}</td>
                 <td>
                   <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                      <v-btn small icon v-on="on" color="warning" @click.stop="editRol(rol)">
+                      <v-btn
+                          small
+                          icon
+                          v-on="on"
+                          color="warning"
+                          @click.stop="editRol(rol)"
+                      >
                         <v-icon>fas fa-edit</v-icon>
                       </v-btn>
                     </template>
@@ -41,8 +56,8 @@
           <form-rol
               ref="formRol"
               @refreshTable="getRoles"
-          ></form-rol>
-          <app-section-loader :status="loading"></app-section-loader>
+          />
+          <app-section-loader :status="loading" />
         </v-card>
       </v-col>
     </v-row>
@@ -88,7 +103,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
