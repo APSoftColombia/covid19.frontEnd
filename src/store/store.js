@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-// import VuexPersistence from 'vuex-persist'
 
 // modules
 import auth from './modules/auth'
@@ -50,7 +49,6 @@ export const store = new Vuex.Store({
         laboratorioSaludPublica,
         atencionMedicaRCVModule
     },
-    // plugins: [new VuexPersistence().plugin]
     plugins: [createPersistedState({
         paths: ['general', 'encuestas', 'formularios', 'cDataRows', 'centroReguladorPersist']
     })]

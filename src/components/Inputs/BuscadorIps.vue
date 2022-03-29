@@ -1,5 +1,9 @@
 <template>
-  <ValidationProvider :name="name" :rules="rules" v-slot="{ errors }">
+  <ValidationProvider
+      :name="name"
+      :rules="rules"
+      v-slot="{ errors }"
+  >
     <v-autocomplete
         :label="label"
         v-model="ips"
@@ -18,13 +22,16 @@
         @change="val => $emit('change', val)"
     >
       <template v-slot:selection="data">
-        <v-list-item class="pa-0" style="width: 100% !important;">
+        <v-list-item
+            class="pa-0"
+            style="width: 100% !important;"
+        >
           <v-list-item-content class="pa-0">
             <v-list-item-title class="body-2 text-truncate">
               {{ data.item.nombre }}
             </v-list-item-title>
-            <v-list-item-subtitle class="caption text-truncate">Código de
-              Habilitación:{{ data.item.codigohabilitacion }}
+            <v-list-item-subtitle class="caption text-truncate">
+              Código de Habilitación:{{ data.item.codigohabilitacion }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -36,12 +43,12 @@
               <v-list-item-title class="body-2">
                 {{ data.item.nombre }}
               </v-list-item-title>
-              <v-list-item-subtitle class="caption">Código de
-                Habilitación:{{ data.item.codigohabilitacion }}
+              <v-list-item-subtitle class="caption">
+                Código de Habilitación:{{ data.item.codigohabilitacion }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-divider class="ma-0"></v-divider>
+          <v-divider class="ma-0" />
         </div>
       </template>
     </v-autocomplete>
@@ -121,7 +128,3 @@ name: 'BuscadorIps',
   }
 }
 </script>
-
-<style scoped>
-
-</style>

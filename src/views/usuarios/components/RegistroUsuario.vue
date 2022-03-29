@@ -1,23 +1,51 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="720">
+  <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="720"
+  >
     <v-card>
-      <ValidationObserver ref="formUsuario" v-slot="{ invalid, validated, passes, validate }" tag="form"
-                          autocomplete="off" @submit.prevent="submitUsuario">
+      <ValidationObserver
+          ref="formUsuario"
+          v-slot="{ invalid, validated, passes, validate }"
+          tag="form"
+          autocomplete="off"
+          @submit.prevent="submitUsuario"
+      >
         <v-card-title class="headline">
-          <v-avatar size="38" color="blue" class="mr-2">
+          <v-avatar
+              size="38"
+              color="blue"
+              class="mr-2"
+          >
             <v-icon class="white--text">mdi-account-plus</v-icon>
           </v-avatar>
           {{ usuario && usuario.id ? 'Edición de Usuario' : 'Nuevo Usuario' }}
-          <v-spacer></v-spacer>
-          <v-btn text icon @click="dialog = false">
+          <v-spacer />
+          <v-btn
+              text
+              icon
+              @click="dialog = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
-        <v-divider class="ma-0 pa-0"></v-divider>
-        <v-container fluid class="grid-list-md py-2">
+        <v-divider class="ma-0 pa-0" />
+        <v-container
+            fluid
+            class="grid-list-md py-2"
+        >
           <v-row>
-            <v-col class="pb-0" cols="12" sm="6">
-              <ValidationProvider name="tipo identificación" rules="required" v-slot="{ errors, valid }">
+            <v-col
+                class="pb-0"
+                cols="12"
+                sm="6"
+            >
+              <ValidationProvider
+                  name="tipo identificación"
+                  rules="required"
+                  v-slot="{ errors, valid }"
+              >
                 <v-autocomplete
                     v-model="usuario.tipo_documento_identidad_id"
                     :label="(usuario.tipo_documento_identidad_id ? 'T' : 'Seleccionar t') + 'ipo identificación'"
@@ -27,67 +55,106 @@
                     :error-messages="errors"
                     outlined
                     dense
-                ></v-autocomplete>
+                />
               </ValidationProvider>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="6">
-              <ValidationProvider name="identificación" rules="required" v-slot="{ errors, valid }">
+            <v-col
+                class="pb-0"
+                cols="12"
+                sm="6"
+            >
+              <ValidationProvider
+                  name="identificación"
+                  rules="required"
+                  v-slot="{ errors, valid }"
+              >
                 <v-text-field
                     v-model="usuario.numero_documento_identidad"
                     label="Identificación"
                     :error-messages="errors"
                     outlined
                     dense
-                ></v-text-field>
+                />
               </ValidationProvider>
             </v-col>
-            <v-col class="pb-0" cols="12">
-              <ValidationProvider name="nombre completo" rules="required" v-slot="{ errors, valid }">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
+              <ValidationProvider
+                  name="nombre completo"
+                  rules="required"
+                  v-slot="{ errors, valid }"
+              >
                 <v-text-field
                     v-model="usuario.name"
                     label="Nombre completo"
                     :error-messages="errors"
                     outlined
                     dense
-                ></v-text-field>
+                />
               </ValidationProvider>
             </v-col>
-            <v-col class="pb-0" cols="12" sm="12">
-              <ValidationProvider name="correo electrónico" rules="required|email" v-slot="{ errors, valid }">
+            <v-col
+                class="pb-0"
+                cols="12"
+                sm="12"
+            >
+              <ValidationProvider
+                  name="correo electrónico"
+                  rules="required|email"
+                  v-slot="{ errors, valid }"
+              >
                 <v-text-field
                     v-model="usuario.email"
                     label="Correo Electrónico"
                     :error-messages="errors"
                     outlined
                     dense
-                ></v-text-field>
+                />
               </ValidationProvider>
             </v-col>
             <template>
-              <v-col class="pb-0" cols="6">
-                <ValidationProvider name="nombre de usuario" :rules="datosEmpresa && datosEmpresa.to_login === 'username' ? 'required' : ''" v-slot="{ errors, valid }">
+              <v-col
+                  class="pb-0"
+                  cols="6"
+              >
+                <ValidationProvider
+                    name="nombre de usuario"
+                    :rules="datosEmpresa && datosEmpresa.to_login === 'username' ? 'required' : ''"
+                    v-slot="{ errors, valid }"
+                >
                   <v-text-field
                       v-model="usuario.username"
                       label="Nombre de Usuario"
                       :error-messages="errors"
                       outlined
                       dense
-                  ></v-text-field>
+                  />
                 </ValidationProvider>
               </v-col>
             </template>
-            <v-col class="pb-0" cols="6">
+            <v-col
+                class="pb-0"
+                cols="6"
+            >
               <c-date
                   name="fecha vencimiento contrado"
                   v-model="usuario.expiry_date"
                   label="Fecha vencimiento contrato"
-              ></c-date>
+              />
             </v-col>
             <template v-if="usuario.id === null">
-              <v-col class="pb-0" cols="12" sm="6">
-                <ValidationProvider name="Contraseña"
-                                    :rules="{minlength:8, required: true, regex:usuario.password}"
-                                    v-slot="{ errors, valid }">
+              <v-col
+                  class="pb-0"
+                  cols="12"
+                  sm="6"
+              >
+                <ValidationProvider
+                    name="Contraseña"
+                    :rules="{minlength:8, required: true, regex:usuario.password}"
+                    v-slot="{ errors, valid }"
+                >
                   <v-text-field
                       v-model="usuario.password"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -98,45 +165,62 @@
                       :error-messages="errors"
                       :autocomplete="false"
                       @click:append="showPassword = !showPassword"
-                  ></v-text-field>
+                  />
                 </ValidationProvider>
               </v-col>
             </template>
-            <v-col class="pb-0" cols="12" sm="6">
+            <v-col
+                class="pb-0"
+                cols="12"
+                sm="6"
+            >
               <v-text-field
                   v-model="usuario.telefono"
                   label="Teléfono"
                   outlined
                   dense
-              ></v-text-field>
+              />
             </v-col>
-            <v-col class="pb-0" cols="12" sm="6">
+            <v-col
+                class="pb-0"
+                cols="12"
+                sm="6"
+            >
               <v-text-field
                   v-model="usuario.direccion"
                   label="Dirección"
                   outlined
                   dense
-              ></v-text-field>
+              />
             </v-col>
-            <v-col class="pb-0" cols="12" :sm="usuario.id !== null ? 12 : 6">
+            <v-col
+                class="pb-0"
+                cols="12"
+                :sm="usuario.id !== null ? 12 : 6"
+            >
               <c-date
                   v-model="usuario.fecha_nacimiento"
                   label="Fecha nacimiento"
                   :max="moment().format('YYYY-MM-DD')"
-              >
-              </c-date>
+              />
             </v-col>
-            <v-col class="pb-0" cols="12" v-if="autorizado">
+            <v-col
+                v-if="autorizado"
+                class="pb-0"
+                cols="12"
+            >
               <c-select-complete
-                v-model="usuario.tipo_cliente_id"
-                label="Tipo de cliente"
-                :items="tipo_clientes"
-                item-text="nombre"
-                item-value="id"
-              >
-              </c-select-complete>
+                  v-model="usuario.tipo_cliente_id"
+                  label="Tipo de cliente"
+                  :items="tipo_clientes"
+                  item-text="nombre"
+                  item-value="id"
+              />
             </v-col>
-            <v-col class="pb-0" cols="12">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <c-combo
                   label="Cargo"
                   v-model="usuario.cargo"
@@ -146,8 +230,15 @@
               />
             </v-col>
             <template v-if="usuario.cargo === 'MEDICO'">
-              <v-col class="pb-0" cols="12">
-                <ValidationProvider name="firma" rules="size:600" v-slot="{ errors, validate }">
+              <v-col
+                  class="pb-0"
+                  cols="12"
+              >
+                <ValidationProvider
+                    name="firma"
+                    rules="size:600"
+                    v-slot="{ errors, validate }"
+                >
                   <v-file-input
                       v-model="usuario.firmaFile"
                       :error-messages="errors"
@@ -163,16 +254,22 @@
                   />
                 </ValidationProvider>
               </v-col>
-              <v-col class="pb-0" cols="12">
+              <v-col
+                  class="pb-0"
+                  cols="12"
+              >
                 <v-text-field
                     v-model="usuario.registro_medico"
                     label="Registro Médico"
                     outlined
                     dense
-                ></v-text-field>
+                />
               </v-col>
             </template>
-            <v-col class="pb-0" cols="12">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <v-autocomplete
                   label="EPS"
                   v-model="usuario.eps_id"
@@ -186,7 +283,10 @@
                   :hint="usuario.eps_id && epss && epss.length && epss.find(x => x.id === usuario.eps_id) ? `Código: ${epss.find(x => x.id === usuario.eps_id).codigo}` : '' "
               >
                 <template v-slot:selection="{ item, index }">
-                  <div class="pa-0 text-truncate" style="width: 100% !important;">
+                  <div
+                      class="pa-0 text-truncate"
+                      style="width: 100% !important;"
+                  >
                     {{ item.nombre }}
                   </div>
                 </template>
@@ -200,15 +300,25 @@
                 </template>
               </v-autocomplete>
             </v-col>
-            <v-col class="pb-0" cols="12">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <buscador-ips
                   ref="buscadorips"
                   label="IPS"
                   v-model="usuario.cod_ips"
               />
             </v-col>
-            <v-col class="pb-0" cols="12">
-              <ValidationProvider name="roles" rules="required" v-slot="{ errors, valid }">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
+              <ValidationProvider
+                  name="roles"
+                  rules="required"
+                  v-slot="{ errors, valid }"
+              >
                 <v-autocomplete
                     v-model="usuario.roles"
                     :label="(usuario.roles && usuario.roles.length ? '' : 'Seleccionar ') + 'Roles'"
@@ -220,31 +330,34 @@
                     multiple
                     outlined
                     dense
-                ></v-autocomplete>
+                />
               </ValidationProvider>
             </v-col>
           </v-row>
         </v-container>
-        <v-divider class="ma-0 pa-0"></v-divider>
+        <v-divider class="ma-0 pa-0" />
         <v-card-actions>
           <v-btn @click="cancel">
             <v-icon left>mdi-close</v-icon>
             Cancelar
           </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn type="submit" color="primary">
+          <v-spacer />
+          <v-btn
+              type="submit"
+              color="primary"
+          >
             <v-icon left>fas fa-save</v-icon>
             Guardar
           </v-btn>
         </v-card-actions>
       </ValidationObserver>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading" />
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'RegistroUsuario',
@@ -309,9 +422,8 @@ export default {
         if (result) {
           this.loading = true
           this.usuario.eps_id = this.usuario.eps_id ? this.usuario.eps_id : null
-          // this.usuario.tipo_cliente_id = (!this.getUser.tipo_cliente_id || this.getUser.id === 1) ? this.usuario.tipo_cliente_id : this.getUser.tipo_cliente_id
           let usuarioD = this.clone(this.usuario)
-          if(this.usuario.firmaFile) {
+          if (this.usuario.firmaFile) {
             usuarioD.firmaFile = await new Promise((resolve, reject) => {
               const reader = new FileReader()
               reader.readAsDataURL(this.usuario.firmaFile)
@@ -394,7 +506,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

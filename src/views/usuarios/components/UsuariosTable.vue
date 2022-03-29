@@ -10,27 +10,29 @@
         @apply-filters="$refs"
     >
     </data-table>
-    <registro-usuario ref="dialogRegistroUsuario" @save="reloadTable"></registro-usuario>
+    <registro-usuario
+        ref="dialogRegistroUsuario"
+        @save="reloadTable"
+    />
     <dialog-password
         ref="confirmation"
         :heading="dialog.heading"
         :name="dialog.name"
         :loading="dialog.loading"
         @confirm="confirmResetPassword"
-    ></dialog-password>
+    />
   </v-card>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-//import PersonaItemTabla from "Components/Tamizaje/PersonaItemTabla";
+import {mapGetters} from 'vuex'
 const DialogPassword = () => import('Views/usuarios/components/ConfirmChangePassword')
 const RegistroUsuario = () => import('Views/usuarios/components/RegistroUsuario')
 export default {
-  name: "UsuariosTable",
+  name: 'UsuariosTable',
   data: (vm) => ({
     loading: false,
-    rutaBase: "user",
+    rutaBase: 'user',
     dataTable: {
       advanceFilters: false,
       buttonZone: false,
@@ -211,7 +213,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

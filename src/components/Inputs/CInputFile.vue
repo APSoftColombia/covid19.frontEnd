@@ -1,5 +1,8 @@
 <template>
-  <v-list-item v-if="detail" @click="click = false">
+  <v-list-item
+      v-if="detail"
+      @click="click = false"
+  >
     <v-list-item-avatar size="38">
       <v-icon color="primary">{{icon}}</v-icon>
     </v-list-item-avatar>

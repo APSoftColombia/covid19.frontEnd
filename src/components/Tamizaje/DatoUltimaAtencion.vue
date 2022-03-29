@@ -14,22 +14,18 @@
 </template>
 
 <script>
-    export default {
-        name: 'DatoUltimaAtencion',
-        props: {
-            tamizaje: {
-                type: Object,
-                Default: null
-            }
-        },
-      computed: {
-          diferencia() {
-            return this.moment().diff(this.moment(this.tamizaje.ultimo_seguimiento || this.tamizaje.created_at), 'hours')
-          }
-      }
+export default {
+  name: 'DatoUltimaAtencion',
+  props: {
+    tamizaje: {
+      type: Object,
+      Default: null
     }
+  },
+  computed: {
+    diferencia() {
+      return this.moment().diff(this.moment(this.tamizaje.ultimo_seguimiento || this.tamizaje.created_at), 'hours')
+    }
+  }
+}
 </script>
-
-<style scoped>
-
-</style>

@@ -1,5 +1,9 @@
 <template>
-  <ValidationProvider :name="name" :rules="rules" v-slot="{ errors }">
+  <ValidationProvider
+      :name="name"
+      :rules="rules"
+      v-slot="{ errors }"
+  >
     <v-autocomplete
         :label="label"
         v-model="item"
@@ -27,18 +31,22 @@
                 {{ data.item.codigohabilitacion }} | {{ data.item.nombre }}
               </v-list-item-title>
               <v-list-item-subtitle class="caption">
-                {{
-                  [data.item.direccion, data.item.nomdepto, data.item.nompio].filter(x => x).join(', ')
-                }}
+                {{ [data.item.direccion, data.item.nomdepto, data.item.nompio].filter(x => x).join(', ') }}
               </v-list-item-subtitle>
               <v-list-item-subtitle class="caption">
                 {{
-                  [data.item.telefono ? `Tel.${data.item.telefono}` : null, data.item.email ? `Email:${data.item.email}` : null].filter(x => x).join(' | ')
+                  [data.item.telefono
+                      ? `Tel.${data.item.telefono}`
+                      : null,
+                    data.item.email
+                        ? `Email:${data.item.email}`
+                        : null
+                  ].filter(x => x).join(' | ')
                 }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-divider class="ma-0"></v-divider>
+          <v-divider class="ma-0" />
         </div>
       </template>
     </v-autocomplete>
@@ -106,7 +114,9 @@ export default {
   },
   computed: {
     seleccionado() {
-      return this.item && this.codigos && this.codigos.find(x => x[this.itemValue] === this.item) ? this.codigos.find(x => x[this.itemValue] === this.item) : null
+      return this.item && this.codigos?.find(x => x[this.itemValue] === this.item)
+          ? this.codigos.find(x => x[this.itemValue] === this.item)
+          : null
     }
   },
   methods: {
@@ -122,14 +132,14 @@ export default {
               this.itemLoading = false
             }).catch(e => {
           this.itemLoading = false
-          this.$store.commit('snackbar', {color: 'error', message: `al realizar la busqueda de registros IPS.`, error: e})
+          this.$store.commit('snackbar', {
+            color: 'error',
+            message: `al realizar la busqueda de registros IPS.`,
+            error: e
+          })
         })
       }
     }, 500)
   }
 }
 </script>
-
-<style scoped>
-
-</style>

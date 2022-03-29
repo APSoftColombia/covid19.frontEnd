@@ -1,5 +1,10 @@
 <template>
-  <ValidationProvider :name="name" :vid="vid" :rules="rules" v-slot="{ errors, valid }">
+  <ValidationProvider
+      :name="name"
+      :vid="vid"
+      :rules="rules"
+      v-slot="{ errors, valid }"
+  >
     <v-text-field
         v-model.number="model"
         type="number"
@@ -105,7 +110,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

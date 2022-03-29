@@ -66,11 +66,11 @@ export default {
     text: ''
   }),
   methods: {
-    save () {
+    save() {
       this.loading = true
       this.$emit('save')
     },
-    close () {
+    close() {
       this.dialog = false
       this.$emit('close')
       setTimeout(() => {
@@ -78,7 +78,7 @@ export default {
         this.text = ''
       }, 400)
     },
-    open (text) {
+    open(text) {
       this.text = text
       this.dialog = true
     }

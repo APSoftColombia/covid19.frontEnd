@@ -1,5 +1,9 @@
 <template>
-  <ValidationProvider :name="name" :rules="rules" v-slot="{ errors, valid }">
+  <ValidationProvider
+      :name="name"
+      :rules="rules"
+      v-slot="{ errors, valid }"
+  >
     <v-textarea
         :class="upperCase ? 'c-upper-case' : lowerCase ? 'c-lower-case' : null"
         v-model="model"
@@ -18,7 +22,7 @@
         @blur="changeCase"
         :hide-details="hideDetails"
         :no-resize="noResize"
-    ></v-textarea>
+    />
   </ValidationProvider>
 </template>
 

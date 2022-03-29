@@ -1,5 +1,10 @@
 <template>
-  <ValidationProvider :name="name" :vid="vid" :rules="rules" v-slot="{ errors, valid }">
+  <ValidationProvider
+      :name="name"
+      :vid="vid"
+      :rules="rules"
+      v-slot="{ errors, valid }"
+  >
     <v-combobox
         v-model="model"
         :items="items"
@@ -11,16 +16,19 @@
         :outlined="outlined"
         :dense="dense"
     >
-      <template v-slot:selection="data" v-if="multiple">
+      <template
+          v-if="multiple"
+          v-slot:selection="data"
+      >
         <v-chip
             :key="JSON.stringify(data.item)"
             v-bind="data.attrs"
             :input-value="data.selected"
             :disabled="data.disabled"
-            @click:close="data.parent.selectItem(data.item)"
+            color="accent"
             label
             small
-            color="accent"
+            @click:close="data.parent.selectItem(data.item)"
         >
           {{ data.item }}
         </v-chip>
@@ -109,7 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
