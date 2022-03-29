@@ -3,24 +3,40 @@
       v-model="dialog"
       fullscreen
       hide-overlay
-      transition="dialog-bottom-transition"
       persistent
+      transition="dialog-bottom-transition"
   >
     <v-card tile>
-      <v-toolbar dark color="primary">
+      <v-toolbar
+          dark
+          color="primary"
+      >
         <v-icon left>fas fa-microscope</v-icon>
         <v-toolbar-title>
           {{ estudio && estudio.id ? `Estudio No. ${estudio.id}` : 'Nuevo Estudio' }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="close">
+        <v-btn
+            icon
+            dark
+            @click="close"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-container>
-        <v-row no-gutters dense>
-          <v-col md="6" offset-md="3">
-            <ValidationObserver ref="formEstudio" v-slot="{ invalid, validated, passes, validate }">
+        <v-row
+            no-gutters
+            dense
+        >
+          <v-col
+              md="6"
+              offset-md="3"
+          >
+            <ValidationObserver
+                ref="formEstudio"
+                v-slot="{ invalid, validated, passes, validate }"
+            >
               <v-row v-if="estudio">
                 <v-col
                     v-if="!estudio.afiliado_id && identificacionVerificada"
@@ -33,7 +49,7 @@
                       color="orange"
                       icon="mdi-alert-circle"
                   >
-                    No se encuentra información para el documento número {{estudio.identificacion}}
+                    No se encuentra información para el documento número {{ estudio.identificacion }}
                   </v-alert>
                 </v-col>
                 <v-col cols="12">
@@ -42,7 +58,12 @@
                     Información del paciente
                   </span>
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-identificacion-estudio
                       ref="cIdentificacionEstudio"
                       v-model="estudio.identificacion"
@@ -53,7 +74,12 @@
                       @keyup="identificacionVerificada = 0"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-select-complete
                       v-model="estudio.tipo_identificacion"
                       label="Tipo identificación"
@@ -65,7 +91,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.nombre1"
                       label="Primer nombre"
@@ -75,7 +106,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.nombre2"
                       label="Segundo nombre"
@@ -83,7 +119,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.apellido1"
                       label="Primer apellido"
@@ -93,7 +134,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.apellido2"
                       label="Segundo apellido"
@@ -101,7 +147,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-date
                       v-model="estudio.fecha_nacimiento"
                       label="Fecha nacimiento"
@@ -112,7 +163,12 @@
                       :max="moment().format('YYYY-MM-DD')"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="6" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="6"
+                    md="6"
+                >
                   <c-select-complete
                       v-model="estudio.sexo"
                       label="Sexo"
@@ -124,7 +180,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.celular"
                       label="Celular Principal"
@@ -133,7 +194,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="6"
+                >
                   <c-texto
                       v-model="estudio.celular2"
                       label="Celular Opcional"
@@ -142,7 +208,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="12">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="12"
+                >
                   <c-texto
                       v-model="estudio.email"
                       label="Email"
@@ -152,7 +223,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="12">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="12"
+                >
                   <c-texto
                       v-model="estudio.acudiente"
                       label="Acudiente"
@@ -162,7 +238,10 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                >
                   <c-texto
                       v-model="estudio.direccion"
                       label="Dirección"
@@ -172,7 +251,12 @@
                       :disabled="identificacionVerificada < 1"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="6"
+                >
                   <c-select-complete
                       v-model="estudio.departamento_id"
                       label="Departamento"
@@ -185,7 +269,12 @@
                       @change="val => estudio.municipio_id = departamentos.find(x => x.id === val).municipios.find(z => z.id === estudio.municipio_id) ? estudio.municipio_id : null"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="6"
+                >
                   <c-select-complete
                       :disabled="!estudio.departamento_id || identificacionVerificada < 1"
                       v-model="estudio.municipio_id"
@@ -197,7 +286,12 @@
                       item-value="id"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12" sm="12" md="6">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                    sm="12"
+                    md="6"
+                >
                   <c-select-complete
                       :disabled="!estudio.municipio_id || identificacionVerificada < 1"
                       v-model="estudio.barrio_id"
@@ -208,7 +302,10 @@
                       item-value="id"
                   />
                 </v-col>
-                <v-col class="pb-0" cols="12">
+                <v-col
+                    class="pb-0"
+                    cols="12"
+                >
                   <c-select-complete
                       v-model="estudio.tipo_poblacion"
                       label="Tipo población"
@@ -219,7 +316,12 @@
                   />
                 </v-col>
                 <template v-if="estudio.tipo_poblacion === 'Población Asegurada'">
-                  <v-col class="pb-0" cols="12" sm="12" md="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                      sm="12"
+                      md="12"
+                  >
                     <c-select-complete
                         v-model="estudio.eps_id"
                         label="¿A que EPS está afiliado?"
@@ -232,7 +334,12 @@
                     />
                   </v-col>
                   <template v-if="estudio.eps_id">
-                    <v-col class="pb-0" cols="12" sm="12" md="6">
+                    <v-col
+                        class="pb-0"
+                        cols="12"
+                        sm="12"
+                        md="6"
+                    >
                       <c-select-complete
                           v-model="estudio.tipo_afiliacion"
                           label="Régimen"
@@ -242,7 +349,13 @@
                           :disabled="identificacionVerificada < 1"
                       />
                     </v-col>
-                    <v-col class="pb-0" cols="12" sm="12" md="6" v-if="estudio.tipo_afiliacion === 'Régimen Especial'">
+                    <v-col
+                        v-if="estudio.tipo_afiliacion === 'Régimen Especial'"
+                        class="pb-0"
+                        cols="12"
+                        sm="12"
+                        md="6"
+                    >
                       <c-select-complete
                           v-model="estudio.regimen_especial"
                           label="Régimen especial"
@@ -261,7 +374,10 @@
                     Datos del estudio
                   </span>
                   </v-col>
-                  <v-col class="pb-0" cols="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                  >
                     <buscador-ips-origen
                         label="Institución que envía la muestra"
                         v-model="estudio.institucion_muestra"
@@ -269,7 +385,10 @@
                         name="institución que envía la muestra"
                     />
                   </v-col>
-                  <v-col class="pb-0" cols="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                  >
                     <c-select-complete
                         v-model="estudio.justificacion"
                         label="Justificación del análisis"
@@ -278,7 +397,10 @@
                         :items="labspJustificaciones"
                     />
                   </v-col>
-                  <v-col class="pb-0" cols="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                  >
                     <c-select-complete
                         v-model="estudio.programa_id"
                         label="Programa"
@@ -289,7 +411,10 @@
                         :items="labspProgramas"
                     />
                   </v-col>
-                  <v-col class="pb-0" cols="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                  >
                     <c-select-complete
                         v-model="estudio.evento_id"
                         label="Evento"
@@ -300,7 +425,10 @@
                         :items="labspEventos"
                     />
                   </v-col>
-                  <v-col class="pb-0" cols="12">
+                  <v-col
+                      class="pb-0"
+                      cols="12"
+                  >
                     <c-select-complete
                         v-model="estudio.destino"
                         label="Institución Destino"
@@ -335,13 +463,18 @@
                               :key="`muestra${muestraIndex}`"
                           >
                             <v-list-item-content>
-                              <v-list-item-title>{{ labspTiposMuestras && labspTiposMuestras.length && muestra.tipo_muestra_id && labspTiposMuestras.find(x => x.id === muestra.tipo_muestra_id) ? labspTiposMuestras.find(x => x.id === muestra.tipo_muestra_id).descripcion : '' }}</v-list-item-title>
+                              <v-list-item-title>{{
+                                  labspTiposMuestras && labspTiposMuestras.length && muestra.tipo_muestra_id && labspTiposMuestras.find(x => x.id === muestra.tipo_muestra_id) ? labspTiposMuestras.find(x => x.id === muestra.tipo_muestra_id).descripcion : ''
+                                }}
+                              </v-list-item-title>
                               <v-list-item-subtitle>Estado Ingreso: {{ muestra.estado_ingreso }}</v-list-item-subtitle>
                               <v-list-item-subtitle>
                                 Temperatura: {{ muestra.temperatura }}
                                 <v-icon small>mdi-temperature-celsius</v-icon>
                               </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="muestra.fecha_muestra">Fecha: {{ moment(muestra.fecha_muestra).format('DD/MM/YYYY HH:mm') }}</v-list-item-subtitle>
+                              <v-list-item-subtitle v-if="muestra.fecha_muestra">
+                                Fecha: {{ moment(muestra.fecha_muestra).format('DD/MM/YYYY HH:mm') }}
+                              </v-list-item-subtitle>
                             </v-list-item-content>
                             <v-list-item-action>
                               <c-tooltip
@@ -386,7 +519,12 @@
                   Cerrar
                 </v-btn>
                 <v-spacer></v-spacer>
-                <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
+                <p
+                    class="caption error--text mb-0 mx-2"
+                    v-if="invalid && validated"
+                >
+                  Hay errores en el formulario
+                </p>
                 <p
                     v-if="identificacionVerificada === 0"
                     class="caption error--text mb-0 mx-2"
@@ -457,7 +595,7 @@ export default {
       'epss',
       'regimenesEspeciales',
       'tipoPoblaciones',
-        // del módulo
+      // del módulo
       'labspJustificaciones',
       'labspProgramas',
       'labspEventos',
@@ -479,7 +617,6 @@ export default {
     'estudio.municipio_id': {
       handler(val) {
         if (this.estudio && !this.enEdicion) {
-          console.log('municipio', val)
           this.estudio.barrio_id = null
           this.barrios = []
           if (val) {
@@ -527,20 +664,20 @@ export default {
     }
   },
   methods: {
-    crearMuestra () {
+    crearMuestra() {
       this.$refs.registroMuestra.open()
     },
-    editarMuestra (muestra) {
+    editarMuestra(muestra) {
       this.$refs.registroMuestra.open(muestra)
     },
-    async muestraGuardada (muestra) {
+    async muestraGuardada(muestra) {
       muestra.uuid = muestra.uuid ? muestra.uuid : this.$uuid.v1()
       muestra.estudio_id = this.estudio.id
       let muestraActual = this.estudio.muestras.findIndex(x => x.uuid === muestra.uuid)
       if (muestraActual > -1) await this.estudio.muestras.splice(muestraActual > -1 ? muestraActual : 0, muestraActual > -1 ? 1 : 0)
       this.estudio.muestras.push(muestra)
     },
-    open (item = null) {
+    open(item = null) {
       this.dialog = true
       this.loading = true
       if (item?.id) {
@@ -550,13 +687,13 @@ export default {
         this.loading = false
       }
     },
-    close () {
+    close() {
       this.dialog = false
       this.$refs.formEstudio.reset()
       this.estudio = null
       this.enEdicion = false
     },
-    guardarEstudio () {
+    guardarEstudio() {
       this.$refs.formEstudio.validate().then(async result => {
         if (result) {
           this.loading = true
@@ -578,7 +715,7 @@ export default {
         }
       })
     },
-    getEstudio (id) {
+    getEstudio(id) {
       this.loading = true
       this.enEdicion = true
       this.axios.get(`lab-estudios/${id}`)

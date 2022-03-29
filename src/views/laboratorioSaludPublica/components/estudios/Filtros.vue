@@ -1,47 +1,75 @@
 <template>
-  <v-row justify="end" fill-height>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+  <v-row
+      justify="end"
+      fill-height
+  >
+    <v-col
+        class="pb-0"
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-date-range
           v-model="filters.models.fechaEstudio"
           label="Fecha de Recepción"
           :max="moment().format('YYYY-MM-DD')"
       />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-        <c-select-complete
-            v-model="filters.models.estado_proceso"
-            label="Estado"
-            :items="labspEstadosProceso"
-            hide-details
-        />
+    <v-col
+        class="pb-0"
+        cols="12"
+        sm="6"
+        md="4"
+    >
+      <c-select-complete
+          v-model="filters.models.estado_proceso"
+          label="Estado"
+          :items="labspEstadosProceso"
+          hide-details
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
-        <c-select-complete
-            v-model="filters.models.tipo_afiliacion"
-            label="Tipo Afiliación"
-            :items="labspTiposAfiliacion"
-            hide-details
-        />
+    <v-col
+        class="pb-0"
+        cols="12"
+        sm="6"
+        md="4"
+    >
+      <c-select-complete
+          v-model="filters.models.tipo_afiliacion"
+          label="Tipo Afiliación"
+          :items="labspTiposAfiliacion"
+          hide-details
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="6">
-        <c-select-complete
-            v-model="filters.models.institucion_muestra"
-            label="IPS Origen Muestra"
-            :items="labspIpss"
-            item-text="nombre"
-            item-value="id"
-            hide-details
-        />
+    <v-col
+        class="pb-0"
+        cols="12"
+        sm="12"
+        md="6"
+    >
+      <c-select-complete
+          v-model="filters.models.institucion_muestra"
+          label="IPS Origen Muestra"
+          :items="labspIpss"
+          item-text="nombre"
+          item-value="id"
+          hide-details
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="6">
-        <c-select-complete
-            v-model="filters.models.eps_id"
-            label="EPS Paciente"
-            :items="labspEpss"
-            item-text="nombre"
-            item-value="id"
-            hide-details
-        />
+    <v-col
+        class="pb-0"
+        cols="12"
+        sm="6"
+        md="6"
+    >
+      <c-select-complete
+          v-model="filters.models.eps_id"
+          label="EPS Paciente"
+          :items="labspEpss"
+          item-text="nombre"
+          item-value="id"
+          hide-details
+      />
     </v-col>
   </v-row>
 </template>

@@ -11,14 +11,24 @@
           {{ muestra && muestra.id ? `Muestra No. ${muestra.id}` : 'Nueva Muestra' }}
         </v-toolbar-title>
         <v-spacer/>
-        <v-btn icon dark @click="close">
+        <v-btn
+            icon
+            dark
+            @click="close"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-container>
         <ValidationObserver ref="formMuestra">
-          <v-row dense v-if="muestra">
-            <v-col class="pb-0" cols="12">
+          <v-row
+              v-if="muestra"
+              dense
+          >
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <c-select-complete
                   v-model="muestra.tipo_muestra_id"
                   label="Tipo de Muestra"
@@ -29,7 +39,10 @@
                   :items="labspTiposMuestras"
               />
             </v-col>
-            <v-col class="pb-0" cols="12">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <c-number
                   placeholder="Temperatura"
                   v-model="muestra.temperatura"
@@ -39,7 +52,10 @@
                   min="0"
               />
             </v-col>
-            <v-col class="pb-0" cols="12">
+            <v-col
+                class="pb-0"
+                cols="12"
+            >
               <c-select-complete
                   v-model="muestra.estado_ingreso"
                   label="Estado de Ingreso"
@@ -65,7 +81,7 @@
           <v-icon>mdi-close</v-icon>
           Cerrar
         </v-btn>
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <v-btn
             large
             color="primary"
@@ -114,7 +130,7 @@ export default {
       this.$refs.formMuestra.reset()
       this.muestra = null
     },
-    guardarMuestra () {
+    guardarMuestra() {
       this.$refs.formMuestra.validate().then(async result => {
         if (result) {
           this.loading = true
@@ -124,20 +140,6 @@ export default {
             this.loading = false
             this.close()
           }, 500)
-          // let request = muestraCopia.id
-          //     ? this.axios.put(`lab-muestras/${muestraCopia.id}`, muestraCopia)
-          //     : this.axios.post(`lab-muestras`, muestraCopia)
-          //
-          // request
-          //     .then(response => {
-          //       this.$emit('guardado', response.data)
-          //       this.$store.commit('snackbar', {color: 'success', message: `La muestra se guardo correctamente.`})
-          //       this.close()
-          //     })
-          //     .catch(error => {
-          //       this.loading = false
-          //       this.$store.commit('snackbar', {color: 'error', message: `al guardar la muestra.`, error: error})
-          //     })
         }
       })
     }

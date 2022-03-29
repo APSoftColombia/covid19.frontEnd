@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Estudios" subtitle="Laboratorio departamental de salud pública">
+    <page-title-bar
+        title="Estudios"
+        subtitle="Laboratorio departamental de salud pública"
+    >
       <template slot="actions">
         <c-tooltip
             v-if="permisos.crear"
@@ -63,7 +66,10 @@
                   <persona-item :value="item"/>
                 </template>
                 <template v-slot:item.muestras="{ item }">
-                  <v-avatar color="green" class="white--text font-weight-bold font-lg">
+                  <v-avatar
+                      color="green"
+                      class="white--text font-weight-bold font-lg"
+                  >
                     {{ item.muestras.length }}
                   </v-avatar>
                 </template>

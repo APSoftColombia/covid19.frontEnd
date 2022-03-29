@@ -164,7 +164,6 @@ export default {
     store.dispatch('getDatosEmpresa').then(response => {
       if (response) {
         store.dispatch('getReloadFirebase')
-        store.dispatch('reloadOnline')
         store.dispatch('getAjustesGenerales')
         if (this.datosEmpresa.aps_activo === '1') {
           store.dispatch('getComplementosRCV')

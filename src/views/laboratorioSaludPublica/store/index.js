@@ -36,14 +36,14 @@ const getters = {
 // actions
 const actions = {
     getComplementosEstudiosLDSP(context) {
-        Vue.axios.get(`lab-complementos-estudios`)
+        Vue.axios.get('lab-complementos-estudios')
             .then(response => {
                 context.commit('assignComplementosEstudiosLDSP', response.data)
             })
             .catch(error => {
                 context.commit('snackbar', {
                     color: 'error',
-                    message: `al recuperar los complementos del módulo de Laboratorio de Salud Pública.`,
+                    message: 'al recuperar los complementos del módulo de Laboratorio de Salud Pública.',
                     error: error
                 })
             })
@@ -53,7 +53,6 @@ const actions = {
 // mutations
 const mutations = {
     assignComplementosEstudiosLDSP (state, complementos) {
-        console.log('complementos', complementos)
         state.labspDestinos = complementos.destinos
         state.labspEpss = complementos.epss
         state.labspEstadosProceso = complementos.estadosProceso

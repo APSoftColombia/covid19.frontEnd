@@ -7,7 +7,6 @@ const state = {
     loadingIndicadores: false,
     datosEmpresa: null,
     snackbar: null,
-    // onLine: window.navigator.onLine,
     onLine: true,
     divipol: [],
     divipolx: [],
@@ -513,14 +512,6 @@ const getters = {
 }
 // actions
 const actions = {
-    reloadOnline(context) {
-        fetch('https://google.com')
-            .then(response => {
-                context.commit('onLine', response.ok)
-            }).catch(() => {
-            context.commit('onLine', true)
-        })
-    },
     async getDatosEmpresa(context) {
         return await new Promise(resolve => {
             if (context.getters.onLine) {

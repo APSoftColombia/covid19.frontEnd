@@ -1,5 +1,8 @@
 <template>
-  <v-col cols="12" class="py-0">
+  <v-col
+      cols="12"
+      class="py-0"
+  >
     <c-chip-filters
         v-if="tags.estado_proceso"
         :text="tags.estado_proceso"

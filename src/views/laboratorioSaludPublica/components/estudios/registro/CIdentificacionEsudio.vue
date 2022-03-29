@@ -1,5 +1,9 @@
 <template>
-  <ValidationProvider :name="name" :rules="rules" v-slot="{ errors, valid }">
+  <ValidationProvider
+      :name="name"
+      :rules="rules"
+      v-slot="{ errors, valid }"
+  >
     <v-text-field
         ref="refIdentificacion"
         v-model="model"
@@ -16,7 +20,7 @@
         @keyup.enter="enter"
         :loading="loading"
         :hint="model ? !isMovil ? 'Enter para verificar' : 'Touch en lupa para verificar': ''"
-    ></v-text-field>
+    />
   </ValidationProvider>
 </template>
 
