@@ -1,10 +1,11 @@
 import Full from 'Container/Full'
+
 const Index = () => import('Views/importadores/views/Index')
 
 export default {
     path: '/',
     component: Full,
-    redirect: { name: 'Importadores' },
+    redirect: {name: 'Importadores'},
     children: [
         {
             name: 'Importadores',
