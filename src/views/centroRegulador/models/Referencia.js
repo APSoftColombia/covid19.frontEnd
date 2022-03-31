@@ -25,8 +25,10 @@ const Referencia = {
   codigo_cie10_ingreso: null,
   modservicio_id: 2,
   observaciones: null,
-  orden_medica_id: null,
-  historia_clinica_id: null,
+  orden_medica_uuid: null,
+  historia_clinica_uuid: null,
+  evolucion_diaria_uuid: null,
+  documentos_paciente_uuid: null,
   user_id: null,
   estado_id: null,
   codigo_cie10_egreso: null,
@@ -44,7 +46,11 @@ const Referencia = {
   edad: null,
   regimen_especial: null,
   medio_solicitud: null,
-  codigo_especialidad: null
+  codigo_especialidad: null,
+  orden_medica: null,
+  historia_clinica: null,
+  evolucion_diaria: null,
+  documentos_paciente: null
 }
 
 export default Referencia
