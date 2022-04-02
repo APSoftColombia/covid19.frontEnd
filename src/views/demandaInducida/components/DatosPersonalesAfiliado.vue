@@ -1,34 +1,47 @@
 <template>
-  <v-expansion-panels v-model="panel" multiple style="z-index: 0 !important;">
+  <v-expansion-panels
+      v-model="panel"
+      multiple style="z-index: 0 !important;"
+  >
     <v-expansion-panel>
       <v-expansion-panel-header class="py-1 pl-0">
         <v-list-item>
           <v-list-item-avatar>
-            <v-icon color="teal" large>{{ afiliado && afiliado.genero ? afiliado.genero  === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face': null }}</v-icon>
+            <v-icon
+                color="teal"
+                large
+            >
+              {{ afiliado && afiliado.genero ? afiliado.genero === 'F' ? 'mdi mdi-face-woman' : 'mdi mdi-face' : null }}
+            </v-icon>
           </v-list-item-avatar>
           <v-list-item-content class="pa-0">
             <v-list-item-title class="grey--text fs-12 fw-normal">
               <h4 class="ma-0">
-                {{ afiliado ? [afiliado.primer_nombre, afiliado.segundo_nombre, afiliado.primer_apellido, afiliado.segundo_apellido].filter(x => x).join(' ') : null}}
+                {{ afiliado ? [afiliado.primer_nombre, afiliado.segundo_nombre, afiliado.primer_apellido, afiliado.segundo_apellido].filter(x => x).join(' ') : null }}
               </h4>
             </v-list-item-title>
             <v-list-item-title>
               <h6 class="mb-0">
-              {{ afiliado ? afiliado.tipo_identificacion : null }}
-              {{ afiliado ? afiliado.numero_identificacion : null }}
+                {{ afiliado ? afiliado.tipo_identificacion : null }}
+                {{ afiliado ? afiliado.numero_identificacion : null }}
               </h6>
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{calculaEdad(afiliado && afiliado.fecha_nacimiento).stringDate}}
+              {{ calculaEdad(afiliado && afiliado.fecha_nacimiento).stringDate }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-divider class="ma-0"></v-divider>
+        <v-divider class="ma-0"/>
         <v-row no-gutters>
           <template v-for="(item, indexItem) in datos">
-            <v-col cols="12" :md="item.colmd" :lg="item.collg" :key="`col${indexItem}`">
+            <v-col
+                cols="12"
+                :md="item.colmd"
+                :lg="item.collg"
+                :key="`col${indexItem}`"
+            >
               <v-list two-line class="notification-wrap">
                 <v-list-item>
                   <v-list-item-avatar class="my-1">
@@ -146,7 +159,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

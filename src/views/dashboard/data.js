@@ -1,4 +1,4 @@
-import { ChartConfig } from "Constants/chart-config";
+import { ChartConfig } from 'Constants/chart-config'
 
 // New clients
 export const newClients = {

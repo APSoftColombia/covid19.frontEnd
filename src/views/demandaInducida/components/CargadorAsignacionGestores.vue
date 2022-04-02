@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="720">
+  <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="720"
+  >
     <template v-slot:activator="{onx}">
       <v-tooltip top>
         <template v-slot:activator="{on}">
@@ -19,8 +23,16 @@
     <v-card>
       <v-card-title class="headline">Carga masiva para Asignacion de registros a Gestores</v-card-title>
       <v-card-text>
-        <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-          <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
+        <ValidationObserver
+            ref="formArchivo"
+            v-slot="{ invalid, validated, passes, validate }"
+            autocomplete="off"
+        >
+          <ValidationProvider
+              name="archivo"
+              rules="required"
+              v-slot="{ errors, valid }"
+          >
             <v-file-input
                 v-model="archivo"
                 placeholder="Archivo"
@@ -33,10 +45,24 @@
                 :error-messages="errors"
             >
               <template v-slot:append-outer>
-                <v-btn x-large color="green darken-1" v-if="$vuetify.breakpoint.xsOnly" icon @click="cargarArchivo" style="top: -4px !important;">
+                <v-btn
+                    v-if="$vuetify.breakpoint.xsOnly"
+                    icon
+                    x-large
+                    color="green darken-1"
+                    @click="cargarArchivo"
+                    style="top: -4px !important;"
+                >
                   <v-icon>mdi-file-upload</v-icon>
                 </v-btn>
-                <v-btn v-else large color="green darken-1" text @click="cargarArchivo" style="top: -10px !important;">
+                <v-btn
+                    v-else
+                    large
+                    text
+                    color="green darken-1"
+                    @click="cargarArchivo"
+                    style="top: -10px !important;"
+                >
                   <v-icon left large>mdi-file-upload</v-icon>
                   Cargar Archivo
                 </v-btn>
@@ -48,7 +74,12 @@
       <v-expand-transition>
         <v-card-text v-if="errores && errores.length">
           <v-row class="headline justify-center">
-            <v-icon color="orange" left>mdi-alert</v-icon>
+            <v-icon
+                color="orange"
+                left
+            >
+              mdi-alert
+            </v-icon>
             Errores en el archivo
           </v-row>
           <v-row>
@@ -60,27 +91,28 @@
                     @click="hover = true"
                 >
                   <v-list-item-avatar class="ma-0">
-                    <span>{{indexError + 1}}</span>
+                    <span>{{ indexError + 1 }}</span>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title v-text="error"></v-list-item-title>
+                    <v-list-item-title v-text="error"/>
                   </v-list-item-content>
-                  <!--                                <v-list-item-action>-->
-                  <!--                                    <v-btn icon>-->
-                  <!--                                        <v-icon color="grey lighten-1">mdi-information</v-icon>-->
-                  <!--                                    </v-btn>-->
-                  <!--                                </v-list-item-action>-->
                 </v-list-item>
               </v-list>
             </v-col>
           </v-row>
         </v-card-text>
       </v-expand-transition>
-      <v-divider class="pa-0 ma-0"></v-divider>
+      <v-divider class="pa-0 ma-0"/>
       <v-card-actions class="justify-center">
-        <v-btn block text @click="close">Cerrar</v-btn>
+        <v-btn
+            block
+            text
+            @click="close"
+        >
+          Cerrar
+        </v-btn>
       </v-card-actions>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
 </template>
@@ -97,38 +129,39 @@ export default {
   }),
   watch: {
     'archivo': {
-      handler () {
+      handler() {
         this.errores = []
       },
       immediate: false
     }
   },
   methods: {
-    cargarArchivo () {
+    cargarArchivo() {
       this.$refs.formArchivo.validate().then(result => {
         if (result) {
           this.errores = []
           this.loading = true
           let data = new FormData()
           data.append('archivo', this.archivo)
-          this.axios.post(`asignacion-gestores`, data)
-              .then(response => {
-                console.log('response', response)
-                this.$store.commit('snackbar', {color: 'success', message: `Asignacion de registros a gestores exitosa`})
+          this.axios.post('asignacion-gestores', data)
+              .then(() => {
+                this.$store.commit('snackbar', {
+                  color: 'success',
+                  message: 'Asignacion de registros a gestores exitosa'
+                })
                 this.close()
               })
               .catch(error => {
-                console.log('error', error)
                 if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
                   this.errores = error.response.data.errors
                 }
                 this.loading = false
-                this.$store.commit('snackbar', {color: 'error', message: `al procesar el archivo.`, error: error})
+                this.$store.commit('snackbar', {color: 'error', message: 'al procesar el archivo.', error: error})
               })
         }
       })
     },
-    close () {
+    close() {
       this.$refs.formArchivo.reset()
       this.errores = []
       this.dialog = false
@@ -138,7 +171,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

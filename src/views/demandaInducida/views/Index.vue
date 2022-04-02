@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-		<page-title-bar title="Encuestas Demanda Inducida"></page-title-bar>
+		<page-title-bar title="Encuestas Demanda Inducida"/>
 		<v-row>
 			<v-col cols="12">
 				<v-card>
@@ -19,7 +19,7 @@
               :ruta-base="rutaBase"
               :gestores="gestores"
               @filtra="val => goDatos(val)"
-          ></filtros>
+          />
         </data-table>
 				</v-card>
 			</v-col>
@@ -29,17 +29,15 @@
         ref="registroEncuesta"
         @guardado="val => encuestaGuardada(val)"
         @close="loading = false"
-    ></registro-encuesta>
+    />
     <seguimiento ref="detalleerp" />
     <registro-tamizaje
         ref="registroTamizaje"
         @guardado="item => tamizajeGuardado(item)"
         @close="loading = false"
     />
-    <detalle-encuesta
-        ref="detalleEncuesta"
-    ></detalle-encuesta>
-    <app-section-loader :status="loading"></app-section-loader>
+    <detalle-encuesta ref="detalleEncuesta"/>
+    <app-section-loader :status="loading"/>
 	</v-container>
 </template>
 
@@ -53,7 +51,6 @@ const Filtros = () => import('../components/FiltrosDemandaInducida')
 const Seguimiento = () => import('Views/covid19/tamizaje/Seguimiento')
 import RegistroTamizaje from 'Views/covid19/tamizaje/RegistroTamizaje'
 const DetalleEncuesta = () => import('../components/DetalleEncuesta')
-// import IconTooltip from '../../../components/Inputs/IconTooltip'
 
 export default {
   name: 'Encuestas',
@@ -328,7 +325,6 @@ export default {
     },
     encuestaGuardada(item) {
       this.$store.commit('reloadTable', 'tablaDemandaInducida');
-      // (item.sintomas_covid || item.paciente_estudio_covid || item.contacto_covid) && !item.erp_id ? this.crearTamizaje(item) : null
       !item.hasOwnProperty('razon_no_tel') ? this.$refs.detalleEncuesta.open(item, true): null
     },
     crearEncuesta(item) {
@@ -393,7 +389,7 @@ export default {
         item.options.push({
           event: '',
           icon: 'mdi-lock',
-          tooltip: `Usuario fallecio`,
+          tooltip: 'Usuario fallecio',
           color: "error",
           disabled: true
         })
@@ -404,25 +400,15 @@ export default {
         tooltip: 'Detalle Encuesta Efectiva',
         color: 'success'
       })
-      /* if (this.permisos.encuestasRCVEditar && item.id) item.options.push({
-        event: 'editarEncuesta',
-        icon: 'mdi-file-document-edit',
-        tooltip: 'Editar Encuesta',
-        color: 'orange'
-      }) */
       return item
     },
     getGestores() {
-      this.axios.get(`users-role?role=Gestor Demanda Inducida`).then(response => {
+      this.axios.get('users-role?role=Gestor Demanda Inducida').then(response => {
         this.gestores = response.data
       }).catch(error => {
-        this.$store.commit('snackbar', {color: 'error', message: `al recuperar los registros de los gestores.`, error: error})
+        this.$store.commit('snackbar', {color: 'error', message: 'al recuperar los registros de los gestores.', error: error})
       })
     }
-  },
+  }
 }
 </script>
-
-<style scoped>
-
-</style>

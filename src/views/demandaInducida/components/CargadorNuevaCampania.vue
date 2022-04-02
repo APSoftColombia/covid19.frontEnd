@@ -1,13 +1,17 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="720">
+  <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="720"
+  >
     <template v-slot:activator="{onx}">
       <v-tooltip top>
         <template v-slot:activator="{on}">
           <v-btn
               icon
               x-large
-              color="primary"
               v-on="on"
+              color="primary"
               @click.stop="dialog = true"
           >
             <v-icon>fas fa-upload</v-icon>
@@ -19,52 +23,80 @@
     <v-card>
       <v-card-title class="headline">Carga masiva para Nueva Campaña</v-card-title>
       <v-card-text>
-        <ValidationObserver ref="formArchivo" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
-          <ValidationProvider name="archivo" rules="required" v-slot="{ errors, valid }">
+        <ValidationObserver
+            ref="formArchivo"
+            v-slot="{ invalid, validated, passes, validate }"
+            autocomplete="off"
+        >
+          <ValidationProvider
+              name="archivo"
+              rules="required"
+              v-slot="{ errors, valid }"
+          >
             <v-row>
-                <v-col class="pb-0" cols="6">
-                    <c-date
-                        v-model="fecha_inicio"
-                        name="fecha inicio"
-                        placeholder="Fecha inicio"
-                        rules="required"
+              <v-col
+                  class="pb-0"
+                  cols="6"
+              >
+                <c-date
+                    v-model="fecha_inicio"
+                    name="fecha inicio"
+                    placeholder="Fecha inicio"
+                    rules="required"
+                />
+              </v-col>
+              <v-col
+                  class="pb-0"
+                  cols="6"
+              >
+                <c-date
+                    v-model="fecha_fin"
+                    name="fecha fin"
+                    placeholder="Fecha fin"
+                    rules="required"
+                    :min="fecha_inicio ? fecha_inicio : null"
+                />
+              </v-col>
+              <v-col
+                  class="pb-0"
+                  cols="12"
+              >
+                <v-file-input
+                    v-model="archivo"
+                    placeholder="Archivo"
+                    prepend-icon="fas fa-file-csv"
+                    accept=".csv,.txt"
+                    outlined
+                    dense
+                    hint="Extensiones permitidas: .csv, .txt"
+                    persistent-hint
+                    :error-messages="errors"
+                >
+                  <template v-slot:append-outer>
+                    <v-btn
+                        v-if="$vuetify.breakpoint.xsOnly"
+                        icon
+                        x-large
+                        color="green darken-1"
+                        @click="cargarArchivo"
+                        style="top: -4px !important;"
                     >
-                    </c-date>
-                </v-col>
-                <v-col class="pb-0" cols="6">
-                    <c-date
-                        v-model="fecha_fin"
-                        name="fecha fin"
-                        placeholder="Fecha fin"
-                        rules="required"
-                        :min="fecha_inicio ? fecha_inicio : null"
+                      <v-icon>mdi-file-upload</v-icon>
+                    </v-btn>
+                    <v-btn
+                        v-else
+                        large
+                        text
+                        color="green darken-1"
+                        @click="cargarArchivo"
+                        style="top: -10px !important;"
                     >
-                    </c-date>
-                </v-col>
-            
-                <v-col class="pb-0" cols="12">
-                    <v-file-input
-                        v-model="archivo"
-                        placeholder="Archivo"
-                        prepend-icon="fas fa-file-csv"
-                        accept=".csv,.txt"
-                        outlined
-                        dense
-                        hint="Extensiones permitidas: .csv, .txt"
-                        persistent-hint
-                        :error-messages="errors"
-                    >
-                    <template v-slot:append-outer>
-                        <v-btn x-large color="green darken-1" v-if="$vuetify.breakpoint.xsOnly" icon @click="cargarArchivo" style="top: -4px !important;">
-                        <v-icon>mdi-file-upload</v-icon>
-                        </v-btn>
-                        <v-btn v-else large color="green darken-1" text @click="cargarArchivo" style="top: -10px !important;">
-                        <v-icon left large>mdi-file-upload</v-icon>
-                        Cargar Archivo
-                        </v-btn>
-                    </template>
-                    </v-file-input>
-                </v-col>
+                      <v-icon left large>mdi-file-upload</v-icon>
+                      Cargar Archivo
+                    </v-btn>
+                  </template>
+                </v-file-input>
+              </v-col>
             </v-row>
           </ValidationProvider>
         </ValidationObserver>
@@ -72,7 +104,12 @@
       <v-expand-transition>
         <v-card-text v-if="errores && errores.length">
           <v-row class="headline justify-center">
-            <v-icon color="orange" left>mdi-alert</v-icon>
+            <v-icon
+                color="orange"
+                left
+            >
+              mdi-alert
+            </v-icon>
             Errores en el archivo
           </v-row>
           <v-row>
@@ -84,27 +121,28 @@
                     @click="hover = true"
                 >
                   <v-list-item-avatar class="ma-0">
-                    <span>{{indexError + 1}}</span>
+                    <span>{{ indexError + 1 }}</span>
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title v-text="error"></v-list-item-title>
+                    <v-list-item-title v-text="error"/>
                   </v-list-item-content>
-                  <!--                                <v-list-item-action>-->
-                  <!--                                    <v-btn icon>-->
-                  <!--                                        <v-icon color="grey lighten-1">mdi-information</v-icon>-->
-                  <!--                                    </v-btn>-->
-                  <!--                                </v-list-item-action>-->
                 </v-list-item>
               </v-list>
             </v-col>
           </v-row>
         </v-card-text>
       </v-expand-transition>
-      <v-divider class="pa-0 ma-0"></v-divider>
+      <v-divider class="pa-0 ma-0"/>
       <v-card-actions class="justify-center">
-        <v-btn block text @click="close">Cerrar</v-btn>
+        <v-btn
+            block
+            text
+            @click="close"
+        >
+          Cerrar
+        </v-btn>
       </v-card-actions>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
 </template>
@@ -123,14 +161,14 @@ export default {
   }),
   watch: {
     'archivo': {
-      handler () {
+      handler() {
         this.errores = []
       },
       immediate: false
     }
   },
   methods: {
-    cargarArchivo () {
+    cargarArchivo() {
       this.$refs.formArchivo.validate().then(result => {
         if (result) {
           this.errores = []
@@ -139,24 +177,22 @@ export default {
           data.append('fecha_inicio', this.fecha_inicio)
           data.append('fecha_fin', this.fecha_fin)
           data.append('archivo', this.archivo)
-          this.axios.post(`nueva-campaña`, data)
-              .then(response => {
-                console.log('response', response)
-                this.$store.commit('snackbar', {color: 'success', message: `Nueva campaña creada exitosamente!`})
+          this.axios.post('nueva-campaña', data)
+              .then(() => {
+                this.$store.commit('snackbar', {color: 'success', message: 'Nueva campaña creada exitosamente!'})
                 this.close()
               })
               .catch(error => {
-                console.log('error', error)
                 if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.length) {
                   this.errores = error.response.data.errors
                 }
                 this.loading = false
-                this.$store.commit('snackbar', {color: 'error', message: `al procesar el archivo.`, error: error})
+                this.$store.commit('snackbar', {color: 'error', message: 'al procesar el archivo.', error: error})
               })
         }
       })
     },
-    close () {
+    close() {
       this.$refs.formArchivo.reset()
       this.errores = []
       this.dialog = false
@@ -168,7 +204,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
