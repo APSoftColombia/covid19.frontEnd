@@ -3,12 +3,15 @@
       v-if="detail"
       @click="click = false"
   >
-    <v-list-item-avatar size="38">
+    <v-list-item-avatar
+        v-if="showIcon"
+        size="38"
+    >
       <v-icon color="primary">{{icon}}</v-icon>
     </v-list-item-avatar>
     <v-list-item-content>
       <v-list-item-subtitle>{{label}}</v-list-item-subtitle>
-      <v-list-item-title>{{ vmodel && vmodel.name || '' }}</v-list-item-title>
+      <v-list-item-title :class="(vmodel && vmodel.name) ? '' : 'orange--text'">{{ (vmodel && vmodel.name) || 'No se ha cargado un archivo.' }}</v-list-item-title>
     </v-list-item-content>
     <v-list-item-action v-if="vmodel">
       <c-tooltip tooltip="Descargar Archivo" top>
@@ -107,6 +110,10 @@ export default {
     rules: {
       type: String,
       default: null
+    },
+    showIcon: {
+      type: Boolean,
+      default: true
     },
     readonly: {
       type: Boolean,

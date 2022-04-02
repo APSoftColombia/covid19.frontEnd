@@ -121,13 +121,13 @@
                       </ValidationProvider>
                     </v-col>
                     <v-col cols="12">
-                        <c-select-complete
-                            v-model="item.tipo_origen"
-                            label="Tipo de Atención"
-                            name="tipo de atención"
-                            :items="tiposOrigen"
-                            rules="required"
-                        />
+                      <c-select-complete
+                          v-model="item.tipo_origen"
+                          label="Tipo de Atención"
+                          name="tipo de atención"
+                          :items="tiposOrigen"
+                          rules="required"
+                      />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
                       <c-select-complete
@@ -185,8 +185,8 @@
                             v-slot:item="{ item }"
                         >
                           <v-list-item-content>
-                            <v-list-item-title>{{item.serv_nombre}}</v-list-item-title>
-                            <v-list-item-subtitle>{{item.tipo_servicio}}</v-list-item-subtitle>
+                            <v-list-item-title>{{ item.serv_nombre }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ item.tipo_servicio }}</v-list-item-subtitle>
                           </v-list-item-content>
                         </template>
                       </c-select-complete>
@@ -200,21 +200,35 @@
                       />
                     </v-col>
                     <v-col cols="12" sm="12" md="12" lg="6">
-                      <c-file
-                          label="Historia Clinica"
-                          name="historial clinica"
-                          v-model="archivos.fileHistoriaClinica"
-                          rules="size:750"
-                          :hint="item.historia_clinica && item.historia_clinica.id ? 'cargado actualmente: ' + `${item.historia_clinica.ruta.split('/')[1]}` : ''"
+                      <c-input-file
+                          label="Historia Clínica"
+                          directory="referencias"
+                          v-model="item.historia_clinica"
+                          @uuid="val => item.historia_clinica_uuid = val"
                       />
                     </v-col>
                     <v-col cols="12" sm="12" md="12" lg="6">
-                      <c-file
+                      <c-input-file
                           label="Orden Médica"
-                          name="orden médica"
-                          v-model="archivos.fileOrdenMedica"
-                          rules="size:750"
-                          :hint="item.orden_medica && item.orden_medica.id ? 'cargado actualmente: ' + `${item.orden_medica.ruta.split('/')[1]}` : ''"
+                          directory="referencias"
+                          v-model="item.orden_medica"
+                          @uuid="val => item.orden_medica_uuid = val"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12" lg="6">
+                      <c-input-file
+                          label="Evolución Diaria"
+                          directory="referencias"
+                          v-model="item.evolucion_diaria"
+                          @uuid="val => item.evolucion_diaria_uuid = val"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12" lg="6">
+                      <c-input-file
+                          label="Documentos Paciente"
+                          directory="referencias"
+                          v-model="item.documentos_paciente"
+                          @uuid="val => item.documentos_paciente_uuid = val"
                       />
                     </v-col>
                     <v-col cols="12">
@@ -226,7 +240,8 @@
                   </v-row>
                 </template>
                 <v-divider class="mt-0"/>
-                <p class="body-2 error--text mb-0 text-center" v-if="invalid && validated">Hay errores en el formulario</p>
+                <p class="body-2 error--text mb-0 text-center" v-if="invalid && validated">Hay errores en el
+                  formulario</p>
                 <v-card-actions>
                   <v-btn
                       large
@@ -270,7 +285,8 @@ import DialogFallecido from 'Views/centroRegulador/components/referencias/Dialog
 import BuscadorCies from 'Views/centroRegulador/components/referencias/BuscadorCies'
 import BuscadorCups from 'Views/centroRegulador/components/referencias/BuscadorCups'
 import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'RegistroReferencia',
   components: {
@@ -289,10 +305,6 @@ export default {
     respuestaPersona: null,
     respuestaFallecido: null,
     item: null,
-    archivos: {
-        fileOrdenMedica: null,
-        fileHistoriaClinica: null
-    },
     tiposOrigen: [
       'Ambulatorio',
       'Hospitalario',
@@ -303,10 +315,10 @@ export default {
     permisos() {
       return this.$store.getters.getPermissionModule('centroRegulador')
     },
-    municipiosOrigen () {
+    municipiosOrigen() {
       return this.departamentos.length && this.item.departamento_prestador_origen && this.departamentos.find(x => x.id === this.item.departamento_prestador_origen) ? this.departamentos.find(x => x.id === this.item.departamento_prestador_origen).municipios : []
     },
-    municipioOrigen () {
+    municipioOrigen() {
       return this.municipiosOrigen.find(x => x.id === this.item.municipio_prestador_origen) || null
     },
     ...mapGetters([
@@ -317,36 +329,22 @@ export default {
     ])
   },
   watch: {
-      'archivos.fileOrdenMedica': {
-          handler(val){
-              if(val && val.size <= 750000){
-                  val && this.guardarOrdenMedica()
-              }
-          }
+    'item.departamento_prestador_origen': {
+      handler() {
+        if (this.item && this.ejecutaWatch) {
+          this.item.municipio_prestador_origen = null
+        }
       },
-      'archivos.fileHistoriaClinica': {
-          handler(val){
-              if(val && val.size <= 750000){
-                  val && this.guardarHistoriaClinica()
-              }
-          }
+      immediate: false
+    },
+    'item.municipio_prestador_origen': {
+      handler() {
+        if (this.item && this.ejecutaWatch) {
+          this.item.codigo_prestador_origen = null
+        }
       },
-        'item.departamento_prestador_origen': {
-          handler() {
-            if(this.item && this.ejecutaWatch) {
-              this.item.municipio_prestador_origen = null          
-            }
-          },
-          immediate: false
-        },      
-      'item.municipio_prestador_origen': {
-        handler() {
-          if(this.item && this.ejecutaWatch) {
-            this.item.codigo_prestador_origen = null
-          }
-        },
-        immediate: false
-      }    
+      immediate: false
+    }
   },
   methods: {
     guardarItem() {
@@ -372,34 +370,6 @@ export default {
         }
       })
     },
-    async guardarOrdenMedica(){
-        let archivo = await new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.readAsDataURL(this.archivos.fileOrdenMedica)
-          reader.onload = () => resolve(reader.result)
-          reader.onerror = error => reject(error)
-        })
-        this.axios.post(`subir-archivos`, {fileOrdenMedica: archivo}).then(response => {
-            this.item.orden_medica_id = response.data
-          this.$store.commit('snackbar', {color: 'success', message: 'Archivo guardado con exito'})
-        }).catch(error => {
-          this.$store.commit('snackbar', {color: 'error', message: `al guardar archivo.`, error: error})
-        })
-    },
-    async guardarHistoriaClinica(){
-        let archivo = await new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.readAsDataURL(this.archivos.fileHistoriaClinica)
-          reader.onload = () => resolve(reader.result)
-          reader.onerror = error => reject(error)
-        })
-        this.axios.post(`subir-archivos`, {fileHistoriaClinica: archivo}).then(response => {
-            this.item.historia_clinica_id = response.data
-          this.$store.commit('snackbar', {color: 'success', message: 'Archivo guardado con exito'})
-        }).catch(error => {
-          this.$store.commit('snackbar', {color: 'error', message: `al guardar archivo.`, error: error})
-        })
-    },
     open(item = null) {
       this.dialog = true
       if (item) {
@@ -418,10 +388,6 @@ export default {
       this.loading = false
       this.$emit('close')
       this.item = null
-      this.archivos = {
-          fileOrdenMedica: null,
-          fileHistoriaClinica: null
-      }
     },
     getItem(id) {
       this.loading = true
@@ -441,7 +407,11 @@ export default {
           })
           .catch(error => {
             this.loading = false
-            this.$store.commit('snackbar', {color: 'error', message: `al recuperar el registro de la referencia.`, error: error})
+            this.$store.commit('snackbar', {
+              color: 'error',
+              message: `al recuperar el registro de la referencia.`,
+              error: error
+            })
           })
           .finally(() => {
             setTimeout(() => {

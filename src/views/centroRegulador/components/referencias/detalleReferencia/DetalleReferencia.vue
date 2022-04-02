@@ -171,22 +171,36 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <div v-if="item.orden_medica && item.orden_medica.id">
-                <v-btn :disabled="loadingButton" :loading="loadingButton" text class="grey--text" @click="descargarArchivo(item.orden_medica.id, 1)">
-                  <v-icon left small>mdi-paperclip</v-icon>
-                  Orden Médica
-                </v-btn>
-              </div>
-              <v-btn
-                  v-if="item.historia_clinica && item.historia_clinica.id"
-                  :disabled="loadingButton1"
-                  :loading="loadingButton1"
-                  text class="grey--text mb-4"
-                  @click="descargarArchivo(item.historia_clinica.id, 2)"
-              >
-                <v-icon left small>mdi-paperclip</v-icon>
-                Evolución Médica
-              </v-btn>
+              <v-divider/>
+              <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">
+                Archivos
+              </v-list-item-subtitle>
+              <v-list dense class="notification-wrap">
+                <c-input-file
+                    detail
+                    :show-icon="false"
+                    label="Historia Clínica"
+                    v-model="item.historia_clinica"
+                />
+                <c-input-file
+                    detail
+                    :show-icon="false"
+                    label="Orden Médica"
+                    v-model="item.orden_medica"
+                />
+                <c-input-file
+                    detail
+                    :show-icon="false"
+                    label="Evolución Diaria"
+                    v-model="item.evolucion_diaria"
+                />
+                <c-input-file
+                    detail
+                    :show-icon="false"
+                    label="Documentos Paciente"
+                    v-model="item.documentos_paciente"
+                />
+              </v-list>
             </v-card>
           </v-col>
           <v-col cols="12" md="8">
@@ -214,9 +228,7 @@ export default {
   data: () => ({
     loading: false,
     dialog: false,
-    item: null,
-    loadingButton: false,
-    loadingButton1: false
+    item: null
   }),
   computed: {
     ...mapGetters([
@@ -265,32 +277,6 @@ export default {
           .catch(error => {
             this.loading = false
             this.$store.commit('snackbar', {color: 'error', message: `al recuperar el registro de la referencia.`, error: error})
-          })
-    },
-    descargarArchivo(id, button){
-        const apiAxios = this.axios.create()
-        apiAxios.defaults.baseURL = `http://apsoft-backend.test/api`
-        apiAxios.defaults.headers.common["Authorization"] = `${this.token_type} ${this.access_token}`
-        if(button === 1){
-            this.loadingButton = true
-        }else{
-            this.loadingButton1 = true
-        }
-          this.axios({
-            url: `download-archivo/${id}`,
-            method: 'GET',
-            responseType: 'blob'
-          })
-          .then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/pdf'}))
-            window.open(url, '_blank')
-            this.loadingButton = false
-            this.loadingButton1 = false
-          })
-          .catch((error) => {
-            this.loadingButton = false
-            this.loadingButton1 = false
-            this.$store.commit('snackbar', {color: 'error', message: `al descargar el archivo.`, error: error})
           })
     }
   }
