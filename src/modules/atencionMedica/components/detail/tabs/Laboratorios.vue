@@ -8,25 +8,25 @@
         flat
     >
       <v-toolbar-title>Exámenes de Laboratorios</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <template v-if="permisos.edit">
-        <c-tooltip
-            left
-            tooltip="Editar Sección"
-            :disabled="$vuetify.breakpoint.smAndUp"
-        >
-          <v-btn
-              :color="`${color} darken-3`"
-              depressed
-              :small="!!$vuetify.breakpoint.xsOnly"
-              :fab="$vuetify.breakpoint.xsOnly"
-              @click="editItem"
-          >
-            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>
-            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}
-          </v-btn>
-        </c-tooltip>
-      </template>
+<!--      <v-spacer></v-spacer>-->
+<!--      <template v-if="permisos.edit">-->
+<!--        <c-tooltip-->
+<!--            left-->
+<!--            tooltip="Editar Sección"-->
+<!--            :disabled="$vuetify.breakpoint.smAndUp"-->
+<!--        >-->
+<!--          <v-btn-->
+<!--              :color="`${color} darken-3`"-->
+<!--              depressed-->
+<!--              :small="!!$vuetify.breakpoint.xsOnly"-->
+<!--              :fab="$vuetify.breakpoint.xsOnly"-->
+<!--              @click="editItem"-->
+<!--          >-->
+<!--            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>-->
+<!--            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}-->
+<!--          </v-btn>-->
+<!--        </c-tooltip>-->
+<!--      </template>-->
     </v-toolbar>
     <v-container fluid>
       <v-row dense>
@@ -37,8 +37,8 @@
               <tr>
                 <th>Registro</th>
                 <th>Examen</th>
-                <th>Fecha</th>
                 <th>Resultado</th>
+                <th>Fecha</th>
                 <th>Prestador</th>
               </tr>
               </thead>
@@ -61,12 +61,21 @@
                   {{ (examen.examen && examen.examen.prueba) || '' }}
                 </td>
                 <td>
+                  {{ examen.resultado  }} {{ (examen.examen && examen.examen.unidad) || ''  }}
+                </td>
+                <td>
                   {{ examen.fecha || '' }}
                 </td>
                 <td>
-                  {{ examen.resultado  }} {{ (examen.examen && examen.examen.unidad) || ''  }}
+                  <v-list-item-content v-if="examen.with_prestador_object">
+                    <v-list-item-subtitle>
+                      {{ examen.with_prestador_object.nombre_sede }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      Código: {{examen.with_prestador_object.codigohabilitacion}}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
                 </td>
-                <td></td>
               </tr>
               </tbody>
             </template>

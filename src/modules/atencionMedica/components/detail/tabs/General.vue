@@ -8,25 +8,25 @@
         flat
     >
       <v-toolbar-title>General</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <template v-if="permisos.edit">
-        <c-tooltip
-            left
-            tooltip="Editar Sección"
-            :disabled="$vuetify.breakpoint.smAndUp"
-        >
-          <v-btn
-              :color="`${color} darken-3`"
-              depressed
-              :small="!!$vuetify.breakpoint.xsOnly"
-              :fab="$vuetify.breakpoint.xsOnly"
-              @click="editItem"
-          >
-            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>
-            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}
-          </v-btn>
-        </c-tooltip>
-      </template>
+<!--      <v-spacer></v-spacer>-->
+<!--      <template v-if="permisos.edit">-->
+<!--        <c-tooltip-->
+<!--            left-->
+<!--            tooltip="Editar Sección"-->
+<!--            :disabled="$vuetify.breakpoint.smAndUp"-->
+<!--        >-->
+<!--          <v-btn-->
+<!--              :color="`${color} darken-3`"-->
+<!--              depressed-->
+<!--              :small="!!$vuetify.breakpoint.xsOnly"-->
+<!--              :fab="$vuetify.breakpoint.xsOnly"-->
+<!--              @click="editItem"-->
+<!--          >-->
+<!--            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>-->
+<!--            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}-->
+<!--          </v-btn>-->
+<!--        </c-tooltip>-->
+<!--      </template>-->
     </v-toolbar>
     <v-container fluid>
       <v-row dense>
@@ -148,15 +148,21 @@ export default {
             colmd: '6',
             collg: '4'
           },
+          // {
+          //   label: 'Insulinorequiriente',
+          //   body: this.item.insulinorequiriente === null ? '' : this.item.insulinorequiriente === 1 ? 'SI' : 'NO',
+          //   colmd: '6',
+          //   collg: '4'
+          // },
           {
-            label: 'Insulinorequiriente',
-            body: this.item.insulinorequiriente === null ? '' : this.item.insulinorequiriente === 1 ? 'SI' : 'NO',
+            label: 'CIE10',
+            body: this.item.cie10 || '',
             colmd: '6',
             collg: '4'
           },
           {
             label: 'Etiología ERC',
-            body: this.item.etiologia_erc || '',
+            body: (this.item.with_etiologia_enfermedad_renal_object && this.item.with_etiologia_enfermedad_renal_object.opcion) || '',
             colmd: '6',
             collg: '4'
           },

@@ -8,30 +8,78 @@
         flat
     >
       <v-toolbar-title>Controles</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <template v-if="permisos.edit">
-        <c-tooltip
-            left
-            tooltip="Editar Sección"
-            :disabled="$vuetify.breakpoint.smAndUp"
-        >
-          <v-btn
-              :color="`${color} darken-3`"
-              depressed
-              :small="!!$vuetify.breakpoint.xsOnly"
-              :fab="$vuetify.breakpoint.xsOnly"
-              @click="editItem"
-          >
-            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>
-            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}
-          </v-btn>
-        </c-tooltip>
-      </template>
+<!--      <v-spacer></v-spacer>-->
+<!--      <template v-if="permisos.edit">-->
+<!--        <c-tooltip-->
+<!--            left-->
+<!--            tooltip="Editar Sección"-->
+<!--            :disabled="$vuetify.breakpoint.smAndUp"-->
+<!--        >-->
+<!--          <v-btn-->
+<!--              :color="`${color} darken-3`"-->
+<!--              depressed-->
+<!--              :small="!!$vuetify.breakpoint.xsOnly"-->
+<!--              :fab="$vuetify.breakpoint.xsOnly"-->
+<!--              @click="editItem"-->
+<!--          >-->
+<!--            <v-icon :left="$vuetify.breakpoint.smAndUp">mdi-pencil</v-icon>-->
+<!--            {{$vuetify.breakpoint.smAndUp ? 'Editar Sección' : ''}}-->
+<!--          </v-btn>-->
+<!--        </c-tooltip>-->
+<!--      </template>-->
     </v-toolbar>
     <v-container fluid>
       <v-row dense>
         <v-col cols="12">
-          Controles
+          <v-simple-table v-if="item">
+            <template v-slot:default>
+              <thead>
+              <tr>
+                <th>Registro</th>
+                <th>TAD</th>
+                <th>TAS</th>
+                <th>Fecha</th>
+                <th>Prestador</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                  v-for="(control, controlIndex) in item.controles"
+                  :key="controlIndex"
+              >
+                <td>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>
+                      Creación: {{control.created_at || ''}}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      Actualización: {{control.updated_at || ''}}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </td>
+                <td>
+                  {{ control.TAD || '' }}
+                </td>
+                <td>
+                  {{ control.TAS || '' }}
+                </td>
+                <td>
+                  {{ control.fecha || '' }}
+                </td>
+                <td>
+                  <v-list-item-content v-if="control.with_prestador_object">
+                    <v-list-item-subtitle>
+                      {{ control.with_prestador_object.nombre_sede }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      Código: {{control.with_prestador_object.codigohabilitacion}}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </td>
+              </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-col>
       </v-row>
     </v-container>

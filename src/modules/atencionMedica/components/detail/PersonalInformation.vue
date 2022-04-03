@@ -26,7 +26,7 @@
               color="primary"
               class="mr-2"
           >
-            Estado: {{item.estado}}
+            Estado: {{estadoAfiliacion}}
           </v-chip>
           <v-btn
               class="ml-2"
@@ -109,6 +109,9 @@ export default {
     }
   },
   computed: {
+    estadoAfiliacion() {
+      return this.item?.afiliado?.estado || 'No registra afiliación'
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('atencionMedicaRCV')
     },
@@ -187,7 +190,7 @@ export default {
           },
           {
             label: 'IPS Primaria',
-            body: this.item.ips_donde_asiste || '',
+            body: this.item.codigo_ips_primer_nivel || '',
             // subtitle: `Tel. ${this.item.ips_medicamentos.telefono}, ${[this.item.ips_medicamentos.direccion, this.item.ips_medicamentos.nompio, this.item.ips_medicamentos.nomdepto].filter(x => x).join(', ')}`,
             icon: 'fas fa-clinic-medical',
             iconColor: 'primary',

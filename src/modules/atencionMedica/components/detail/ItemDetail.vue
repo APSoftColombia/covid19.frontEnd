@@ -57,7 +57,14 @@
                 <v-tab
                     href="#tab-2"
                 >
-                  <span class="subtitle-1">Laboratorios</span>
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-2' ? 'teal' : 'grey'"
+                      :content="(attention.examenes && String(attention.examenes.length)) || 0"
+                      :class="tab === 'tab-2' ? 'teal--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Laboratorios</span>
+                  </v-badge>
                 </v-tab>
                 <v-tab
                     href="#tab-3"
@@ -72,7 +79,14 @@
                 <v-tab
                     href="#tab-5"
                 >
-                  <span class="subtitle-1">Controles</span>
+                  <v-badge
+                      overlap
+                      :color="tab === 'tab-5' ? 'purple' : 'grey'"
+                      :content="(attention.controles && String(attention.controles.length)) || 0"
+                      :class="tab === 'tab-5' ? 'purple--text' : 'text--secondary'"
+                  >
+                    <span class="subtitle-1">Controles</span>
+                  </v-badge>
                 </v-tab>
               </v-tabs>
               <v-tabs-items

@@ -183,11 +183,6 @@ export default {
           value: 'fecha_nefroproteccion'
         },
         {
-          text: 'Estado',
-          sortable: false,
-          value: 'estado'
-        },
-        {
           text: 'Paciente',
           sortable: false,
           value: 'paciente'
