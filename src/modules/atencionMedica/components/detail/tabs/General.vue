@@ -130,7 +130,6 @@ export default {
           {
             label: 'Tensión arterial',
             body: [this.item.ta_sistolica, this.item.ta_diastolica].join('/'),
-            subtitle: this.item.clasificacion_imc,
             colmd: '6',
             collg: '4'
           },
