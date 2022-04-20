@@ -1,5 +1,9 @@
 <template>
-  <ValidationProvider :name="name" :rules="rules" v-slot="{ errors }">
+  <ValidationProvider
+      :name="name"
+      :rules="rules"
+      v-slot="{ errors }"
+  >
     <v-autocomplete
         :label="label"
         v-model="cup"
@@ -39,7 +43,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-divider class="ma-0"></v-divider>
+          <v-divider class="ma-0"/>
         </div>
       </template>
     </v-autocomplete>
@@ -124,7 +128,3 @@ name: 'BuscadorCups',
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,10 +1,10 @@
 <template>
 	<v-container fluid>
-		<page-title-bar title="Encuestas RCV"></page-title-bar>
+		<page-title-bar title="Encuestas RCV"/>
 		<v-row>
 			<v-col cols="12">
 				<v-card>
-					<encuestas></encuestas>
+					<encuestas/>
 				</v-card>
 			</v-col>
 		</v-row>
@@ -20,7 +20,3 @@
 		}
 	}
 </script>
-
-<style>
-
-</style>

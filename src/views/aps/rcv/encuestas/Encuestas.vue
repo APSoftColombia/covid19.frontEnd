@@ -16,9 +16,9 @@
             color="green"
             class="white--text mr-2"
             v-if="returnDataTableTotal && returnDataTableTotal.total > 0 && returnDataTableTotal.total < 50000 && permisos.encuestasRCVDownloadExcel"
-            @click.stop="descargarExcel"
             :disabled="loadingButton"
             :loading="loadingButton"
+            @click.stop="descargarExcel"
         >
           <v-icon left>far fa-file-excel</v-icon>
           Generar Excel
@@ -29,19 +29,19 @@
           ref="filtrosReportesCovid"
           :ruta-base="rutaBase"
           @filtra="val => goDatos(val)"
-      ></filtros>
+      />
     </data-table>
     <registro-encuesta
         v-if="permisos.encuestasRCVCrear"
         ref="registroEncuesta"
         @guardado="val => encuestaGuardada(val)"
         @close="loading = false"
-    ></registro-encuesta>
+    />
     <detalle-encuesta
         ref="detalleEncuesta"
-    ></detalle-encuesta>
-    <ver-bitacoras ref="verBitacoras" @close="loading = false"></ver-bitacoras>
-    <app-section-loader :status="loading"></app-section-loader>
+    />
+    <ver-bitacoras ref="verBitacoras" @close="loading = false"/>
+    <app-section-loader :status="loading"/>
   </div>
 </template>
 
@@ -290,21 +290,24 @@ export default {
     verEncuesta(item) {
       this.$refs.detalleEncuesta.open(item, true, false)
     },
-    verBitacoras(item){
+    verBitacoras(item) {
       this.loading = true
       this.$refs.verBitacoras.open(item, true)
     },
-    descargarExcel(){
+    descargarExcel() {
       this.loadingButton = true
-      this.axios( {
+      this.axios({
         url: `${this.dataTable.route}&excel=${true}`, //your url
         method: 'GET',
         responseType: 'blob', // important
       }).then(response => {
-        if(response.status === 204){
-          this.$store.commit('snackbar', {color: 'info', message: `Los filtros aplicados no han generado registros para exportar`})
+        if (response.status === 204) {
+          this.$store.commit('snackbar', {
+            color: 'info',
+            message: `Los filtros aplicados no han generado registros para exportar`
+          })
           this.loadingButton = false
-        }else{
+        } else {
           //Create a Blob from the PDF Stream
           const file = new Blob(
               [response.data],
@@ -345,7 +348,7 @@ export default {
         tooltip: 'Editar Encuesta',
         color: 'orange'
       })
-      if(this.permisos.verBitacoras) item.options.push({
+      if (this.permisos.verBitacoras) item.options.push({
         event: 'verBitacoras',
         icon: 'mdi-content-paste',
         tooltip: 'Ver seguimientos',
@@ -356,7 +359,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -7,33 +7,49 @@
       transition="dialog-bottom-transition"
   >
     <v-card>
-<!--      <v-chip-->
-<!--          :style="`right: ${$vuetify.breakpoint.xsOnly ? '64' : '84' }px !important; top: ${$vuetify.breakpoint.smAndDown ? '12' : '18' }px !important; position: fixed !important; z-index: 2 !important;`"-->
-<!--          color="primary darken-3"-->
-<!--          label-->
-<!--      >-->
-<!--        <v-icon left>mdi-timer</v-icon>-->
-<!--        {{ time }}-->
-<!--      </v-chip>-->
-      <v-toolbar dark color="primary">
+      <v-toolbar
+          dark
+          color="primary"
+      >
         <v-icon left>fas fa-edit</v-icon>
         <v-toolbar-title id="inicio">{{ encuesta && encuesta.id ? `Encuesta No. ${encuesta.id}` : `Nueva encuesta` }}
         </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon dark @click="close">
+        <v-spacer/>
+        <v-btn
+            icon
+            dark
+            @click="close"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-container fluid>
         <v-row no-gutters>
-          <v-col md="6" offset-md="3" v-if="dialog">
-            <ValidationObserver ref="formencuesta" v-slot="{ invalid, validated, passes, validate }" autocomplete="off">
+          <v-col
+              v-if="dialog"
+              md="6"
+              offset-md="3"
+          >
+            <ValidationObserver
+                ref="formencuesta"
+                v-slot="{ invalid, validated, passes, validate }"
+            >
               <v-row v-if="encuestaBase">
-                <datos-afiliado :abierto="true" :afiliado="encuestaBase" :dense="true"></datos-afiliado>
+                <datos-afiliado
+                    :abierto="true"
+                    :afiliado="encuestaBase"
+                    :dense="true"
+                />
               </v-row>
               <v-row>
-                <v-col cols="12" class="mt-2">
-                  <v-card outlined tile>
+                <v-col
+                    cols="12"
+                    class="mt-2"
+                >
+                  <v-card
+                      outlined
+                      tile
+                  >
                     <v-card-text>
                       <c-radio
                           v-model="encuesta.fallida"
@@ -42,25 +58,29 @@
                           item-text="text"
                           item-value="value"
                           :column="!$vuetify.breakpoint.smAndUp"
-                      >
-                      </c-radio>
+                      />
                     </v-card-text>
                   </v-card>
                 </v-col>
-                <v-col cols="12 pb-0" v-if="encuesta.fallida === 1">
+                <v-col
+                    v-if="encuesta.fallida === 1"
+                    cols="12 pb-0"
+                >
                   <c-select-complete
                       v-model="encuesta.no_efectividad"
                       placeholder="Motivo de no localización"
                       rules="required"
                       name="motivo de no localización"
                       :items="tiposNoEfectiva || []"
-                  >
-                  </c-select-complete>
+                  />
                 </v-col>
               </v-row>
               <template v-if="encuesta.fallida === 0">
                 <v-row>
-                  <v-col cols="12" class="text-center">
+                  <v-col
+                      cols="12"
+                      class="text-center"
+                  >
                     <v-alert
                         class="ma-0"
                         color="light-blue"
@@ -70,12 +90,16 @@
                         icon="mdi-information"
                     >
                       Dando cumplimiento a lo dispuesto en la Ley 1581 de 2012, manifiesto que he sido informado por la
-                      EPS de lo siguiente:Que la finalidad de la recolección de mis datos personales, consiste en: Conocer
+                      EPS de lo siguiente:Que la finalidad de la recolección de mis datos personales, consiste en:
+                      Conocer
                       y hacer seguimiento a mi estado de salud.
                     </v-alert>
                   </v-col>
                   <v-col cols="12">
-                    <v-card outlined tile>
+                    <v-card
+                        outlined
+                        tile
+                    >
                       <v-card-text>
                         <c-radio
                             v-model="encuesta.responde_paciente"
@@ -90,16 +114,23 @@
                         <template v-if="!encuesta.responde_paciente">
                           <span class="font-weight-bold orange--text caption">Registrar datos del acudiente</span>
                           <v-row>
-                            <v-col class="pb-0" cols="12" sm="6" md="6">
+                            <v-col
+                                class="pb-0"
+                                cols="12"
+                                sm="6"
+                            >
                               <c-texto
                                   v-model="encuesta.acudiente.identificacion"
                                   label="Identificación"
                                   rules="required"
                                   name="identificación"
-                              >
-                              </c-texto>
+                              />
                             </v-col>
-                            <v-col class="pb-0" cols="12" sm="6" md="6">
+                            <v-col
+                                class="pb-0"
+                                cols="12"
+                                sm="6"
+                            >
                               <c-select-complete
                                   v-model="encuesta.acudiente.tipo_identificacion"
                                   label="Tipo identificación"
@@ -108,37 +139,45 @@
                                   :items="tiposDocumentoIdentidad"
                                   item-text="descripcion"
                                   item-value="id"
-                              >
-                              </c-select-complete>
+                              />
                             </v-col>
-                            <v-col class="pb-0" cols="12">
+                            <v-col
+                                class="pb-0"
+                                cols="12"
+                            >
                               <c-texto
                                   v-model="encuesta.acudiente.nombre_completo"
                                   label="Nombre Completo"
                                   rules="required"
                                   name="nombre completo"
                                   upper-case
-                              >
-                              </c-texto>
+                              />
                             </v-col>
-                            <v-col class="pb-0" cols="12" sm="12" md="6">
+                            <v-col
+                                class="pb-0"
+                                cols="12"
+                                md="6"
+                            >
                               <c-texto
                                   v-model="encuesta.acudiente.celular"
                                   label="Celular Principal"
                                   rules="required|numeric|minlength:10"
                                   name="celular principal"
-                              >
-                              </c-texto>
+                              />
                             </v-col>
-                            <v-col class="pb-0" cols="12" sm="12" md="6">
+                            <v-col
+                                class="pb-0"
+                                cols="12"
+                                sm="12"
+                                md="6"
+                            >
                               <c-texto
                                   v-model="encuesta.acudiente.email"
                                   label="Email"
                                   rules="email"
                                   name="email"
                                   lower-case
-                              >
-                              </c-texto>
+                              />
                             </v-col>
                           </v-row>
                         </template>
@@ -146,7 +185,10 @@
                     </v-card>
                   </v-col>
                   <v-col cols="12">
-                    <v-card outlined tile>
+                    <v-card
+                        outlined
+                        tile
+                    >
                       <v-card-text>
                         <buscador-ips
                             ref="buscadoripsreps"
@@ -154,20 +196,28 @@
                             v-model="encuesta.reps"
                             name="ips de atención"
                             rules="required"
-                        ></buscador-ips>
-                        <div class="mt-4" v-if="encuesta.reps">
+                        />
+                        <div
+                            v-if="encuesta.reps"
+                            class="mt-4"
+                        >
                           <c-texto
                               v-model="encuesta.sede"
                               label="Sede"
                               name="sede"
                               upper-case
-                          ></c-texto>
+                          />
                         </div>
                       </v-card-text>
                     </v-card>
                   </v-col>
-                  <v-col cols="12">
-                    <v-card outlined tile>
+                  <v-col
+                      cols="12"
+                  >
+                    <v-card
+                        outlined
+                        tile
+                    >
                       <v-card-text>
                         <c-radio
                             v-model="encuesta.consulta_por_urgencias"
@@ -177,13 +227,15 @@
                             :items="[{value: 1, text: 'Si'}, {value: 0, text: 'No'}]"
                             item-text="text"
                             item-value="value"
-                        >
-                        </c-radio>
+                        />
                       </v-card-text>
                     </v-card>
                   </v-col>
                   <v-col cols="12">
-                    <v-card outlined tile>
+                    <v-card
+                        outlined
+                        tile
+                    >
                       <v-card-text>
                         <c-radio
                             v-model="encuesta.paciente_hospitalizado"
@@ -193,27 +245,32 @@
                             :items="[{value: 1, text: 'Si'}, {value: 0, text: 'No'}]"
                             item-text="text"
                             item-value="value"
+                        />
+                        <div
+                            v-if="encuesta.paciente_hospitalizado"
+                            class="mt-4"
                         >
-                        </c-radio>
-                        <div class="mt-4" v-if="encuesta.paciente_hospitalizado">
                           <buscador-ips
                               ref="buscadorips"
                               label="IPS de Hospitalización"
                               v-model="encuesta.codigo_ips_hospitalizacion"
                               name="ips de hospitalización"
                               rules="required"
-                          ></buscador-ips>
+                          />
                           <c-text-area
                               label="Motivo de la hospitalización"
                               rules="required"
                               v-model="encuesta.motivo_hospitalizacion"
                               name="motivo de hospitalización"
-                          ></c-text-area>
+                          />
                         </div>
                       </v-card-text>
                     </v-card>
                   </v-col>
-                  <v-col cols="12" class="px-0">
+                  <v-col
+                      cols="12"
+                      class="px-0"
+                  >
                     <v-system-bar
                         dark
                         color="indigo"
@@ -224,47 +281,60 @@
                       <span>DATOS GENERALES AFILIADO</span>
                     </v-system-bar>
                   </v-col>
-                  <v-col cols="12" md="6" class="pt-0">
+                  <v-col
+                      cols="12"
+                      md="6"
+                      class="pt-0"
+                  >
                     <c-texto
                         v-model="encuesta.afiliado_actualizado.numero_celular"
                         label="Celular"
                         rules="required|numeric|minlength:10"
                         name="celular"
-                    >
-                    </c-texto>
+                    />
                   </v-col>
-                  <v-col cols="12" md="6" class="pt-0">
+                  <v-col
+                      cols="12"
+                      md="6"
+                      class="pt-0"
+                  >
                     <c-texto
                         v-model="encuesta.afiliado_actualizado.telefono_opcional"
                         label="Teléfono Opcional"
                         rules="numeric|minlength:10"
                         name="teléfono opcional"
-                    >
-                    </c-texto>
+                    />
                   </v-col>
-                  <v-col cols="12" class="pt-0">
+                  <v-col
+                      cols="12"
+                      class="pt-0"
+                  >
                     <c-texto
                         v-model="encuesta.afiliado_actualizado.email"
                         label="Email"
                         rules="email"
                         name="email"
                         lower-case
-                    >
-                    </c-texto>
+                    />
                   </v-col>
-                  <v-col cols="12" class="pt-0">
+                  <v-col
+                      cols="12"
+                      class="pt-0"
+                  >
                     <c-texto
                         v-model="encuesta.afiliado_actualizado.direccion"
                         label="Dirección"
                         rules="required"
                         name="dirección"
                         upper-case
-                    >
-                    </c-texto>
+                    />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" class="px-0 pb-0">
+                  <v-col
+                      cols="12"
+                      class="px-0 pb-0"
+                  >
                     <v-system-bar
                         dark
                         color="indigo"
@@ -275,15 +345,24 @@
                       <span>AMBITO DE ATENCIÓN INMEDITA</span>
                     </v-system-bar>
                   </v-col>
-                  <v-col cols="12" class="pt-0">
+                  <v-col
+                      cols="12"
+                      class="pt-0"
+                  >
                     <form-sintomas
                         :array-sintomas="encuesta.sintomas"
                         @changeSintomas="val => encuesta.sintomas = val"
                         :sintomas="complementosRCV && complementosRCV.sintomas ? complementosRCV.sintomas : []"
-                    ></form-sintomas>
+                    />
                   </v-col>
-                  <v-col cols="12" v-if="encuesta.sintomas.length > 1">
-                    <v-card outlined tile>
+                  <v-col
+                      v-if="encuesta.sintomas.length > 1"
+                      cols="12"
+                  >
+                    <v-card
+                        outlined
+                        tile
+                    >
                       <v-card-text>
                         <c-radio
                             v-model="encuesta.dispuesto"
@@ -293,15 +372,17 @@
                             :items="[{value: 1, text: 'Si'}, {value: 0, text: 'No'}]"
                             item-text="text"
                             item-value="value"
-                        >
-                        </c-radio>
+                        />
                       </v-card-text>
                     </v-card>
                   </v-col>
                 </v-row>
                 <template v-if="encuesta.dispuesto">
                   <v-row>
-                    <v-col cols="12" class="px-0 pb-0">
+                    <v-col
+                        cols="12"
+                        class="px-0 pb-0"
+                    >
                       <v-system-bar
                           dark
                           color="indigo"
@@ -314,8 +395,14 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
+                    <v-col
+                        cols="12"
+                        class="pb-0"
+                    >
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.glucometro"
@@ -326,15 +413,20 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
+                    <v-col
+                        cols="12"
+                        class="pb-0"
+                    >
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.tensiometro"
@@ -345,15 +437,20 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
+                    <v-col
+                        cols="12"
+                        class="pb-0"
+                    >
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.conoce_pesotalla"
@@ -364,32 +461,40 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                           <template v-if="encuesta.conoce_pesotalla === 'Si'">
                             <span class="font-weight-bold orange--text caption">Registrar e identificar IMC</span>
                             <v-row>
-                              <v-col class="pb-0" cols="12" md="6">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                                  md="6"
+                              >
                                 <c-number
                                     v-model="encuesta.peso"
                                     label="Peso"
                                     rules="required|min:0"
                                     name="peso"
                                     min="0"
-                                >
-                                </c-number>
+                                />
                               </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                                  md="6"
+                              >
                                 <c-number
                                     v-model="encuesta.talla"
                                     label="Talla"
                                     rules="required|min:0"
                                     name="talla"
                                     min="0"
-                                >
-                                </c-number>
+                                />
                               </v-col>
-                              <v-col class="pb-0" cols="12">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                              >
                                 <c-number
                                     v-model="encuesta.imc"
                                     label="IMC"
@@ -399,8 +504,7 @@
                                     :hint="hintIMC"
                                     readonly
                                     :clearable="false"
-                                >
-                                </c-number>
+                                />
                               </v-col>
                             </v-row>
                           </template>
@@ -409,8 +513,14 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" class="pb-0">
-                      <v-card outlined tile>
+                    <v-col
+                        cols="12"
+                        class="pb-0"
+                    >
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.conoce_datostension"
@@ -421,33 +531,41 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                           <template v-if="encuesta.conoce_datostension === 'Si'">
                           <span
                               class="font-weight-bold orange--text caption">Registrar e identificar Tensión Arterial</span>
                             <v-row>
-                              <v-col class="pb-0" cols="12" md="6">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                                  md="6"
+                              >
                                 <c-number
                                     v-model="encuesta.sistolica"
                                     label="Presión Sistólica"
                                     rules="required|min:0"
                                     name="presión sitólica"
                                     min="0"
-                                >
-                                </c-number>
+                                />
                               </v-col>
-                              <v-col class="pb-0" cols="12" md="6">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                                  md="6"
+                              >
                                 <c-number
                                     v-model="encuesta.diastolica"
                                     label="Presión Diastólica"
                                     rules="required|min:0"
                                     name="presión diastólica"
                                     min="0"
-                                >
-                                </c-number>
+                                />
                               </v-col>
-                              <v-col class="pb-0" cols="12">
+                              <v-col
+                                  class="pb-0"
+                                  cols="12"
+                              >
                                 <c-texto
                                     :value="encuesta.sistolica && encuesta.diastolica ? `${encuesta.sistolica}/${encuesta.diastolica}` : ''"
                                     label="Tensión Arterial"
@@ -456,8 +574,7 @@
                                     :hint="hintTension"
                                     readonly
                                     :clearable="false"
-                                >
-                                </c-texto>
+                                />
                               </v-col>
                             </v-row>
                           </template>
@@ -467,7 +584,10 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.actividad_fisica"
@@ -477,13 +597,15 @@
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.frutas_verduras"
@@ -493,13 +615,15 @@
                               :items="complementosRCV && complementosRCV.frutas_verduras ? encuesta.responde_paciente ? complementosRCV.frutas_verduras.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.frutas_verduras.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.medicacion_hta"
@@ -509,13 +633,15 @@
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.antecedente_glucosa"
@@ -525,13 +651,15 @@
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.familiares_diabetes"
@@ -541,15 +669,17 @@
                               :items="complementosRCV && complementosRCV.familiares_diabetes ? complementosRCV.familiares_diabetes.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.diabetes"
@@ -560,14 +690,19 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-expand-x-transition>
-                      <v-col cols="12" v-if="encuesta.diabetes === 'Si'">
-                        <v-card outlined tile>
+                      <v-col
+                          v-if="encuesta.diabetes === 'Si'"
+                          cols="12"
+                      >
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.tipo_diabetes"
@@ -577,14 +712,16 @@
                                 :items="complementosRCV && complementosRCV.tipo_diabetes ? complementosRCV.tipo_diabetes.map(x => {return {value: x, text: x}}) : []"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                     </v-expand-x-transition>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.fumador"
@@ -595,15 +732,13 @@
                               item-text="text"
                               item-value="value"
                               :column="!$vuetify.breakpoint.smAndUp"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
                       <v-card outlined tile>
                         <v-card-text>
-                          <!-- Tiene diagnosticado ya una enfermedad cardiovascular (HTA-IAM-ACV-RENAL) -->
                           <c-radio
                               v-model="encuesta.diagnosticado_rcv"
                               label="12. ¿Alguna vez ha sido diagnosticado con algunos eventos asociados a su enfermedad?"
@@ -612,13 +747,15 @@
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-expand-transition>
-                      <v-col cols="12" v-if="encuesta.diagnosticado_rcv === 'Si'">
+                      <v-col
+                          v-if="encuesta.diagnosticado_rcv === 'Si'"
+                          cols="12"
+                      >
                         <form-enfermedades-c-v
                             ref="formEnfermedadesCv"
                             :array-enfermedades="encuesta.enfermedad_cv"
@@ -626,12 +763,15 @@
                             @changueEnfermedades="val => encuesta.enfermedad_cv = val"
                             @changeOtraEnfermedad="val => encuesta.otra_enfermedad_cv = val"
                             :enfermedades="complementosRCV && complementosRCV.enfermedad_cv ? complementosRCV.enfermedad_cv : []"
-                        ></form-enfermedades-c-v>
+                        />
                       </v-col>
                     </v-expand-transition>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" class="px-0 pb-0">
+                    <v-col
+                        cols="12"
+                        class="px-0 pb-0"
+                    >
                       <v-system-bar
                           dark
                           color="indigo"
@@ -643,7 +783,10 @@
                       </v-system-bar>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.consulta_medicina_g"
@@ -653,13 +796,15 @@
                               :items="complementosRCV && complementosRCV.consulta_medicina_g ? encuesta.responde_paciente ? complementosRCV.consulta_medicina_g.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.consulta_medicina_g.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.consulta_medicina_i"
@@ -669,13 +814,15 @@
                               :items="complementosRCV && complementosRCV.consulta_medicina_i ? encuesta.responde_paciente ? complementosRCV.consulta_medicina_i.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.consulta_medicina_i.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-expand-transition>
-                      <v-col cols="12" v-if="encuesta.consulta_medicina_i && (encuesta.consulta_medicina_i !== 'No sabe' && encuesta.consulta_medicina_i !== 'Nunca')">
+                      <v-col
+                          v-if="encuesta.consulta_medicina_i && (encuesta.consulta_medicina_i !== 'No sabe' && encuesta.consulta_medicina_i !== 'Nunca')"
+                          cols="12"
+                      >
                         <form-especialidades
                             ref="formEspecialidades"
                             :array-especialidades="encuesta.especialidad"
@@ -683,7 +830,7 @@
                             @changeEspecialidades="val => encuesta.especialidad = val"
                             @changeOtraEspecialidad="val => encuesta.otra_especialidad = val"
                             :especialidades="complementosRCV && complementosRCV.especialidad ? complementosRCV.especialidad.filter(x => x !== 'No sabe o no recuerda') : []"
-                        ></form-especialidades>
+                        />
                       </v-col>
                     </v-expand-transition>
                     <v-col cols="12">
@@ -697,13 +844,15 @@
                               :items="complementosRCV && complementosRCV.laboratorios ? encuesta.responde_paciente ? complementosRCV.laboratorios.filter(z => z !== 'No sabe').map(x => {return {value: x, text: x}}) : complementosRCV.laboratorios.map(x => {return {value: x, text: x}}) : []"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-expand-transition>
-                      <v-col cols="12" v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'">
+                      <v-col
+                          v-if="encuesta.laboratorios && encuesta.laboratorios !== 'No sabe'"
+                          cols="12"
+                      >
                         <form-examenes
                             :array-examenes="encuesta.laboratorio"
                             :otro-examen="encuesta.otro_examen"
@@ -711,11 +860,14 @@
                             @changeOtroExamen="val => encuesta.otro_examen = val"
                             :examenes="complementosRCV && complementosRCV.laboratorio ? complementosRCV.laboratorio.filter(x => x !== 'No sabe o no recuerda') : []"
                             ref="formExamenes"
-                        ></form-examenes>
+                        />
                       </v-col>
                     </v-expand-transition>
                     <v-col cols="12">
-                      <v-card outlined tile>
+                      <v-card
+                          outlined
+                          tile
+                      >
                         <v-card-text>
                           <c-radio
                               v-model="encuesta.formula_hta_dm"
@@ -725,13 +877,15 @@
                               :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                               item-text="text"
                               item-value="value"
-                          >
-                          </c-radio>
+                          />
                         </v-card-text>
                       </v-card>
                     </v-col>
                     <v-expand-transition>
-                      <v-col cols="12" v-if="encuesta.formula_hta_dm === 'Si'">
+                      <v-col
+                          v-if="encuesta.formula_hta_dm === 'Si'"
+                          cols="12"
+                      >
                         <form-medicamentos
                             :array-medicamentos="encuesta.medicamentos"
                             :medicamentos="complementosRCV && complementosRCV.medicamentos ? complementosRCV.medicamentos : []"
@@ -739,12 +893,18 @@
                             ref="formMedicamentos"
                             @changeMedicamentos="val => encuesta.medicamentos = val"
                             @changeOtros="val => encuesta.otros_medicamentos = val"
-                        ></form-medicamentos>
+                        />
                       </v-col>
                     </v-expand-transition>
                     <v-expand-transition>
-                      <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
-                        <v-card outlined tile>
+                      <v-col
+                          v-if="encuesta.formula_hta_dm === 'Si'"
+                          cols="12"
+                      >
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.tiene_medicamentos"
@@ -754,30 +914,40 @@
                                 :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                     </v-expand-transition>
                     <v-expand-transition>
-                      <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
-                        <v-card outlined tile>
+                      <v-col
+                          v-if="encuesta.formula_hta_dm === 'Si'"
+                          cols="12"
+                      >
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <v-label>21. ¿Me puede indicar cuando fue la ultima entrega de medicamentos?</v-label>
                             <c-date
                                 v-model="encuesta.entrega_medicamentos"
                                 placeholder="Última entrega de medicamentos"
                                 :max="moment().format('YYYY-MM-DD')"
-                            >
-                            </c-date>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                     </v-expand-transition>
                     <v-expand-transition>
-                      <v-col v-if="encuesta.formula_hta_dm === 'Si'" cols="12">
-                        <v-card outlined tile>
+                      <v-col
+                          v-if="encuesta.formula_hta_dm === 'Si'"
+                          cols="12"
+                      >
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <v-label>22. ¿Me puede indicar para cuando tiene programada la próxima entrega de
                               medicamentos?
@@ -786,8 +956,7 @@
                                 v-model="encuesta.proxima_entrega_medicamentos"
                                 placeholder="Próxima entrega de medicamentos"
                                 :min="moment().format('YYYY-MM-DD')"
-                            >
-                            </c-date>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
@@ -795,7 +964,10 @@
                   </v-row>
                   <v-expand-transition>
                     <v-row v-if="encuesta.formula_hta_dm === 'Si'">
-                      <v-col cols="12" class="px-0 pb-0">
+                      <v-col
+                          cols="12"
+                          class="px-0 pb-0"
+                      >
                         <v-system-bar
                             dark
                             color="indigo"
@@ -807,7 +979,10 @@
                         </v-system-bar>
                       </v-col>
                       <v-col cols="12">
-                        <v-card outlined tile>
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.interrumpe_tto"
@@ -817,13 +992,15 @@
                                 :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                       <v-col cols="12">
-                        <v-card outlined tile>
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.a_tiempo_tto"
@@ -833,13 +1010,15 @@
                                 :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                       <v-col cols="12">
-                        <v-card outlined tile>
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.suspende_mejora_tto"
@@ -849,13 +1028,15 @@
                                 :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
                       <v-col cols="12">
-                        <v-card outlined tile>
+                        <v-card
+                            outlined
+                            tile
+                        >
                           <v-card-text>
                             <c-radio
                                 v-model="encuesta.suspende_adverso_tto"
@@ -865,8 +1046,7 @@
                                 :items="encuesta.responde_paciente ? [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}] : [{value: 'Si', text: 'Si'}, {value: 'No', text: 'No'}, {value: 'No sabe', text: 'No sabe'}]"
                                 item-text="text"
                                 item-value="value"
-                            >
-                            </c-radio>
+                            />
                           </v-card-text>
                         </v-card>
                       </v-col>
@@ -874,7 +1054,7 @@
                   </v-expand-transition>
                 </template>
               </template>
-              <v-divider></v-divider>
+              <v-divider/>
               <v-card-actions>
                 <v-btn
                     large
@@ -883,8 +1063,13 @@
                   <v-icon>mdi-close</v-icon>
                   Cerrar
                 </v-btn>
-                <v-spacer></v-spacer>
-                <p class="caption error--text mb-0 mx-2" v-if="invalid && validated">Hay errores en el formulario</p>
+                <v-spacer/>
+                <p
+                    v-if="invalid && validated"
+                    class="caption error--text mb-0 mx-2"
+                >
+                  Hay errores en el formulario
+                </p>
                 <v-btn
                     large
                     color="primary"
@@ -928,15 +1113,14 @@
                       :clearable="false"
                       :auto-grow="false"
                       :hide-details="true"
-                  >
-                  </c-text-area>
+                  />
                 </v-card-text>
               </v-card>
             </v-menu>
           </v-col>
         </v-row>
       </v-container>
-      <app-section-loader :status="loading"></app-section-loader>
+      <app-section-loader :status="loading"/>
     </v-card>
   </v-dialog>
 
@@ -1124,27 +1308,27 @@ export default {
               fallida: this.encuesta.fallida,
               no_efectividad: this.encuesta.no_efectividad
             }
-          } else if(this.encuesta.dispuesto) {
+          } else if (this.encuesta.dispuesto) {
             encuestaData = this.clone(this.encuesta)
             encuestaData.no_efectividad = null
 
-            if(encuestaData.especialidad.find(x => x === 'No sabe o no recuerda') && encuestaData.especialidad.length > 1){
+            if (encuestaData.especialidad.find(x => x === 'No sabe o no recuerda') && encuestaData.especialidad.length > 1) {
               encuestaData.especialidad = encuestaData.especialidad.filter(x => x !== 'No sabe o no recuerda')
             }
-            if(!encuestaData.especialidad.find(x => x === 'Otra especialidad')){
+            if (!encuestaData.especialidad.find(x => x === 'Otra especialidad')) {
               encuestaData.otra_especialidad = null
             }
             encuestaData.especialidad = encuestaData.especialidad && encuestaData.especialidad.length ? encuestaData.especialidad.join(',') : null
 
-            if(encuestaData.laboratorio.find(x => x === 'No sabe o no recuerda') && encuestaData.laboratorio.length > 1){
+            if (encuestaData.laboratorio.find(x => x === 'No sabe o no recuerda') && encuestaData.laboratorio.length > 1) {
               encuestaData.laboratorio = encuestaData.laboratorio.filter(x => x !== 'No sabe o no recuerda')
             }
-            if(!encuestaData.laboratorio.find(x => x === 'Otro')){
+            if (!encuestaData.laboratorio.find(x => x === 'Otro')) {
               encuestaData.otro_examen = null
             }
             encuestaData.laboratorio = encuestaData.laboratorio && encuestaData.laboratorio.length ? encuestaData.laboratorio.join(',') : null
 
-            if(!encuestaData.enfermedad_cv.find(x => x === 'Otro')){
+            if (!encuestaData.enfermedad_cv.find(x => x === 'Otro')) {
               encuestaData.otra_enfermedad_cv = null
             }
             encuestaData.enfermedad_cv = encuestaData.enfermedad_cv && encuestaData.enfermedad_cv.length ? encuestaData.enfermedad_cv.join(',') : null
@@ -1175,7 +1359,9 @@ export default {
             encuestaData.acudiente = null
           }
           this.loading = true
-          let request = encuestaData.id ? this.axios.put(`rcvs/${encuestaData.id}`, encuestaData) : this.axios.post(`rcvs`, encuestaData)
+          let request = encuestaData.id
+              ? this.axios.put(`rcvs/${encuestaData.id}`, encuestaData)
+              : this.axios.post(`rcvs`, encuestaData)
           request
               .then(response => {
                 this.$emit('guardado', response.data)
@@ -1299,7 +1485,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

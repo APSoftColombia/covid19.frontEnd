@@ -31,7 +31,7 @@ const actions = {
 
 // mutations
 const mutations = {
-    assignComplementos (state, complementos) {
+    assignComplementos(state, complementos) {
         state.complementos = complementos
     }
 }

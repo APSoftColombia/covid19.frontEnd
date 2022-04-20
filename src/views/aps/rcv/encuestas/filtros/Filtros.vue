@@ -1,114 +1,154 @@
 <template>
-  <v-row align="center" justify="end" fill-height>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+  <v-row
+      align="center"
+      justify="end"
+      fill-height
+      dense
+  >
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.departamento_id"
           label="Departamento"
           :items="complementosRCV && complementosRCV.departamentos_rcv ? complementosRCV.departamentos_rcv : []"
           item-value="id"
           item-text="nombre"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-date-range
           v-model="filters.models.rango_updated_at"
           label="Rango Fecha de Actualización"
           :max="moment().format('YYYY-MM-DD')"
       />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.encuesta"
           label="Encuesta"
           :items="filters.data.encuesta"
           item-value="value"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.riesgo_general"
           label="Riesgo General"
           :items="filters.data.riesgo_general"
           item-value="text"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.riesgo_findrisc"
           label="Riesgo Findrisc"
           :items="filters.data.riesgo_findrisc"
           item-value="text"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.riesgo_oms"
           label="Riesgo OMS"
           :items="filters.data.riesgo_oms"
           item-value="text"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.riesgo_morisky"
           label="Riesgo Morisky"
           :items="filters.data.riesgo_morisky"
           item-value="text"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-date-range
           v-model="filters.models.fecha_creacion"
           label="Rango Fecha de Creacion"
           :max="moment().format('YYYY-MM-DD')"
-      >
-      </c-date-range>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.user"
           label="Usuario"
           :items="complementosRCV && complementosRCV.usuarios_rcv ? complementosRCV.usuarios_rcv : []"
           item-value="id"
           item-text="Usuario"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col
+        cols="12"
+        sm="6"
+        md="4"
+    >
       <c-select-complete
           v-model="filters.models.tension_arterial"
           label="Tensión Arterial"
           :items="filters.data.tension"
           item-value="value"
           item-text="text"
-      >
-      </c-select-complete>
+      />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="12" md="12">
+    <v-col
+        cols="12"
+        sm="12"
+        md="12"
+    >
       <v-checkbox
           v-model="filters.models.hasRcv"
           label="Afiliados con Riesgo Cardiovascular"
           :true-value="true"
           :false-value="false"
           @change="aplicaFiltros"
-      ></v-checkbox>
+      />
     </v-col>
   </v-row>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Filtros',
@@ -184,11 +224,6 @@ export default {
     ...mapGetters([
       'complementosRCV'
     ]),
-    /*
-    canShowExcelButton(){
-        return this.lengthRows.total
-    }
-    */
   },
   methods: {
     aplicaFiltros() {
@@ -262,7 +297,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

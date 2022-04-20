@@ -1,7 +1,10 @@
 <template>
-  <v-row>
-    <v-col class="pb-0" cols="12">
-      <v-card outlined tile>
+  <v-row dense>
+    <v-col cols="12">
+      <v-card
+          outlined
+          tile
+      >
         <v-card-text>
           <c-check
               label="15. ¿Qué especialidades?"
@@ -10,23 +13,24 @@
               name="especialidades"
               :items="especialidades"
               :disabled="sinEspecialidades"
-          >
-          </c-check>
+          />
           <v-checkbox
               class="mt-1 ml-2"
               v-model="sinEspecialidades"
               label="No sabe o no recuerda"
               hide-details
-          ></v-checkbox>
+          />
         </v-card-text>
-        <v-col cols="12">
+        <v-col
+            v-if="otraEspecialidadF()"
+            cols="12"
+        >
           <c-texto
               v-model="otra_especialidad"
               label="¿Que otra especialidad?"
               name="otra especialidad"
               :rules="sinEspecialidades ? '' : 'required'"
-              v-if="otraEspecialidadF()"
-          ></c-texto>
+          />
         </v-col>
       </v-card>
     </v-col>
@@ -57,35 +61,35 @@ export default {
   }),
   watch: {
     'arrayEspecialidades': {
-      handler (val) {
+      handler(val) {
         this.lasEspecialidades = val
       },
       immediate: true
     },
     'otraEspecialidad': {
-      handler (val) {
+      handler(val) {
         this.otra_especialidad = val
       },
       immediate: true
     },
     'sinEspecialidades': {
-      handler (val) {
+      handler(val) {
         if (val) {
           this.$emit('changeEspecialidades', ['No sabe o no recuerda'])
-        }else{
+        } else {
           this.$emit('changeEspecialidades', [])
         }
       },
       immediate: false
     },
     'lasEspecialidades': {
-      handler (val) {
+      handler(val) {
         this.$emit('changeEspecialidades', val)
       },
       immediate: false
     },
     'otra_especialidad': {
-      handler (val) {
+      handler(val) {
         this.$emit('changeOtraEspecialidad', val)
       },
       immediate: true
@@ -95,8 +99,8 @@ export default {
     noSaber() {
       this.sinEspecialidades = true
     },
-    otraEspecialidadF(){
-      if(this.lasEspecialidades.find(especialidad => especialidad === 'Otra especialidad')){
+    otraEspecialidadF() {
+      if (this.lasEspecialidades.find(especialidad => especialidad === 'Otra especialidad')) {
         return true
       }
       return false
@@ -104,7 +108,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
