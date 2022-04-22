@@ -1,7 +1,10 @@
 <template>
   <v-container fluid>
     <page-title-bar title="Censo de Camas">
-      <template slot="actions">
+      <template
+          v-if="permisos.censoCamasGestionar"
+          slot="actions"
+      >
         <c-tooltip
             left
             tooltip="Registrar Censo"
@@ -15,7 +18,7 @@
               @click="createItem(null)"
           >
             <v-icon v-if="$vuetify.breakpoint.xsOnly">mdi-plus</v-icon>
-            {{$vuetify.breakpoint.smAndUp ? 'Registrar Censo' : ''}}
+            {{ $vuetify.breakpoint.smAndUp ? 'Registrar Censo' : '' }}
           </v-btn>
         </c-tooltip>
       </template>
@@ -56,9 +59,9 @@
                 <th rowspan="2">
                   IPS
                 </th>
-                <th colspan="2" class="centered"> A D U L T O S </th>
-                <th colspan="2" class="centered"> N E O N A T A L </th>
-                <th colspan="2" class="centered"> P E D I A T R Í A </th>
+                <th colspan="2" class="centered"> A D U L T O S</th>
+                <th colspan="2" class="centered"> N E O N A T A L</th>
+                <th colspan="2" class="centered"> P E D I A T R Í A</th>
               </tr>
               <tr>
                 <th class="centered px-4">UCI</th>
@@ -83,6 +86,7 @@
                   <c-tooltip
                       top
                       tooltip="Registrar Censo"
+                      v-if="permisos.censoCamasGestionar"
                   >
                     <v-btn
                         color="primary"
@@ -120,16 +124,19 @@
         :codigo_habilitacion="codigoItem"
         @saved="getItems"
     />
+    <loading :value='loading' absolute/>
   </v-container>
 </template>
 
 <script>
 import lodash from 'lodash'
 import RegistroCensoCamas from '../components/censoCamas/RegistroCensoCamas'
+
 export default {
   name: 'CensoCamas',
   components: {RegistroCensoCamas},
   data: () => ({
+    loading: false,
     dialogRegister: false,
     codigoItem: null,
     search: '',
@@ -187,11 +194,14 @@ export default {
     this.getItems()
   },
   computed: {
+    permisos() {
+      return this.$store.getters.getPermissionModule('centroRegulador')
+    },
     items() {
       return this.search ? this.originalItems.filter(x => (x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.codigo_habilitacion.toLowerCase().search(this.search.toLowerCase()) > -1)) : this.originalItems
     },
-    totalized () {
-      if(this.items?.length) {
+    totalized() {
+      if (this.items?.length) {
         return {
           camas_adu_uci: lodash.sumBy(this.items, 'camas_adu_uci'),
           camas_adu_uci_covid: lodash.sumBy(this.items, 'camas_adu_uci_covid'),
@@ -205,11 +215,12 @@ export default {
     }
   },
   methods: {
-    createItem (item) {
+    createItem(item) {
       this.codigoItem = item?.codigo_habilitacion || null
       this.dialogRegister = true
     },
     getItems() {
+      this.loading = true
       this.axios.get('camas')
           .then(response => {
             this.originalItems = response.data
@@ -221,6 +232,7 @@ export default {
               error: error
             })
           })
+          .finally(() => this.loading = false)
     }
   }
 }

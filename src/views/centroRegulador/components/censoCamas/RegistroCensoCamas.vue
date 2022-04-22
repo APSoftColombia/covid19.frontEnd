@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+      persistent
       v-model="dialog"
       max-width="620"
   >
@@ -37,6 +38,30 @@
                   rules="required"
               />
             </v-col>
+            <template v-if="!disabledPrestador">
+              <v-col cols="12">
+                <c-select-complete
+                    v-model="item.departamento_prestador"
+                    label="Departamento IPS"
+                    name="Departamento IPS"
+                    :items="departamentos"
+                    item-text="nombre"
+                    item-value="id"
+                    @change="val => item.municipio_prestador = (val && departamentos.find(x => x.id === val).municipios.find(z => z.id === item.municipio_prestador)) ? item.municipio_prestador : null"
+                />
+              </v-col>
+              <v-col cols="12">
+                <c-select-complete
+                    :disabled="!item.departamento_prestador"
+                    v-model="item.municipio_prestador"
+                    label="Municipio IPS"
+                    name="Municipio IPS"
+                    :items="municipios"
+                    item-text="nombre"
+                    item-value="id"
+                />
+              </v-col>
+            </template>
             <v-col cols="12" v-if="dialog">
               <buscador-ips
                   label="IPS"
@@ -44,6 +69,8 @@
                   v-model="item.codigo_habilitacion"
                   rules="required"
                   :disabled="disabledPrestador"
+                  :municipio="municipio"
+                  :departamento="departamento"
               />
             </v-col>
             <v-subheader class="title">Adultos</v-subheader>
@@ -143,7 +170,7 @@
 </template>
 
 <script>
-import BuscadorIps from 'Views/centroRegulador/components/censoCamas/BuscadorIps'
+import BuscadorIps from 'Views/centroRegulador/components/referencias/BuscadorIps'
 import {mapGetters} from 'vuex'
 export default {
   name: 'RegistroCensoCamas',
@@ -174,6 +201,8 @@ export default {
       camas_neo_uci_covid: null,
       camas_ped_uci: null,
       camas_ped_uci_covid: null,
+      departamento_prestador: null,
+      municipio_prestador: null,
     }
   }),
   watch: {
@@ -182,11 +211,38 @@ export default {
         if(val) this.assign()
       },
       immediate: false
+    },
+    'item.departamento_prestador': {
+      handler() {
+        if (this.item) {
+          this.item.municipio_prestador = null
+          this.item.codigo_habilitacion = null
+        }
+      },
+      immediate: false
+    },
+    'item.municipio_prestador': {
+      handler() {
+        if (this.item) {
+          this.item.codigo_prestador = null
+        }
+      },
+      immediate: false
     }
   },
   computed: {
+    municipios() {
+      return this.departamentos.length && this.item.departamento_prestador && this.departamentos.find(x => x.id === this.item.departamento_prestador) ? this.departamentos.find(x => x.id === this.item.departamento_prestador).municipios : []
+    },
+    municipio() {
+      return this.municipios.find(x => x.id === this.item.municipio_prestador) || null
+    },
+    departamento() {
+      return this.departamentos.find(x => x.id === this.item.departamento_prestador) || null
+    },
     ...mapGetters([
-      'getUser'
+      'getUser',
+      'departamentos'
     ]),
     disabledPrestador() {
       return !!this.getUser?.cod_ips || !!this.codigo_habilitacion
@@ -198,6 +254,9 @@ export default {
       this.item.codigo_habilitacion = (this.getUser?.cod_ips || this.codigo_habilitacion || null)
       this.item.fecha_reporte = this.moment().format('YYYY-MM-DD')
       this.item.hora_reporte = this.moment().format('HH:mm')
+      // setTimeout(() => {
+      //   this.item.departamento_prestador = 29
+      // }, 500)
     },
     close() {
       this.$refs.formItem.reset()

@@ -28,11 +28,18 @@
         subtitle="Estado"
         @close="closeTag('estado')"
     />
+    <c-chip-filters
+        v-if="tags.departamento"
+        :text="nombreDepartamento"
+        key="departamento"
+        subtitle="Departamento prestador"
+        @close="closeTag('departamento')"
+    />
   </v-col>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default {
   name: 'TagsFilters',
   props: {
@@ -41,12 +48,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'departamentos'
+    ]),
     ...mapState('atencionMedicaRCVModule', ['complementos']),
     nombrePrestador() {
       return (this.complementos?.prestadores?.length && this.complementos.prestadores.find(x => x.codigohabilitacion === this.tags.prestador)?.nombre) || ''
     },
     nombreUsuario() {
       return (this.complementos?.usuarios?.length && this.complementos.usuarios.find(x => x.id === this.tags.usuario)?.name) || ''
+    },
+    nombreDepartamento() {
+      return (this.departamentos?.length && this.departamentos.find(x => x.codigo === this.tags.departamento)?.nombre) || ''
     }
   },
   methods: {
@@ -62,6 +75,9 @@ export default {
       }
       if(type === 'estado'){
         this.tags.estado = null
+      }
+      if(type === 'departamento'){
+        this.tags.departamento = null
       }
       this.$emit('change')
     }

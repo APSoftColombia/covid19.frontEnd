@@ -138,7 +138,7 @@
                           :items="departamentos"
                           item-text="nombre"
                           item-value="id"
-                          @change="val => item.municipio_prestador_origen = departamentos.find(x => x.id === val).municipios.find(z => z.id === item.municipio_prestador_origen) ? item.municipio_prestador_origen : null"
+                          @change="val => item.municipio_prestador_origen = (val && departamentos.find(x => x.id === val).municipios.find(z => z.id === item.municipio_prestador_origen)) ? item.municipio_prestador_origen : null"
                       />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
@@ -161,6 +161,7 @@
                           rules="required"
                           :disabled="!item.municipio_prestador_origen"
                           :municipio="municipioOrigen"
+                          :departamento="departamentoOrigen"
                       />
                     </v-col>
                     <v-col cols="12">
@@ -320,6 +321,9 @@ export default {
     },
     municipioOrigen() {
       return this.municipiosOrigen.find(x => x.id === this.item.municipio_prestador_origen) || null
+    },
+    departamentoOrigen() {
+      return this.departamentos.find(x => x.id === this.item.departamento_prestador_origen) || null
     },
     ...mapGetters([
       'ref_modalidadesServicio',

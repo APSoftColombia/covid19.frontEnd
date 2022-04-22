@@ -133,6 +133,7 @@ export default {
         complementos: null,
         makeItem: {
           id: null,
+          codigo_cie10_egreso: null,
           referencia_id: null,
           estado: null,
           codigo_prestador_origen: null,
@@ -160,8 +161,9 @@ export default {
           if(this.referencia) {
             this.item = this.clone(this.makeItem)
             this.item.referencia_id = this.referencia.id
-            this.item.fecha_egreso = this.moment().format('YYYY-MM-DD');
-            this.item.hora = this.moment().format('HH:mm');
+            this.item.codigo_cie10_egreso = this.referencia.codigo_cie10_ingreso
+            this.item.fecha_egreso = this.moment().format('YYYY-MM-DD')
+            this.item.hora = this.moment().format('HH:mm')
           } else {
             this.$store.commit('snackbar', {color: 'error', message: `No hay una referencia seleccionada.`})
             this.close()

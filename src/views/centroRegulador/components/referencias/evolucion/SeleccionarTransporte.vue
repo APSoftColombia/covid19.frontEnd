@@ -95,9 +95,10 @@
             <v-col cols="12" sm="12">
               <c-texto
                 v-model="item.contacto"
-                label="Contacto"
-                name="contacto"
-                rules="required|numeric"
+                label="Celular Contacto"
+                name="celular contacto"
+                type="tel"
+                rules="required|numeric|minlength:10|maxlength:10"
               >
               </c-texto>
             </v-col>
@@ -176,13 +177,13 @@ export default {
       if (this.referencia) {
         setTimeout(() => {
           if (this.$refs.buscadoripsOrigen) this.$refs.buscadoripsOrigen.assign(this.referencia.codigo_prestador_origen)
-          if (this.$refs.buscadoripsrepsDestino) this.$refs.buscadoripsrepsDestino.assign(this.referencia.presentaciones.find(x => x.id == this.id).codigo_prestador_presentacion)
+          if (this.$refs.buscadoripsrepsDestino) this.$refs.buscadoripsrepsDestino.assign(this.referencia.presentaciones.find(x => x.id === this.id).codigo_prestador_presentacion)
         }, 600)
         this.item = this.clone(this.itemModel);
         this.item.fecha = this.moment().format("YYYY-MM-DD");
         this.item.hora = this.moment().format("HH:mm");
         this.item.codigo_prestador_origen = this.referencia.codigo_prestador_origen;
-        this.item.codigo_prestador_destino = this.referencia.presentaciones.find(x => x.id == this.id).codigo_prestador_presentacion;
+        this.item.codigo_prestador_destino = this.referencia.presentaciones.find(x => x.id === this.id).codigo_prestador_presentacion;
       } else {
         this.$store.commit("snackbar", {
           color: "error",

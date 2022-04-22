@@ -60,7 +60,7 @@
                   <v-badge
                       overlap
                       :color="tab === 'tab-2' ? 'teal' : 'grey'"
-                      :content="(attention.examenes && String(attention.examenes.length)) || 0"
+                      :content="(attention && attention.examenes && String(attention.examenes.length)) || 0"
                       :class="tab === 'tab-2' ? 'teal--text' : 'text--secondary'"
                   >
                     <span class="subtitle-1">Laboratorios</span>
@@ -82,7 +82,7 @@
                   <v-badge
                       overlap
                       :color="tab === 'tab-5' ? 'purple' : 'grey'"
-                      :content="(attention.controles && String(attention.controles.length)) || 0"
+                      :content="(attention && attention.controles && String(attention.controles.length)) || 0"
                       :class="tab === 'tab-5' ? 'purple--text' : 'text--secondary'"
                   >
                     <span class="subtitle-1">Controles</span>

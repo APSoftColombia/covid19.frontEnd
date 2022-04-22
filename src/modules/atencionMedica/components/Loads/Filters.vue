@@ -20,7 +20,7 @@
           hide-details
       />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="3">
       <c-date
           v-model="filters.models.mes"
           label="Mes de cargue"
@@ -28,7 +28,7 @@
           :max="moment().format('YYYY-MM-DD')"
       />
     </v-col>
-    <v-col class="pb-0" cols="12" sm="6" md="4">
+    <v-col class="pb-0" cols="12" sm="6" md="3">
       <c-select-complete
           v-model="filters.models.estado"
           label="Estado"
@@ -38,12 +38,22 @@
           hide-details
       />
     </v-col>
+    <v-col class="pb-0" cols="12" sm="6">
+      <c-select-complete
+          v-model="filters.models.departamento"
+          label="Departamento prestador"
+          name="Departamento prestador"
+          :items="departamentos"
+          item-text="nombre"
+          item-value="codigo"
+      />
+    </v-col>
   </v-row>
 </template>
 
 <script>
 
-import {mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'Filters',
@@ -60,10 +70,14 @@ export default {
         prestador: null,
         usuario: null,
         estado: null,
+        departamento: null
       }
     }
   }),
   computed: {
+    ...mapGetters([
+      'departamentos'
+    ]),
     ...mapState('atencionMedicaRCVModule', ['complementos']),
   },
   created() {
@@ -83,6 +97,9 @@ export default {
       }
       if (this.filters.models.estado) {
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[estado]=' + this.filters.models.estado
+      }
+      if (this.filters.models.departamento) {
+        rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[iddepto]=' + this.filters.models.departamento
       }
       this.$emit('filtra', rutaTemp)
     },

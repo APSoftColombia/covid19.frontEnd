@@ -79,6 +79,10 @@ export default {
     municipio: {
       type:Object,
       default: null
+    },
+    departamento: {
+      type:Object,
+      default: null
     }
   },
   data: () => ({
@@ -94,6 +98,12 @@ export default {
   },
   watch: {
     municipio: {
+      handler(val) {
+        val && this.buscarItem()
+      },
+      immediate: false
+    },
+    departamento: {
       handler(val) {
         val && this.buscarItem()
       },
@@ -129,9 +139,9 @@ export default {
       if (item) this.codigos.push(item)
     },
     buscarItem: lodash.debounce(async function (value) {
-      if (value || this.itenSearch || this.municipio) {
+      if (value || this.itenSearch || this.municipio || this.departamento) {
         this.itemLoading = true
-        this.axios.get(`prestadores?filter[search]=${value || this.itenSearch || ''}${this.municipio ? `&filter[idmpio]=${this.municipio.codigo}` : ''}`)
+        this.axios.get(`prestadores?filter[search]=${value || this.itenSearch || ''}${this.departamento ? `&filter[iddepto]=${this.departamento.codigo}` : ''}${this.municipio ? `&filter[idmpio]=${this.municipio.codigo}` : ''}`)
             .then(response => {
               this.codigos = response.data
               this.itemLoading = false
