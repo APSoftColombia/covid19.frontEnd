@@ -48,7 +48,7 @@ const state = {
         tablaAtencionMedicaRCV: 0,
         tablaAtencionMedicaRCVVersion: 3,
         tablaAtencionMedicaLoadsRCV: 0,
-        tablaAtencionMedicaLoadsRCVVersion: 2
+        tablaAtencionMedicaLoadsRCVVersion: 4
     }
 }
 

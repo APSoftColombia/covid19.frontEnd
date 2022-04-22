@@ -34,68 +34,87 @@
               {{ moment(item.created_at).format('DD/MM/YYYY HH:mm') }}
             </template>
           </template>
+          <template v-slot:item.estado="{ item }">
+            <v-btn
+                v-if="item.errors && item.errors.length"
+                small
+                color="warning"
+                @click="showErrors(item)"
+            >
+              <v-icon>mdi-alert</v-icon>
+              {{item.estado}}
+            </v-btn>
+            <span v-else>{{item.estado}}</span>
+          </template>
           <template v-slot:item.prestador="{ item }">
             <v-list-item-content
                 v-if="item.prestador"
                 class="pa-0"
             >
               <v-list-item-subtitle>
-                {{ item.prestador.nombre }}
+                {{ item.prestador }}
               </v-list-item-subtitle>
               <v-list-item-subtitle class="body-2">
-                {{ `${item.prestador.telefono ? `Tel. ${item.prestador.telefono}, ` : ''} ${[item.prestador.direccion, item.prestador.nompio, item.prestador.nomdepto].filter(x => x).join(', ')}` }}
+                {{ [item.nompio, item.nomdepto].join(', ') }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </template>
-          <template v-slot:item.user="{ item }">
-            <v-list-item-content class="pa-0" v-if="item.user">
-              <v-list-item-title>
-                {{ item.user.name }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="body-2">
-                {{ item.user.email }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-          <template v-slot:item.opciones="{ item }">
-            <div class="optionsButtons">
-              <v-toolbar>
-                <c-tooltip
-                    v-if="permisos.manageFile"
-                    top
-                    tooltip="Descargar Archivo"
-                >
-                  <v-btn
-                      class="ma-1"
-                      color="green"
-                      depressed
-                      fab
-                      x-small
-                      @click="fileDownload(item)"
-                  >
-                    <v-icon class="white--text">mdi-file-download</v-icon>
-                  </v-btn>
-                </c-tooltip>
-              </v-toolbar>
-            </div>
-          </template>
+<!--          <template v-slot:item.user="{ item }">-->
+<!--            <v-list-item-content class="pa-0" v-if="item.user">-->
+<!--              <v-list-item-title>-->
+<!--                {{ item.user.name }}-->
+<!--              </v-list-item-title>-->
+<!--              <v-list-item-subtitle class="body-2">-->
+<!--                {{ item.user.email }}-->
+<!--              </v-list-item-subtitle>-->
+<!--            </v-list-item-content>-->
+<!--          </template>-->
+<!--          <template v-slot:item.opciones="{ item }">-->
+<!--            <div class="optionsButtons">-->
+<!--              <v-toolbar>-->
+<!--                <c-tooltip-->
+<!--                    v-if="permisos.manageFile"-->
+<!--                    top-->
+<!--                    tooltip="Descargar Archivo"-->
+<!--                >-->
+<!--                  <v-btn-->
+<!--                      class="ma-1"-->
+<!--                      color="green"-->
+<!--                      depressed-->
+<!--                      fab-->
+<!--                      x-small-->
+<!--                      @click="fileDownload(item)"-->
+<!--                  >-->
+<!--                    <v-icon class="white&#45;&#45;text">mdi-file-download</v-icon>-->
+<!--                  </v-btn>-->
+<!--                </c-tooltip>-->
+<!--              </v-toolbar>-->
+<!--            </div>-->
+<!--          </template>-->
         </v-data-table>
       </template>
     </data-tablex>
+    <load-errors
+        ref="errors"
+        :errors="errors"
+    />
   </div>
 </template>
 
 <script>
 import TagsFilters from './TagsFilters'
 import Filters from './Filters'
+import LoadErrors from './LoadErrors'
 import {mapState} from 'vuex'
 export default {
   name: 'Loads',
   components: {
     TagsFilters,
+    LoadErrors,
     Filters
   },
   data: () => ({
+    errors: [],
     rutaBase: 'archivos-atencion-rcv',
     dataTable: {
       advanceFilters: true,
@@ -127,19 +146,19 @@ export default {
           text: 'Prestador',
           sortable: false,
           value: 'prestador'
-        },
-        {
-          text: 'Usuario Registra',
-          sortable: false,
-          visibleColumn: true,
-          value: 'user'
-        },
-        {
-          text: '',
-          value: 'opciones',
-          align: 'center',
-          sortable: false
         }
+        // {
+        //   text: 'Usuario Registra',
+        //   sortable: false,
+        //   visibleColumn: true,
+        //   value: 'user'
+        // }
+        // {
+        //   text: '',
+        //   value: 'opciones',
+        //   align: 'center',
+        //   sortable: false
+        // }
       ]
     }
   }),
@@ -158,6 +177,10 @@ export default {
     }
   },
   methods: {
+    showErrors(item) {
+      this.errors = JSON.parse(item.errors)
+      this.$refs.errors.open()
+    },
     fileDownload(item) {
       console.log('item', item)
       // this.$refs.itemDetail.open(item.id)
