@@ -44,6 +44,11 @@
               <v-icon>mdi-alert</v-icon>
               {{item.estado}}
             </v-btn>
+            <file-download
+                v-else-if="item.estado=== 'Exitoso'"
+                :id="item.id"
+                :estado="item.estado"
+            />
             <span v-else>{{item.estado}}</span>
           </template>
           <template v-slot:item.prestador="{ item }">
@@ -97,6 +102,7 @@
     <load-errors
         ref="errors"
         :errors="errors"
+        :id="errorsId"
     />
   </div>
 </template>
@@ -106,15 +112,18 @@ import TagsFilters from './TagsFilters'
 import Filters from './Filters'
 import LoadErrors from './LoadErrors'
 import {mapState} from 'vuex'
+import FileDownload from './FileDownload'
 export default {
   name: 'Loads',
   components: {
+    FileDownload,
     TagsFilters,
     LoadErrors,
     Filters
   },
   data: () => ({
     errors: [],
+    errorsId: null,
     rutaBase: 'archivos-atencion-rcv',
     dataTable: {
       advanceFilters: true,
@@ -179,6 +188,7 @@ export default {
   methods: {
     showErrors(item) {
       this.errors = JSON.parse(item.errors)
+      this.errorsId = item.id
       this.$refs.errors.open()
     },
     fileDownload(item) {

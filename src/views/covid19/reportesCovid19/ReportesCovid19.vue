@@ -142,7 +142,7 @@ export default {
           .catch(error => {
             this.$store.commit('snackbar', {
               color: 'error',
-              message: `al recuperar los registros de los reportes.`,
+              message: 'al recuperar los registros de los reportes.',
               error: error
             })
             this.loading = false

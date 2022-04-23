@@ -111,7 +111,7 @@
               <v-subheader class="title error--text">El archivo cargado presenta {{ errors.length }}
                 error{{ errors.length === 1 ? '' : 'es' }}
               </v-subheader>
-              <v-simple-table>
+              <v-simple-table id="tableID">
                 <template v-slot:default>
                   <tbody>
                   <tr
@@ -133,6 +133,7 @@
                   </tbody>
                 </template>
               </v-simple-table>
+              <errors-download/>
             </v-col>
           </v-row>
         </v-container>
@@ -144,9 +145,10 @@
 
 <script>
 import {store} from '@/store/store'
-
+import ErrorsDownload from './Loads/ErrorsDownload'
 export default {
   name: 'ExcelFileUploader',
+  components: {ErrorsDownload},
   data: () => ({
     file: null,
     month: null,

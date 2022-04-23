@@ -43,7 +43,7 @@
               <v-subheader class="title error--text">El archivo cargado presenta {{ errors.length }}
                 error{{ errors.length === 1 ? '' : 'es' }}
               </v-subheader>
-              <v-simple-table>
+              <v-simple-table id="tableID">
                 <template v-slot:default>
                   <tbody>
                   <tr
@@ -69,15 +69,24 @@
           </v-row>
         </v-container>
       </v-card-text>
+      <errors-download
+          :id="id"
+      />
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 
+import ErrorsDownload from './ErrorsDownload'
 export default {
   name: 'LoadErrors',
+  components: {ErrorsDownload},
   props: {
+    id: {
+      type: Number,
+      default: null
+    },
     errors: {
       type: Array,
       default: () => []
