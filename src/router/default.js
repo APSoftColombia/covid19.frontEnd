@@ -398,6 +398,20 @@ export default {
          }
       },
       {
+         path: 'reportes-rcv',
+         name: 'ReportesRCV',
+         component: ReportesCovid19,
+         meta: {
+            requiresAuth: true,
+            requiresOnLine: true,
+            requiresPermission: 'reportesRCV-index',
+            avatar: {
+               icon: 'mdi-file-table',
+               color: 'pink',
+            }
+         }
+      },
+      {
          path: 'mapacovid',
          name: 'MapaCovid',
          component: MapaCovid19,

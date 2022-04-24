@@ -436,5 +436,13 @@ export const itemsMenu = [
         color: 'teal',
         routeName: 'CensoCamas',
         typeRoute: 'centroRegulador'
-    }
+    },
+    {
+        id: 74,
+        title: 'Reportes / Informes RCV',
+        icon: 'mdi-file-table',
+        color: 'pink',
+        routeName: 'ReportesRCV',
+        typeRoute: 'reportesIndicadoresRCV'
+    },
 ]

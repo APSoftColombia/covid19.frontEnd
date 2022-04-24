@@ -60,6 +60,7 @@ const getters = {
         if (getters.getPermission('centroRegulador-censoCamasIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 73))
         // RCV
         if (getters.getPermission('aps-encuestasRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 27))
+        if (getters.getPermission('reportesRCV-index') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 74))
         if (getters.getPermission('aps-indicadoresRCVIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 28))
         if (getters.getPermission('aps-informeEjecutivoRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 29))
         if (getters.getPermission('aps-bitacorasRcvIndex') && getters.onLine) menuPrincipal.push(state.itemsMenu.find(x => x.id === 35))

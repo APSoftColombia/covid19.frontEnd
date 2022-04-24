@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Reportes Covid-19">
+    <page-title-bar :title="title">
       <template slot="actions">
         <v-tooltip top v-if="permisos.crear" :disabled="$vuetify.breakpoint.smAndUp">
           <template v-slot:activator="{on}">
@@ -83,11 +83,13 @@ const RegistroReporte = () => import('Views/covid19/reportesCovid19/RegistroRepo
 const GeneradorReporte = () => import('Views/covid19/reportesCovid19/GeneradorReporte')
 
 export default {
+  name: 'ReporteCovid19',
   components: {
     RegistroReporte,
     GeneradorReporte
   },
   data: () => ({
+    title:'',
     search: '',
     loading: false,
     reportesFull: [],
@@ -99,9 +101,18 @@ export default {
         this.buscarReportes()
       },
       immediate: false
+    },
+    routeName: {
+      handler() {
+        this.asignarRuta()
+      },
+      immediate: true
     }
   },
   computed: {
+    routeName() {
+      return this.$route?.name
+    },
     permisos() {
       return this.$store.getters.getPermissionModule('reportesCovid')
     },
@@ -109,10 +120,16 @@ export default {
       'roles'
     ])
   },
-  created() {
-    this.getReportes()
-  },
   methods: {
+    asignarRuta() {
+      if(this.$route?.name === 'ReportesRCV') {
+        this.title = 'Reportes RCV'
+      }
+      else {
+        this.title = 'Reportes Covid-19'
+      }
+      this.getReportes()
+    },
     buscarReportes: lodash.debounce(function () {
       this.reportesFiltrados = this.search
           ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1))
@@ -133,7 +150,7 @@ export default {
     },
     getReportes() {
       this.loading = true
-      this.axios.get(`reportes`)
+      this.axios.get(`${(this.routeName === 'ReportesRCV') ? 'reportes-rcv' : 'reportes'}`)
           .then(response => {
             this.reportesFull = response.data
             this.reportesFiltrados = this.clone(this.reportesFull)

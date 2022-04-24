@@ -33,7 +33,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'primary'
+      default: 'error'
     }
   },
   data:() => ({
@@ -57,7 +57,7 @@ export default {
                   message: `El archivo no contiene registros para exportar.`
                 })
               } else {
-                const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))
+                const url = window.URL.createObjectURL(new Blob([response.data], {type: 'text/csv'}))
                 window.open(url, '_blank')
                 this.loading = false
               }
