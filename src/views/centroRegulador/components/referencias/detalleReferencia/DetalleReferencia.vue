@@ -191,12 +191,6 @@
                 <c-input-file
                     detail
                     :show-icon="false"
-                    label="Evolución Diaria"
-                    v-model="item.evolucion_diaria"
-                />
-                <c-input-file
-                    detail
-                    :show-icon="false"
                     label="Documentos Paciente"
                     v-model="item.documentos_paciente"
                 />

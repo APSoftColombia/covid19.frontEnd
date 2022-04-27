@@ -3,6 +3,7 @@
       persistent
       v-model="dialog"
       max-width="620"
+      eager
   >
     <v-card>
       <v-toolbar dark color="primary">
@@ -145,6 +146,19 @@
                   :clearable="false"
               />
             </v-col>
+            <v-subheader class="title">Urgencias</v-subheader>
+            <v-col cols="12" sm="8">
+              <c-number
+                  v-model="item.camas_urgencias"
+                  label="General"
+                  name="General"
+                  vid="General"
+                  min="0"
+                  step="1"
+                  rules="required|min:0|integer"
+                  :clearable="false"
+              />
+            </v-col>
           </v-row>
         </ValidationObserver>
       </v-container>
@@ -201,6 +215,7 @@ export default {
       camas_neo_uci_covid: null,
       camas_ped_uci: null,
       camas_ped_uci_covid: null,
+      camas_urgencias: null,
       departamento_prestador: null,
       municipio_prestador: null,
     }
@@ -247,6 +262,9 @@ export default {
     disabledPrestador() {
       return !!this.getUser?.cod_ips || !!this.codigo_habilitacion
     }
+  },
+  created() {
+    this.assign()
   },
   methods: {
     assign() {

@@ -40,20 +40,21 @@
         :label="label"
         :name="name"
         :error-messages="errors"
-        :clearable="true"
+        clearable
         :placeholder="placeholder"
         :outlined="outlined"
         :dense="dense"
         :disabled="disabled"
         :readonly="readonly"
         :accept="accept"
-        :hint="hint"
+        :hint="!model ? hint : ''"
         :persistent-hint="persistentHint"
         :prepend-inner-icon="icon"
         prepend-icon=""
         :loading="loading"
-        @change="val => changeInput(val)"
         class="inputFile"
+        @change="val => changeInput(val)"
+        @click:clear="changeInput(null)"
     >
       <template v-slot:selection>
         {{ vmodel && vmodel.name || '' }}
@@ -174,7 +175,7 @@ export default {
               this.loading = false
               this.$store.commit('snackbar', {
                 color: 'error',
-                message: `Error al descargar el archivo.`,
+                message: 'Error al descargar el archivo.',
                 error: e
               })
             })

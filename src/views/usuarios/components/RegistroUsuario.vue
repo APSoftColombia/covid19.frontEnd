@@ -333,6 +333,25 @@
                 />
               </ValidationProvider>
             </v-col>
+            <v-col cols="12">
+              <v-card outlined tile>
+                <v-card-text>
+                  <c-radio
+                      v-model="usuario.sesion_no_expira"
+                      :items="[
+                          { text: 'Si', value: 0 },
+                          { text: 'No', value: 1 },
+                        ]"
+                      itemValue="value"
+                      itemText="text"
+                      rules="required"
+                      label="¿La sesión expira por inactividad?"
+                      name="Expiración de sesión por inactividad"
+                      :column="!$vuetify.breakpoint.smAndUp"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
         <v-divider class="ma-0 pa-0" />
@@ -383,7 +402,8 @@ export default {
       tipo_cliente_id: null,
       firma: null,
       firmaFile: null,
-      registro_medico: null
+      registro_medico: null,
+      sesion_no_expira: null
     },
     showPassword: false,
     tiposDocumentoIdentidad: [],

@@ -203,6 +203,8 @@
                     <v-col cols="12" sm="12" md="12" lg="6">
                       <c-input-file
                           label="Historia Clínica"
+                          name="Historia Clínica"
+                          rules="required"
                           directory="referencias"
                           v-model="item.historia_clinica"
                           @uuid="val => item.historia_clinica_uuid = val"
@@ -214,14 +216,6 @@
                           directory="referencias"
                           v-model="item.orden_medica"
                           @uuid="val => item.orden_medica_uuid = val"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="6">
-                      <c-input-file
-                          label="Evolución Diaria"
-                          directory="referencias"
-                          v-model="item.evolucion_diaria"
-                          @uuid="val => item.evolucion_diaria_uuid = val"
                       />
                     </v-col>
                     <v-col cols="12" sm="12" md="12" lg="6">

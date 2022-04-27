@@ -62,6 +62,7 @@
                 <th colspan="2" class="centered"> A D U L T O S</th>
                 <th colspan="2" class="centered"> N E O N A T A L</th>
                 <th colspan="2" class="centered"> P E D I A T R Í A</th>
+                <th class="centered"> U R G E N C I A S </th>
               </tr>
               <tr>
                 <th class="centered px-4">UCI</th>
@@ -70,6 +71,7 @@
                 <th class="centered">UCI COVID</th>
                 <th class="centered px-4">UCI</th>
                 <th class="centered">UCI COVID</th>
+                <th class="centered">GENERAL</th>
               </tr>
               </thead>
             </template>
@@ -113,6 +115,7 @@
                 <td class="font-weight-bold text-center">{{ totalized.camas_neo_uci_covid }}</td>
                 <td class="font-weight-bold text-center">{{ totalized.camas_ped_uci }}</td>
                 <td class="font-weight-bold text-center">{{ totalized.camas_ped_uci_covid }}</td>
+                <td class="font-weight-bold text-center">{{ totalized.camas_urgencias }}</td>
               </tr>
             </template>
           </v-data-table>
@@ -187,6 +190,12 @@ export default {
         sortable: false,
         value: 'camas_ped_uci_covid',
       },
+      {
+        text: 'Urgencias',
+        align: 'center',
+        sortable: false,
+        value: 'camas_urgencias',
+      },
     ],
     originalItems: []
   }),
@@ -209,6 +218,7 @@ export default {
           camas_neo_uci_covid: lodash.sumBy(this.items, 'camas_neo_uci_covid'),
           camas_ped_uci: lodash.sumBy(this.items, 'camas_ped_uci'),
           camas_ped_uci_covid: lodash.sumBy(this.items, 'camas_ped_uci_covid'),
+          camas_urgencias: lodash.sumBy(this.items, 'camas_urgencias'),
         }
       }
       return null

@@ -182,7 +182,7 @@ export default {
   },
   methods: {
     verificarIdle() {
-      if(this.getUser?.id !== 1) {
+      if(this.getUser?.sesion_no_expira !== 1) {
         this.$store.commit('InactivitylogoutUser', this.$router)
         this.inactividad = true
       }
