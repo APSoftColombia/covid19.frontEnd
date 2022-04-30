@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import AlertaSolicitudesContent from './AlertaSolicitudesContent'
 var intervalo
 export default {
@@ -87,7 +87,10 @@ export default {
       news: state => state.centroReguladorPersist.ref_nuevasRerefencias,
       notificar: state => state.centroReguladorPersist.ref_showAlert,
       newsNotificar: state => state.centroReguladorPersist.ref_nuevasNotificar
-    })
+    }),
+    ...mapGetters([
+      'getUser'
+    ])
   },
   watch: {
     news: {
@@ -102,7 +105,6 @@ export default {
     },
     'newsNotificar.length': {
       handler(val) {
-        console.log('val entra ', val)
         if(!val) {
           this.aceptar()
         }
@@ -136,7 +138,9 @@ export default {
       this.dialog = false
     },
     getNews() {
-      this.$store.dispatch('getNuevasReferencias')
+      if(this.getUser) {
+        this.$store.dispatch('getNuevasReferencias')
+      }
     }
   }
 }

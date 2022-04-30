@@ -28,6 +28,21 @@
       </c-tooltip>
     </v-list-item-action>
   </v-list-item>
+  <c-tooltip
+      v-else-if="soloButton && vmodel"
+      left
+      tooltip="Descargar archivo"
+  >
+    <v-btn
+        icon
+        :color="vmodel ? 'primary' : ''"
+        :href="vmodel.url"
+        @click="downloadFile"
+        :target="vmodel.mimetype === 'application/pdf' ? '_blank' : '_blank'"
+    >
+      <v-icon>mdi-download</v-icon>
+    </v-btn>
+  </c-tooltip>
   <ValidationProvider
       v-else
       :name="name"
@@ -66,7 +81,7 @@
             :color="vmodel ? 'primary' : ''"
             :href="vmodel.url"
             @click="downloadFile"
-            :target="vmodel.mimetype === 'application/pdf' ? '_blank' : ''"
+            :target="vmodel.mimetype === 'application/pdf' ? '_blank' : '_blank'"
         >
           <v-icon>mdi-download</v-icon>
         </v-btn>
@@ -85,6 +100,10 @@ export default {
       default: null
     },
     detail: {
+      type: Boolean,
+      default: false
+    },
+    soloButton: {
       type: Boolean,
       default: false
     },

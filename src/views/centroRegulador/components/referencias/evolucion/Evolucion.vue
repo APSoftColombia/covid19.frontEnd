@@ -4,38 +4,44 @@
         color="blue-grey lighten-5"
         flat
     >
-      <v-chip
-          label
-          class="font-weight-bold"
-          :color="ref_estados && ref_estados.find(x => x.key === referencia.estado) && ref_estados.find(x => x.key === referencia.estado).color"
-          dark
-      >
-        {{ referencia.estado }}
-      </v-chip>
-      <v-spacer />
-      <template
-          v-if="referencia && referencia.acciones && referencia.acciones.length"
-      >
-        <component
-            v-for="(accion, indexAccion) in referencia.acciones"
-            :key="`accion${indexAccion}`"
-            :is="accion.componente"
-            :referencia="referencia"
-            :accion="accion"
-            @guardado="(val) => $emit('guardado', val)"
-        />
-      </template>
-      <template v-slot:extension>
-        <v-tabs
-            v-model="tab"
-            color="primary"
-            align-with-title
+      <v-row dense class="pt-1" justify="center" align="center">
+        <v-chip
+            label
+            class="font-weight-bold"
+            :color="ref_estados && ref_estados.find(x => x.key === referencia.estado) && ref_estados.find(x => x.key === referencia.estado).color"
+            dark
         >
-          <v-tabs-slider />
-          <v-tab href="#tab-1"> Gestión por IPS </v-tab>
-          <v-tab href="#tab-2"> Traslado </v-tab>
-          <v-tab href="#tab-3"> Bitacoras - General </v-tab>
-        </v-tabs>
+          {{ referencia.estado }}
+        </v-chip>
+        <v-spacer />
+        <template
+            v-if="referencia && referencia.acciones && referencia.acciones.length"
+        >
+          <component
+              v-for="(accion, indexAccion) in referencia.acciones"
+              :key="`accion${indexAccion}`"
+              :is="accion.componente"
+              :referencia="referencia"
+              :accion="accion"
+              @guardado="(val) => $emit('guardado', val)"
+          />
+        </template>
+      </v-row>
+      <template v-slot:extension>
+        <div style="width: 100%">
+          <v-tabs
+              v-model="tab"
+              color="primary"
+              background-color="blue-grey lighten-5"
+              show-arrows
+          >
+            <v-tabs-slider />
+            <v-tab href="#tab-1"> Gestión por IPS </v-tab>
+            <v-tab href="#tab-2"> Traslado </v-tab>
+            <v-tab href="#tab-3"> Bitacoras - General </v-tab>
+            <v-tab href="#tab-4"> Evolución Diaria </v-tab>
+          </v-tabs>
+        </div>
       </template>
     </v-toolbar>
     <v-card-text>
@@ -383,6 +389,13 @@
             </template>
           </v-list>
         </v-tab-item>
+        <!-- Evolución diaria -->
+        <v-tab-item value="tab-4">
+          <evolucion-diaria
+              :referencia="referencia"
+              @guardado="val => $emit('guardado', val)"
+          />
+        </v-tab-item>
       </v-tabs-items>
     </v-card-text>
   </v-card>
@@ -397,6 +410,7 @@ import Presentacion from 'Views/centroRegulador/components/referencias/evolucion
 import Traslado from 'Views/centroRegulador/components/referencias/evolucion/Traslado'
 import TerminarProceso from 'Views/centroRegulador/components/referencias/evolucion/TerminarProceso'
 import VerBitacoras from 'Views/centroRegulador/components/referencias/evolucion/VerBitacoras'
+import EvolucionDiaria from 'Views/centroRegulador/components/referencias/evolucion/evolucionDiaria/EvolucionDiaria'
 export default {
   name: 'Evolucion',
   props: {
@@ -409,6 +423,7 @@ export default {
     ...mapGetters(['tiposDocumentoIdentidad', 'ref_estados']),
   },
   components: {
+    EvolucionDiaria,
     VerBitacoras,
     Presentacion,
     Traslado,

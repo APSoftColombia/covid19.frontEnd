@@ -2,11 +2,13 @@
   <v-container fluid>
     <page-title-bar title="Referencias">
       <template slot="actions">
-        <alerta-solicitudes
-            @notificar="itemGuardado"
-            @seleccionar="val => seleccionarItemAlert(val)"
-        />
-        <v-divider vertical inset class="mx-4"/>
+        <template v-if="getUser && !getUser.eps_id">
+          <alerta-solicitudes
+              @notificar="itemGuardado"
+              @seleccionar="val => seleccionarItemAlert(val)"
+          />
+          <v-divider vertical inset class="mx-4"/>
+        </template>
         <c-tooltip
             v-if="permisos.referenciasCrear"
             top
@@ -312,7 +314,10 @@ export default {
     seleccionado: null
   }),
   computed: {
-    ...mapGetters(['ref_estados']),
+    ...mapGetters([
+        'ref_estados',
+        'getUser'
+    ]),
     permisos () {
       return this.$store.getters.getPermissionModule('centroRegulador')
     }
