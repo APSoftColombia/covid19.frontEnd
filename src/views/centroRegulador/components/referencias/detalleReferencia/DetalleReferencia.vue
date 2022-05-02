@@ -22,7 +22,7 @@
       </v-toolbar>
       <v-container v-if="item">
         <v-row dense>
-          <v-col cols="12" md="4">
+          <v-col cols="12" :md="!gestionaReferencia ? '12' : '4'">
             <v-card>
               <v-list-item-subtitle class="caption font-weight-bold grey--text mx-4 pt-2 text-right">Paciente</v-list-item-subtitle>
               <v-list-item class="py-0">
@@ -197,7 +197,11 @@
               </v-list>
             </v-card>
           </v-col>
-          <v-col cols="12" md="8">
+          <v-col
+              v-if="gestionaReferencia"
+              cols="12"
+              md="8"
+          >
             <evolucion
                 :referencia="item"
                 @guardado="val => actualizarItem(val)"
@@ -227,7 +231,17 @@ export default {
   computed: {
     ...mapGetters([
       'ref_regimenes',
+      'getUser'
     ]),
+    gestionaReferencia (item) {
+      return !(this.getUser.cod_ips && [8, 9].find(x => x === item.regimen_id))
+      // if(this.getUser.cod_ips && [8, 9].find(x => x === item.regimen_id)) {
+      //   return false
+      // }
+      // else {
+      //   return true
+      // }
+    },
     textRegimen() {
       return (this.ref_regimenes?.length && this.item?.regimen_id && this.ref_regimenes.find(x => x.id === this.item.regimen_id)?.descripcion) || ''
     },

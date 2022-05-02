@@ -49,7 +49,7 @@
                           disabled
                       />
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="!getUser.cod_ips">
                       <c-select-complete
                           v-model="item.medio_solicitud"
                           label="Medio de Solicitud"
@@ -323,7 +323,8 @@ export default {
       'ref_modalidadesServicio',
       'ref_medios',
       'ref_especialidades',
-      'departamentos'
+      'departamentos',
+      'getUser'
     ])
   },
   watch: {

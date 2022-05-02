@@ -39,7 +39,7 @@ export default {
   name: 'RegistroPresentarFilters',
   data: () => ({
     model: {
-      departamento: null,
+      departamento: '70',
       especialidad: null
     },
     string: ''
@@ -55,7 +55,7 @@ export default {
       handler () {
         this.makeRouteFilter()
       },
-      immediate: false,
+      immediate: true,
       deep: true
     }
   },

@@ -52,110 +52,136 @@
       >
         <!-- Busqueda de IPS -->
         <v-tab-item value="tab-1">
-          <v-list>
-            <template
-                v-for="(
+          <template v-if="referencia.presentaciones && referencia.presentaciones.length">
+            <v-row dense>
+              <v-col cols="12" md="8" xl="6" class="mx-auto">
+                <v-text-field
+                    v-model="searchPresent"
+                    append-icon="mdi-magnify"
+                    label="Buscar por Prestador"
+                    single-line
+                    hide-details="auto"
+                    clearable
+                    filled
+                    outlined
+                    rounded
+                    persistent-hint
+                    :hint="searchPresent ? `Filtrado: ${itemsPresent.length} registro${itemsPresent.length === 1 ? '' : 's'} de ${referencia.presentaciones.length}` : ''"
+                />
+              </v-col>
+            </v-row>
+            <v-list>
+              <template
+                  v-for="(
                   presentacion, indexpresentacion
-                ) in referencia.presentaciones"
-            >
-              <v-card
-                  :key="`presentacion${indexpresentacion}`"
-                  class="my-2"
-                  tile
-                  flat
+                ) in itemsPresent"
               >
-                <v-card-text class="pb-0">
-                  <v-row
-                      :class="estadosPresentacion.find(x => x.key === presentacion.estado).color"
-                      style="border-radius: 5px; !important;"
-                  >
-                    <v-col cols="8">
+                <v-card
+                    :key="`presentacion${indexpresentacion}`"
+                    class="my-2"
+                    tile
+                    flat
+                >
+                  <v-card-text class="pb-0">
+                    <v-row
+                        :class="estadosPresentacion.find(x => x.key === presentacion.estado).color"
+                        style="border-radius: 5px; !important;"
+                    >
+                      <v-col cols="8">
                       <span class="caption">
                         <b>{{ presentacion.estado }}</b>
                         <b v-if="presentacion.estado === 'Seleccionada'  && presentacion.fecha_seleccion">:
                           {{moment(presentacion.fecha_seleccion).format("DD/MM/YYYY [a las] HH:mm")}}
                         </b>
                       </span>
-                      <h5>
-                        {{
-                          presentacion.ips_presentacion
-                              ? presentacion.ips_presentacion.nombre
-                              : ""
-                        }}
-                      </h5>
-                    </v-col>
-                    <v-col cols="4" align-self="center"  v-if="presentacion && !referencia.tiene_transporte">
-                      <v-row align="center" justify="end" class="mx-2">
-                        <presentacion
-                            :referencia="referencia"
-                            :presentacion="presentacion"
-                            @guardado="(val) => $emit('guardado', val)"
-                        />
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-                <template>
-                  <v-card-actions class="mx-3 pt-0">
-                    <v-row>
-                      <v-col class="pb-0" cols="12">
-                        <v-row align="center" justify="start">
-                          <div>
-                            <div class="font-weight-normal">
-                              <span class="caption"><b>Presentacion:</b></span>
-                              {{
-                                presentacion.fecha_presentacion ? moment(presentacion.fecha_presentacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
-                              }}
-                            </div>
-                          </div>
-                        </v-row>
+                        <h5>
+                          {{
+                            presentacion.ips_presentacion
+                                ? presentacion.ips_presentacion.nombre
+                                : ""
+                          }}
+                        </h5>
                       </v-col>
-                      <v-col class="pb-0" cols="12" v-if="presentacion.fecha_aceptacion">
-                        <v-row align="center" justify="start">
-                          <div style="width: 100% !important;">
-                            <div class="font-weight-normal">
-                              <span class="caption"><b>IPS Acepta:</b></span>
-                              {{
-                                presentacion.fecha_aceptacion ? moment(presentacion.fecha_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
-                              }}
-                            </div>
-                          </div>
-                          <div
-                              v-if="presentacion.bitacoras && presentacion.bitacoras.length && presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado')"
-                              style="width: 100% !important;"
-                          >
-                            <p class="ma-0">{{presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado').observaciones}}</p>
-                          </div>
-                        </v-row>
-                      </v-col>
-                      <v-col class="pb-0" cols="12" v-if="presentacion.fecha_no_aceptacion">
-                        <v-row align="center" justify="start">
-                          <div>
-                            <div class="font-weight-normal">
-                              <span class="caption"><b>IPS No Acepta:</b></span>
-                              {{
-                                presentacion.fecha_no_aceptacion ? moment(presentacion.fecha_no_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
-                              }}
-                            </div>
-                          </div>
-                        </v-row>
-                      </v-col>
-                      <v-col
-                          v-if="presentacion.bitacoras && presentacion.bitacoras.length"
-                          class="pb-0"
-                          cols="12"
-                      >
-                        <v-row align="center" justify="start">
-                          <ver-bitacoras :item="presentacion"/>
+                      <v-col cols="4" align-self="center"  v-if="presentacion && !referencia.tiene_transporte">
+                        <v-row align="center" justify="end" class="mx-2">
+                          <presentacion
+                              :referencia="referencia"
+                              :presentacion="presentacion"
+                              @guardado="(val) => $emit('guardado', val)"
+                          />
                         </v-row>
                       </v-col>
                     </v-row>
-                  </v-card-actions>
-                </template>
-                <v-divider :key="`dividerPres${indexpresentacion}`" />
-              </v-card>
-            </template>
-          </v-list>
+                  </v-card-text>
+                  <template>
+                    <v-card-actions class="mx-3 pt-0">
+                      <v-row>
+                        <v-col class="pb-0" cols="12">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>Presentacion:</b></span>
+                                {{
+                                  presentacion.fecha_presentacion ? moment(presentacion.fecha_presentacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col class="pb-0" cols="12" v-if="presentacion.fecha_aceptacion">
+                          <v-row align="center" justify="start">
+                            <div style="width: 100% !important;">
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>IPS Acepta:</b></span>
+                                {{
+                                  presentacion.fecha_aceptacion ? moment(presentacion.fecha_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
+                                }}
+                              </div>
+                            </div>
+                            <div
+                                v-if="presentacion.bitacoras && presentacion.bitacoras.length && presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado')"
+                                style="width: 100% !important;"
+                            >
+                              <p class="ma-0">{{presentacion.bitacoras.find(x => x.accion === 'Paciente Aceptado').observaciones}}</p>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col class="pb-0" cols="12" v-if="presentacion.fecha_no_aceptacion">
+                          <v-row align="center" justify="start">
+                            <div>
+                              <div class="font-weight-normal">
+                                <span class="caption"><b>IPS No Acepta:</b></span>
+                                {{
+                                  presentacion.fecha_no_aceptacion ? moment(presentacion.fecha_no_aceptacion).format('DD/MM/YYYY [a las] HH:mm') : '-'
+                                }}
+                              </div>
+                            </div>
+                          </v-row>
+                        </v-col>
+                        <v-col
+                            v-if="presentacion.bitacoras && presentacion.bitacoras.length"
+                            class="pb-0"
+                            cols="12"
+                        >
+                          <v-row align="center" justify="start">
+                            <ver-bitacoras :item="presentacion"/>
+                          </v-row>
+                        </v-col>
+                      </v-row>
+                    </v-card-actions>
+                  </template>
+                  <v-divider :key="`dividerPres${indexpresentacion}`" />
+                </v-card>
+              </template>
+            </v-list>
+          </template>
+          <div
+              v-else
+              class="pa-5 mt-5 text-center font-weight-medium"
+          >
+            <v-icon>mdi-information</v-icon>
+            No hay registros de gestión
+          </div>
         </v-tab-item>
         <!-- Traslado -->
         <v-tab-item value="tab-2">
@@ -307,7 +333,7 @@
         </v-tab-item>
         <!-- Bitacora -->
         <v-tab-item value="tab-3">
-          <v-list>
+          <v-list v-if="referencia.bitacoras && referencia.bitacoras.length">
             <template
                 v-for="(bitacora, indexBitacora) in referencia.bitacoras"
             >
@@ -388,6 +414,13 @@
               <v-divider :key="`dividerBit${indexBitacora}`" />
             </template>
           </v-list>
+          <div
+              v-else
+              class="pa-5 mt-5 text-center font-weight-medium"
+          >
+            <v-icon>mdi-information</v-icon>
+            No hay registros de bitacoras
+          </div>
         </v-tab-item>
         <!-- Evolución diaria -->
         <v-tab-item value="tab-4">
@@ -420,6 +453,9 @@ export default {
     },
   },
   computed: {
+    itemsPresent() {
+      return this.referencia ? (this.searchPresent ? this.referencia?.presentaciones.filter(x => (x.codigo_prestador_presentacion.toLowerCase().search(this.searchPresent.toLowerCase()) > -1) || (x?.ips_presentacion?.nombre_sede.toLowerCase().search(this.searchPresent.toLowerCase()) > -1)) : this.referencia?.presentaciones) : []
+    },
     ...mapGetters(['tiposDocumentoIdentidad', 'ref_estados']),
   },
   components: {
@@ -433,6 +469,7 @@ export default {
     TerminarProceso,
   },
   data: () => ({
+    searchPresent: '',
     estadosPresentacion: [
       {key: 'Solicitud Servicio', color: 'amber lighten-3'},
       {key: 'Servicio Aceptado', color: 'blue lighten-3'},
