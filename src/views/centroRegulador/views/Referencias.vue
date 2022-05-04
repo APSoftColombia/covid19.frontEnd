@@ -2,7 +2,7 @@
   <v-container fluid>
     <page-title-bar title="Referencias">
       <template slot="actions">
-        <template v-if="getUser && !getUser.eps_id">
+        <template v-if="getUser && !getUser.cod_ips">
           <alerta-solicitudes
               @notificar="itemGuardado"
               @seleccionar="val => seleccionarItemAlert(val)"
