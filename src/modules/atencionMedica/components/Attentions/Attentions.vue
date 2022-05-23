@@ -2,6 +2,8 @@
   <div>
     <data-tablex
         v-model="dataTable"
+        file-name-excel="Attentions"
+        export-excel
         items-loading
         @applyFilters="$refs && $refs.filters && $refs.filters.applyFilters()"
     >

@@ -32,6 +32,7 @@
           </v-col>
           <v-col cols="10" sm="5" md="3" lg="2">
             <v-select
+                :class="value.advanceFilters && exportExcel ? 'mb-3' : ''"
                 label="Columnas visibles"
                 multiple
                 v-model="value.headers"
@@ -57,6 +58,7 @@
           </v-col>
           <v-col cols="12" sm="5" md="2" lg="2">
             <v-select
+                :class="value.advanceFilters && exportExcel ? 'mb-3' : ''"
                 label="Registros por página"
                 v-model="pagination.per_page"
                 :items="value.optionsPerPage"
@@ -70,8 +72,7 @@
               v-if="searchable"
               cols="12"
               sm="12"
-              md="4"
-              lg="5"
+              md="6"
           >
             <v-container fluid class="py-0">
               <v-row justify="center" align="center">
@@ -84,79 +85,84 @@
                     prepend-inner-icon="mdi-magnify"
                     @keyup.enter="reloadCurrentPage"
                 >
+                  <template v-slot:append-outer>
+                    <export-excel
+                        v-if="exportExcel"
+                        :prefix="fileNameExcel"
+                        :route="urlStringExport"
+                        :count="(pagination && pagination.total) || null"
+                    />
+                    <v-dialog
+                        v-if="value.advanceFilters"
+                        v-model="dialog"
+                        persistent max-width="1020px"
+                        eager
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            :class="$vuetify.breakpoint.xsOnly ? 'mt-2' : ''"
+                            class="ml-2"
+                            color="primary"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="$emit('openFilters')"
+                        >
+                          <v-icon left class="white--text">mdi-tune</v-icon>
+                          Filtros
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-toolbar class="elevation-0">
+                          <v-toolbar-title>
+                            <v-avatar color="primary" size="40">
+                              <v-icon dark class="white--text">mdi-tune</v-icon>
+                            </v-avatar>
+                            {{ value.titleFilters }}
+                          </v-toolbar-title>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                              icon
+                              @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                          >
+                            <v-icon>mdi-close</v-icon>
+                          </v-btn>
+                        </v-toolbar>
+                        <v-divider class="my-0"></v-divider>
+                        <v-container fluid>
+                          <slot name="filters"></slot>
+                        </v-container>
+                        <loading :value="loadingFilter"/>
+                        <v-card-actions>
+                          <v-btn
+                              text
+                              color="primary"
+                              @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                          >
+                            Cerrar
+                          </v-btn>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                              color="primary"
+                              @click.stop="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                          >
+                            Aplicar Filtros
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </template>
                 </v-text-field>
               </v-row>
             </v-container>
-          </v-col>
-          <v-col cols="6" sm="4" md="2" lg="2" xl="1">
-            <v-dialog
-                v-if="value.advanceFilters"
-                v-model="dialog"
-                persistent max-width="1020px"
-                eager
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    small
-                    :class="$vuetify.breakpoint.xsOnly ? 'mt-2' : ''"
-                    color="primary"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="$emit('openFilters')"
-                    block
-                >
-                  <v-icon left class="white--text">mdi-tune</v-icon>
-                  Filtros
-                </v-btn>
-              </template>
-              <v-card>
-                <v-toolbar class="elevation-0">
-                  <v-toolbar-title>
-                    <v-avatar color="primary" size="40">
-                      <v-icon dark class="white--text">mdi-tune</v-icon>
-                    </v-avatar>
-                    {{ value.titleFilters }}
-                  </v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      icon
-                      @click="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                  >
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-toolbar>
-                <v-divider class="my-0"></v-divider>
-                <v-container fluid>
-                  <slot name="filters"></slot>
-                </v-container>
-                <loading :value="loadingFilter"/>
-                <v-card-actions>
-                  <v-btn
-                      text
-                      color="primary"
-                      @click="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                  >
-                    Cerrar
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      color="primary"
-                      @click.stop="() => {
-                            dialog = false
-                            $emit('applyFilters')
-                          }"
-                  >
-                    Aplicar Filtros
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
           </v-col>
         </v-row>
       </v-container>
@@ -200,10 +206,20 @@
 </template>
 <script>
 import lodash from 'lodash'
+import ExportExcel from "../../cDataRows/components/ExportExcel";
 
 export default {
   name: 'DataTablex',
+  components: {ExportExcel},
   props: {
+    fileNameExcel: {
+      type: String,
+      default: ''
+    },
+    exportExcel: {
+      type: Boolean,
+      default: false
+    },
     searchable: {
       type: Boolean,
       default: true
@@ -226,6 +242,7 @@ export default {
     },
   },
   data: () => ({
+    urlStringExport: null,
     numberPetition: 0,
     tagsfilters: [],
     dialog: false,
@@ -396,6 +413,10 @@ export default {
       this.activePetition = true
       this.reloadPage()
     },
+    makeUrl(){
+      this.urlStringExport = this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + (this.searchable ? ('filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : '')+'&excel=1'
+      return (this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + (this.searchable ? ('&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : ''))
+    },
     async reloadPage() {
       if (this.activePetition) {
         if (this.numberPetition === 0 && this.initialFilter) {
@@ -407,7 +428,8 @@ export default {
           this.numberPetition++
           this.activePetition = false
           this.loading = true
-          this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + (this.searchable ? ('&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search)) : ''))
+          const urlString = await this.makeUrl()
+          this.axios.get(urlString)
               // this.axios.get(this.value.route + (this.value.route.indexOf('?') > -1 ? '&' : '?') + 'per_page=' + this.pagination.per_page + this.stringSort + '&page=' + this.pagination.current_page + '&filter[search]=' + ((this.value.search === null || typeof this.value.search === 'undefined') ? '' : this.value.search))
               .then(response => {
                 this.filtrado = true

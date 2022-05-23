@@ -8,11 +8,11 @@
         @close="closeTag('prestador')"
     />
     <c-chip-filters
-        v-if="tags.usuario"
-        :text="nombreUsuario"
-        key="usuario"
-        subtitle="Usuario"
-        @close="closeTag('usuario')"
+        v-if="tags.departamento"
+        :text="nombreDepartamento"
+        key="departamento"
+        subtitle="Departamento prestador"
+        @close="closeTag('departamento')"
     />
     <c-chip-filters
         v-if="tags.mes"
@@ -29,11 +29,11 @@
         @close="closeTag('estado')"
     />
     <c-chip-filters
-        v-if="tags.departamento"
-        :text="nombreDepartamento"
-        key="departamento"
-        subtitle="Departamento prestador"
-        @close="closeTag('departamento')"
+        v-if="tags.usuario"
+        :text="nombreUsuario"
+        key="usuario"
+        subtitle="Usuario"
+        @close="closeTag('usuario')"
     />
   </v-col>
 </template>
@@ -51,12 +51,12 @@ export default {
     ...mapGetters([
       'departamentos'
     ]),
-    ...mapState('atencionMedicaRCVModule', ['complementos']),
+    ...mapState('atencionMedicaRCVModule', ['complementosLoads']),
     nombrePrestador() {
-      return (this.complementos?.prestadores?.length && this.complementos.prestadores.find(x => x.codigohabilitacion === this.tags.prestador)?.nombre) || ''
+      return (this.complementosLoads?.prestadores?.length && this.complementosLoads.prestadores.find(x => x.codigohabilitacion === this.tags.prestador)?.nombre) || ''
     },
     nombreUsuario() {
-      return (this.complementos?.usuarios?.length && this.complementos.usuarios.find(x => x.id === this.tags.usuario)?.name) || ''
+      return (this.complementosLoads?.usuarios?.length && this.complementosLoads.usuarios.find(x => x.id === this.tags.usuario)?.name) || ''
     },
     nombreDepartamento() {
       return (this.departamentos?.length && this.departamentos.find(x => x.codigo === this.tags.departamento)?.nombre) || ''

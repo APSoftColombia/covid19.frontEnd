@@ -1,45 +1,66 @@
 <template>
   <v-col cols="12" class="py-0">
     <c-chip-filters
-        v-if="tags.estado_proceso"
-        :text="tags.estado_proceso"
+        v-if="tags.departamento"
+        :text="nombreDepartamento"
+        key="departamento"
+        subtitle="Departamento"
+        @close="closeTag('departamento')"
+    />
+    <c-chip-filters
+        v-if="tags.municipio"
+        :text="nombreMunicipio"
+        key="municipio"
+        subtitle="Municipio"
+        @close="closeTag('municipio')"
+    />
+    <c-chip-filters
+        v-if="tags.fechaRegistro && tags.fechaRegistro.length"
+        :text="`Desde ${moment(tags.fechaRegistro[0]).format('DD/MM/YYYY')} hasta ${moment(tags.fechaRegistro[1]).format('DD/MM/YYYY')}`"
+        key="fechaRegistro"
+        subtitle="Fecha"
+        @close="closeTag('fechaRegistro')"
+    />
+    <c-chip-filters
+        v-if="tags.estado"
+        :text="tags.estado"
         key="Estado"
         subtitle="Estado"
-        @close="closeTag('estado_proceso')"
+        @close="closeTag('estado')"
     />
     <c-chip-filters
-        v-if="tags.institucion_muestra"
-        :text="labspIpss && labspIpss.length && labspIpss.find(x => x.id === tags.institucion_muestra) ? labspIpss.find(x => x.id === tags.institucion_muestra).nombre : ''"
-        key="ipsOrigen"
-        subtitle="IPS Origen Muestra"
-        @close="closeTag('institucion_muestra')"
+        v-if="tags.pertenenciaEtnica"
+        :text="nombrePertenenciaEtnica"
+        key="pertenenciaEtnica"
+        subtitle="Pertenencia Étnica"
+        @close="closeTag('pertenenciaEtnica')"
     />
     <c-chip-filters
-        v-if="tags.eps_id"
-        :text="labspEpss && labspEpss.length && labspEpss.find(x => x.id === tags.eps_id) ? labspEpss.find(x => x.id === tags.eps_id).nombre : ''"
-        key="eps"
-        subtitle="EPS Paciente"
-        @close="closeTag('eps_id')"
+        v-if="tags.grupoPoblacional"
+        :text="nombreGrupoPoblaciona"
+        key="grupoPoblacional"
+        subtitle="Grupo Poblacional"
+        @close="closeTag('grupoPoblacional')"
     />
     <c-chip-filters
-        v-if="tags.tipo_afiliacion"
-        :text="tags.tipo_afiliacion"
-        key="tipoAfiliacion"
-        subtitle="Tipo Afiliación"
-        @close="closeTag('tipo_afiliacion')"
+        v-if="tags.prestador"
+        :text="nombrePrestador"
+        key="prestador"
+        subtitle="Prestador"
+        @close="closeTag('prestador')"
     />
     <c-chip-filters
-        v-if="tags.fechaEstudio && tags.fechaEstudio.length"
-        :text="`Desde ${moment(tags.fechaEstudio[0]).format('DD/MM/YYYY')} hasta ${moment(tags.fechaEstudio[1]).format('DD/MM/YYYY')}`"
-        key="fechaOrden"
-        subtitle="Fecha de recepción"
-        @close="closeTag('fechaEstudio')"
+        v-if="tags.usuario"
+        :text="nombreUsuario"
+        key="usuario"
+        subtitle="Usuario"
+        @close="closeTag('usuario')"
     />
   </v-col>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 export default {
   name: 'TagsFilters',
   props: {
@@ -48,27 +69,54 @@ export default {
     }
   },
   computed: {
-      ...mapGetters([
-        'labspEpss',
-        'labspIpss'
-      ])
+    ...mapGetters([
+      'departamentos'
+    ]),
+    ...mapState('atencionMedicaRCVModule', ['complementos']),
+    nombrePrestador() {
+      return (this.complementos?.prestadores?.length && this.complementos.prestadores.find(x => x.codigohabilitacion === this.tags.prestador)?.nombre) || ''
+    },
+    nombreUsuario() {
+      return (this.complementos?.usuarios?.length && this.complementos.usuarios.find(x => x.id === this.tags.usuario)?.name) || ''
+    },
+    nombreGrupoPoblaciona() {
+      return (this.complementos?.gruposPoblacionales?.length && this.complementos.gruposPoblacionales.find(x => x.value === this.tags.grupoPoblacional)?.text) || ''
+    },
+    nombrePertenenciaEtnica() {
+      return (this.complementos?.pertenenciasEtnicas?.length && this.complementos.pertenenciasEtnicas.find(x => x.value === this.tags.pertenenciaEtnica)?.text) || ''
+    },
+    nombreDepartamento() {
+      return (this.departamentos?.length && this.departamentos.find(x => x.codigo === this.tags.departamento)?.nombre) || ''
+    },
+    nombreMunicipio() {
+      return (this.departamentos?.length && this.tags.departamento && this.departamentos.find(x => x.codigo === this.tags.departamento)?.municipio?.nombre) || ''
+    }
   },
   methods: {
     closeTag(type) {
-      if(type === 'estado_proceso'){
-          this.tags.estado_proceso = null
+      if(type === 'departamento'){
+        this.tags.departamento = null
       }
-      if(type === 'eps_id'){
-        this.tags.eps_id = null
+      if(type === 'municipio'){
+        this.tags.municipio = null
       }
-      if(type === 'institucion_muestra'){
-        this.tags.institucion_muestra = null
+      if (type === 'fechaRegistro') {
+        this.tags.fechaRegistro = []
       }
-      if(type === 'tipo_afiliacion'){
-        this.tags.tipo_afiliacion = null
+      if(type === 'estado'){
+        this.tags.estado = null
       }
-      if (type === 'fechaEstudio') {
-          this.tags.fechaEstudio = []
+      if(type === 'pertenenciaEtnica'){
+        this.tags.pertenenciaEtnica = null
+      }
+      if(type === 'grupoPoblacional'){
+        this.tags.grupoPoblacional = null
+      }
+      if(type === 'prestador'){
+        this.tags.prestador = null
+      }
+      if(type === 'usuario'){
+        this.tags.usuario = null
       }
       this.$emit('change')
     }

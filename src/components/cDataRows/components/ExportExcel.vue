@@ -2,16 +2,13 @@
   <c-tooltip
       top
       :tooltip="`${count ? `Hay ${count} registro${count === 1 ? '' : 's'}${count > 0 && count <= limitCount ? ' para exportar.' : `, no es posible exportar, se supera el límite de ${limitCount} registros.`}`: 'No hay registros para exportar.' }`"
-      :disabled="$vuetify.breakpoint.mdAndUp"
   >
     <v-btn
-        v-if="!(!count || (count <= 0 && count > limitCount))"
         dark
-        color="green"
-        class="ml-2"
+        :color="(count >= 0 && count > limitCount) ? 'grey lighten-1' : 'green'"
         depressed
         :loading="loading"
-        @click="downloadExel"
+        @click="(count >= 0 && count > limitCount) ? null : downloadExel()"
     >
       <v-icon>mdi-file-excel</v-icon>
       {{$vuetify.breakpoint.mdAndUp ? 'Exportar' : ''}}
@@ -24,6 +21,10 @@
 export default {
   name: 'ExportExcel',
   props: {
+    prefix: {
+      type: String,
+      default: ''
+    },
     route: {
       type: String,
       default: ''
@@ -55,13 +56,13 @@ export default {
           document.body.appendChild(a)
           a.style = 'display: none'
           a.href = fileURL
-          a.download = `Electores${this.moment().format('YYYYMMDDHHmmss')}.xlsx`
+          a.download = `${this.prefix}${this.moment().format('YYYYMMDDHHmmss')}.xlsx`
           a.click()
           this.loading = false
         }
       }).catch(error => {
         this.loading = false
-        this.$store.commit('SET_SNACKBAR', { color: 'error', message: `Error ${error?.response?.status || ''} al exportar los registros.`, error: error })
+        this.$store.commit('snackbar', { color: 'error', message: `Error ${error?.response?.status || ''} al exportar los registros.`, error: error })
       })
     }
   }

@@ -522,7 +522,7 @@ export default {
             this.filtersTags = this?.$slots?.filters && this.$slots.filters[0] && this.$slots.filters[0].componentInstance?.$data?.model || {}
           }
         } catch (e) {
-          store.commit('SET_SNACKBAR', {
+          store.commit('snackbar', {
             color: 'error',
             message: 'Error al hacer la busqueda de registros',
             error: e

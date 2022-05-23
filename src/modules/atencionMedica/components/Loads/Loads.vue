@@ -1,7 +1,6 @@
 <template>
   <div>
     <data-tablex
-        :searchable="false"
         v-model="dataTable"
         items-loading
         @applyFilters="$refs && $refs.filters && $refs.filters.applyFilters()"
