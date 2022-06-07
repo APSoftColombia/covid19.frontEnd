@@ -138,7 +138,6 @@
                           :items="departamentos"
                           item-text="nombre"
                           item-value="id"
-                          @change="val => item.municipio_prestador_origen = (val && departamentos.find(x => x.id === val).municipios.find(z => z.id === item.municipio_prestador_origen)) ? item.municipio_prestador_origen : null"
                       />
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
@@ -369,17 +368,36 @@ export default {
         }
       })
     },
-    open(item = null) {
+    async open(item = null) {
       this.dialog = true
       if (item) {
         this.getItem(item.id)
       } else {
-        this.item = this.clone(models.referencia)
+        this.ejecutaWatch = false
+        const ips = this.getUser?.cod_ips ? await this.assignIPS(this.getUser.cod_ips) : null
+        const temporalItem = this.clone(models.referencia)
+        if(ips) {
+          const departamento = (ips.iddepto && this.departamentos?.find(x => x.codigo === ips.iddepto)) || null
+          const municipio = ips.idmpio && departamento?.municipios?.find(x => x.codigo === ips.idmpio) || null
+          temporalItem.municipio_prestador_origen = municipio.id
+          temporalItem.departamento_prestador_origen = departamento.id
+          temporalItem.codigo_prestador_origen = ips.codigohabilitacion
+        }
+        this.item = temporalItem
         this.item.fecha_solicitud = this.moment().format('YYYY-MM-DD')
         this.item.hora_solicitud = this.moment().format('HH:mm')
         this.item.fecha_orden = this.moment().format('YYYY-MM-DD')
         this.item.hora_orden = this.moment().format('HH:mm')
+        setTimeout(() => {
+          this.ejecutaWatch = true
+        }, 400)
       }
+    },
+    async assignIPS(codigo){
+      return await new Promise(resolve => {
+        this.axios.get(`prestadores?filter[search]=${codigo}`)
+            .then(response => resolve(response.data?.length ? response.data[0] : null))
+      })
     },
     close() {
       this.$refs.formItem.reset()
