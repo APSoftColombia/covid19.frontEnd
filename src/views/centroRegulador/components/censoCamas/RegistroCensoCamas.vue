@@ -2,7 +2,7 @@
   <v-dialog
       persistent
       v-model="dialog"
-      max-width="620"
+      max-width="720"
       eager
   >
     <v-card>
@@ -74,80 +74,161 @@
                   :departamento="departamento"
               />
             </v-col>
-            <v-subheader class="title">Adultos</v-subheader>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" class="title">Adultos</v-col>
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_adu_uci_total"
+                  label="UCI Total"
+                  name="UCI Total"
+                  vid="UCI Adultos Total"
+                  :min="item.camas_adu_uci || 0"
+                  step="1"
+                  :rules="`required|min:${item.camas_adu_uci || 0}|integer`"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_adu_uci"
-                  label="UCI"
-                  name="UCI"
-                  vid="UCI Adultos"
+                  label="UCI Disponible"
+                  name="UCI Disponible"
+                  vid="UCI Adultos Disponible"
                   min="0"
+                  :max="item.camas_adu_uci_total || ''"
                   step="1"
-                  rules="required|min:0|integer"
+                  :rules="`required|min:0|max:${item.camas_adu_uci_total || ''}|integer`"
                   :clearable="false"
               />
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_adu_uci_covid_total"
+                  label="UCI COVID Total"
+                  name="UCI COVID Total"
+                  vid="UCI COVID Adultos Total"
+                  :min="item.camas_adu_uci_covid || 0"
+                  :rules="`required|min:${item.camas_adu_uci_covid || 0}|integer`"
+                  step="1"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_adu_uci_covid"
-                  label="UCI COVID"
-                  name="UCI COVID"
-                  vid="UCI COVID Adultos"
+                  label="UCI COVID Disponible"
+                  name="UCI COVID Disponible"
+                  vid="UCI COVID Adultos Disponible"
                   min="0"
-                  rules="required|min:0|integer"
+                  :max="item.camas_adu_uci_covid_total || ''"
+                  :rules="`required|min:0|max:${item.camas_adu_uci_covid_total || ''}|integer`"
+                  step="1"
                   :clearable="false"
               />
             </v-col>
-            <v-subheader class="title">Neonatal</v-subheader>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" class="title">Neonatal</v-col>
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_neo_uci_total"
+                  label="UCI Total"
+                  name="UCI Total"
+                  vid="UCI Neonatal Total"
+                  :min="item.camas_neo_uci || 0"
+                  :rules="`required|min:${item.camas_neo_uci || 0}|integer`"
+                  step="1"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_neo_uci"
-                  label="UCI"
-                  name="UCI"
-                  vid="UCI Neonatal"
+                  label="UCI Disponible"
+                  name="UCI Disponible"
+                  vid="UCI Neonatal Disponible"
                   min="0"
+                  :max="item.camas_neo_uci_total || ''"
+                  :rules="`required|min:0|max:${item.camas_neo_uci_total || ''}|integer`"
                   step="1"
-                  rules="required|min:0|integer"
                   :clearable="false"
               />
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_neo_uci_covid_total"
+                  label="UCI COVID Total"
+                  name="UCI COVID Total"
+                  vid="UCI COVID Neonatal Total"
+                  :min="item.camas_neo_uci_covid || 0"
+                  :rules="`required|min:${item.camas_neo_uci_covid || 0}|integer`"
+                  step="1"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_neo_uci_covid"
-                  label="UCI COVID"
-                  name="UCI COVID"
-                  vid="UCI COVID Neonatal"
+                  label="UCI COVID Disponible"
+                  name="UCI COVID Disponible"
+                  vid="UCI COVID Neonatal Disponible"
                   min="0"
-                  rules="required|min:0|integer"
+                  :max="item.camas_neo_uci_covid_total || ''"
+                  :rules="`required|min:0|max:${item.camas_neo_uci_covid_total || ''}|integer`"
+                  step="1"
                   :clearable="false"
               />
             </v-col>
-            <v-subheader class="title">Pediatría</v-subheader>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" class="title">Pediatría</v-col>
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_ped_uci_total"
+                  label="UCI Total"
+                  name="UCI Total"
+                  vid="UCI Pediatría Total"
+                  step="1"
+                  :min="item.camas_ped_uci || 0"
+                  :rules="`required|min:${item.camas_ped_uci || 0}|integer`"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_ped_uci"
-                  label="UCI"
-                  name="UCI"
-                  vid="UCI Pediatría"
+                  label="UCI Disponible"
+                  name="UCI Disponible"
+                  vid="UCI Pediatría Disponible"
                   min="0"
+                  :max="item.camas_ped_uci_total || ''"
+                  :rules="`required|min:0|max:${item.camas_ped_uci_total || ''}|integer`"
                   step="1"
-                  rules="required|min:0|integer"
                   :clearable="false"
               />
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="6">
+              <c-number
+                  v-model="item.camas_ped_uci_covid_total"
+                  label="UCI COVID Total"
+                  name="UCI COVID Total"
+                  vid="UCI COVID Pediatría Total"
+                  :min="item.camas_ped_uci_covid || 0"
+                  :rules="`required|min:${item.camas_ped_uci_covid || 0}|integer`"
+                  step="1"
+                  :clearable="false"
+              />
+            </v-col>
+            <v-col cols="12" sm="6">
               <c-number
                   v-model="item.camas_ped_uci_covid"
-                  label="UCI COVID"
-                  name="UCI COVID"
-                  vid="UCI COVID Pediatría"
+                  label="UCI COVID Disponible"
+                  name="UCI COVID Disponible"
+                  vid="UCI COVID Pediatría Disponible"
                   min="0"
-                  rules="required|min:0|integer"
+                  :max="item.camas_ped_uci_covid_total || ''"
+                  :rules="`required|min:0|max:${item.camas_ped_uci_covid_total || ''}|integer`"
+                  step="1"
                   :clearable="false"
               />
             </v-col>
-            <v-subheader class="title">Urgencias</v-subheader>
-            <v-col cols="12" sm="8">
+            <v-col cols="12" class="title">Urgencias</v-col>
+            <v-col cols="12" sm="12">
               <c-number
                   v-model="item.camas_urgencias"
                   label="General"
@@ -210,11 +291,17 @@ export default {
       fecha_reporte: null,
       hora_reporte: null,
       camas_adu_uci: null,
+      camas_adu_uci_total: null,
       camas_adu_uci_covid: null,
+      camas_adu_uci_covid_total: null,
       camas_neo_uci: null,
+      camas_neo_uci_total: null,
       camas_neo_uci_covid: null,
+      camas_neo_uci_covid_total: null,
       camas_ped_uci: null,
+      camas_ped_uci_total: null,
       camas_ped_uci_covid: null,
+      camas_ped_uci_covid_total: null,
       camas_urgencias: null,
       departamento_prestador: null,
       municipio_prestador: null,

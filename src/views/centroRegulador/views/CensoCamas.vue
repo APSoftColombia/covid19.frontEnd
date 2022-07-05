@@ -75,33 +75,60 @@
               </tr>
               </thead>
             </template>
-            <template v-slot:item.fecha_reporte="{item}">
-              {{ item.fecha_reporte ? moment(item.fecha_reporte).format('DD/MM/YYYY HH:mm') : '' }}
-            </template>
-            <template v-slot:item.ips="{item}">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="body-2">{{ item.nombre }}</v-list-item-title>
-                  <v-list-item-title class="caption">Cód. {{ item.codigo_habilitacion }}</v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-action>
-                  <c-tooltip
-                      top
-                      tooltip="Registrar Censo"
-                      v-if="permisos.censoCamasGestionar"
-                  >
-                    <v-btn
-                        color="primary"
-                        depressed
-                        x-small
-                        fab
-                        @click="createItem(item)"
+            <template
+                v-slot:item="{item}"
+            >
+              <tr>
+                <td>
+                  {{ item.fecha_reporte ? moment(item.fecha_reporte).format('DD/MM/YYYY HH:mm') : '' }}
+                </td>
+                <td>
+                  <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="body-2">{{ item.nombre }}</v-list-item-title>
+                    <v-list-item-title class="caption">Cód. {{ item.codigo_habilitacion }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <c-tooltip
+                        top
+                        tooltip="Registrar Censo"
+                        v-if="permisos.censoCamasGestionar"
                     >
-                      <v-icon>mdi-plus</v-icon>
-                    </v-btn>
-                  </c-tooltip>
-                </v-list-item-action>
-              </v-list-item>
+                      <v-btn
+                          color="primary"
+                          depressed
+                          x-small
+                          fab
+                          @click="createItem(item)"
+                      >
+                        <v-icon>mdi-plus</v-icon>
+                      </v-btn>
+                    </c-tooltip>
+                  </v-list-item-action>
+                </v-list-item>
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_adu_uci, item.camas_adu_uci_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_adu_uci_covid, item.camas_adu_uci_covid_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_neo_uci, item.camas_neo_uci_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_neo_uci_covid, item.camas_neo_uci_covid_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_ped_uci, item.camas_ped_uci_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_ped_uci_covid, item.camas_ped_uci_covid_total].filter(x => x).join('/') }}
+                </td>
+                <td class="font-weight-bold text-center">
+                  {{ [item.camas_urgencias, item.camas_urgencias_total].filter(x => x).join('/') }}
+                </td>
+              </tr>
             </template>
             <template
                 v-if="totalized"
