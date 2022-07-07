@@ -108,25 +108,48 @@
                 </v-list-item>
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_adu_uci, item.camas_adu_uci_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_adu_uci"
+                      :total="item.camas_adu_uci_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_adu_uci_covid, item.camas_adu_uci_covid_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_adu_uci_covid"
+                      :total="item.camas_adu_uci_covid_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_neo_uci, item.camas_neo_uci_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_neo_uci"
+                      :total="item.camas_neo_uci_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_neo_uci_covid, item.camas_neo_uci_covid_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_neo_uci_covid"
+                      :total="item.camas_neo_uci_covid_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_ped_uci, item.camas_ped_uci_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_ped_uci"
+                      :total="item.camas_ped_uci_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_ped_uci_covid, item.camas_ped_uci_covid_total].filter(x => x).join('/') }}
+                  <value-table
+                      :disponible="item.camas_ped_uci_covid"
+                      :total="item.camas_ped_uci_covid_total"
+                  />
                 </td>
                 <td class="font-weight-bold text-center">
-                  {{ [item.camas_urgencias, item.camas_urgencias_total].filter(x => x).join('/') }}
+                  <v-chip label color="green">
+                    <c-tooltip tooltip="Disponible" left>
+                      <v-icon left>mdi-alpha-d-circle-outline</v-icon>
+                    </c-tooltip>
+                    {{item.camas_urgencias}}
+                  </v-chip>
                 </td>
               </tr>
             </template>
@@ -161,10 +184,14 @@
 <script>
 import lodash from 'lodash'
 import RegistroCensoCamas from '../components/censoCamas/RegistroCensoCamas'
+import ValueTable from '../components/censoCamas/ValueTable'
 
 export default {
   name: 'CensoCamas',
-  components: {RegistroCensoCamas},
+  components: {
+    ValueTable,
+    RegistroCensoCamas
+  },
   data: () => ({
     loading: false,
     dialogRegister: false,
@@ -277,8 +304,9 @@ export default {
 
 <style>
 #table-hemocomponentes td, th {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  min-width: 80px;
 }
 
 #table-hemocomponentes .centered {
