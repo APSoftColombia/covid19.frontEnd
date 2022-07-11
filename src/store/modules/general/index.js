@@ -848,20 +848,24 @@ const mutations = {
                     this.commit('logoutUser')
                 } else {
                     if (data.error.response && data.error.response.data && (data.error.response.data.errors || data.error.response.data.message)) {
+                        console.log('data?.error?.response?.data?.errors', data?.error?.response?.data?.errors)
                         if (data.error.response.data.message) {
                             message = data.error.response.data.message
                         }
-                        if (typeof data?.error?.response?.data?.errors === 'string') {
-                            message = data.error.response.data.errors
-                        }
-                        if (data?.error?.response?.data?.errors === 'object') {
-                            let errorList = data?.error?.response?.data?.errors
-                            let items = []
-                            errorList && Object.values(errorList).forEach((value, index) => {
-                                items.push((index + 1) + `: ${value}`)
-                            })
-                            timeout = Object.keys(errorList).length * timeout
-                            message = (`Hay ${Object.keys(errorList).length} ${Object.keys(errorList).length !== 1 ? 'errores' : 'error'}${data.message} <br> ${items.join('<br>')}`)
+
+                        if (data?.error?.response?.data?.errors) {
+                            if (typeof data?.error?.response?.data?.errors === 'string') {
+                                message = data.error.response.data.errors
+                            }
+                            else {
+                                let errorList = data?.error?.response?.data?.errors
+                                let items = []
+                                errorList && Object.values(errorList).forEach((value, index) => {
+                                    items.push((index + 1) + `: ${value}`)
+                                })
+                                timeout = Object.keys(errorList).length * timeout
+                                message = (`Hay ${Object.keys(errorList).length} ${Object.keys(errorList).length !== 1 ? 'errores' : 'error'}${data.message} <br> ${items.join('<br>')}`)
+                            }
                         }
                     } else if (data.error.response && data.error.response.data && (data.error.response.data.error || (data.error.response.data.message && typeof data.error.response.data.message === 'string'))) {
                         message = `Hay un error ${data.message} => ${data.error.response.data.error ? data.error.response.data.error : data.error.response.data.message} `
