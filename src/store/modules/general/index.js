@@ -850,10 +850,12 @@ const mutations = {
                     if (data.error.response && data.error.response.data && (data.error.response.data.errors || data.error.response.data.message)) {
                         if (data.error.response.data.message) {
                             message = data.error.response.data.message
-                        } else if (typeof data.error.response.data.errors === 'string') {
+                        }
+                        if (typeof data?.error?.response?.data?.errors === 'string') {
                             message = data.error.response.data.errors
-                        } else {
-                            let errorList = data.error.response.data.errors
+                        }
+                        if (data?.error?.response?.data?.errors === 'object') {
+                            let errorList = data?.error?.response?.data?.errors
                             let items = []
                             errorList && Object.values(errorList).forEach((value, index) => {
                                 items.push((index + 1) + `: ${value}`)
