@@ -125,7 +125,7 @@ export default {
     this.getNews()
     intervalo = setInterval(() => {
       this.getNews()
-    }, 10000)
+    }, 60000)
   },
   destroyed() {
     clearInterval(intervalo)

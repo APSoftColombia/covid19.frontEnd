@@ -2,13 +2,6 @@
   <v-container fluid>
     <page-title-bar title="Referencias">
       <template slot="actions">
-        <template v-if="getUser && !getUser.cod_ips">
-          <alerta-solicitudes
-              @notificar="itemGuardado"
-              @seleccionar="val => seleccionarItemAlert(val)"
-          />
-          <v-divider vertical inset class="mx-4"/>
-        </template>
         <c-tooltip
             v-if="permisos.referenciasCrear"
             top
@@ -248,11 +241,9 @@ import RegistroReferencia from 'Views/centroRegulador/components/referencias/Reg
 import Filtros from 'Views/centroRegulador/components/referencias/Filtros'
 import TagsFilters from 'Views/centroRegulador/components/referencias/TagsFilters'
 import { mapGetters } from 'vuex'
-import AlertaSolicitudes from 'Views/centroRegulador/components/referencias/AlertaSolicitudes'
 export default {
   name: 'Referencias',
   components: {
-    AlertaSolicitudes,
     TagsFilters,
     PersonaItem,
     DetalleReferencia,
@@ -315,8 +306,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-        'ref_estados',
-        'getUser'
+        'ref_estados'
     ]),
     permisos () {
       return this.$store.getters.getPermissionModule('centroRegulador')
@@ -328,13 +318,6 @@ export default {
   methods: {
     crearItem() {
       this.$refs.registroItem.open()
-    },
-    seleccionarItemAlert(val) {
-      this.detalleItem({ id: val })
-      this.$store.commit('notificadoNuevasReferenciaId', val)
-      setTimeout(() => {
-        this.$store.dispatch('getNuevasReferencias')
-      }, 2000)
     },
     editarItem(item) {
       this.$refs.registroItem.open(item)

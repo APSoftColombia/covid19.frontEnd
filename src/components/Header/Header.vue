@@ -23,9 +23,16 @@
 						<span :class="$vuetify.breakpoint.mdAndUp ? 'mt-3' : 'mt-3'">V{{appVersion}}</span>
 					</v-btn>
 				</v-img>
-				<app-menu v-if="user && !user.change_password_needed"></app-menu>
+				<app-menu v-if="user && !user.change_password_needed"/>
 			</div>
-			<v-spacer></v-spacer>
+			<v-spacer/>
+      <template v-if="user && !user.cod_ips && permisosCR.referenciasAlerta">
+        <alerta-solicitudes
+            @notificar="reloadReferencias"
+            @seleccionar="val => seleccionarItemAlert(val)"
+        />
+        <v-divider vertical inset class="mr-4 ml-3"/>
+      </template>
 			<div class="d-custom-flex align-items-center navbar-right pa-0">
         <v-tooltip left v-if="permisos.generarReporteDePrensa && datosEmpresa['covid-informeDePrensa'] === '1'">
           <template v-slot:activator="{ on }">
@@ -67,6 +74,10 @@
 <!--			<chat-sidebar></chat-sidebar>-->
 <!--		</v-navigation-drawer>-->
 		<mobile-search-form></mobile-search-form>
+    <detalle-referencia
+        ref="detalleItem"
+        @guardado="reloadReferencias"
+    />
 	</div>
 </template>
 
@@ -74,6 +85,8 @@
 // import ChatSidebar from '../ChatSidebar/ChatSidebar.vue'
 import screenfull from 'screenfull'
 // import Notifications from './Notifications'
+import AlertaSolicitudes from 'Views/centroRegulador/components/referencias/AlertaSolicitudes'
+import DetalleReferencia from 'Views/centroRegulador/components/referencias/detalleReferencia/DetalleReferencia'
 import AppMenu from './AppMenu'
 import MobileSearchForm from './MobileSearchForm'
 import { mapGetters, mapState } from 'vuex'
@@ -108,8 +121,24 @@ export default {
     permisos() {
       return this.$store.getters.getPermissionModule('covid')
     },
+    permisosCR() {
+      return this.$store.getters.getPermissionModule('centroRegulador')
+    }
 	},
 	methods: {
+    detalleReferencia(item) {
+      this.$refs.detalleItem.open(item)
+    },
+    seleccionarItemAlert(val) {
+      this.detalleReferencia({ id: val })
+      this.$store.commit('notificadoNuevasReferenciaId', val)
+      setTimeout(() => {
+        this.$store.dispatch('getNuevasReferencias')
+      }, 2000)
+    },
+    reloadReferencias() {
+      this.$store.commit('reloadTable', 'tablaReferencias')
+    },
 		toggleFullScreen() {
 			if (screenfull.enabled) {
 			screenfull.toggle()
@@ -147,6 +176,8 @@ export default {
 	components: {
 		// ChatSidebar,
 		// Notifications,
+    DetalleReferencia,
+    AlertaSolicitudes,
 		AppMenu,
 		MobileSearchForm,
 		User
