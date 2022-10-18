@@ -177,7 +177,7 @@ export default {
           // Parentezco cuando no es cabeza
           if (!i.encuestado.es_cabeza) {
             let pregunta = preguntasTotales.find(x => x.id === 1211)
-            parentezco = pregunta.posibles_respuestas.find(x => x.uuid === pregunta.respuesta.posibles_respuesta_uuid)
+            parentezco = pregunta.posibles_respuestas.find(x => x.uuid === pregunta?.respuesta?.posibles_respuesta_uuid)
           }
           this.integrantes.push({
             integrante: i.encuestado,
@@ -191,7 +191,7 @@ export default {
     },
     calculaRiesgo(preguntas) {
       // Preguntas respondidas con opción
-      let preguntasEvaluarOpcion = preguntas.filter(x => x.respuesta && x.respuesta.posibles_respuesta_uuid)
+      let preguntasEvaluarOpcion = preguntas.filter(x => x.respuesta && x?.respuesta?.posibles_respuesta_uuid)
       // Preguntas respondidas con valor
       // let preguntasEvaluarValor = preguntas.filter(x => x.respuesta && x.respuesta.respuesta_abierta)
       let maximo = 0
@@ -201,7 +201,7 @@ export default {
         let posiblesValores = x.posibles_respuestas.map(z => z.valor)
         maximo = maximo + Math.max(...posiblesValores)
         minimo = minimo + Math.min(...posiblesValores)
-        let opcionRespuesta = x.posibles_respuestas.find(p => p.uuid === x.respuesta.posibles_respuesta_uuid)
+        let opcionRespuesta = x.posibles_respuestas.find(p => p?.uuid === x.respuesta?.posibles_respuesta_uuid)
         acumulado = acumulado + (opcionRespuesta ? opcionRespuesta.valor : 0)
       })
       let corteMinimo = 0.33
@@ -226,7 +226,7 @@ export default {
       let preguntasIntegrante = preguntas.filter(n => this.direccionamientos.find(j => j.idPregunta === n.id))
       let direccionamientosIntegrante = []
       preguntasIntegrante.forEach(x => {
-        let direccionamientoUnit = this.direccionamientos.find(z => z.idPregunta === x.id && (x.respuesta.posibles_respuesta_uuid && x.respuesta.posibles_respuesta_uuid === z.uuid_resp)) || null
+        let direccionamientoUnit = this.direccionamientos.find(z => z.idPregunta === x.id && (x?.respuesta?.posibles_respuesta_uuid && x.respuesta?.posibles_respuesta_uuid === z.uuid_resp)) || null
         if (direccionamientoUnit) direccionamientosIntegrante.push(direccionamientoUnit)
       })
       return direccionamientosIntegrante.length ? Array.from(new Set(direccionamientosIntegrante.map(x => x.direccionamiento))) : []
